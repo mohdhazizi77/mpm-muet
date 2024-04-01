@@ -1,31 +1,37 @@
 @extends('layouts.master')
-@section('title') @lang('translation.datatables') @endsection
+@section('title')
+    @lang('translation.datatables')
+@endsection
 @section('css')
-<!--datatable css-->
-<link href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css" rel="stylesheet" type="text/css" />
-<!--datatable responsive css-->
-<link href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.bootstrap.min.css" rel="stylesheet" type="text/css" />
-<link href="https://cdn.datatables.net/buttons/2.2.2/css/buttons.dataTables.min.css" rel="stylesheet" type="text/css" />
+    <!--datatable css-->
+    <link href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css" rel="stylesheet" type="text/css"/>
+    <!--datatable responsive css-->
+    <link href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.bootstrap.min.css" rel="stylesheet" type="text/css"/>
+    <link href="https://cdn.datatables.net/buttons/2.2.2/css/buttons.dataTables.min.css" rel="stylesheet" type="text/css"/>
 @endsection
 @section('content')
-@component('components.breadcrumb')
-@slot('li_1') Tables @endslot
-@slot('title')Datatables @endslot
-@endcomponent
+    @component('components.breadcrumb')
+        @slot('li_1')
+            Tables
+        @endslot
+        @slot('title')
+            Datatables
+        @endslot
+    @endcomponent
 
-<div class="alert alert-danger" role="alert">
-    This is <strong>Datatable</strong> page in wihch we have used <b>jQuery</b> with cnd link!
-</div>
+    <div class="alert alert-danger" role="alert">
+        This is <strong>Datatable</strong> page in wihch we have used <b>jQuery</b> with cnd link!
+    </div>
 
-<div class="row">
-    <div class="col-lg-12">
-        <div class="card">
-            <div class="card-header">
-                <h5 class="card-title mb-0">Basic Datatables</h5>
-            </div>
-            <div class="card-body">
-                <table id="example" class="table table-bordered dt-responsive nowrap table-striped align-middle" style="width:100%">
-                    <thead>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Basic Datatables</h5>
+                </div>
+                <div class="card-body">
+                    <table id="example" class="table table-bordered dt-responsive nowrap table-striped align-middle" style="width:100%">
+                        <thead>
                         <tr>
                             <th scope="col" style="width: 10px;">
                                 <div class="form-check">
@@ -44,8 +50,8 @@
                             <th>Priority</th>
                             <th>Action</th>
                         </tr>
-                    </thead>
-                    <tbody>
+                        </thead>
+                        <tbody>
                         <tr>
                             <th scope="row">
                                 <div class="form-check">
@@ -508,22 +514,22 @@
                                 </div>
                             </td>
                         </tr>
-                    </tbody>
-                </table>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
-<div class="row">
-    <div class="col-lg-12">
-        <div class="card">
-            <div class="card-header">
-                <h5 class="card-title mb-0">Scroll - Vertical</h5>
-            </div>
-            <div class="card-body">
-                <table id="scroll-vertical" class="table table-bordered dt-responsive nowrap align-middle mdl-data-table" style="width:100%">
-                    <thead>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Scroll - Vertical</h5>
+                </div>
+                <div class="card-body">
+                    <table id="scroll-vertical" class="table table-bordered dt-responsive nowrap align-middle mdl-data-table" style="width:100%">
+                        <thead>
                         <tr>
                             <th>ID</th>
                             <th>Project</th>
@@ -534,8 +540,8 @@
                             <th>Status</th>
                             <th>Priority</th>
                         </tr>
-                    </thead>
-                    <tbody>
+                        </thead>
+                        <tbody>
                         <tr>
                             <td>VLZ-452</td>
                             <td>Symox v1.0.0</td>
@@ -832,22 +838,22 @@
                             <td><span class="badge bg-warning-subtle text-warning">Inprogress</span></td>
                             <td><span class="badge bg-info">Medium</span></td>
                         </tr>
-                    </tbody>
-                </table>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
-<div class="row">
-    <div class="col-lg-12">
-        <div class="card">
-            <div class="card-header">
-                <h5 class="card-title mb-0">Scroll - Horizontal</h5>
-            </div>
-            <div class="card-body">
-                <table id="scroll-horizontal" class="table nowrap align-middle" style="width:100%">
-                    <thead>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Scroll - Horizontal</h5>
+                </div>
+                <div class="card-body">
+                    <table id="scroll-horizontal" class="table nowrap align-middle" style="width:100%">
+                        <thead>
                         <tr>
                             <th scope="col" style="width: 10px;">
                                 <div class="form-check">
@@ -866,8 +872,8 @@
                             <th>Priority</th>
                             <th>Action</th>
                         </tr>
-                    </thead>
-                    <tbody>
+                        </thead>
+                        <tbody>
                         <tr>
                             <th scope="row">
                                 <div class="form-check">
@@ -1330,22 +1336,22 @@
                                 </div>
                             </td>
                         </tr>
-                    </tbody>
-                </table>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
-<div class="row">
-    <div class="col-lg-12">
-        <div class="card">
-            <div class="card-header">
-                <h5 class="card-title mb-0">Alternative Pagination</h5>
-            </div>
-            <div class="card-body">
-                <table id="alternative-pagination" class="table nowrap dt-responsive align-middle table-hover table-bordered" style="width:100%">
-                    <thead>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Alternative Pagination</h5>
+                </div>
+                <div class="card-body">
+                    <table id="alternative-pagination" class="table nowrap dt-responsive align-middle table-hover table-bordered" style="width:100%">
+                        <thead>
                         <tr>
                             <th>SR No.</th>
                             <th>Currency</th>
@@ -1357,8 +1363,8 @@
                             <th>Volume %</th>
                             <th>Action</th>
                         </tr>
-                    </thead>
-                    <tbody>
+                        </thead>
+                        <tbody>
                         <tr>
                             <td>01</td>
                             <td>
@@ -1619,27 +1625,27 @@
                                 <button class="btn btn-sm btn-soft-info">Trade Now</button>
                             </td>
                         </tr>
-                    </tbody>
-                </table>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
 
-<div class="row">
-    <div class="col-lg-12">
-        <div class="card">
-            <div class="card-header d-flex align-items-center">
-                <h5 class="card-title mb-0 flex-grow-1">Add Rows</h5>
-                <div>
-                    <button id="addRow" class="btn btn-primary">Add New Row</button>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-header d-flex align-items-center">
+                    <h5 class="card-title mb-0 flex-grow-1">Add Rows</h5>
+                    <div>
+                        <button id="addRow" class="btn btn-primary">Add New Row</button>
+                    </div>
                 </div>
-            </div>
-            <div class="card-body">
+                <div class="card-body">
 
-                <table id="add-rows" class="table table-nowrap dt-responsive table-bordered display" style="width:100%">
-                    <thead>
+                    <table id="add-rows" class="table table-nowrap dt-responsive table-bordered display" style="width:100%">
+                        <thead>
                         <tr>
                             <th>Column 1</th>
                             <th>Column 2</th>
@@ -1647,22 +1653,22 @@
                             <th>Column 4</th>
                             <th>Column 5</th>
                         </tr>
-                    </thead>
-                </table>
+                        </thead>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
-<div class="row">
-    <div class="col-lg-12">
-        <div class="card">
-            <div class="card-header">
-                <h5 class="card-title mb-0">Fixed Header Datatables</h5>
-            </div>
-            <div class="card-body">
-                <table id="fixed-header" class="table table-bordered dt-responsive nowrap table-striped align-middle" style="width:100%">
-                    <thead>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Fixed Header Datatables</h5>
+                </div>
+                <div class="card-body">
+                    <table id="fixed-header" class="table table-bordered dt-responsive nowrap table-striped align-middle" style="width:100%">
+                        <thead>
                         <tr>
                             <th scope="col" style="width: 10px;">
                                 <div class="form-check">
@@ -1681,8 +1687,8 @@
                             <th>Priority</th>
                             <th>Action</th>
                         </tr>
-                    </thead>
-                    <tbody>
+                        </thead>
+                        <tbody>
                         <tr>
                             <th scope="row">
                                 <div class="form-check">
@@ -2145,22 +2151,22 @@
                                 </div>
                             </td>
                         </tr>
-                    </tbody>
-                </table>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
-<div class="row">
-    <div class="col-lg-12">
-        <div class="card">
-            <div class="card-header">
-                <h5 class="card-title mb-0">Modal Data Datatables</h5>
-            </div>
-            <div class="card-body">
-                <table id="model-datatables" class="table table-bordered nowrap table-striped align-middle" style="width:100%">
-                    <thead>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Modal Data Datatables</h5>
+                </div>
+                <div class="card-body">
+                    <table id="model-datatables" class="table table-bordered nowrap table-striped align-middle" style="width:100%">
+                        <thead>
                         <tr>
                             <th>SR No.</th>
                             <th>ID</th>
@@ -2174,8 +2180,8 @@
                             <th>Priority</th>
                             <th>Action</th>
                         </tr>
-                    </thead>
-                    <tbody>
+                        </thead>
+                        <tbody>
                         <tr>
                             <td>01</td>
                             <td>VLZ-452</td>
@@ -2568,22 +2574,22 @@
                                 </div>
                             </td>
                         </tr>
-                    </tbody>
-                </table>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
-<div class="row">
-    <div class="col-lg-12">
-        <div class="card">
-            <div class="card-header">
-                <h5 class="card-title mb-0">Buttons Datatables</h5>
-            </div>
-            <div class="card-body">
-                <table id="buttons-datatables" class="display table table-bordered" style="width:100%">
-                    <thead>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Buttons Datatables</h5>
+                </div>
+                <div class="card-body">
+                    <table id="buttons-datatables" class="display table table-bordered" style="width:100%">
+                        <thead>
                         <tr>
                             <th>Name</th>
                             <th>Position</th>
@@ -2592,8 +2598,8 @@
                             <th>Start date</th>
                             <th>Salary</th>
                         </tr>
-                    </thead>
-                    <tbody>
+                        </thead>
+                        <tbody>
                         <tr>
                             <td>Tiger Nixon</td>
                             <td>System Architect</td>
@@ -2811,22 +2817,22 @@
                             <td>2009/12/09</td>
                             <td>$85,675</td>
                         </tr>
-                </table>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
 
-<div class="row">
-    <div class="col-lg-12">
-        <div class="card">
-            <div class="card-header">
-                <h5 class="card-title mb-0">Ajax Datatables</h5>
-            </div>
-            <div class="card-body">
-                <table id="ajax-datatables" class="display table table-bordered dt-responsive" style="width:100%">
-                    <thead>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Ajax Datatables</h5>
+                </div>
+                <div class="card-body">
+                    <table id="ajax-datatables" class="display table table-bordered dt-responsive" style="width:100%">
+                        <thead>
                         <tr>
                             <th>Name</th>
                             <th>Position</th>
@@ -2835,8 +2841,8 @@
                             <th>Start date</th>
                             <th>Salary</th>
                         </tr>
-                    </thead>
-                    <tfoot>
+                        </thead>
+                        <tfoot>
                         <tr>
                             <th>Name</th>
                             <th>Position</th>
@@ -2845,30 +2851,30 @@
                             <th>Start date</th>
                             <th>Salary</th>
                         </tr>
-                    </tfoot>
-                </table>
+                        </tfoot>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
 @endsection
 @section('script')
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 
-<script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
-<script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
-<script src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
-<script src="https://cdn.datatables.net/buttons/2.2.2/js/dataTables.buttons.min.js"></script>
-<script src="https://cdn.datatables.net/buttons/2.2.2/js/buttons.print.min.js"></script>
-<script src="https://cdn.datatables.net/buttons/2.2.2/js/buttons.html5.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.2.2/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.2.2/js/buttons.print.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.2.2/js/buttons.html5.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
 
-<script src="{{ URL::asset('build/js/pages/datatables.init.js') }}"></script>
+    <script src="{{ URL::asset('build/js/pages/datatables.init.js') }}"></script>
 
-<script src="{{ URL::asset('build/js/app.js') }}"></script>
+    <script src="{{ URL::asset('build/js/app.js') }}"></script>
 
 @endsection

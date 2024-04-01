@@ -17,6 +17,7 @@ class CreateUsersTable extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
+            $table->string('username');
             $table->string('name');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
@@ -25,8 +26,63 @@ class CreateUsersTable extends Migration
             $table->rememberToken();
             $table->timestamps();
         });
-        User::create(['name' => 'admin','email' => 'mohdhaziziak@gmail.com','password' => Hash::make('12345678'),'email_verified_at'=>'2023-01-01 00:00:00','avatar' => 'avatar-1.jpg','created_at' => now(),]);
+        User::create([
+            'username' => 'admin',
+            'name' => 'Mohd Hazizi',
+            'email' => 'pentadbirmuet@gmail.com',
+            'password' => Hash::make('123456'),
+            'email_verified_at' => '2023-01-01 00:00:00',
+            'avatar' => 'avatar-1.jpg',
+            'created_at' => now(),
+        ]);
+        User::create([
+            'username' => '000000000000',
+            'name' => 'Mohd Hazizi',
+            'email' => 'calonmuet@gmail.com',
+            'password' => Hash::make('000000000000'),
+            'email_verified_at' => '2023-01-01 00:00:00',
+            'avatar' => 'avatar-1.jpg',
+            'created_at' => now(),
+        ]);
+        User::create([
+            'username' => 'modadmin',
+            'name' => 'MOD-ADMIN',
+            'email' => 'modadmin@gmail.com',
+            'password' => Hash::make('123456'),
+            'email_verified_at' => '2023-01-01 00:00:00',
+            'avatar' => 'avatar-1.jpg',
+            'created_at' => now(),
+        ]);
+        User::create([
+            'username' => 'muetadmin',
+            'name' => 'MUET-ADMIN',
+            'email' => 'muetadmin@gmail.com',
+            'password' => Hash::make('123456'),
+            'email_verified_at' => '2023-01-01 00:00:00',
+            'avatar' => 'avatar-1.jpg',
+            'created_at' => now(),
+        ]);
+        User::create([
+            'username' => 'bpcomadmin',
+            'name' => 'BPCOM-ADMIN',
+            'email' => 'bpcomadmin@gmail.com',
+            'password' => Hash::make('123456'),
+            'email_verified_at' => '2023-01-01 00:00:00',
+            'avatar' => 'avatar-1.jpg',
+            'created_at' => now(),
+        ]);
+        User::create([
+            'username' => 'psmadmin',
+            'name' => 'PSM-ADMIN',
+            'email' => 'psmadmin@gmail.com',
+            'password' => Hash::make('123456'),
+            'email_verified_at' => '2023-01-01 00:00:00',
+            'avatar' => 'avatar-1.jpg',
+            'created_at' => now(),
+        ]);
+
     }
+
     /**
      * Reverse the migrations.
      *

@@ -12,12 +12,13 @@ function getChartColorsArray(chartId) {
         var colors = document.getElementById(chartId).getAttribute("data-colors");
         if (colors) {
             colors = JSON.parse(colors);
-            return colors.map(function(value) {
+            return colors.map(function (value) {
                 var newValue = value.replace(" ", "");
                 if (newValue.indexOf(",") === -1) {
                     var color = getComputedStyle(document.documentElement).getPropertyValue(newValue);
                     if (color) return color;
-                    else return newValue;;
+                    else return newValue;
+
                 } else {
                     var val = value.split(',');
                     if (val.length == 2) {
@@ -465,7 +466,7 @@ if (linechartZoomColors) {
             }, {
                 x: new Date('2018-05-30').getTime(),
                 y: 162
-            }, ]
+            },]
         }],
         chart: {
             type: 'area',
@@ -508,7 +509,7 @@ if (linechartZoomColors) {
             showAlways: true,
             labels: {
                 show: true,
-                formatter: function(val) {
+                formatter: function (val) {
                     return (val / 1000000).toFixed(0);
                 },
             },
@@ -526,7 +527,7 @@ if (linechartZoomColors) {
         tooltip: {
             shared: false,
             y: {
-                formatter: function(val) {
+                formatter: function (val) {
                     return (val / 1000000).toFixed(0)
                 }
             }
@@ -543,16 +544,16 @@ var linechartDatalabelColors = getChartColorsArray("line_chart_datalabel");
 if (linechartDatalabelColors) {
     var options = {
         chart: {
-            height: 380,
+            height: 250,
             type: 'line',
             zoom: {
                 enabled: false
             },
             toolbar: {
-                show: false
+                show: true
             }
         },
-        colors: linechartDatalabelColors,
+        colors: ['#68d4cd', '#cff67b'],
         dataLabels: {
             enabled: false,
         },
@@ -560,22 +561,16 @@ if (linechartDatalabelColors) {
             width: [3, 3],
             curve: 'straight'
         },
-        series: [{
-                name: "High - 2018",
-                data: [26, 24, 32, 36, 33, 31, 33]
+        series: [
+            {
+                name: "MUET",
+                data: [15000.00, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
             },
             {
-                name: "Low - 2018",
-                data: [14, 11, 16, 12, 17, 13, 12]
+                name: "MOD",
+                data: [1200.00, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
             }
         ],
-        title: {
-            text: 'Average High & Low Temperature',
-            align: 'left',
-            style: {
-                fontWeight: 500,
-            },
-        },
         grid: {
             row: {
                 colors: ['transparent', 'transparent'], // takes an array which will be repeated on columns
@@ -588,24 +583,18 @@ if (linechartDatalabelColors) {
             size: 6
         },
         xaxis: {
-            categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
+            categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
             title: {
                 text: 'Month'
             }
         },
         yaxis: {
             title: {
-                text: 'Temperature'
-            },
-            min: 5,
-            max: 40
+                text: 'RM'
+            }
         },
         legend: {
-            position: 'top',
-            horizontalAlign: 'right',
-            floating: true,
-            offsetY: -25,
-            offsetX: -5
+            show: true
         },
         responsive: [{
             breakpoint: 600,
@@ -628,7 +617,6 @@ if (linechartDatalabelColors) {
     );
     chart.render();
 }
-
 
 
 //  Dashed line chart
@@ -655,9 +643,9 @@ if (linechartDashedColors) {
             dashArray: [0, 8, 5]
         },
         series: [{
-                name: "Session Duration",
-                data: [45, 52, 38, 24, 33, 26, 21, 20, 6, 8, 15, 10]
-            },
+            name: "Session Duration",
+            data: [45, 52, 38, 24, 33, 26, 21, 20, 6, 8, 15, 10]
+        },
             {
                 name: "Page Views",
                 data: [36, 42, 60, 42, 13, 18, 29, 37, 36, 51, 32, 35]
@@ -689,19 +677,19 @@ if (linechartDashedColors) {
         tooltip: {
             y: [{
                 title: {
-                    formatter: function(val) {
+                    formatter: function (val) {
                         return val + " (mins)"
                     }
                 }
             }, {
                 title: {
-                    formatter: function(val) {
+                    formatter: function (val) {
                         return val + " per session"
                     }
                 }
             }, {
                 title: {
-                    formatter: function(val) {
+                    formatter: function (val) {
                         return val;
                     }
                 }
@@ -855,7 +843,6 @@ if (linechartannotationsColors) {
     var chart = new ApexCharts(document.querySelector("#line_chart_annotations"), options);
     chart.render();
 }
-
 
 
 // Brush Chart Generate series
@@ -1157,7 +1144,7 @@ function getNewSeries(baseval, yrange) {
 }
 
 function resetData() {
-    // Alternatively, you can also reset the data at certain intervals to prevent creating a huge series 
+    // Alternatively, you can also reset the data at certain intervals to prevent creating a huge series
     data = data.slice(data.length - 10, data.length);
 }
 
@@ -1232,7 +1219,6 @@ window.setInterval(function () {
         data: data
     }])
 }, 1000)
-
 
 
 // Syncing Charts

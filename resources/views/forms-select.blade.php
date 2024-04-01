@@ -30,7 +30,7 @@
                         <div class="row">
                             <div class="col-lg-6">
                                 <select class="form-select mb-3" aria-label="Default select example">
-                                    <option selected>Select your Status </option>
+                                    <option selected>Select your Status</option>
                                     <option value="1">Declined Payment</option>
                                     <option value="2">Delivery Error</option>
                                     <option value="3">Wrong Amount</option>
@@ -238,7 +238,7 @@
                                         <p class="text-muted">Set <code>data-choices</code> attribute to set a default
                                             single select.</p>
                                         <select class="form-control" data-choices name="choices-single-default"
-                                            id="choices-single-default">
+                                                id="choices-single-default">
                                             <option value="">This is a placeholder</option>
                                             <option value="Choice 1">Choice 1</option>
                                             <option value="Choice 2">Choice 2</option>
@@ -254,7 +254,7 @@
                                         <p class="text-muted">Set <code>data-choices data-choices-groups</code>
                                             attribute to set option group</p>
                                         <select class="form-control" id="choices-single-groups" data-choices
-                                            data-choices-groups data-placeholder="Select City" name="choices-single-groups">
+                                                data-choices-groups data-placeholder="Select City" name="choices-single-groups">
                                             <option value="">Choose a city</option>
                                             <optgroup label="UK">
                                                 <option value="London">London</option>
@@ -297,8 +297,8 @@
                                         <p class="text-muted">Set <code>data-choices data-choices-search-false
                                                 data-choices-removeItem</code></p>
                                         <select class="form-control" id="choices-single-no-search"
-                                            name="choices-single-no-search" data-choices data-choices-search-false
-                                            data-choices-removeItem>
+                                                name="choices-single-no-search" data-choices data-choices-search-false
+                                                data-choices-removeItem>
                                             <option value="Zero">Zero</option>
                                             <option value="One">One</option>
                                             <option value="Two">Two</option>
@@ -317,7 +317,7 @@
                                         <p class="text-muted">Set <code>data-choices data-choices-sorting-false</code>
                                             attribute.</p>
                                         <select class="form-control" id="choices-single-no-sorting"
-                                            name="choices-single-no-sorting" data-choices data-choices-sorting-false>
+                                                name="choices-single-no-sorting" data-choices data-choices-sorting-false>
                                             <option value="Madrid">Madrid</option>
                                             <option value="Toronto">Toronto</option>
                                             <option value="Vancouver">Vancouver</option>
@@ -354,7 +354,7 @@
                                         <label for="choices-multiple-default" class="form-label text-muted">Default</label>
                                         <p class="text-muted">Set <code>data-choices multiple</code> attribute.</p>
                                         <select class="form-control" id="choices-multiple-default" data-choices
-                                            name="choices-multiple-default" multiple>
+                                                name="choices-multiple-default" multiple>
                                             <option value="Choice 1" selected>Choice 1</option>
                                             <option value="Choice 2">Choice 2</option>
                                             <option value="Choice 3">Choice 3</option>
@@ -370,7 +370,7 @@
                                         <p class="text-muted">Set <code>data-choices data-choices-removeItem
                                                 multiple</code> attribute.</p>
                                         <select class="form-control" id="choices-multiple-remove-button" data-choices
-                                            data-choices-removeItem name="choices-multiple-remove-button" multiple>
+                                                data-choices-removeItem name="choices-multiple-remove-button" multiple>
                                             <option value="Choice 1" selected>Choice 1</option>
                                             <option value="Choice 2">Choice 2</option>
                                             <option value="Choice 3">Choice 3</option>
@@ -386,8 +386,8 @@
                                         <p class="text-muted">Set <code>data-choices
                                                 data-choices-multiple-groups="true" multiple</code> attribute. </p>
                                         <select class="form-control" id="choices-multiple-groups"
-                                            name="choices-multiple-groups" data-choices data-choices-multiple-groups="true"
-                                            multiple>
+                                                name="choices-multiple-groups" data-choices data-choices-multiple-groups="true"
+                                                multiple>
                                             <option value="">Choose a city</option>
                                             <optgroup label="UK">
                                                 <option value="London">London</option>
@@ -440,7 +440,7 @@
                                                 Limit" data-choices-removeItem</code>
                                             attribute.</p>
                                         <input class="form-control" id="choices-text-remove-button" data-choices
-                                            data-choices-limit="3" data-choices-removeItem type="text" value="Task-1" />
+                                               data-choices-limit="3" data-choices-removeItem type="text" value="Task-1"/>
                                     </div>
                                 </div>
                                 <!-- end col -->
@@ -452,7 +452,7 @@
                                         <p class="text-muted">Set <code>data-choices
                                                 data-choices-text-unique-true</code> attribute.</p>
                                         <input class="form-control" id="choices-text-unique-values" data-choices
-                                            data-choices-text-unique-true type="text" value="Project-A, Project-B" />
+                                               data-choices-text-unique-true type="text" value="Project-A, Project-B"/>
                                     </div>
                                 </div>
                                 <!-- end col -->
@@ -464,8 +464,8 @@
                                 <p class="text-muted">Set <code>data-choices data-choices-text-disabled-true</code>
                                     attribute.</p>
                                 <input class="form-control" id="choices-text-disabled" data-choices
-                                    data-choices-text-disabled-true type="text"
-                                    value="josh@joshuajohnson.co.uk, joe@bloggs.co.uk" />
+                                       data-choices-text-disabled-true type="text"
+                                       value="josh@joshuajohnson.co.uk, joe@bloggs.co.uk"/>
                             </div>
                         </div>
                     </div>

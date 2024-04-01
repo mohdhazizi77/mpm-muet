@@ -30,7 +30,7 @@
     height: $header-height;
     padding: 0 $grid-gutter-width 0 calc(#{$grid-gutter-width} * 0.5)
     /*rtl: 0 0 0 calc(#{$grid-gutter-width} * 0.5) */
-    ;
+;
 
     @media (max-width: 767.98px) {
         padding: 0 calc(#{$grid-gutter-width} * 0.5) 0 calc(#{$grid-gutter-width} * 0.5);

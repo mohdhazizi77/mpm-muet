@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -24,19 +25,31 @@ class HomeController extends Controller
     /**
      * Show the application dashboard.
      *
-     * @return \Illuminate\Contracts\Support\Renderable
+     * @return Renderable
      */
     public function index(Request $request)
     {
-        if (view()->exists($request->path())) {
-            return view($request->path());
+        if (Auth::check()) {
+            if (Auth::user()->hasRole('PENTADBIR')) {
+                return view('admin.dashboard');
+            } elseif (Auth::user()->hasRole('CALON')) {
+                return view('candidates.index');
+            }
         }
+//        if (view()->exists($request->path())) {
+//            return view($request->path());
+//        }
         return abort(404);
     }
 
-    public function root()
+    public function root_candidate()
     {
-        return view('index');
+        return view('auth.candidate-login');
+    }
+
+    public function root_admin()
+    {
+        return view('candidates.index');
     }
 
     /*Language Translation*/
@@ -69,7 +82,7 @@ class HomeController extends Controller
             $avatarName = time() . '.' . $avatar->getClientOriginalExtension();
             $avatarPath = public_path('/images/');
             $avatar->move($avatarPath, $avatarName);
-            $user->avatar =  $avatarName;
+            $user->avatar = $avatarName;
         }
 
         $user->update();

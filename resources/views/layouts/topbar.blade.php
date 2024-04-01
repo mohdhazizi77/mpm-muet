@@ -12,7 +12,6 @@
                             <img src="{{ URL::asset('build/images/logo-dark.png') }}" alt="" height="17">
                         </span>
                     </a>
-
                     <a href="index" class="logo logo-light">
                         <span class="logo-sm">
                             <img src="{{ URL::asset('build/images/logo-sm.png') }}" alt="" height="22">
@@ -30,7 +29,6 @@
                         <span></span>
                     </span>
                 </button>
-
 
                 <!-- App Search-->
                 <form class="app-search d-none d-md-block">
@@ -140,29 +138,29 @@
                 <div class="dropdown ms-1 topbar-head-dropdown header-item">
                     <button type="button" class="btn btn-icon btn-topbar btn-ghost-secondary rounded-circle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         @switch(Session::get('lang'))
-                        @case('ru')
-                        <img src="{{ URL::asset('build/images/flags/russia.svg') }}" class=" rounded" alt="Header Language" height="20">
-                        @break
-                        @case('it')
-                        <img src="{{ URL::asset('build/images/flags/italy.svg') }}" class=" rounded" alt="Header Language" height="20">
-                        @break
-                        @case('sp')
-                        <img src="{{ URL::asset('build/images/flags/spain.svg') }}" class=" rounded" alt="Header Language" height="20">
-                        @break
-                        @case('ch')
-                        <img src="{{ URL::asset('build/images/flags/china.svg') }}" class=" rounded" alt="Header Language" height="20">
-                        @break
-                        @case('fr')
-                        <img src="{{ URL::asset('build/images/flags/french.svg') }}" class=" rounded" alt="Header Language" height="20">
-                        @break
-                        @case('gr')
-                        <img src="{{ URL::asset('build/images/flags/germany.svg') }}" class=" rounded" alt="Header Language" height="20">
-                        @break
-                        @case('ae')
-                        <img src="{{ URL::asset('build/images/flags/ae.svg') }}" class=" rounded" alt="Header Language" height="20">
-                        @break
-                        @default
-                        <img src="{{ URL::asset('build/images/flags/us.svg') }}" class=" rounded" alt="Header Language" height="20">
+                            @case('ru')
+                                <img src="{{ URL::asset('build/images/flags/russia.svg') }}" class="rounded" alt="Header Language" height="20">
+                                @break
+                            @case('it')
+                                <img src="{{ URL::asset('build/images/flags/italy.svg') }}" class="rounded" alt="Header Language" height="20">
+                                @break
+                            @case('sp')
+                                <img src="{{ URL::asset('build/images/flags/spain.svg') }}" class="rounded" alt="Header Language" height="20">
+                                @break
+                            @case('ch')
+                                <img src="{{ URL::asset('build/images/flags/china.svg') }}" class="rounded" alt="Header Language" height="20">
+                                @break
+                            @case('fr')
+                                <img src="{{ URL::asset('build/images/flags/french.svg') }}" class="rounded" alt="Header Language" height="20">
+                                @break
+                            @case('gr')
+                                <img src="{{ URL::asset('build/images/flags/germany.svg') }}" class="rounded" alt="Header Language" height="20">
+                                @break
+                            @case('ae')
+                                <img src="{{ URL::asset('build/images/flags/ae.svg') }}" class="rounded" alt="Header Language" height="20">
+                                @break
+                            @default
+                                <img src="{{ URL::asset('build/images/flags/us.svg') }}" class="rounded" alt="Header Language" height="20">
                         @endswitch
                     </button>
                     <div class="dropdown-menu dropdown-menu-end">
@@ -208,7 +206,7 @@
                             <span class="align-middle">français</span>
                         </a>
                         <!-- item-->
-                        <a href="{{ url('index/ae') }}" class="dropdown-item notify-item language" data-lang="ar" title="Arabic">
+                        <a href="{{ url('index/ae') }}" class="dropdown-item notify-item language" data-lang="ae" title="Arabic">
                             <img src="{{URL::asset('build/images/flags/ae.svg')}}" alt="user-image" class="me-2 rounded" height="18">
                             <span class="align-middle">Arabic</span>
                         </a>
@@ -290,7 +288,7 @@
                                     <h6 class="m-0 fs-16 fw-semibold"> My Cart</h6>
                                 </div>
                                 <div class="col-auto">
-                                    <span class="badge bg-warning-subtle text-warning fs-13"><span class="cartitem-badge">7</span>
+                                    <span class="badge bg-info-subtle text-info fs-13"><span class="cartitem-badge">7</span>
                                         items</span>
                                 </div>
                             </div>
@@ -444,7 +442,7 @@
                     </button>
                     <div class="dropdown-menu dropdown-menu-lg dropdown-menu-end p-0" aria-labelledby="page-header-notifications-dropdown">
 
-                        <div class="dropdown-head bg-primary bg-pattern rounded-top">
+                        <div class="dropdown-head bg-secondary bg-pattern rounded-top">
                             <div class="p-3">
                                 <div class="row align-items-center">
                                     <div class="col">
@@ -534,7 +532,7 @@
 
                                     <div class="text-reset notification-item d-block dropdown-item position-relative">
                                         <div class="d-flex">
-                                            <div class="avatar-xs me-3">
+                                            <div class="avatar-xs me-3 flex-shrink-0">
                                                 <span class="avatar-title bg-danger-subtle text-danger rounded-circle fs-16">
                                                     <i class='bx bx-message-square-dots'></i>
                                                 </span>
@@ -694,7 +692,10 @@
 
                             <div class="notification-actions" id="notification-actions">
                                 <div class="d-flex text-muted justify-content-center">
-                                    Select <div id="select-content" class="text-body fw-semibold px-1">0</div> Result <button type="button" class="btn btn-link link-danger p-0 ms-3" data-bs-toggle="modal" data-bs-target="#removeNotificationModal">Remove</button>
+                                    Select
+                                    <div id="select-content" class="text-body fw-semibold px-1">0</div>
+                                    Result
+                                    <button type="button" class="btn btn-link link-danger p-0 ms-3" data-bs-toggle="modal" data-bs-target="#removeNotificationModal">Remove</button>
                                 </div>
                             </div>
                         </div>
@@ -707,7 +708,7 @@
                             <img class="rounded-circle header-profile-user" src="@if (Auth::user()->avatar != ''){{ URL::asset('images/' . Auth::user()->avatar) }}@else{{ URL::asset('build/images/users/avatar-1.jpg') }}@endif" alt="Header Avatar">
                             <span class="text-start ms-xl-2">
                                 <span class="d-none d-xl-inline-block ms-1 fw-semibold user-name-text">{{Auth::user()->name}}</span>
-                                <span class="d-none d-xl-block ms-1 fs-13 user-name-sub-text">Founder</span>
+                                <span class="d-none d-xl-block ms-1 fs-12 user-name-sub-text">Founder</span>
                             </span>
                         </span>
                     </button>
@@ -720,9 +721,11 @@
                         <a class="dropdown-item" href="pages-faqs"><i class="mdi mdi-lifebuoy text-muted fs-16 align-middle me-1"></i> <span class="align-middle">Help</span></a>
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="pages-profile"><i class="mdi mdi-wallet text-muted fs-16 align-middle me-1"></i> <span class="align-middle">Balance : <b>$5971.67</b></span></a>
-                        <a class="dropdown-item" href="pages-profile-settings"><span class="badge bg-success-subtle text-success mt-1 float-end">New</span><i class="mdi mdi-cog-outline text-muted fs-16 align-middle me-1"></i> <span class="align-middle">Settings</span></a>
+                        <a class="dropdown-item" href="pages-profile-settings"><span class="badge bg-success-subtle text-success mt-1 float-end">New</span><i class="mdi mdi-cog-outline text-muted fs-16 align-middle me-1"></i> <span
+                                class="align-middle">Settings</span></a>
                         <a class="dropdown-item" href="auth-lockscreen-basic"><i class="mdi mdi-lock text-muted fs-16 align-middle me-1"></i> <span class="align-middle">Lock screen</span></a>
-                        <a class="dropdown-item " href="javascript:void();" onclick="event.preventDefault(); document.getElementById('logout-form').submit();"><i class="bx bx-power-off font-size-16 align-middle me-1"></i> <span key="t-logout">@lang('translation.logout')</span></a>
+                        <a class="dropdown-item " href="javascript:void();" onclick="event.preventDefault(); document.getElementById('logout-form').submit();"><i class="bx bx-power-off font-size-16 align-middle me-1"></i> <span
+                                key="t-logout">@lang('translation.logout')</span></a>
                         <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                             @csrf
                         </form>
@@ -733,6 +736,7 @@
     </div>
 </header>
 
+
 <!-- removeNotificationModal -->
 <div id="removeNotificationModal" class="modal fade zoomIn" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
@@ -742,9 +746,9 @@
             </div>
             <div class="modal-body">
                 <div class="mt-2 text-center">
-                    <lord-icon src="https://cdn.lordicon.com/gsqxdxog.json" trigger="loop" colors="primary:#f7b84b,secondary:#f06548" style="width:100px;height:100px"></lord-icon>
+                    <lord-icon src="https://cdn.lordicon.com/gsqxdxog.json" trigger="loop" colors="primary:#495057,secondary:#f06548" style="width:100px;height:100px"></lord-icon>
                     <div class="mt-4 pt-2 fs-15 mx-4 mx-sm-5">
-                        <h4>Are you sure ?</h4>
+                        <h4 class="fw-bold">Are you sure ?</h4>
                         <p class="text-muted mx-4 mb-0">Are you sure you want to remove this Notification ?</p>
                     </div>
                 </div>

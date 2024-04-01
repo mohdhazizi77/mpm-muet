@@ -1,6 +1,6 @@
 //
 // _vertical.scss
-// 
+//
 
 .app-content {
     margin-left: var(--#{$prefix}vertical-menu-width);
@@ -294,7 +294,7 @@
         .row {
             margin: 0;
 
-            >* {
+            > * {
                 width: 100%;
                 padding: 0;
             }
@@ -610,12 +610,12 @@
 
                     &:hover {
 
-                        >a.menu-link {
+                        > a.menu-link {
                             position: relative;
                             width: calc(200px + var(--#{$prefix}vertical-menu-width-sm));
                             transition: none;
                             background: var(--#{$prefix}vertical-menu-bg);
-                            
+
                             .icon-dual {
                                 fill: rgba($white, 0.16);
                             }
@@ -638,7 +638,7 @@
                             }
                         }
 
-                        >.menu-dropdown {
+                        > .menu-dropdown {
                             display: block;
                             left: var(--#{$prefix}vertical-menu-width-sm);
                             position: absolute;
@@ -657,7 +657,7 @@
 
                     .nav-item {
                         &:hover {
-                            >.nav-link {
+                            > .nav-link {
                                 color: var(--#{$prefix}vertical-menu-item-hover-color);
 
                                 &:after {
@@ -934,11 +934,10 @@
     }
 }
 
-@if $sidebar-gradient-mode { 
-    
+@if $sidebar-gradient-mode {
+
     .bg-vertical-gradient {
-        background: $vertical-menu-bg-gradient;
-        ;
+        background: $vertical-menu-bg-gradient;;
     }
 
     .bg-vertical-gradient-2 {
