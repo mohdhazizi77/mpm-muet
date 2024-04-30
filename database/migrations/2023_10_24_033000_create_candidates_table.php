@@ -15,7 +15,7 @@ return new class extends Migration {
             $table->integer('user_id');
             $table->string('index_number');
             $table->integer('muet_center_id');
-            $table->integer('is_deleted');
+            $table->integer('is_deleted')->default(0);
             $table->timestamps();
         });
     }
