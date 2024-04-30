@@ -12,12 +12,10 @@ return new class extends Migration {
     {
         Schema::create('candidates', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained('users');
-            $table->integer('year');
-            $table->integer('session');
-            $table->string('id_number');
-            $table->string('reg_number');
-            $table->string('name');
+            $table->integer('user_id');
+            $table->string('index_number');
+            $table->integer('muet_center_id');
+            $table->integer('is_deleted');
             $table->timestamps();
         });
     }
