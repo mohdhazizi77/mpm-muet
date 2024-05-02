@@ -251,38 +251,38 @@
             </div><!-- /.modal-dialog -->
         </div><!-- /.modal -->
 
-        @endsection
-        @section('script')
-            <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+@endsection
+@section('script')
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
-            <script>
-
-
-                $(document).ready(function () {
-
-                    $('#button-export-xlsx').on('click', function (e) {
-
-                        e.preventDefault();
-                        window.location.href = 'pos-new/export-xlsx';
-
-                    })
-
-                    $("#basicDate").flatpickr(
-                        {
-                            mode: "range",
-                            dateFormat: "d-m-Y",
-                        }
-                    );
-                });
+    <script>
 
 
-            </script>
+        $(document).ready(function () {
 
-            <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+            $('#button-export-xlsx').on('click', function (e) {
 
-            <script src="{{ URL::asset('build/libs/datatables/datatables.min.js') }}"></script>
-            <script src="{{ URL::asset('build/libs/jquery-datatables-checkboxes-1.2.12/js/dataTables.checkboxes.js') }}"></script>
-            <script src="{{ asset('build/js/datatables/pos-new.js') }}"></script>
+                e.preventDefault();
+                window.location.href = 'pos-new/export-xlsx';
+
+            })
+
+            $("#basicDate").flatpickr(
+                {
+                    mode: "range",
+                    dateFormat: "d-m-Y",
+                }
+            );
+        });
+
+
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+    <script src="{{ URL::asset('build/libs/datatables/datatables.min.js') }}"></script>
+    <script src="{{ URL::asset('build/libs/jquery-datatables-checkboxes-1.2.12/js/dataTables.checkboxes.js') }}"></script>
+    <script src="{{ asset('build/js/datatables/pos-new.js') }}"></script>
 
 @endsection
 
