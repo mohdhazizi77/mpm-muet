@@ -7,5 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class ExamSession extends Model
 {
-    use HasFactory;
+    protected $fillable = ['name','year', 'exam_type', 'is_deleted'];
+
+    // public function certificate()
+    // {
+    //     return $this->belongsTo('App\Models\certificate');
+    // }
 }

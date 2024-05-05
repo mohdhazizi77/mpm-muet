@@ -19,11 +19,14 @@ class User extends Authenticatable
      * @var string[]
      */
     protected $fillable = [
-        'username',
         'name',
         'email',
         'password',
+        'identity_card_number',
+        'phone_num',
+        'address',
         'avatar',
+        'email_verified_at'
     ];
 
     /**
@@ -44,4 +47,19 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function clearNRIC($nric = ''){
+
+        if (strpos($nric, '-') !== false) {
+            // If it does, remove the hyphen
+            $nric = str_replace('-', '', $nric);
+        }
+
+        return $nric;
+    }
+
+    public function certificate()
+    {
+        return $this->hasMany('App\Models\Certificate','user_id');
+    }
 }
