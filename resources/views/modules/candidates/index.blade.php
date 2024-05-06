@@ -57,7 +57,7 @@
                                 <div class="py-4">
                                     {{--                                <h2 class="display-8 coming-soon-text text-success">TEST LIST</h2>--}}
                                     <!-- Striped Rows -->
-                                    <table class="table table-striped text-center">
+                                    <table id="candidatesTable" class="table table-striped text-center" >
                                         <thead>
                                         <tr class="text-center bg-dark-subtle">
                                             <th scope="col">NO.</th>
@@ -67,7 +67,7 @@
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        <tr class="align-middle">
+                                        {{-- <tr class="align-middle">
                                             <th scope="row">1</th>
                                             <td>SESSION 3, 2023</td>
                                             <td>BAND 3.5</td>
@@ -83,8 +83,8 @@
                                                 <a href="{{ route('candidates.muet-status') }}" class="btn btn-soft-secondary waves-effect text-black mx-2"> <i class="  ri-list-check-2 label-icon align-middle fs-16 me-2"></i>
                                                     CERTIFICATE STATUS</a>
                                             </td>
-                                        </tr>
-                                        @foreach ($certificates as $key => $certificate)
+                                        </tr> --}}
+                                        {{-- @foreach ($certificates as $key => $certificate)
                                             <tr class="align-middle">
                                                 <th scope="row">{{ $key + 1 }}</th>
                                                 <td>{{ $certificate->exam_session_name }}</td>
@@ -100,7 +100,7 @@
                                                     </button>
                                                 </td>
                                             </tr>
-                                        @endforeach
+                                        @endforeach --}}
                                         </tbody>
                                     </table>
 
@@ -121,7 +121,7 @@
                                                         </div>
                                                         <div class="clearfix">
                                                             <button type="button" class="btn btn-soft-dark waves-effect waves-light" data-bs-dismiss="modal">Cancel</button>
-                                                            <a href="{{ Route('candidates.printpdf') }}" class="btn btn-soft-success waves-effect waves-light w-md float-end" data-text="Verify"><span>Verify</span></a>
+                                                            <a href="{{ Route('candidates.printpdf', ['id' => 41]) }}" class="btn btn-soft-success waves-effect waves-light w-md float-end" data-text="Verify"><span>Verify</span></a>
                                                         </div>
                                                     </form>
                                                 </div>
