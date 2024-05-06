@@ -12,6 +12,7 @@
     @include('layouts.head-css')
     @vite(['resources/js/app.js'])
     {{-- @vite(['resources/sass/app.scss', 'resources/js/app.js']) --}}
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
 </head>
 
