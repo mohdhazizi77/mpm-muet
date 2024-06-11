@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('year');
             $table->string('exam_type');
+            $table->integer('is_deleted')->default(0);
             $table->timestamps();
         });
     }

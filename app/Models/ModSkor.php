@@ -5,7 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class TestComponentsScore extends Model
+class ModSkor extends Model
 {
     use HasFactory;
+    protected $table = 'mod_skor';
+
 }

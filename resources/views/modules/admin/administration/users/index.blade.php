@@ -12,7 +12,8 @@
     <link rel="stylesheet" href="{{ URL::asset('build/libs/@simonwep/pickr/themes/classic.min.css') }}"/> <!-- 'classic' theme -->
     <link rel="stylesheet" href="{{ URL::asset('build/libs/@simonwep/pickr/themes/monolith.min.css') }}"/> <!-- 'monolith' theme -->
     <link rel="stylesheet" href="{{ URL::asset('build/libs/@simonwep/pickr/themes/nano.min.css') }}"/> <!-- 'nano' theme -->
-@endsection
+
+    @endsection
 @section('content')
     @component('components.breadcrumb')
         @slot('li_1')
@@ -23,34 +24,42 @@
         @endslot
     @endcomponent
 
+    @if (session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+    @endif
     <div class="row py-4">
         <div class="col-lg-12">
             <div class="card rounded-0 bg-white mx-n4 mt-n4 border-top">
                 <div class="px-4">
                     <div class="row">
                         <div class="col-xxl-12 align-self-center">
-                            <div class="float-start my-3">
-                                {{--                                <button id="button-export-xlsx" type="button" class="btn btn-soft-secondary waves-effect float-end mx-1">EXPORT XLSX</button>--}}
-                            </div>
-                            <div class="float-end my-3">
-                                <a href="{{ route('users.create') }}" class="btn btn-soft-success waves-effect float-end">NEW USER</a>
+                            <div class="row mt-3">
+                                <div class="float-start">
+                                    {{--                                <button id="button-export-xlsx" type="button" class="btn btn-soft-secondary waves-effect float-end mx-1">EXPORT XLSX</button>--}}
+                                </div>
+                                <div class="float-end">
+                                    <a href="{{ route('users.create') }}" class="btn btn-soft-success waves-effect float-end">NEW USER</a>
+                                </div>
                             </div>
 
-                            <div class="py-4">
+                            <div class="py-2">
 
-                                <table id="dt-pos" class="table w-100 table-striped text-center align-middle">
+                                <table id="dt-user" class="table table-striped text-center">
                                     <thead>
                                     <tr class="text-center bg-dark-subtle">
-                                        <th scope="col">NO.</th>
-                                        <th scope="col">ROLE</th>
-                                        <th scope="col">NAME</th>
-                                        <th scope="col">EMAIL</th>
-                                        <th scope="col">PHONE NUMBER</th>
-                                        <th scope="col">ACTION</th>
+                                        <th>NO.</th>
+                                        <th>NAME</th>
+                                        <th>EMAIL</th>
+                                        <th>PHONE NUMBER</th>
+                                        <th>ROLE</th>
+                                        <th>STATUS</th>
+                                        <th>ACTION</th>
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr>
+                                    {{-- <tr>
                                         <td>1</td>
                                         <td>ADMINISTRATOR</td>
                                         <td>MOHD HAZIZI</td>
@@ -62,8 +71,8 @@
                                                 EDIT
                                             </button>
                                         </td>
-                                    </tr>
-                                    <tr>
+                                    </tr> --}}
+                                    {{-- <tr>
                                         <td>2</td>
                                         <td>PSM</td>
                                         <td>PSM_ADMIN</td>
@@ -97,8 +106,8 @@
                                             </button>
                                         </td>
                                     </tr>
-                                    <tr>
-                                        <td>4</td>
+                                    <tr> --}}
+                                        {{-- <td>4</td>
                                         <td>KEWANGAN</td>
                                         <td>KEWANGAN_ADMIN</td>
                                         <td>adminkewangan@gmail.com</td>
@@ -113,7 +122,7 @@
                                                 DELETE
                                             </button>
                                         </td>
-                                    </tr>
+                                    </tr> --}}
                                     </tbody>
                                 </table>
 
@@ -131,7 +140,7 @@
 
         @endsection
         @section('script')
-            <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+            {{-- <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
             <script>
 
@@ -159,7 +168,7 @@
             <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
             <script src="{{ URL::asset('build/libs/datatables/datatables.min.js') }}"></script>
-            <script src="{{ URL::asset('build/libs/jquery-datatables-checkboxes-1.2.12/js/dataTables.checkboxes.js') }}"></script>
+            <script src="{{ URL::asset('build/libs/jquery-datatables-checkboxes-1.2.12/js/dataTables.checkboxes.js') }}"></script> --}}
 
 @endsection
 

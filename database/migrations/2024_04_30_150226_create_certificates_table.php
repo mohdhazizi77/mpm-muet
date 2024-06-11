@@ -13,13 +13,20 @@ return new class extends Migration
     {
         Schema::create('certificates', function (Blueprint $table) {
             $table->id();
+            $table->integer('user_id');
+            $table->string('index_number')->unique();
             $table->string('cid')->nullable();
-            $table->integer('candidate_id');
             $table->integer('exam_session_id');
             $table->text('result');
             $table->timestamp('issue_date')->nullable();
             $table->timestamp('expire_date')->nullable();
+            $table->integer('muet_center_id')->nullable();
             $table->timestamps();
+
+            $table->index('index_number');
+            $table->index('exam_session_id');
+            $table->index('muet_center_id');
+
         });
     }
 

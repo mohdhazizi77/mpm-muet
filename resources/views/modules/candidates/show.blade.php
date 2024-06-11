@@ -119,7 +119,7 @@
                                                         <input type="text" class="form-control" id="angkaGiliran">
                                                     </div>
                                                     <div class="text-end">
-                                                        <a href="{{ Route('candidates.show', Crypt::encrypt(2023) ) }}" class="btn btn-success btn-animation waves-effect waves-light" data-text="Verify"><span>Verify</span></a>
+                                                        <a href="{{ Route('candidate.show', Crypt::encrypt(2023) ) }}" class="btn btn-success btn-animation waves-effect waves-light" data-text="Verify"><span>Verify</span></a>
                                                     </div>
                                                 </form>
                                             </div>

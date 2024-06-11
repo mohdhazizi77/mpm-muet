@@ -29,17 +29,20 @@ class HomeController extends Controller
      */
     public function index(Request $request)
     {
+        dd(Auth::user(),Auth::check());
         if (Auth::check()) {
-            if (Auth::user()->hasRole('PENTADBIR')) {
-                return view('admin.dashboard');
-            } elseif (Auth::user()->hasRole('CALON')) {
-                return view('candidates.index');
+            $user = Auth::user();
+
+            if ($user->hasRole('PENTADBIR')) {
+                return redirect()->route('admin.index');
+            } elseif ($user->hasRole('CALON')) {
+                return redirect()->route('candidate.index');
             }
+        } else {
+            return redirect()->route('candidate.login');
         }
-//        if (view()->exists($request->path())) {
-//            return view($request->path());
-//        }
-        return abort(404);
+
+        return view('auth.candidate-login');
     }
 
     public function root_candidate()
@@ -49,7 +52,7 @@ class HomeController extends Controller
 
     public function root_admin()
     {
-        return view('candidates.index');
+        return view('auth.admin-login');
     }
 
     /*Language Translation*/
@@ -138,5 +141,10 @@ class HomeController extends Controller
                 ], 200); // Status code here
             }
         }
+    }
+
+    public function template(){
+        // return view('layouts.master');
+        return view('templates.index');
     }
 }

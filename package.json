@@ -32,7 +32,7 @@
         "@tarekraafat/autocomplete.js": "^10.2.7",
         "aos": "^2.3.4",
         "apexcharts": "^3.41.0",
-        "bootstrap": "5.3.0",
+        "bootstrap": "^5.3.0",
         "card": "^2.5.4",
         "chart.js": "4.3.0",
         "choices.js": "^10.2.0",
@@ -76,7 +76,7 @@
         "shepherd.js": "^11.1.1",
         "simplebar": "^6.2.5",
         "sortablejs": "^1.15.0",
-        "sweetalert2": "^11.6.13",
+        "sweetalert2": "^11.10.8",
         "swiper": "^9.3.2",
         "toastify-js": "^1.12.0",
         "wnumb": "^1.2.0"

@@ -25,7 +25,7 @@
                                     <h1 class="display-1 fw-medium">403</h1>
                                     <h3 class="text-uppercase">Harap Maaf!</h3>
                                     <p class="text-muted mb-4">Anda tidak mempunyai kebenaran untuk melihat sumber atau halaman ini menggunakan akaun anda.</p>
-                                    <a href="/candidate/login" class="btn btn-success"></i>Log Masuk</a>
+                                    <a href="/login" class="btn btn-success"></i>Log Masuk</a>
                                 </div>
                             </div>
                         </div>

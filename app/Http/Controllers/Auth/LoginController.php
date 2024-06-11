@@ -25,6 +25,29 @@ class LoginController extends Controller
 
 //    use AuthenticatesUsers;
 
+    public function showLoginForm()
+    {
+        // dd(Auth::User());
+        if (Auth::check()) {
+            return $this->redirectBasedOnRole();
+        }
+
+        return view('auth.candidate-login');
+    }
+
+    protected function redirectBasedOnRole()
+    {
+        $user = Auth::user();
+
+        if ($user->hasRole('PENTADBIR')) {
+            return redirect()->route('admin.index');
+        } elseif ($user->hasRole('CALON')) {
+            return redirect()->route('candidate.index');
+        }
+
+        // You can add more role checks here if needed.
+    }
+
     public function showAdminLoginForm()
     {
         return view('auth.admin-login', ['url' => 'admin/login']);
@@ -43,10 +66,10 @@ class LoginController extends Controller
         ]);
 
         if (Auth::attempt(['username' => $request->username, 'password' => $request->password])) {
-            return redirect()->intended('/admin/dashboard');
+            return redirect()->intended('/admin');
         }
 
-        return back()->withInput($request->only('username'))->withErrors(['username' => 'Invalid credentials']);
+        return back()->withInput($request->only('username'))->withErrors(['username' => '  123']);
     }
 
     public function candidateLogin(Request $request)
@@ -56,11 +79,16 @@ class LoginController extends Controller
             'password' => 'required|min:6',
         ]);
 
-        if (Auth::attempt(['username' => $request->username, 'password' => $request->password])) {
-            return redirect()->intended('/candidates/index');
-        }
+        dd("heloo");
 
-        return back()->withInput($request->only('username'))->withErrors(['username' => 'Invalid credentials']);
+        if (Auth::attempt(['username' => $request->username, 'password' => $request->password])) {
+            return $this->redirectBasedOnRole();
+        }
+        // if (Auth::attempt(['username' => $request->username, 'password' => $request->password])) {
+        //     return redirect()->intended('/candidate');
+        // }
+
+        return back()->withInput($request->only('username'))->withErrors(['username' => 'Invalid credentials 456']);
     }
 
     public function candidateLogout(Request $request)

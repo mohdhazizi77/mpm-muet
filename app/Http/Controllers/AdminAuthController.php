@@ -23,7 +23,7 @@ class AdminAuthController extends Controller
             return redirect(route('admin.index'));
         }
 
-        return back()->withInput($request->only('email'))->withErrors(['email' => 'Invalid credentials']);
+        return back()->withInput($request->only('email'))->withErrors(['email' => 'Invalid credentials fgh']);
     }
 
     public function logout()

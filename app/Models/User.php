@@ -62,4 +62,53 @@ class User extends Authenticatable
     {
         return $this->hasMany('App\Models\Certificate','user_id');
     }
+
+    public static function getStates($id = '')
+    {
+        $states = [
+            1 => "JOHOR",
+            2 => "KEDAH",
+            3 => "KELANTAN",
+            4 => "MELAKA",
+            5 => "NEGERI SEMBILAN",
+            6 => "PAHANG",
+            7 => "PERAK",
+            8 => "PERLIS",
+            9 => "PULAU PINANG",
+            10 => "SABAH",
+            11 => "SARAWAK",
+            12 => "SELANGOR",
+            13 => "TERENGGANU",
+            14 => "WILAYAH PERSEKUTUAN KUALA LUMPUR",
+            15 => "WILAYAH PERSEKUTUAN LABUAN",
+            16 => "WILAYAH PERSEKUTUAN PUTRAJAYA"
+        ];
+
+        return empty($id) ? $states : $states[$id];
+    }
+
+    public static function getKeyStates($state = '')
+    {
+        $states = [
+            1 => "JOHOR",
+            2 => "KEDAH",
+            3 => "KELANTAN",
+            4 => "MELAKA",
+            5 => "NEGERI SEMBILAN",
+            6 => "PAHANG",
+            7 => "PERAK",
+            8 => "PERLIS",
+            9 => "PULAU PINANG",
+            10 => "SABAH",
+            11 => "SARAWAK",
+            12 => "SELANGOR",
+            13 => "TERENGGANU",
+            14 => "WILAYAH PERSEKUTUAN KUALA LUMPUR",
+            15 => "WILAYAH PERSEKUTUAN LABUAN",
+            16 => "WILAYAH PERSEKUTUAN PUTRAJAYA"
+        ];
+
+        return !empty($state) ? array_search($state, $states) : '';
+    }
+
 }

@@ -11,7 +11,7 @@ class ReportTransactionController extends Controller
     {
         $user = Auth::User() ? Auth::User() : abort(403);
 
-        return view('admin.report.transaction.index',
+        return view('modules.admin.report.transaction.index',
             compact([
                 'user',
             ]));

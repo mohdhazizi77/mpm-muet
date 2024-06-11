@@ -29,13 +29,13 @@
                 <div class="px-4">
                     <div class="row">
                         <div class="col-xxl-12 align-self-center">
-                            <div class="float-start my-3">
+                            {{-- <div class="float-start my-3">
                                 <button id="button-export-xlsx" type="button" class="btn btn-soft-secondary waves-effect float-end mx-1">EXPORT XLSX</button>
-                            </div>
+                            </div> --}}
 
-                            <div class="py-4">
+                            <div class="py-2">
 
-                                <table id="dt-pos" class="table w-100 table-striped text-center align-middle">
+                                <table id="dt-auditLog" class="table w-100 table-striped text-center align-middle">
                                     <thead>
                                     <tr class="text-center bg-dark-subtle">
                                         <th scope="col">NO.</th>
@@ -45,57 +45,6 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr>
-                                        <td>1</td>
-                                        <td>
-                                            ADMINISTRATOR
-                                            <p>ID: 1</p>
-                                        </td>
-                                        <td>Create
-                                            <p>19/01/2024 11:38</p>
-                                        </td>
-                                        <td class="text-start">
-                                            App\Models\Users ID: 2
-                                            <p class="pt-3 fw-bold">Old</p>
-                                            <ul>
-                                                <li>name:</li>
-                                                <li>email:</li>
-                                                <li>phone_number:</li>
-                                            </ul>
-                                            <p class="pt-3 fw-bold">New</p>
-                                            <ul>
-                                                <li>name: PSM_ADMIN</li>
-                                                <li>email: adminpsm@gmail.com</li>
-                                                <li>phone_number: 01125235367</li>
-                                            </ul>
-                                        </td>
-
-                                    </tr>
-
-                                    <tr>
-                                        <td>2</td>
-                                        <td>
-                                            ADMINISTRATOR
-                                            <p>ID: 1</p>
-                                        </td>
-                                        <td>Update
-                                            <p>20/01/2024 11:38</p>
-                                        </td>
-                                        <td class="text-start">
-                                            App\Models\Users ID: 2
-                                            <p class="pt-3 fw-bold">Old</p>
-                                            <ul>
-                                                <li>status: NEW</li>
-                                                <li>updated_at:</li>
-                                            </ul>
-                                            <p class="pt-3 fw-bold">New</p>
-                                            <ul>
-                                                <li>status: PROCESSING</li>
-                                                <li>updated_at: 2023-11-01 10:33:47</li>
-                                            </ul>
-                                        </td>
-
-                                    </tr>
 
                                     </tbody>
                                 </table>
@@ -112,9 +61,9 @@
             <!--end col-->
         </div>
 
-        @endsection
-        @section('script')
-            <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+@endsection
+@section('script')
+            {{-- <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
             <script>
 
@@ -142,7 +91,7 @@
             <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
             <script src="{{ URL::asset('build/libs/datatables/datatables.min.js') }}"></script>
-            <script src="{{ URL::asset('build/libs/jquery-datatables-checkboxes-1.2.12/js/dataTables.checkboxes.js') }}"></script>
+            <script src="{{ URL::asset('build/libs/jquery-datatables-checkboxes-1.2.12/js/dataTables.checkboxes.js') }}"></script> --}}
 
 @endsection
 

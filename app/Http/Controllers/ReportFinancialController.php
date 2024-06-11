@@ -11,7 +11,7 @@ class ReportFinancialController extends Controller
     {
         $user = Auth::User() ? Auth::User() : abort(403);
 
-        return view('admin.report.financial.index',
+        return view('modules.admin.report.financial.index',
             compact([
                 'user',
             ]));

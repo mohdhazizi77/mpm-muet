@@ -16,7 +16,7 @@ return new class extends Migration {
             $table->string('transaction_ref');
             $table->string('details');
             $table->string('status');
-            $table->timestamp('date_process')->nullable();
+            $table->timestamp('date_printed')->nullable();
             $table->timestamp('date_completed')->nullable();
             $table->timestamps();
         });

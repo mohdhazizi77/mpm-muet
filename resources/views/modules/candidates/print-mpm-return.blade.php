@@ -89,7 +89,7 @@
                                                             </div>
                                                             <div class="clearfix">
                                                                 <button type="button" class="btn btn-soft-dark waves-effect waves-light" data-bs-dismiss="modal">Cancel</button>
-                                                                <a href="{{ Route('candidates.printpdf') }}" class="btn btn-soft-success waves-effect waves-light w-md float-end" data-text="Verify"><span>Verify</span></a>
+                                                                <a href="{{ Route('candidate.printpdf', ['id' => 41]) }}" class="btn btn-soft-success waves-effect waves-light w-md float-end" data-text="Verify"><span>Verify</span></a>
                                                             </div>
                                                         </form>
                                                     </div>
@@ -114,7 +114,7 @@
                                                             </div>
                                                             <div class="clearfix">
                                                                 <button type="button" class="btn btn-soft-dark waves-effect waves-light" data-bs-dismiss="modal">Cancel</button>
-                                                                <a href="{{ Route('candidates.printmpm') }}" class="btn btn-success btn-animation waves-effect waves-light w-md float-end" data-text="Verify"><span>Verify</span></a>
+                                                                <a href="{{ Route('candidate.printmpm', ['id' => 41]) }}" class="btn btn-success btn-animation waves-effect waves-light w-md float-end" data-text="Verify"><span>Verify</span></a>
                                                             </div>
                                                         </form>
                                                     </div>
@@ -164,7 +164,7 @@
             <div>
 
                 <x-button.back></x-button.back>
-                {{--                <a id="button-download" href="{{ route('candidates.downloadpdf') }}" class="btn btn-soft-success btn-label btn-border waves-effect waves-light w-lg float-end">--}}
+                {{--                <a id="button-download" href="{{ route('candidate.downloadpdf') }}" class="btn btn-soft-success btn-label btn-border waves-effect waves-light w-lg float-end">--}}
                 {{--                    <i class="ri-file-download-line label-icon align-middle fs-16 me-2"></i>DOWNLOAD--}}
                 {{--                </a>--}}
             </div>

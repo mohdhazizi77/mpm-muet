@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Pos;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Yajra\DataTables\DataTables;
+use App\Models\Pos;
+use App\Models\Payment;
 
 class TransactionController extends Controller
 {
@@ -13,7 +14,7 @@ class TransactionController extends Controller
     {
         $user = Auth::User() ? Auth::User() : abort(403);
 
-        return view('admin.report.transaction.index',
+        return view('modules.admin.report.transaction.index',
             compact([
                 'user',
             ]));

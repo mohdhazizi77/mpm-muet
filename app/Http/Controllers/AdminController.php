@@ -12,7 +12,7 @@ class AdminController extends Controller
     {
         $user = Auth::User() ? Auth::User() : abort(403);
 
-        return view('admin.dashboard',
+        return view('modules.admin.dashboard',
             compact([
                 'user',
             ]));

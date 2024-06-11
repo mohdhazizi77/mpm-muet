@@ -19,7 +19,7 @@ class PosProcessingController extends Controller
     {
         $user = Auth::User() ? Auth::User() : abort(403);
 
-        return view('admin.pos.processing.index',
+        return view('modules.admin.pos.processing.index',
             compact([
                 'user',
             ]));

@@ -67,45 +67,11 @@
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        {{-- <tr class="align-middle">
-                                            <th scope="row">1</th>
-                                            <td>SESSION 3, 2023</td>
-                                            <td>BAND 3.5</td>
-                                            <td>
-                                                <button type="button" class="btn btn-soft-info waves-effect text-black mx-2" data-bs-toggle="modal" data-bs-target="#modalVerifyPDF">
-                                                    <i class="ri-printer-line label-icon align-middle fs-16 me-2"></i>
-                                                    PRINT PDF
-                                                </button>
-                                                <button type="button" class="btn btn-soft-info waves-effect text-black mx-2" data-bs-toggle="modal" data-bs-target="#modalVerifyMPM">
-                                                    <i class="ri-printer-line label-icon align-middle fs-16 me-2"></i>
-                                                    PRINTING BY MPM
-                                                </button>
-                                                <a href="{{ route('candidates.muet-status') }}" class="btn btn-soft-secondary waves-effect text-black mx-2"> <i class="  ri-list-check-2 label-icon align-middle fs-16 me-2"></i>
-                                                    CERTIFICATE STATUS</a>
-                                            </td>
-                                        </tr> --}}
-                                        {{-- @foreach ($certificates as $key => $certificate)
-                                            <tr class="align-middle">
-                                                <th scope="row">{{ $key + 1 }}</th>
-                                                <td>{{ $certificate->exam_session_name }}</td>
-                                                <td>BAND {{ $certificate->band }}</td>
-                                                <td>
-                                                    <button type="button" class="btn btn-soft-info waves-effect text-black mx-2" data-bs-toggle="modal" data-bs-target="#modalPayment">
-                                                        <i class="ri-printer-line label-icon align-middle fs-16 me-2"></i>
-                                                        PRINT PDF
-                                                    </button>
-                                                    <button type="button" class="btn btn-soft-info waves-effect text-black mx-2" data-bs-toggle="modal" data-bs-target="#modalPayment">
-                                                        <i class="ri-printer-line label-icon align-middle fs-16 me-2"></i>
-                                                        PRINTING BY MPM
-                                                    </button>
-                                                </td>
-                                            </tr>
-                                        @endforeach --}}
                                         </tbody>
                                     </table>
 
                                     {{--MODAL VERIFY PDF--}}
-                                    <div id="modalVerifyPDF" class="modal fade" tabindex="-1" aria-hidden="true" style="display: none;">
+                                    {{-- <div id="modalVerifyPDF" class="modal fade" tabindex="-1" aria-hidden="true" style="display: none;">
                                         <div class="modal-dialog modal-dialog-centered">
                                             <div class="modal-content border-0 overflow-hidden">
                                                 <div class="modal-header p-3 bg-dark-subtle">
@@ -121,15 +87,15 @@
                                                         </div>
                                                         <div class="clearfix">
                                                             <button type="button" class="btn btn-soft-dark waves-effect waves-light" data-bs-dismiss="modal">Cancel</button>
-                                                            <a href="{{ Route('candidates.printpdf', ['id' => 41]) }}" class="btn btn-soft-success waves-effect waves-light w-md float-end" data-text="Verify"><span>Verify</span></a>
+                                                            <a data-type="SELF_PRINT" class="btn btn-soft-success waves-effect waves-light w-md float-end verifyIndexNumber" data-text="Verify"><span>Verify</span></a>
                                                         </div>
                                                     </form>
                                                 </div>
                                             </div><!-- /.modal-content -->
                                         </div><!-- /.modal-dialog -->
-                                    </div><!-- /.modal -->
+                                    </div> --}}
 
-                                    {{--MODAL VERIFY MPMF--}}
+                                    {{--MODAL VERIFY MPM--}}
                                     <div id="modalVerifyMPM" class="modal fade" tabindex="-1" aria-hidden="true" style="display: none;">
                                         <div class="modal-dialog modal-dialog-centered">
                                             <div class="modal-content border-0 overflow-hidden">
@@ -142,11 +108,12 @@
                                                         <div class="mb-5">
                                                             <label for="indexNumber" class="form-label">Index Number</label>
                                                             <input type="text" class="form-control mb-2" id="indexNumber">
-                                                            <a class="text-decoration-none text-black-50" href="#">Forgot Index Number?</a>
+                                                            <a class="text-decoration-none text-black-50 btnForgotIndexNumber">Forgot Index Number?</a>
                                                         </div>
                                                         <div class="clearfix">
                                                             <button type="button" class="btn btn-soft-dark waves-effect waves-light" data-bs-dismiss="modal">Cancel</button>
-                                                            <a href="{{ Route('candidates.printmpm') }}" class="btn btn-success btn-animation waves-effect waves-light w-md float-end" data-text="Verify"><span>Verify</span></a>
+                                                            {{-- <a href="{{ Route('candidate.printmpm', ['id' => 41]) }}" class="btn btn-success btn-animation waves-effect waves-light w-md float-end" data-text="Verify"><span>Verify</span></a> --}}
+                                                            <a data-type="MPM_PRINT" id="verifyIndexNumber" class="btn btn-success btn-animation waves-effect waves-light w-md float-end" data-text="Verify"><span>Verify</span></a>
                                                         </div>
                                                     </form>
                                                 </div>
@@ -172,9 +139,9 @@
                                                         </div>
                                                     </form>
                                                 </div>
-                                            </div><!-- /.modal-content -->
-                                        </div><!-- /.modal-dialog -->
-                                    </div><!-- /.modal -->
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>

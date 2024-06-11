@@ -16,12 +16,18 @@ class CourierSeeder extends Seeder
     {
         $courier = new Courier();
         $courier->name = "POSLAJU MY";
-        $courier->rate = "20.00";
+        $courier->disp_name = "POSLAJU MY";
+        $courier->rate = "60.00";
         $courier->currency = "MYR";
         $courier->duration = "3-5 Days";
-        $courier->api_url = "www.poslaju.com/api/pos/v1";
-        $courier->api_key = "YOUR API KEY HERE";
-        $courier->secret_key =  "YOUR SECRET KEY HERE";
+        $courier->save();
+
+        $courier = new Courier();
+        $courier->name = "JNT";
+        $courier->disp_name = "JNT";
+        $courier->rate = "50.00";
+        $courier->currency = "MYR";
+        $courier->duration = "3-5 Days";
         $courier->save();
     }
 }

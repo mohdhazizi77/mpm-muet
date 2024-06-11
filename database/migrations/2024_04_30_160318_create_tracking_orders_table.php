@@ -17,6 +17,8 @@ return new class extends Migration
             $table->string('detail');
             $table->string('status');
             $table->timestamps();
+
+            $table->index('status');
         });
     }
 

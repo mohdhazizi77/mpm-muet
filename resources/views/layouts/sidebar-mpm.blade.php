@@ -3,7 +3,7 @@
     <!-- LOGO -->
     <div class="navbar-brand-box mt-2 mb-n3">
         <!-- Light Logo-->
-        <a href="index" class="logo logo-light">
+        <a href="admin" class="logo logo-light">
             <span class="logo-sm">
                 <img src="{{ URL::asset('build/images/mpm-logo.png') }}" alt="" height="70">
             </span>
@@ -14,7 +14,7 @@
     </div>
     <div class="navbar-brand-box">
         <!-- Light Logo-->
-        <a href="index" class="logo logo-light">
+        <a href="admin" class="logo logo-light">
             <span class="logo-sm">
                 <img src="{{ URL::asset('build/images/muet-online-certificate.png') }}" alt="" height="60">
             </span>
@@ -39,16 +39,16 @@
                     <a class="nav-link menu-link" href="#POSManagement" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarApps">
                         <i class="ri-truck-line"></i><span>POS Management</span>
                     </a>
-                    <div class="collapse menu-dropdown" id="POSManagement">
+                    <div class="collapse menu-dropdown show" id="POSManagement">
                         <ul class="nav nav-sm flex-column">
                             <li class="nav-item">
-                                <a href="{{ route('pos-new.index') }}" class="nav-link">New</a>
+                                <a href="{{ url('/pos-management/new') }}" class="nav-link {{ request()->is('pos-management/new') ? 'active' : '' }}">New</a>
                             </li>
                             <li class="nav-item">
-                                <a href="{{ route('pos-processing.index') }}" class="nav-link">Processing</a>
+                                <a href="{{ url('/pos-management/processing') }}" class="nav-link {{ request()->is('pos-management/processing') ? 'active' : '' }}">Processing</a>
                             </li>
                             <li class="nav-item">
-                                <a href="{{ route('pos-completed.index') }}" class="nav-link">Completed</a>
+                                <a href="{{ url('/pos-management/completed') }}" class="nav-link {{ request()->is('pos-management/completed') ? 'active' : '' }}">Completed</a>
                             </li>
                         </ul>
                     </div>
@@ -58,10 +58,12 @@
                     <a class="nav-link menu-link" href="#Reporting" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarApps">
                         <i class=" ri-pages-line"></i><span>Reporting</span>
                     </a>
-                    <div class="collapse menu-dropdown" id="Reporting">
+                    <div class="collapse menu-dropdown show" id="Reporting">
                         <ul class="nav nav-sm flex-column">
                             <li class="nav-item">
-                                <a href="{{ route('transaction.index') }}" class="nav-link">Transaction</a>
+                                {{-- <a href="{{ url('/pos/new') }}" class="nav-link {{ request()->is('pos/new') ? 'active' : '' }}">New</a> --}}
+
+                                <a href="{{ url('/transaction') }}" class="nav-link {{ request()->is('transaction') ? 'active' : '' }}">Transaction</a>
                             </li>
                             <li class="nav-item">
                             </li>
@@ -90,7 +92,7 @@
                     <a class="nav-link menu-link" href="#Administration" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarApps">
                         <i class="ri-apps-2-line"></i><span>Administration</span>
                     </a>
-                    <div class="collapse menu-dropdown" id="Administration">
+                    <div class="collapse menu-dropdown show" id="Administration">
                         <ul class="nav nav-sm flex-column">
                             <li class="nav-item">
                                 <a href="{{ route('users.index') }}" class="nav-link">Users and Access</a>

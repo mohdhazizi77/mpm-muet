@@ -12,11 +12,16 @@ return new class extends Migration {
     {
         Schema::create('candidates', function (Blueprint $table) {
             $table->id();
-            $table->integer('user_id');
-            $table->string('index_number');
-            $table->integer('muet_center_id');
+            $table->string('name');
+            $table->string('identity_card_number')->unique();
+            $table->string('password');
+            $table->integer('retry_verify_index_number')->default(0);
+            $table->datetime('date_verify_index_number')->default(date('Y-m-d H:i:s'));
             $table->integer('is_deleted')->default(0);
             $table->timestamps();
+
+            $table->index('identity_card_number');
+
         });
     }
 

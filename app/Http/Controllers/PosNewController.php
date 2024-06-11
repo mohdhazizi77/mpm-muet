@@ -15,7 +15,7 @@ class PosNewController extends Controller
     {
         $user = Auth::User() ? Auth::User() : abort(403);
 
-        return view('admin.pos.new.index',
+        return view('modules.admin.pos.new.index',
             compact([
                 'user',
             ]));

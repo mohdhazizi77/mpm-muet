@@ -14,16 +14,18 @@ class CandidateAuthController extends Controller
 
     public function login(Request $request)
     {
-        $this->validate($request, [
-            'username' => 'required|string',
-            'password' => 'required|min:6',
-        ]);
 
-        if (Auth::attempt(['username' => $request->username, 'password' => $request->password])) {
-            return redirect(route('candidates.index'));
+        $credentials = [
+            'identity_card_number' => $request->username, // Assuming 'username' field contains identity card number
+            'password' => $request->username
+        ];
+
+        if (Auth::guard('candidate')->attempt($credentials)) {
+            // Authentication successful
+            return redirect()->route('candidate.index');
         }
 
-        return back()->withInput($request->only('username'))->withErrors(['username' => 'Invalid credentials']);
+        return back()->withInput($request->only('username'))->withErrors(['username' => 'Invalid credentials qwe']);
     }
 
     public function logout()

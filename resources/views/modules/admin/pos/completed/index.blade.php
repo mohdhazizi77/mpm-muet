@@ -54,29 +54,28 @@
                 <div class="px-4">
                     <div class="row">
                         <div class="col-xxl-12 align-self-center">
-                            <div class="float-start my-3">
+                            {{-- <div class="float-start my-3">
                                 <button id="button-export-xlsx" type="button" class="btn btn-soft-secondary waves-effect float-end mx-1">EXPORT XLSX</button>
                             </div>
                             <div class="float-end my-3">
                                 <button type="button" class="btn btn-soft-success waves-effect float-end ">PRINT CERTIFICATE</button>
-                            </div>
+                            </div> --}}
                             <div class="py-4">
                                 {{--                                <h2 class="display-8 coming-soon-text text-success">TEST LIST</h2>--}}
                                 <!-- Striped Rows -->
 
-                                <table id="dt-pos" class="table w-100 table-striped text-center">
+                                <table id="posCompleteTable" data-type="COMPLETED" class="table w-100 table-striped text-center">
                                     <thead>
                                     <tr class="text-center bg-dark-subtle">
                                         <th scope="col"></th>
                                         <th scope="col">DATE</th>
-                                        <th scope="col">TRANSACTION REFERENCE</th>
+                                        <th scope="col">REFERENCE ID</th>
                                         <th scope="col">DETAILS</th>
-                                        <th scope="col">DATE PRINTED</th>
-                                        <th scope="col">DATE COMPLETED</th>
                                         <th scope="col">ACTION</th>
                                     </tr>
                                     </thead>
                                     <tbody>
+                                    </tbody>
                                 </table>
 
                             </div>
@@ -92,8 +91,7 @@
     </div>
 
     {{--MODAL UPDATE POS--}}
-    <div class="modal fade modalUpdatePos" tabindex="-1" role="dialog"
-         aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
+    <div class="modal fade modalUpdatePos" id="modalUpdatePos" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
                 <div class="container">
@@ -126,18 +124,18 @@
                                                                 <div class="col-6">
                                                                     <div class="mb-3">
                                                                         <label for="name" class="form-label">Name</label>
-                                                                        <input disabled type="text" class="form-control" placeholder="Enter your name" id="name" value="ALI BIN ABU">
+                                                                        <input disabled type="text" class="form-control" placeholder="Enter your name" id="name" name="name" value="">
                                                                     </div>
                                                                 </div><!--end col-->
                                                                 <div class="col-6">
                                                                     <div class="mb-3">
                                                                         <label for="icNumber" class="form-label">Identification Card Number</label>
-                                                                        <input disabled type="text" class="form-control" placeholder="Enter your identification card number" id="icNumber" value="900101121357">
+                                                                        <input disabled type="text" class="form-control" placeholder="Enter your identification card number" id="nric" name="nric" value="">
                                                                     </div>
                                                                 </div><!--end col-->
                                                             </div><!--end row-->
 
-                                                            <div class="row">
+                                                            {{-- <div class="row">
                                                                 <div class="col-6">
                                                                     <label class="form-label">Phone Number</label>
                                                                     <div class="input-group" data-input-flag>
@@ -146,7 +144,7 @@
                                                                                 alt="flag img" height="20"
                                                                                 class="country-flagimg rounded"><span
                                                                                 class="ms-2 country-codeno">+60</span></button>
-                                                                        <input disabled type="text" class="form-control rounded-end flag-input" value="1634523433" placeholder="Enter your phone number"
+                                                                        <input disabled type="text" class="form-control rounded-end flag-input" value="" placeholder="Enter your phone number" name
                                                                                oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');"/>
                                                                         <div class="dropdown-menu w-100">
                                                                             <div class="p-2 px-3 pt-1 searchlist-input">
@@ -159,17 +157,17 @@
                                                                 <div class="col-6">
                                                                     <div class="mb-3">
                                                                         <label for="email" class="form-label">Email</label>
-                                                                        <input disabled type="text" class="form-control" placeholder="Enter your email" id="email" value="aliabu@gmail.com">
+                                                                        <input disabled type="text" class="form-control" placeholder="Enter your email" id="email" value="">
                                                                     </div>
                                                                 </div><!--end col-->
-                                                            </div><!--end row-->
+                                                            </div><!--end row--> --}}
 
                                                             <div class="row">
 
                                                                 <div class="col-12">
                                                                     <div class="mb-3">
                                                                         <label for="address" class="form-label">Address</label>
-                                                                        <input disabled value="LORONG TAMAN SAUJANA" type="text" class="form-control" placeholder="Enter your address" id="address">
+                                                                        <input disabled  type="text" class="form-control" placeholder="Enter your address" id="address" name="address" value="">
                                                                     </div>
                                                                 </div><!--end col-->
 
@@ -180,41 +178,28 @@
                                                                 <div class="col-4">
                                                                     <div class="mb-3">
                                                                         <label for="postcode" class="form-label">Postcode</label>
-                                                                        <input disabled value="62832" type="text" class="form-control" placeholder="Enter your postcode" id="postcode">
+                                                                        <input disabled  type="text" class="form-control" placeholder="Enter your postcode" id="postcode" name="postcode" value="">
                                                                     </div>
                                                                 </div><!--end col-->
 
                                                                 <div class="col-4">
                                                                     <div class="mb-3">
                                                                         <label for="city" class="form-label">City</label>
-                                                                        <input disabled value="KUALA LUMPUR" type="text" class="form-control" placeholder="Enter your city" id="city">
+                                                                        <input disabled  type="text" class="form-control" placeholder="Enter your city" id="city" name="city" value="">
                                                                     </div>
                                                                 </div><!--end col-->
 
                                                                 <div class="col-4">
                                                                     <div class="mb-3">
-                                                                        <label for="state" class="form-label">State</label>
-                                                                        <select disabled class="form-select mb-3" aria-label="Default select example">
-                                                                            <option disabled selected>Select your state</option>
-                                                                            <option value="1">JOHOR</option>
-                                                                            <option value="2">KEDAH</option>
-                                                                            <option value="3">KELANTAN</option>
-                                                                            <option value="4">MELAKA</option>
-                                                                            <option value="5">NEGERI SEMBILAN</option>
-                                                                            <option value="6">PAHANG</option>
-                                                                            <option value="7">PERAK</option>
-                                                                            <option value="8">PERLIS</option>
-                                                                            <option value="9">PULAU PINANG</option>
-                                                                            <option value="10">SABAH</option>
-                                                                            <option value="11">SARAWAK</option>
-                                                                            <option value="12">SELANGOR</option>
-                                                                            <option value="13">TERENGGANU</option>
-                                                                            <option selected value="14">WILAYAH PERSEKUTUAN KUALA LUMPUR</option>
-                                                                            <option value="15">WILAYAH PERSEKUTUAN LABUAN</option>
-                                                                            <option value="16">WILAYAH PERSEKUTUAN PUTRAJAYA</option>
+                                                                        <label for="state" class="form-label" >State</label>
+                                                                        <select readonly class="form-select mb-3" id="state"  disabled>
+                                                                            <option selected disabled>Select State</option>
+                                                                            @foreach (App\Models\User::getStates() as $key => $value)
+                                                                                <option value="{{ $key }}" @if(old('state') == $key) selected @endif>{{ $value }}</option>
+                                                                            @endforeach
                                                                         </select>
                                                                     </div>
-                                                                </div><!--end col-->
+                                                                </div>
 
                                                             </div>
 
@@ -235,7 +220,7 @@
                                 <!--end col-->
                             </div>
 
-                            <div class="row">
+                            <div class="row shipping_info">
                                 <div class="col-lg-12">
                                     <div class="card rounded-0 bg-white mx-n4 border-top">
 
@@ -260,19 +245,19 @@
                                                                 <div class="col-6">
                                                                     <div class="mb-3">
                                                                         <label for="name" class="form-label">Name</label>
-                                                                        <input disabled type="text" class="form-control" placeholder="Enter your name" id="name" value="ALI BIN ABU">
+                                                                        <input disabled type="text" class="form-control" placeholder="Enter your name" id="ship_name" name="ship_name" value="">
                                                                     </div>
                                                                 </div><!--end col-->
                                                                 <div class="col-6">
                                                                     <div class="mb-3">
-                                                                        <label for="icNumber" class="form-label">Identification Card Number</label>
-                                                                        <input disabled type="text" class="form-control" placeholder="Enter your identification card number" id="icNumber" value="900101121357">
+                                                                        <label for="ship_phoneNum" class="form-label">Phone Number</label>
+                                                                        <input disabled type="text" class="form-control" placeholder="Enter your phone_number" id="ship_phoneNum" name="ship_phoneNum" value="">
                                                                     </div>
                                                                 </div><!--end col-->
                                                             </div><!--end row-->
 
                                                             <div class="row">
-                                                                <div class="col-6">
+                                                                {{-- <div class="col-6">
                                                                     <label class="form-label">Phone Number</label>
                                                                     <div class="input-group" data-input-flag>
                                                                         <button disabled class="btn btn-light border" type="button" data-bs-toggle="dropdown" aria-expanded="false"><img
@@ -280,7 +265,7 @@
                                                                                 alt="flag img" height="20"
                                                                                 class="country-flagimg rounded"><span
                                                                                 class="ms-2 country-codeno">+60</span></button>
-                                                                        <input disabled type="text" class="form-control rounded-end flag-input" value="1634523433" placeholder="Enter your phone number"
+                                                                        <input disabled type="text" class="form-control rounded-end flag-input"  placeholder="Enter your phone number" value=""
                                                                                oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');"/>
                                                                         <div class="dropdown-menu w-100">
                                                                             <div class="p-2 px-3 pt-1 searchlist-input">
@@ -289,11 +274,11 @@
                                                                             <ul class="list-unstyled dropdown-menu-list mb-0"></ul>
                                                                         </div>
                                                                     </div>
-                                                                </div>
+                                                                </div> --}}
                                                                 <div class="col-6">
                                                                     <div class="mb-3">
                                                                         <label for="email" class="form-label">Email</label>
-                                                                        <input disabled type="text" class="form-control" placeholder="Enter your email" id="email" value="aliabu@gmail.com">
+                                                                        <input disabled type="text" class="form-control" placeholder="Enter your email" id="ship_email" name="ship_email" value="">
                                                                     </div>
                                                                 </div><!--end col-->
                                                             </div><!--end row-->
@@ -303,7 +288,7 @@
                                                                 <div class="col-12">
                                                                     <div class="mb-3">
                                                                         <label for="address" class="form-label">Address</label>
-                                                                        <input disabled value="LORONG TAMAN SAUJANA" type="text" class="form-control" placeholder="Enter your address" id="address">
+                                                                        <input disabled  type="text" class="form-control" placeholder="Enter your address" id="ship_address" name="ship_address" value="">
                                                                     </div>
                                                                 </div><!--end col-->
 
@@ -314,57 +299,45 @@
                                                                 <div class="col-4">
                                                                     <div class="mb-3">
                                                                         <label for="postcode" class="form-label">Postcode</label>
-                                                                        <input disabled value="62832" type="text" class="form-control" placeholder="Enter your postcode" id="postcode">
+                                                                        <input disabled  type="text" class="form-control" placeholder="Enter your postcode" id="ship_postcode" name="ship_postcode" value="">
                                                                     </div>
                                                                 </div><!--end col-->
 
                                                                 <div class="col-4">
                                                                     <div class="mb-3">
                                                                         <label for="city" class="form-label">City</label>
-                                                                        <input disabled value="KUALA LUMPUR" type="text" class="form-control" placeholder="Enter your city" id="city">
+                                                                        <input disabled  type="text" class="form-control" placeholder="Enter your city" id="ship_city" name="ship_city" value="">
                                                                     </div>
                                                                 </div><!--end col-->
 
                                                                 <div class="col-4">
                                                                     <div class="mb-3">
-                                                                        <label for="state" class="form-label">State</label>
-                                                                        <select disabled class="form-select mb-3" aria-label="Default select example">
-                                                                            <option disabled selected>Select your state</option>
-                                                                            <option value="1">JOHOR</option>
-                                                                            <option value="2">KEDAH</option>
-                                                                            <option value="3">KELANTAN</option>
-                                                                            <option value="4">MELAKA</option>
-                                                                            <option value="5">NEGERI SEMBILAN</option>
-                                                                            <option value="6">PAHANG</option>
-                                                                            <option value="7">PERAK</option>
-                                                                            <option value="8">PERLIS</option>
-                                                                            <option value="9">PULAU PINANG</option>
-                                                                            <option value="10">SABAH</option>
-                                                                            <option value="11">SARAWAK</option>
-                                                                            <option value="12">SELANGOR</option>
-                                                                            <option value="13">TERENGGANU</option>
-                                                                            <option selected value="14">WILAYAH PERSEKUTUAN KUALA LUMPUR</option>
-                                                                            <option value="15">WILAYAH PERSEKUTUAN LABUAN</option>
-                                                                            <option value="16">WILAYAH PERSEKUTUAN PUTRAJAYA</option>
+                                                                        <label for="state" class="form-label" >State</label>
+                                                                        <select readonly class="form-select mb-3" id="ship_state" disabled name="ship_state">
+                                                                            <option selected disabled>Select State</option>
+                                                                            @foreach (App\Models\User::getStates() as $key => $value)
+                                                                                <option value="{{ $key }}" @if(old('state') == $key) selected @endif>{{ $value }}</option>
+                                                                            @endforeach
                                                                         </select>
                                                                     </div>
                                                                 </div><!--end col-->
 
                                                                 <div class="col-4">
                                                                     <div class="mb-3">
-                                                                        <label for="city" class="form-label">Tracking Number</label>
-                                                                        <input disabled value="pos12345" type="text" class="form-control" placeholder="Enter tracking number" id="tn">
+                                                                        <label for="track_num" class="form-label">Tracking Number</label>
+                                                                        <input type="text" class="form-control" placeholder="Enter tracking number" id="ship_trackNum" name="ship_trackNum" value="" disabled>
                                                                     </div>
                                                                 </div><!--end col-->
 
                                                                 <div class="col-4">
                                                                     <div class="mb-3">
-                                                                        <label for="city" class="form-label">Notes</label>
-                                                                        <input disabled value="" type="text" class="form-control" placeholder="" id="tn">
+                                                                        <label for="track_remarks" class="form-label">Notes</label>
+                                                                        <input type="text" class="form-control" placeholder="" id="ship_trackRemarks" name="ship_trackRemarks" value="" disabled>
                                                                     </div>
                                                                 </div><!--end col-->
 
                                                             </div>
+                                                            <input type="text" id="order_id" name="order_id" value="" style="display: none">
 
 
                                                         </form>
@@ -393,7 +366,8 @@
                         <a href="javascript:void(0);" class="btn btn-link link-success fw-medium"
                            data-bs-dismiss="modal"><i class="ri-close-line me-1 align-middle"></i>
                             Close</a>
-                        <button id="button-print-certificate-pdf" type="button" class="btn btn-outline-secondary float-end">Print Certificate</button>
+                        <a href='#' id="button-print-certificate-pdf" class="btn btn-outline-secondary float-end" target="_blank">Print Certificate</a>
+                        {{-- <button type="button" class="btn btn-outline-success float-end btn-approve-processing">Continue</button> --}}
                     </div>
                 </div>
             </div><!-- /.modal-content -->
@@ -402,7 +376,7 @@
 
 @endsection
 @section('script')
-    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    {{-- <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
     <script>
 
@@ -437,7 +411,7 @@
 
     <script src="{{ URL::asset('build/libs/datatables/datatables.min.js') }}"></script>
     <script src="{{ URL::asset('build/libs/jquery-datatables-checkboxes-1.2.12/js/dataTables.checkboxes.js') }}"></script>
-    <script src="{{ asset('build/js/datatables/pos-completed.js') }}"></script>
+    <script src="{{ asset('build/js/datatables/pos-completed.js') }}"></script> --}}
 
 @endsection
 

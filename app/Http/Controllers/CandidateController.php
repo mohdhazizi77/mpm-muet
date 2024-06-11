@@ -2,92 +2,236 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\BandDescriptionsHeader;
-use App\Models\Candidate;
-use App\Models\CefrConfig;
-use Barryvdh\DomPDF\Facade\Pdf;
-use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
+use Barryvdh\DomPDF\Facade\Pdf;
+
+use App\Models\BandDescriptionsHeader;
+use App\Models\CefrConfig;
+use App\Models\User;
+use App\Models\Candidate;
+use App\Models\MuetCalon;
+use App\Models\MuetSkor;
+use App\Models\ModCalon;
+use App\Models\Certificate;
+use App\Models\Courier;
+use App\Models\Order;
+use App\Models\TrackingOrder;
+use App\Models\Payment;
+use Carbon\Carbon;
+use Exception;
+use DataTables;
 
 class CandidateController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+
     public function index()
     {
+        // dd(Auth::User(), Auth::User()->getRoleNames()[0]);
 
         $user = Auth::User() ? Auth::User() : abort(403);
+        $muets = $user->muetCalon;
+        $mods = $user->modCalon;
+        // dd($user->muetCalon);
 
-        $descriptions = CefrConfig::query()
-            ->where('year', 2023)
-            ->where('session', 1)
-            ->get();
 
-        return view('candidates.index',
+        // foreach ($certificates as $key => $certificate) {
+        //     $certificate->exam_session_name = $certificate->examsession->name .", ".$certificate->examsession->year;
+        //     $certificate->band = unserialize($certificate->result)['band'];
+        // }
+
+        return view('modules.candidates.index',
             compact([
                 'user',
-                'descriptions',
+                // 'certificates',
             ]));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
+    public function getAjax()
+    {
+        $candidate = Auth::User() ? Auth::User() : abort(403);
+
+        $muets = $candidate->muetCalon;
+        $mods = $candidate->modCalon;
+        // $certificates = $muets->concat($mods);
+
+        // Set attribute for each item in the combined collection
+        // $certificates = $certificates->map(function ($certificate) {
+        //     if ($certificate instanceof MuetCalon) {
+        //         $certificate->setAttribute('model_type', 'MuetCalon');
+        //     } elseif ($certificate instanceof ModCalon) {
+        //         $certificate->setAttribute('model_type', 'ModCalon');
+        //     }
+        //     return $certificate;
+        // });
+
+        $cutoffTime = Carbon::now()->subDay(); // Get the current time and subtract 24 hours to get the cutoff time
+        foreach ($muets as $key => $muet) {
+
+            $is_more2year = self::checkYear($muet->getTarikh->tahun); //check cert if already 2 years
+            $is_selfPrintPaid = false;
+            $is_mpmPrintPaid = false;
+            if ($is_more2year) {
+                $res = $muet->getOrder->where('payment_status','SUCCESS')->where('payment_for', 'SELF_PRINT')->toArray();
+
+                $res = $muet->getOrder()
+                        ->where('payment_status', 'SUCCESS')
+                        ->where('payment_for', 'SELF_PRINT')
+                        ->where('created_at', '>=', $cutoffTime)
+                        ->get()
+                        ->toArray();
+                $is_selfPrintPaid = count($res)>0 ? true : false;
+
+                $res = $muet->getOrder->where('payment_status','SUCCESS')->where('payment_for', 'MPM_PRINT')->toArray();
+                $is_mpmPrintPaid = count($res)>0 ? true : false;
+            } else {
+                $res = $muet->getOrder->where('payment_status','SUCCESS')->where('payment_for', 'SELF_PRINT')->toArray();
+                $is_selfPrintPaid = count($res)>0 ? true : false;
+
+                $res = $muet->getOrder->where('payment_status','SUCCESS')->where('payment_for', 'MPM_PRINT')->toArray();
+                $is_mpmPrintPaid = count($res)>0 ? true : false;
+            }
+
+            $cert_datas[] = [
+                "no"                => ++$key,
+                "id"                => Crypt::encrypt($muet->id . "-MUET"), // xxx-MUET or xxx-MOD
+                // "id"                => $muet->id . "-MUET", // xxx-MUET or xxx-MOD
+                "year"              => $muet->tahun,
+                "session"           => $muet->getTarikh->sesi . " " . $muet->tahun,
+                "band"              => "Band ".$muet->band,
+                "is_more2year"      => $is_more2year,
+                "is_selfPrintPaid"  => $is_selfPrintPaid,
+                "is_mpmPrintPaid"   => $is_mpmPrintPaid,
+            ];
+
+        }
+
+        return datatables($cert_datas)->toJson();
+    }
+
+    public function verifyIndexNumber(Request $request)
+    {
+        try {
+            $certID = Crypt::decrypt($request->certID);
+        } catch (Illuminate\Contracts\Encryption\DecryptException $e) {
+
+        }
+
+        $value = explode('-', $certID);
+        $certID = $value[0];
+        $type = $value[1];
+
+        if ($type == "MUET") {
+            $candidate = MuetCalon::find($certID);
+        } else {
+            $candidate = ModCalon::find($certID);
+        }
+
+        $user = Auth::user();
+        $current_time = Carbon::now();
+        $lockout_time = 60; // Lockout time in minutes (1 hour)
+
+        // Parse the date_verify_index_number into a Carbon instance
+        $dateVerifyIndexNumber = Carbon::parse($user->date_verify_index_number);
+
+        // Check if the user has exceeded retry attempts within the lockout time
+        if ($user->retry_verify_index_number > 2 && $dateVerifyIndexNumber->diffInMinutes($current_time) < $lockout_time) {
+            $minutes_left = $lockout_time - $dateVerifyIndexNumber->diffInMinutes($current_time);
+            $timer = $minutes_left . ' minute' . ($minutes_left > 1 ? 's' : '');
+
+            $data = [
+                'success' => false,
+                'message' => 'Your account has been locked due to repeated attempts to enter an index number. Please wait for ' . $timer . ' before trying again.'
+            ];
+
+            return response()->json($data);
+        }
+
+        // If more than 1 hour has passed since the last attempt, reset the retry counter
+        if ($dateVerifyIndexNumber->diffInMinutes($current_time) >= $lockout_time) {
+            $user->retry_verify_index_number = 0;
+        }
+
+        // Retrieve index numbers
+        $arr_index_number = $user->getIndexNumber($user->id);
+        $res = array_search($request->indexNumber, $arr_index_number);
+
+        if ($res !== false) {
+            // Correct index number
+            $user->retry_verify_index_number = 0;
+            $data = [
+                'success' => true,
+                'id' => $request->certID,
+            ];
+        } else {
+            // Incorrect index number
+            $user->retry_verify_index_number++;
+            $data = [
+                'success' => false,
+                'message' => 'Incorrect index number'
+            ];
+        }
+
+        // Update date_verify_index_number and save user
+        $user->date_verify_index_number = $current_time->format('Y-m-d H:i:s');
+        $user->save();
+
+        return response()->json($data);
+    }
+
     public function create()
     {
         //
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
         //
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(Candidate $candidate)
     {
-//        $user = Auth::User() ? Auth::User() : abort(403);
-
+        $user = Auth::User() ? Auth::User() : abort(403);
         return view('candidates.show');
 
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Candidate $candidate)
+    public function printpdf($cryptId)
     {
-        //
-    }
+        try {
+            $id = Crypt::decrypt($cryptId);
+        } catch (Illuminate\Contracts\Encryption\DecryptException $e) {
+            return redirect()->back();
+        }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Candidate $candidate)
-    {
-        //
-    }
+        $value = explode('-', $id);
+        $certID = $value[0];
+        $type = $value[1];
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Candidate $candidate)
-    {
-        //
-    }
+        if ($type == "MUET") {
+            $candidate = MuetCalon::find($certID);
+        } else {
+            $candidate = ModCalon::find($certID);
+        }
 
-    public function printpdf()
-    {
-        return view('candidates.print-pdf');
+        $result = $candidate->getResult($candidate);
+
+        $cert = '';
+        $user = Auth::user();
+        $scheme = [
+            "listening" => 90,
+            "speaking" => 90,
+            "reading" => 90,
+            "writing" => 90,
+            "agg_score" => 360,
+        ];
+
+        // dd($candidate->getResult($candidate));
+        return view('modules.candidates.print-pdf', compact(['user','scheme','result','cryptId']));
+
     }
 
     public function qrscan()
@@ -95,18 +239,41 @@ class CandidateController extends Controller
         return view('candidates.qr-scan');
     }
 
-    public function downloadpdf()
+    public function downloadpdf($cryptId)
     {
         try {
+            $id = Crypt::decrypt($cryptId);
+        } catch (Illuminate\Contracts\Encryption\DecryptException $e) {
+            dd($e);
+        }
 
+        try {
+
+            $value = explode('-', $id);
+            $certID = $value[0];
+            $type = $value[1];
+
+            if ($type == "MUET") {
+                $candidate = MuetCalon::find($certID);
+            } else {
+                $candidate = ModCalon::find($certID);
+            }
+            $pusat = $candidate->getPusat->first();
+            $result = $candidate->getResult($candidate);
+            $scheme = [
+                "listening" => 90,
+                "speaking" => 90,
+                "reading" => 90,
+                "writing" => 90,
+                "agg_score" => 360,
+            ];
             $url = 'http://localhost:8000/qrscan'; // Replace with your URL or data
             $qr = QrCode::size(50)->style('round')->generate($url);
 
-//            dd($qr);
+            $pdf = PDF::loadView('modules.candidates.download-pdf', ['qr' => $qr, 'type' => $type, 'result' => $result, 'candidate' => $candidate, 'scheme' => $scheme, 'pusat' => $pusat])->setPaper('a4', 'portrait');
 
-            $pdf = PDF::loadView('candidates.download-pdf', ['qr' => $qr])->setPaper('a4', 'portrait');
-
-            return $pdf->download('MUET RESULT.pdf');
+            // return $pdf->download($type.' RESULT.pdf');
+            return $pdf->stream($result['index_number'].' '.$type.' RESULT.pdf');
 
         } catch
         (Exception $e) {
@@ -114,162 +281,109 @@ class CandidateController extends Controller
         }
     }
 
-    public function printmpm()
+    public function printmpm($cryptId)
     {
+        try {
+            $string = Crypt::decrypt($cryptId);
+            $data = explode('-', $string);
+            $id = $data[0];
+            $exam_type = $data[1];
+        } catch (Illuminate\Contracts\Encryption\DecryptException $e) {
+
+        };
+        $user = Auth::User();
+        $candidate = MuetCalon::find($id);
         $status = 0;
-        return view('candidates.print-mpm', compact([
-            'status',
-        ]));
-    }
+        $couriers = Courier::get();
 
-    public function payment()
-    {
-
-// $url = 'http://mpm-pay-web.test/api/payment/create';
-// $token = 'Ry7QE2LZ0eIrD7S1LijxKyeyLiT9ZNxVom7TwHBhQbrQriP2dsIqkcc5785h';
-// $secret_key = '7b5b9128-80f5-4fa9-9efc-7e9746b82a27';
-
-// $url = 'https://ebayar.mpm.edu.my/api/payment/create';
-// $token = 'slmTa0evIzLCj20uqFcL3bAzk13JpoptxWRQV7ZrtWvwYTQ8y6skqsb6mINf';
-// $secret_key = '83fe0a62-afb8-4e95-9985-488a2ff56193';
-
-        $url = 'https://ebayar-lab.mpm.edu.my/api/payment/create';
-        $token = 'a2aWmIGjPSVZ8F3OvS2BtppKM2j6TKvKXE7u8W7MwbkVyZjwZfSYdNP5ACem';
-        $secret_key = '1eafc1e9-df86-4c8c-a3de-291ada259ab0';
-
-        $data = [
-            "full_name" => "ALI BIN ABU",
-            "phone_number" => "0133422881",
-            "email_address" => "aliabu@gmail.com",
-            "amount" => "67.90",
-            "nric" => "900101121357",
-            "extra_data" => "poslaju",
+        $result = $candidate->getResult($candidate);
+        $scheme = [
+            "listening" => 90,
+            "speaking" => 90,
+            "reading" => 90,
+            "writing" => 90,
+            "agg_score" => 360,
         ];
 
-// {"full_name":"MIOR MOHD HANIF YOB","phone_number":"0133422881","email_address":"miorhanif@mpm.edu.my","amount":"1660","nric":"870806385211","extra_data":"870806385211|1|2,18|IGCSE REGISTRATION","order_id":"870806385211|1|2,18","hash":"f89fb9a5026145e145d4021bd1ff1e5046083a269a83b3fb0cc3e070f4353344"}
-
-        $hash = hash_hmac('SHA256', urlencode($secret_key) . urlencode($data['full_name']) . urlencode($data['phone_number']) . urlencode($data['email_address']) . urlencode($data['amount']), $secret_key);
-        $data['hash'] = $hash;
-        header("Location: " . $this->createPayment($url, $data, $token));
-        exit();
-//        $this->createPayment($url, $data, $token);
-
-//        echo "\n";
-
-    }
-
-    public function paymentstatus(Request $request)
-    {
-//        dd($request);
-        if (!empty($_GET['full_name'])) {
-            $full_name = $_GET['full_name'];
-            $email = $_GET['email'];
-            $amount = $_GET['amount'];
-            $phone = $_GET['phone'];
-            $status = $_GET['status'];
-            $ref_no = $_GET['ref_no'];
-            $type = $_GET['type'];
-            $txn_id = $_GET['id_transaction'];
-            $txn_time = $_GET['txn_time'];
-            $nric = $_GET['nric'];
-            $extra_data = explode("-", $_GET['extra_data']);
-            $hash = $_GET['hash'];
-        } elseif (!empty($_POST['full_name'])) {
-            $full_name = $_POST['full_name'];
-            $email = $_POST['email'];
-            $amount = $_POST['amount'];
-            $phone = $_POST['phone'];
-            $status = $_POST['status'];
-            $ref_no = $_POST['ref_no'];
-            $type = $_POST['type'];
-            $txn_id = $_POST['id_transaction'];
-            $txn_time = $_POST['txn_time'];
-            $nric = $_POST['nric'];
-            $extra_data = explode("-", $_POST['extra_data']);
-            $hash = $_POST['hash'];
-        }
-
-        $secret_key = '1eafc1e9-df86-4c8c-a3de-291ada259ab0';
-        $hashed = hash_hmac('SHA256', urlencode($secret_key) . urlencode($full_name) . urlencode($phone) . urlencode($email) . urlencode($amount), $secret_key);
-
-        if ($hash != $hashed) {
-            die("Hash tidak sah.");
+        //show result untuk tak lebih 2 tahun
+        $is_more2year = self::checkYear($candidate->getTarikh->tahun);
+        if ($is_more2year) {
+            //check order
+            $res = $candidate->getOrder->where('payment_status','SUCCESS')->where('payment_for', 'SELF_PRINT')->toArray(); //check if already paid for slefprint
+            $show_result = count($res)>0 ? true : false ;
         } else {
-
-            if ($status == 'SUCCESS') {
-                return view('candidates.print-mpm-return', compact([
-                    'status',
-                    'ref_no',
-                    'txn_id',
-                ]));
-            } elseif ($status == 'FAILED') {
-                return view('candidates.print-mpm', compact([
-                    'status',
-                    'ref_no',
-                    'txn_id',
-                ]));
-            }
-
-
-//            dd($full_name);
-
-//            $file = fopen("log\logsalinansijil_" . date('d-m-Y') . ".txt", "a+");
-//
-//            fwrite($file, json_encode($_REQUEST));
-//            fclose($file);
-
-            //update or store data to application.
-
-            //mysql update query
-
-            //laravel eloquent model
+            $show_result = true ;
         }
-    }
-
-    public function muetstatus()
-    {
-        $status = 0;
-        $ref_no = '';
-        $txn_id = '';
-
-        return view('candidates.muet-status', compact([
+        // dd($candidate->getOrder);
+        return view('modules.candidates.print-mpm', compact([
+            'show_result',
+            'result',
+            'scheme',
             'status',
-            'ref_no',
-            'txn_id',
+            'id',
+            'user',
+            'cryptId',
+            'couriers',
         ]));
     }
 
-    function createPayment($url, $data, $token)
+    public function selfprint($cryptId)
     {
-        $output = '';
-        $curl = curl_init();
-        curl_setopt($curl, CURLOPT_URL, $url);
-        curl_setopt($curl, CURLOPT_POST, 1);
-        curl_setopt($curl, CURLOPT_HTTPHEADER, array(
-            'Accept: application/json',
-            'MPMToken: ' . $token
-        ));
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($curl, CURLOPT_POSTFIELDS, http_build_query($data));
-        curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, 0);
-        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 0);
-        $output = curl_exec($curl);
-        $output = json_decode($output);
-//        echo $output;
+        try {
+            $string = Crypt::decrypt($cryptId);
+            $data = explode('-', $string);
+            $id = $data[0];
+            $exam_type = $data[1];
+        } catch (Illuminate\Contracts\Encryption\DecryptException $e) {
 
-        if (curl_errno($curl)) {
-            $error_msg = curl_error($curl);
-//            var_dump($error_msg);
-            exit();
-        }
-//        var_dump($output . 'zz');
-//        exit();
-        if (!empty($output->url)) {
-            curl_close($curl);
-            return $output->url;
+        };
+
+        if ($exam_type == "MUET") {
+            $candidate = MuetCalon::find($id);
         } else {
-            return "Payment Gateway tidak dapat disambung. Pastikan URL dan TOKEN adalah betul.";
-            curl_close($curl);
+            $candidate = ModCalon::find($id);
+        }
+
+        $candidate->cryptId = $cryptId;
+
+        return view('modules.candidates.self-print', compact([
+            'candidate',
+            'exam_type',
+        ]));
+    }
+
+    public function muetstatus($cryptId)
+    {
+        try {
+            $orderId = Crypt::decrypt($cryptId);
+        } catch (Illuminate\Contracts\Encryption\DecryptException $e) {
+
+        };
+
+
+        $order = Order::find($orderId);
+        $tracks = TrackingOrder::where('order_id',$orderId)->latest()->get();
+        $payment = Payment::where('order_id',$orderId)->first();
+
+
+        return view('modules.candidates.muet-status', compact([
+            'order',
+            'tracks',
+            'payment',
+            'cryptId',
+        ]));
+    }
+
+    public function checkYear($year)
+    {
+        // Get the current year
+        $currentYear = Carbon::now()->year;
+
+        // Check if the given year is more than 2 years ago from the current year
+        if ($currentYear - $year >= 2) {
+            return true; // Given year is more than 2 years ago
+        } else {
+            return false; // Given year is less than 2 years ago
         }
     }
 }

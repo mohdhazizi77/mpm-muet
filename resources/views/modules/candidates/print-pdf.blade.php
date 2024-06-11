@@ -22,12 +22,12 @@
                                         <tr>
                                             <td>NAME</td>
                                             <td class="px-2">:</td>
-                                            <td>ALI BIN ABU</td>
+                                            <td>{{ $user->name }}</td>
                                         </tr>
                                         <tr>
                                             <td>IDENTIFICATION CARD NUMBER</td>
                                             <td class="px-2">:</td>
-                                            <td>900101121357</td>
+                                            <td>{{ $user->identity_card_number }}</td>
                                         </tr>
                                     </table>
                                 </div>
@@ -58,8 +58,8 @@
                                     <!-- Striped Rows -->
                                     <table class="table table-borderless text-center">
                                         <div class="clearfix">
-                                            <h4 class="py-2 fw-bold float-start">SESSION 3, 2023</h4>
-                                            <h4 class="py-2 fw-bold float-end">MA2011/0201</h4>
+                                            <h4 class="py-2 fw-bold float-start">{{ $result['session'] }}</h4>
+                                            <h4 class="py-2 fw-bold float-end">{{ $result['index_number'] }}</h4>
                                         </div>
                                         <thead>
                                         <tr class="text-center bg-dark-subtle border-1 border-black">
@@ -71,28 +71,28 @@
                                         <tbody>
                                         <tr class="align-middle ">
                                             <td class="border-black border-1 border-top-0 border-bottom-0">LISTENING</td>
-                                            <td class="border-black border-1 border-top-0 border-bottom-0">90</td>
-                                            <td class="border-black border-1 border-top-0 border-bottom-0">45</td>
+                                            <td class="border-black border-1 border-top-0 border-bottom-0">{{ $scheme['listening'] }}</td>
+                                            <td class="border-black border-1 border-top-0 border-bottom-0">{{ $result['listening'] }}</td>
                                         </tr>
                                         <tr class="align-middle">
                                             <td class="border-black border-1 border-top-0 border-bottom-0">SPEAKING</td>
-                                            <td class="border-black border-1 border-top-0 border-bottom-0">90</td>
-                                            <td class="border-black border-1 border-top-0 border-bottom-0">41</td>
+                                            <td class="border-black border-1 border-top-0 border-bottom-0">{{ $scheme['speaking'] }}</td>
+                                            <td class="border-black border-1 border-top-0 border-bottom-0">{{ $result['speaking'] }}</td>
                                         </tr>
                                         <tr class="align-middle">
                                             <td class="border-black border-1 border-top-0 border-bottom-0">READING</td>
-                                            <td class="border-black border-1 border-top-0 border-bottom-0">90</td>
-                                            <td class="border-black border-1 border-top-0 border-bottom-0">65</td>
+                                            <td class="border-black border-1 border-top-0 border-bottom-0">{{ $scheme['reading'] }}</td>
+                                            <td class="border-black border-1 border-top-0 border-bottom-0">{{ $result['reading'] }}</td>
                                         </tr>
                                         <tr class="align-middle">
                                             <td class="border-black border-1 border-top-0 border-bottom-0">WRITING</td>
-                                            <td class="border-black border-1 border-top-0 border-bottom-0">90</td>
-                                            <td class="border-black border-1 border-top-0 border-bottom-0">30</td>
+                                            <td class="border-black border-1 border-top-0 border-bottom-0">{{ $scheme['writing'] }}</td>
+                                            <td class="border-black border-1 border-top-0 border-bottom-0">{{ $result['writing'] }}</td>
                                         </tr>
                                         <tr class="align-middle fw-bold">
                                             <td class="border-black border-1">AGGREGATED SCORE</td>
-                                            <td class="border-black border-1">360</td>
-                                            <td class="border-black border-1">181</td>
+                                            <td class="border-black border-1">{{ $scheme['agg_score'] }}</td>
+                                            <td class="border-black border-1">{{ $result['agg_score'] }}</td>
                                         </tr>
                                         </tbody>
                                     </table>
@@ -102,7 +102,7 @@
                                         <tr class="align-middle fw-bold pt-3">
                                             <td class="w-25 hidden"></td>
                                             <td class="w-25 text-end">BAND ACHIEVED</td>
-                                            <td class="w-25 bg-dark-subtle border-1 border-black">3.5</td>
+                                            <td class="w-25 bg-dark-subtle border-1 border-black">{{ $result['band'] }}</td>
                                         </tr>
                                         </tbody>
                                     </table>
@@ -125,7 +125,7 @@
         <div>
 
             <x-button.back></x-button.back>
-            <a id="button-download" href="{{ route('candidates.downloadpdf') }}" class="btn btn-soft-success btn-label btn-border waves-effect waves-light w-lg float-end">
+            <a id="button-download" href="{{ route('candidate.downloadpdf', ['id' => $cryptId]) }}" class="btn btn-soft-success btn-label btn-border waves-effect waves-light w-lg float-end">
                 <i class="ri-file-download-line label-icon align-middle fs-16 me-2"></i>DOWNLOAD
             </a>
         </div>

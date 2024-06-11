@@ -21,8 +21,7 @@
                     {{--                        </span>--}}
                     {{--                    </a>--}}
 
-
-                    <a href="index" class="logo logo-light mx-2">
+                    <a href="/candidate" class="logo logo-light mx-2">
                         <span class="logo-sm">
                             <img src="{{ URL::asset('build/images/mpm-logo.png') }}" alt="" height="50">
                         </span>
@@ -30,7 +29,7 @@
                             <img src="{{ URL::asset('build/images/mpm-logo.png') }}" alt="" height="58">
                         </span>
                     </a>
-                    <a href="index" class="logo logo-light mx-2">
+                    <a href="/candidate" class="logo logo-light mx-2">
                         <span class="logo-sm">
                             <img src="{{ URL::asset('build/images/muet-online-certificate.png') }}" alt="" height="50">
                         </span>

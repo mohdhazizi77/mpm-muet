@@ -9,21 +9,21 @@ use App\Imports\ImportCandidate;
 use Storage;
 
 
-class ImportCandidateCommand extends Command
+class ImportCandidateExcelCommand extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'import:candidate_data';
+    protected $signature = 'mpm:import_excel_candidate_data';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Import candidate data from excel import to excel';
+    protected $description = 'Import candidate data from excel';
 
     /**
      * Execute the console command.
