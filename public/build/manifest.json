@@ -207,6 +207,18 @@
     "file": "icons/img-4.jpg",
     "src": "resources/images/sidebar/img-4.jpg"
   },
+  "resources/js/app.css": {
+    "file": "css/app.min2.css",
+    "src": "resources/js/app.css"
+  },
+  "resources/js/app.js": {
+    "css": [
+      "css/app.min2.css"
+    ],
+    "file": "js/app2.js",
+    "isEntry": true,
+    "src": "resources/js/app.js"
+  },
   "resources/scss/app.scss": {
     "file": "css/app.min.css",
     "isEntry": true,
