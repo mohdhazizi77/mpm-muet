@@ -23,30 +23,30 @@
         @endslot
     @endcomponent
 
-
-
-
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="card">
-                <div class="card-body">
-                    <div class="live-preview">
-                        <div class="row gy-1">
-                            <div class="col-lg-3">
-                                <div class="mt-3">
-                                    <label class="form-label mb-3">Date Range</label>
-                                    <input class="form-control" id="basicDate" type="text" placeholder="" data-flatpickr>
-                                </div>
-                            </div>
-                        </div>
-                        <!--end row-->
+    <div class="row mx-1">
+        <div class="card rounded-0 bg-white border-top px-2">
+            <div class="p-4">
+                <div class="row mb-3">
+                    <div class="col-md-3">
+                        <label for="start-date" class="form-label">Start Date:</label>
+                        <input type="date" id="start-date" class="form-control datepicker" placeholder="DD-MM-YYYY">
+                    </div>
+                    <div class="col-md-3">
+                        <label for="end-date" class="form-label">End Date:</label>
+                        <input type="date" id="end-date" class="form-control datepicker" placeholder="DD-MM-YYYY" disabled>
+                    </div>
+                    {{-- <div class="col-md-3">
+                        <label for="text-search" class="form-label">Text Search:</label>
+                        <input type="text" id="text-search" class="form-control" placeholder="Enter text">
+                    </div> --}}
+                    <div class="col-md-3" style="align-content: end;">
+                            <button id="filterBtn" class="btn btn-primary">Filter</button>
+                            <button id="resetBtn" class="btn btn-secondary">Reset</button>
                     </div>
                 </div>
             </div>
         </div>
-        <!--end col-->
     </div>
-    <!--end row-->
 
     <div class="row py-4">
         <div class="col-lg-12">

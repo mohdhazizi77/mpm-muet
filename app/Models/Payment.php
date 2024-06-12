@@ -20,6 +20,13 @@ class Payment extends Model
         "cust_info",
         "receipt",
         "receipt_number",
-        "error_message"
+        "error_message",
+        "payment_for",
+        "type",
     ];
+
+    public function order()
+    {
+        return $this->belongsTo('App\Models\Order', 'order_id');
+    }
 }

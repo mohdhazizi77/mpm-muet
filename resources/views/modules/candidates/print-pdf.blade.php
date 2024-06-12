@@ -8,7 +8,6 @@
 @endsection
 
 @section('content')
-
     <div class="container">
         <div class="row">
             <div class="col-lg-12">
@@ -125,7 +124,7 @@
         <div>
 
             <x-button.back></x-button.back>
-            <a id="button-download" href="{{ route('candidate.downloadpdf', ['id' => $cryptId]) }}" class="btn btn-soft-success btn-label btn-border waves-effect waves-light w-lg float-end">
+            <a id="button-download"  href="{{ route('candidate.downloadpdf', ['id' => $cryptId]) }}" target="_blank" class="btn btn-soft-success btn-label btn-border waves-effect waves-light w-lg float-end">
                 <i class="ri-file-download-line label-icon align-middle fs-16 me-2"></i>DOWNLOAD
             </a>
         </div>

@@ -151,10 +151,6 @@
     "file": "icons/remixicon.woff2",
     "src": "resources/fonts/remixicon.woff2"
   },
-  "resources/images/auth-one-bg.jpg": {
-    "file": "icons/auth-one-bg.jpg",
-    "src": "resources/images/auth-one-bg.jpg"
-  },
   "resources/images/chat-bg-pattern.png": {
     "file": "icons/chat-bg-pattern.png",
     "src": "resources/images/chat-bg-pattern.png"
@@ -178,6 +174,10 @@
   "resources/images/modal-bg.png": {
     "file": "icons/modal-bg.png",
     "src": "resources/images/modal-bg.png"
+  },
+  "resources/images/mpm-building.png": {
+    "file": "icons/mpm-building.png",
+    "src": "resources/images/mpm-building.png"
   },
   "resources/images/new.png": {
     "file": "icons/new.png",
@@ -206,18 +206,6 @@
   "resources/images/sidebar/img-4.jpg": {
     "file": "icons/img-4.jpg",
     "src": "resources/images/sidebar/img-4.jpg"
-  },
-  "resources/js/app.css": {
-    "file": "css/app.min2.css",
-    "src": "resources/js/app.css"
-  },
-  "resources/js/app.js": {
-    "css": [
-      "css/app.min2.css"
-    ],
-    "file": "js/app2.js",
-    "isEntry": true,
-    "src": "resources/js/app.js"
   },
   "resources/scss/app.scss": {
     "file": "css/app.min.css",

@@ -2,15 +2,20 @@ $(document).ready(function() {
 
     if ($('#posNewTable').length) {
 
-        $('#posNewTable').DataTable({
+        var table = $('#posNewTable').DataTable({
+            // dom: '<"top"rt><"bottom"lp><"clear">', // Hides the built-in search bar
             processing: true,
             serverSide: true,
+
             ajax: {
                 "url": "/pos/new/ajax",
                 "type": "POST",
                 "data": function (d) {
                     d._token = $('meta[name="csrf-token"]').attr('content');
                     d.type = $('#posNewTable').data('type');
+                    d.startDate = $('#start-date').val();
+                    d.endDate = $('#end-date').val();
+                    d.textSearch = $('#text-search').val();
                 }
             },
             columns: [
@@ -19,16 +24,16 @@ $(document).ready(function() {
                     data: null,
                     orderable: false,
                     render: function(data, type, row, meta) {
-                        return '<input type="checkbox" class="row-checkbox" data-id="' + data.id + '">';
+                        return '<input type="checkbox" class="form-check-input row-checkbox" data-id="' + data.id + '">';
                     }
                 },
-                {
-                    data: null,
-                    orderable: false,
-                    render: function(data, type, row, meta) {
-                        return meta.row + 1;
-                    }
-                },
+                // {
+                //     data: null,
+                //     orderable: false,
+                //     render: function(data, type, row, meta) {
+                //         return meta.row + 1;
+                //     }
+                // },
                 {
                     data: "order_date",
                     orderable: true,
@@ -49,80 +54,9 @@ $(document).ready(function() {
                     render(data, type, row) {
                         let btn = '';
                         btn = '<button type="button" data-id="'+data+'" class="btn btn-info btn-icon waves-effect waves-light me-2 btn-update-pos"><i class="ri-information-line fs-22"></i></button>';
-
-                        // btn = '<button type="button" data-id="'+data+'" class="btn btn-info btn-icon waves-effect waves-light me-2 btn-update-pos" ><i class="ri-information-line fs-22"></i></button>';
-                        // btn = '<button type="button" data-id="'+data+'" class="btn btn-info btn-icon waves-effect waves-light me-2 btn-update-pos" data-bs-toggle="modal" data-bs-target="#modalUpdatePos" ><i class="ri-information-line fs-22"></i></button>';
-                        // btn += data == 'NEW' ? '<button type="button" class="btn btn-info btn-icon waves-effect waves-light me-2" data-bs-toggle="modal" data-bs-target=".modalUpdatePos"><i class="ri-information-line fs-22"></i></button>' : '';
-                        // btn += row.actionDelete ? '<a id="button-delete" href="javascript:void(0);" data-url="' + row.actionDelete + '" style="margin-left: 5px; margin-right: 5px;" class="text-danger btn-delete"><i class="mdi mdi-delete font-size-18"></i></a>' : '';
                         return btn;
                     }
                 }
-                // {
-                //     data: "id",
-                //     orderable: false,
-                // },
-                // {
-                //     data: "id",
-                //     orderable: false,
-                //     render: function (data, type, row, meta) {
-
-                //         var buttonCheckCert = '';
-                //         var buttonPrintPDF = '';
-                //         var buttonPrintMPM = '';
-
-                //         console.log(data, row.is_more2year, row.is_selfPrintPaid, row.is_mpmPrintPaid);
-                //         var modalSelf = 'modalVerifyPDF';
-                //         var modalMPM = 'modalVerifyMPM';
-                //         var modalPayment = 'modalPayment';
-
-                //         if (row.is_more2year && !row.is_selfPrintPaid) { //lebih 2 tahun and tak bayar lagi
-                //             buttonPrintPDF =
-                //             '<a data-id='+data+' class="btn btn-soft-info waves-effect text-black mx-2 '+modalPayment+'" data-bs-toggle="modal" data-bs-target="#'+modalPayment+'">' +
-                //                 '<i class="ri-printer-line label-icon align-middle fs-16 me-2"></i>' +
-                //                 'PRINT PDF' +
-                //             '</a>'
-
-                //             buttonPrintMPM =
-                //             // '<a data-id='+data+' class="btn btn-soft-info waves-effect text-black mx-2 '+modalPayment+'" data-bs-toggle="modal" data-bs-target="#'+modalPayment+'">' +
-                //             //     '<i class="ri-printer-line label-icon align-middle fs-16 me-2"></i> ' +
-                //             //     'PRINTING BY MPM' +
-                //             // '</a> '
-                //             '<a href="/candidates-printmpm/'+data+'" class="btn btn-soft-info waves-effect text-black mx-2 ">' +
-                //                 '<i class="ri-printer-line label-icon align-middle fs-16 me-2"></i> ' +
-                //                 'PRINTING BY MPM' +
-                //             '</a> '
-                //         } else {
-                //             buttonPrintPDF =
-                //             '<a data-id='+data+' class="btn btn-soft-info waves-effect text-black mx-2 modalVerify" data-bs-toggle="modal" data-bs-target="#'+modalSelf+'">' +
-                //                 '<i class="ri-printer-line label-icon align-middle fs-16 me-2"></i>' +
-                //                 'PRINT PDF' +
-                //             '</a>'
-
-                //             buttonPrintMPM =
-                //             '<button type="button" data-id='+data+' class="btn btn-soft-info waves-effect text-black mx-2 modalVerify" data-bs-toggle="modal" data-bs-target="#'+modalMPM+'">' +
-                //                 '<i class="ri-printer-line label-icon align-middle fs-16 me-2"></i> ' +
-                //                 'PRINTING BY MPM' +
-                //             '</button> '
-                //             // '<a href="/candidates-printmpm" class="btn btn-soft-info waves-effect text-black mx-2 ">' +
-                //             //     '<i class="ri-printer-line label-icon align-middle fs-16 me-2"></i> ' +
-                //             //     'PRINTING BY MPM' +
-                //             // '</a> '
-
-                //         }
-
-                //         if (row.is_mpmPrintPaid ) {
-                //             var buttonCheckCert =
-                //             '<a href="/muet-status" data-id='+data+' class="btn btn-soft-secondary waves-effect text-black mx-2">' +
-                //                 '<i class="ri-list-check-2 label-icon align-middle fs-16 me-2"></i>' +
-                //                 'CERTIFICATE STATUS' +
-                //             '</a>'
-                //         }
-
-                //         return buttonPrintPDF + buttonPrintMPM + buttonCheckCert;
-
-                //     },
-                //     // className: ,
-                // }
             ],
             // pageLength: 50,
             // order: [[0, "asc"]],
@@ -160,7 +94,96 @@ $(document).ready(function() {
         });
     }
 
-    // Add click event listener to the button within the DataTable
+    $(document).on('click', '.btn-cancel-pos', function() {
+
+        Swal.fire({
+            title: "Are you sure?",
+            text: "Once approved, the data will be updated!",
+            icon: "warning",
+            // showDenyButton: true,
+            showCancelButton: true,
+            confirmButtonText: "Save",
+            reverseButtons: true
+            // denyButtonText: `Don't save`
+          }).then((result) => {
+            /* Read more about isConfirmed, isDenied below */
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: '/pos/new/cancel',
+                    type: 'POST',
+                    data: $('form').serialize(),
+                    success: function(response){
+                        if (response.success) {
+                            // Close modal
+                            $('#modalUpdatePos').modal('hide');
+
+                            Swal.fire("Saved!", "", "success");
+
+                            // Refresh data table
+                            $('#posNewTable').DataTable().ajax.reload(); // This line refreshes the DataTable
+
+                            // Optionally, you can also redraw the DataTable to update the UI
+                            $('#posNewTable').DataTable().draw(); // This line redraws the DataTable
+                        } else {
+                            Swal.fire("Error!", response.message, "error");
+                        }
+                    },
+                    error: function(xhr, status, error){
+                        // Handle error
+                        Swal.fire("Error!", "Failed to update data.", "error");
+                    }
+                });
+            } else {
+
+            }
+        });
+    })
+
+    $(document).on('click', '.btn-approve-new', function() {
+
+        Swal.fire({
+            title: "Are you sure?",
+            text: "Once approved, the data will be updated!",
+            icon: "warning",
+            // showDenyButton: true,
+            showCancelButton: true,
+            confirmButtonText: "Save",
+            reverseButtons: true
+            // denyButtonText: `Don't save`
+          }).then((result) => {
+            /* Read more about isConfirmed, isDenied below */
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: '/pos/new/update',
+                    type: 'POST',
+                    data: $('form').serialize(),
+                    success: function(response){
+                        if (response.success) {
+                            // Close modal
+                            $('#modalUpdatePos').modal('hide');
+
+                            Swal.fire("Saved!", "", "success");
+
+                            // Refresh data table
+                            $('#posNewTable').DataTable().ajax.reload(); // This line refreshes the DataTable
+
+                            // Optionally, you can also redraw the DataTable to update the UI
+                            $('#posNewTable').DataTable().draw(); // This line redraws the DataTable
+                        } else {
+                            Swal.fire("Error!", response.message, "error");
+                        }
+                    },
+                    error: function(xhr, status, error){
+                        // Handle error
+                        Swal.fire("Error!", "Failed to update data.", "error");
+                    }
+                });
+            } else {
+
+            }
+        });
+    })
+
     $(document).on('click', '.btn-update-pos', function() {
 
         var recordId = $(this).data('id');
@@ -221,62 +244,20 @@ $(document).ready(function() {
         });
     });
 
-    $(document).on('click', '.btn-approve-new', function() {
-
-        Swal.fire({
-            title: "Are you sure?",
-            text: "Once approved, the data will be updated!",
-            icon: "warning",
-            // showDenyButton: true,
-            showCancelButton: true,
-            confirmButtonText: "Save",
-            reverseButtons: true
-            // denyButtonText: `Don't save`
-          }).then((result) => {
-            /* Read more about isConfirmed, isDenied below */
-            if (result.isConfirmed) {
-                $.ajax({
-                    url: '/pos/new/update',
-                    type: 'POST',
-                    data: $('form').serialize(),
-                    success: function(response){
-                        if (response.success) {
-                            // Close modal
-                            $('#modalUpdatePos').modal('hide');
-
-                            Swal.fire("Saved!", "", "success");
-
-                            // Refresh data table
-                            $('#posNewTable').DataTable().ajax.reload(); // This line refreshes the DataTable
-
-                            // Optionally, you can also redraw the DataTable to update the UI
-                            $('#posNewTable').DataTable().draw(); // This line redraws the DataTable
-                        } else {
-                            Swal.fire("Error!", response.message, "error");
-                        }
-                    },
-                    error: function(xhr, status, error){
-                        // Handle error
-                        Swal.fire("Error!", "Failed to update data.", "error");
-                    }
-                });
-            } else {
-
-            }
-        });
-    })
-
     if ($('#posProcessTable').length) {
 
-        $('#posProcessTable').DataTable({
+        var table = $('#posProcessTable').DataTable({
             processing: true,
             serverSide: true,
             ajax: {
-                "url": "/pos/process/ajax",
+                "url": "/pos/processing/ajax",
                 "type": "POST",
                 "data": function (d) {
                     d._token = $('meta[name="csrf-token"]').attr('content');
                     d.type = $('#posProcessTable').data('type');
+                    d.startDate = $('#start-date').val();
+                    d.endDate = $('#end-date').val();
+                    d.noTracking = $('#noTracking').val();
                 }
             },
             columns: [
@@ -284,16 +265,16 @@ $(document).ready(function() {
                     data: null,
                     orderable: false,
                     render: function(data, type, row, meta) {
-                        return '<input type="checkbox" class="row-checkbox" data-id="' + data.id + '">';
+                        return '<input type="checkbox" class="form-check-input row-checkbox" data-id="' + data.id + '">';
                     }
                 },
-                {
-                    data: null,
-                    orderable: false,
-                    render: function(data, type, row, meta) {
-                        return meta.row + 1;
-                    }
-                },
+                // {
+                //     data: null,
+                //     orderable: false,
+                //     render: function(data, type, row, meta) {
+                //         return meta.row + 1;
+                //     }
+                // },
                 {
                     data: "order_date",
                     orderable: true,
@@ -305,6 +286,12 @@ $(document).ready(function() {
                 {
                     data: "details",
                     orderable: false,
+                    render(data, type, row) {
+                        let html = '';
+                        html = data + '<br><p>Tracking Number : '+row.tracking_number+'</p>';
+
+                        return html;
+                    }
                 },
                 {
                     data: 'id',
@@ -315,79 +302,14 @@ $(document).ready(function() {
                         let btn = '';
                         btn = '<button type="button" data-id="'+data+'" class="btn btn-info btn-icon waves-effect waves-light me-2 btn-update-pos"><i class="ri-information-line fs-22"></i></button>';
 
-                        // btn = '<button type="button" data-id="'+data+'" class="btn btn-info btn-icon waves-effect waves-light me-2 btn-update-pos" ><i class="ri-information-line fs-22"></i></button>';
-                        // btn = '<button type="button" data-id="'+data+'" class="btn btn-info btn-icon waves-effect waves-light me-2 btn-update-pos" data-bs-toggle="modal" data-bs-target="#modalUpdatePos" ><i class="ri-information-line fs-22"></i></button>';
-                        // btn += data == 'NEW' ? '<button type="button" class="btn btn-info btn-icon waves-effect waves-light me-2" data-bs-toggle="modal" data-bs-target=".modalUpdatePos"><i class="ri-information-line fs-22"></i></button>' : '';
-                        // btn += row.actionDelete ? '<a id="button-delete" href="javascript:void(0);" data-url="' + row.actionDelete + '" style="margin-left: 5px; margin-right: 5px;" class="text-danger btn-delete"><i class="mdi mdi-delete font-size-18"></i></a>' : '';
                         return btn;
                     }
-                }
-                // {
-                //     data: "id",
-                //     orderable: false,
-                // },
-                // {
-                //     data: "id",
-                //     orderable: false,
-                //     render: function (data, type, row, meta) {
-
-                //         var buttonCheckCert = '';
-                //         var buttonPrintPDF = '';
-                //         var buttonPrintMPM = '';
-
-                //         console.log(data, row.is_more2year, row.is_selfPrintPaid, row.is_mpmPrintPaid);
-                //         var modalSelf = 'modalVerifyPDF';
-                //         var modalMPM = 'modalVerifyMPM';
-                //         var modalPayment = 'modalPayment';
-
-                //         if (row.is_more2year && !row.is_selfPrintPaid) { //lebih 2 tahun and tak bayar lagi
-                //             buttonPrintPDF =
-                //             '<a data-id='+data+' class="btn btn-soft-info waves-effect text-black mx-2 '+modalPayment+'" data-bs-toggle="modal" data-bs-target="#'+modalPayment+'">' +
-                //                 '<i class="ri-printer-line label-icon align-middle fs-16 me-2"></i>' +
-                //                 'PRINT PDF' +
-                //             '</a>'
-
-                //             buttonPrintMPM =
-                //             // '<a data-id='+data+' class="btn btn-soft-info waves-effect text-black mx-2 '+modalPayment+'" data-bs-toggle="modal" data-bs-target="#'+modalPayment+'">' +
-                //             //     '<i class="ri-printer-line label-icon align-middle fs-16 me-2"></i> ' +
-                //             //     'PRINTING BY MPM' +
-                //             // '</a> '
-                //             '<a href="/candidates-printmpm/'+data+'" class="btn btn-soft-info waves-effect text-black mx-2 ">' +
-                //                 '<i class="ri-printer-line label-icon align-middle fs-16 me-2"></i> ' +
-                //                 'PRINTING BY MPM' +
-                //             '</a> '
-                //         } else {
-                //             buttonPrintPDF =
-                //             '<a data-id='+data+' class="btn btn-soft-info waves-effect text-black mx-2 modalVerify" data-bs-toggle="modal" data-bs-target="#'+modalSelf+'">' +
-                //                 '<i class="ri-printer-line label-icon align-middle fs-16 me-2"></i>' +
-                //                 'PRINT PDF' +
-                //             '</a>'
-
-                //             buttonPrintMPM =
-                //             '<button type="button" data-id='+data+' class="btn btn-soft-info waves-effect text-black mx-2 modalVerify" data-bs-toggle="modal" data-bs-target="#'+modalMPM+'">' +
-                //                 '<i class="ri-printer-line label-icon align-middle fs-16 me-2"></i> ' +
-                //                 'PRINTING BY MPM' +
-                //             '</button> '
-                //             // '<a href="/candidates-printmpm" class="btn btn-soft-info waves-effect text-black mx-2 ">' +
-                //             //     '<i class="ri-printer-line label-icon align-middle fs-16 me-2"></i> ' +
-                //             //     'PRINTING BY MPM' +
-                //             // '</a> '
-
-                //         }
-
-                //         if (row.is_mpmPrintPaid ) {
-                //             var buttonCheckCert =
-                //             '<a href="/muet-status" data-id='+data+' class="btn btn-soft-secondary waves-effect text-black mx-2">' +
-                //                 '<i class="ri-list-check-2 label-icon align-middle fs-16 me-2"></i>' +
-                //                 'CERTIFICATE STATUS' +
-                //             '</a>'
-                //         }
-
-                //         return buttonPrintPDF + buttonPrintMPM + buttonCheckCert;
-
-                //     },
-                //     // className: ,
-                // }
+                },
+                {
+                    data: "tracking_number",
+                    orderable: false,
+                    visible: false,
+                },
             ],
             // pageLength: 50,
             // order: [[0, "asc"]],
@@ -425,6 +347,14 @@ $(document).ready(function() {
         });
     }
 
+    $('#noTracking').on('change', function() {
+        if (this.checked) {
+            $(this).prop('value', '1');
+        } else {
+            $(this).prop('value', '0');
+        }
+    });
+
     $(document).on('click', '.btn-approve-processing', function() {
 
         Swal.fire({
@@ -451,10 +381,10 @@ $(document).ready(function() {
                             Swal.fire("Saved!", "", "success");
 
                             // Refresh data table
-                            $('#posProcessTable').DataTable().ajax.reload(); // This line refreshes the DataTable
+                            table.ajax.reload(); // This line refreshes the DataTable
 
                             // Optionally, you can also redraw the DataTable to update the UI
-                            $('#posProcessTable').DataTable().draw(); // This line redraws the DataTable
+                            table.draw(); // This line redraws the DataTable
                         } else {
                             console.log(response);
                             // Swal.fire("Error!", "Failed to update data.", "error");
@@ -474,7 +404,7 @@ $(document).ready(function() {
     })
 
     if ($('#posCompleteTable').length) {
-        $('#posCompleteTable').DataTable({
+        var table = $('#posCompleteTable').DataTable({
             processing: true,
             serverSide: true,
             ajax: {
@@ -554,11 +484,179 @@ $(document).ready(function() {
         });
     }
 
+    var today = new Date().toISOString().split('T')[0];
+    $('#start-date').attr('max', today);
+
+    // Enable/disable the end date input based on the start date value
+    $('#start-date').on('change', function() {
+        if ($(this).val()) {
+            $('#end-date').prop('disabled', false);
+        } else {
+            $('#end-date').prop('disabled', true);
+        }
+
+        var startDate = $(this).val();
+        $('#end-date').attr('min', startDate).prop('disabled', !startDate);
+        $('#end-date').val(startDate)
+    });
+
+    $('#text-search').on('keyup change', function() {
+        table.search(this.value).draw();
+    });
+
+    $(document).on('click', '#filterBtn', function (){
+
+        table.ajax.reload();
+
+        // // Redraw the DataTable
+        // // $('#posNewTable').DataTable().ajax.reload();
+        // var startDate = $('#start-date').val();
+        // var endDate = $('#end-date').val();
+        // var textSearch = $('#text-search').val();
+
+        // function parseDate(dateString) {
+        //     var parts = dateString.split('/');
+        //     // Note: months are 0-based in JavaScript's Date object
+        //     return new Date(parts[2], parts[1] - 1, parts[0]);
+        // }
+
+        // console.log(startDate, endDate, textSearch);
+
+        // // // Convert dates to the desired format
+        // startDate = startDate ? new Date(startDate).toISOString().split('T')[0] : '';
+        // endDate = endDate ? new Date(endDate).toISOString().split('T')[0] : new Date().toISOString().split('T')[0];
+        // // console.log(startDate, endDate);
+
+        // // table.rows().every(function() {
+        // //     var data = this.data();
+        // //     // console.log(data.order_date)
+
+        // //     var orderDate = parseDate(data.order_date).toISOString().split('T')[0];
+
+        // //     var matchesDateRange = (!startDate || orderDate >= startDate) && (!endDate || orderDate <= endDate);
+        // //     var matchesTextSearch = !textSearch ||
+        // //         data.details.toLowerCase().includes(textSearch.toLowerCase()) ||
+        // //         data.order_id.toLowerCase().includes(textSearch.toLowerCase());
+        // //     // console.log(orderDate)
+        // //     // console.log(data.details, data.order_id)
+        // //     console.log(matchesDateRange,matchesTextSearch)
+        // //     if (matchesDateRange && matchesTextSearch) {
+        // //         this.node().style.display = '';
+        // //     } else {
+        // //         this.node().style.display = 'none';
+        // //     }
+        // // });
+
+        // // table.draw();
+
+
+        // // Custom search logic
+        // $.fn.dataTable.ext.search.push(function(settings, data, dataIndex) {
+        //     // var orderDate = parseDate(data.order_date).toISOString().split('T')[0]; // Assuming date is in the first column
+        //     var orderDate = data[0].split('/').reverse().join('-');
+        //     var matchesDateRange = (!startDate || orderDate >= startDate) && (!endDate || orderDate <= endDate);
+        //     var matchesTextSearch = !textSearch ||
+        //         data.details.toLowerCase().includes(textSearch.toLowerCase()) || // Assuming details is in the third column
+        //         data.order_id.toLowerCase().includes(textSearch.toLowerCase()); // Assuming order_id is in the second column
+
+        //     return matchesDateRange && matchesTextSearch;
+        // });
+
+        // table.draw(); // Redraw the table
+        // $.fn.dataTable.ext.search.pop(); // Remove the custom search function
+    })
+
+    //clear filter
+    $(document).on('click', '#resetBtn', function (){
+        $('#start-date').val('');
+        $('#end-date').val('');
+        $('#text-search').val('');
+
+        $('#noTracking').prop('value', '0');
+        $('#noTracking').prop('checked', false);
+
+        table.ajax.reload();
+    })
+
+
+    // BULK ACTION
     $(document).on('click', '.check-all', function() {
         $('.row-checkbox').prop('checked', $(this).prop('checked'));
     });
 
-    // Button action to get selected rows and display them in console
+    $(document).on('click', '#btnBulkCancel', function() {
+        var orderIds = [];
+        $('.row-checkbox:checked').each(function() {
+            orderIds.push($(this).data('id'));
+        });
+
+        var postData = {
+            _token: $('meta[name="csrf-token"]').attr('content'),
+            orderID: orderIds
+        };
+
+        if(orderIds.length > 0){
+            Swal.fire({
+                title: "Are you sure to bulk cancel?",
+                text: "Once cancel, the data will be updated!",
+                icon: "warning",
+                // showDenyButton: true,
+                showCancelButton: true,
+                confirmButtonText: "Save",
+                reverseButtons: true
+                // denyButtonText: `Don't save`
+              }).then((result) => {
+                /* Read more about isConfirmed, isDenied below */
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: '/pos/new/bulk/cancel',
+                        type: 'POST',
+                        data: postData,
+                        beforeSend:function(){
+                            Swal.fire({
+                                title: 'Loading...', // Optional title for the alert
+                                allowEscapeKey: false,  // Disables escape key closing the alert
+                                allowOutsideClick: false, // Disables outside click closing the alert
+                                showConfirmButton: false, // Hides the "Confirm" button
+                                didOpen: () => {
+                                    Swal.showLoading(Swal.getDenyButton()); // Show loading indicator on the Deny button
+                                }
+                            });
+                        },
+                        success: function(response){
+                            Swal.close()
+                            if (response.success) {
+                                // Close modal
+                                $('#modalUpdatePos').modal('hide');
+
+                                Swal.fire("Saved!", "", "success");
+
+                                // Refresh data table
+                                $('#posNewTable').DataTable().ajax.reload(); // This line refreshes the DataTable
+
+                                // Optionally, you can also redraw the DataTable to update the UI
+                                $('#posNewTable').DataTable().draw(); // This line redraws the DataTable
+                            } else {
+                                Swal.fire("Error!", response.message, "error");
+                            }
+                        },
+                        error: function(xhr, status, error){
+                            // Handle error
+                            Swal.fire("Error!", "Failed to update data.", "error");
+                        }
+                    });
+                }
+            });
+        } else {
+            Swal.fire({
+                title: "No row selected",
+                // text: "Once approved, the data will be updated!",
+                icon: "error",
+              })
+        }
+
+    });
+
     $(document).on('click', '#btnBulkApprove', function() {
         var orderIds = [];
 
@@ -566,21 +664,10 @@ $(document).ready(function() {
             orderIds.push($(this).data('id'));
         });
 
-        console.log(orderIds);
-        console.log($('meta[name="csrf-token"]').attr('content'));
-
         var postData = {
             _token: $('meta[name="csrf-token"]').attr('content'),
             orderID: orderIds
         };
-
-        Swal.fire({
-            title: 'Loading...', // Optional title for the alert
-            allowEscapeKey: false,  // Disables escape key closing the alert
-            allowOutsideClick: false, // Disables outside click closing the alert
-            showConfirmButton: false, // Hides the "Confirm" button
-        });
-        Swal.close()
 
         if(orderIds.length > 0){
             Swal.fire({
@@ -646,12 +733,12 @@ $(document).ready(function() {
 
     });
 
-    $(document).on('click', '#btnBulkCancel', function() {
+    $(document).on('click', '#btnBulkComplete', function() {
         var orderIds = [];
+
         $('.row-checkbox:checked').each(function() {
             orderIds.push($(this).data('id'));
         });
-
         var postData = {
             _token: $('meta[name="csrf-token"]').attr('content'),
             orderID: orderIds
@@ -659,8 +746,8 @@ $(document).ready(function() {
 
         if(orderIds.length > 0){
             Swal.fire({
-                title: "Are you sure to bulk cancel?",
-                text: "Once cancel, the data will be updated!",
+                title: "Are you sure to bulk approve?",
+                text: "Please make sure all the record already have tracking number. Once approved, the data will be updated!",
                 icon: "warning",
                 // showDenyButton: true,
                 showCancelButton: true,
@@ -671,7 +758,7 @@ $(document).ready(function() {
                 /* Read more about isConfirmed, isDenied below */
                 if (result.isConfirmed) {
                     $.ajax({
-                        url: '/pos/new/bulk/cancel',
+                        url: '/pos/processing/bulk/update',
                         type: 'POST',
                         data: postData,
                         beforeSend:function(){
@@ -724,7 +811,7 @@ $(document).ready(function() {
     $(document).on('click', '#btnExportExcel', function (){
 
         var type = $(this).data('type');
-        window.location.href = '/pos-management/'+type+'/generateExcel';
+        window.location.href = '/admin/pos-management/'+type+'/generateExcel';
     })
 
 });

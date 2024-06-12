@@ -22,12 +22,12 @@ class CourierSeeder extends Seeder
         $courier->duration = "3-5 Days";
         $courier->save();
 
-        $courier = new Courier();
-        $courier->name = "JNT";
-        $courier->disp_name = "JNT";
-        $courier->rate = "50.00";
-        $courier->currency = "MYR";
-        $courier->duration = "3-5 Days";
-        $courier->save();
+        // $courier = new Courier();
+        // $courier->name = "JNT";
+        // $courier->disp_name = "JNT";
+        // $courier->rate = "50.00";
+        // $courier->currency = "MYR";
+        // $courier->duration = "3-5 Days";
+        // $courier->save();
     }
 }

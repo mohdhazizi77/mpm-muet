@@ -13,7 +13,7 @@ class FinanceModController extends Controller
     {
         $user = Auth::User() ? Auth::User() : abort(403);
 
-        return view('admin.report.financial.mod.index',
+        return view('modules.admin.report.financial.mod.index',
             compact([
                 'user',
             ]));

@@ -3,15 +3,7 @@
     Reporting (Finance - MOD)
 @endsection
 @section('css')
-    {{-- <!-- DataTables --> --}}
 
-    <link href="{{ URL::asset('build/libs/jquery-datatables-checkboxes-1.2.12/css/dataTables.checkboxes.css') }}" rel="stylesheet" type="text/css"/>
-    <link href="{{ URL::asset('build/libs/datatables/datatables.min.css') }}" rel="stylesheet" type="text/css"/>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-
-    <link rel="stylesheet" href="{{ URL::asset('build/libs/@simonwep/pickr/themes/classic.min.css') }}"/> <!-- 'classic' theme -->
-    <link rel="stylesheet" href="{{ URL::asset('build/libs/@simonwep/pickr/themes/monolith.min.css') }}"/> <!-- 'monolith' theme -->
-    <link rel="stylesheet" href="{{ URL::asset('build/libs/@simonwep/pickr/themes/nano.min.css') }}"/> <!-- 'nano' theme -->
 @endsection
 @section('content')
     @component('components.breadcrumb')
@@ -43,13 +35,9 @@
                                         <div class="d-flex align-items-end justify-content-between mt-2">
                                             <div>
                                                 <h4 class="fs-22 fw-semibold ff-secondary mb-2 text-white">
-                                                    <span class="counter-value" data-target="36894">26</span></h4>
+                                                    <span class="counter-value" data-target="36894">{{ $count['totalSuccess'] }}</span></h4>
                                             </div>
-                                            {{--                                            <div class="avatar-sm flex-shrink-0">--}}
-                                            {{--                                                <span class="avatar-title bg-dark-subtle-subtle rounded fs-3">--}}
-                                            {{--                                                    <i class="bx bx-shopping-bag text-white"></i>--}}
-                                            {{--                                                </span>--}}
-                                            {{--                                            </div>--}}
+
                                         </div>
                                     </div><!-- end card body -->
                                 </div><!-- end card -->
@@ -67,13 +55,9 @@
                                         <div class="d-flex align-items-end justify-content-between mt-2">
                                             <div>
                                                 <h4 class="fs-22 fw-semibold ff-secondary mb-2 text-white">
-                                                    <span class="counter-value" data-target="36894">RM 1,000.00</span></h4>
+                                                    <span class="counter-value" data-target="36894">{{ $count['totalPay60'] }}</span></h4>
                                             </div>
-                                            {{--                                            <div class="avatar-sm flex-shrink-0">--}}
-                                            {{--                                                <span class="avatar-title bg-dark-subtle-subtle rounded fs-3">--}}
-                                            {{--                                                    <i class="bx bx-shopping-bag text-white"></i>--}}
-                                            {{--                                                </span>--}}
-                                            {{--                                            </div>--}}
+
                                         </div>
                                     </div><!-- end card body -->
                                 </div><!-- end card -->
@@ -91,13 +75,9 @@
                                         <div class="d-flex align-items-end justify-content-between mt-2">
                                             <div>
                                                 <h4 class="fs-22 fw-semibold ff-secondary mb-2 text-white">
-                                                    <span class="counter-value" data-target="36894">RM 200.00</span></h4>
+                                                    <span class="counter-value" data-target="36894">{{ $count['totalPay20'] }}</span></h4>
                                             </div>
-                                            {{--                                            <div class="avatar-sm flex-shrink-0">--}}
-                                            {{--                                                <span class="avatar-title bg-dark-subtle-subtle rounded fs-3">--}}
-                                            {{--                                                    <i class="bx bx-shopping-bag text-white"></i>--}}
-                                            {{--                                                </span>--}}
-                                            {{--                                            </div>--}}
+
                                         </div>
                                     </div><!-- end card body -->
                                 </div><!-- end card -->
@@ -115,13 +95,8 @@
                                         <div class="d-flex align-items-end justify-content-between mt-2">
                                             <div>
                                                 <h4 class="fs-22 fw-semibold ff-secondary mb-2 text-white">
-                                                    <span class="counter-value" data-target="36894">RM 1,200.00</span></h4>
+                                                    <span class="counter-value" data-target="36894">RM {{ $count['totalCollect'] }}</span></h4>
                                             </div>
-                                            {{--                                            <div class="avatar-sm flex-shrink-0">--}}
-                                            {{--                                                <span class="avatar-title bg-dark-subtle-subtle rounded fs-3">--}}
-                                            {{--                                                    <i class="bx bx-shopping-bag text-white"></i>--}}
-                                            {{--                                                </span>--}}
-                                            {{--                                            </div>--}}
                                         </div>
                                     </div><!-- end card body -->
                                 </div><!-- end card -->
@@ -129,29 +104,30 @@
 
                         </div>
 
+                        {{-- Filter --}}
                         <div class="row gy-1">
-                            <div class="col-lg-3">
-                                <div class="mt-3">
-                                    <label class="form-label mb-3">Date Range</label>
-                                    <input class="form-control" id="basicDate" type="text" placeholder="" data-flatpickr>
-                                </div>
+                            <div class="col-md-3">
+                                <label for="start-date" class="form-label">Start Date:</label>
+                                <input type="date" id="start-date-fin-mod" class="form-control datepicker" placeholder="DD-MM-YYYY">
                             </div>
-
-                        </div>
-                        <div class="col-lg-3">
-                            <div class="mt-3">
-                                <!-- Soft Buttons -->
-                                <button type="button" class="btn btn-soft-primary waves-effect waves-light material-shadow-none">Search</button>
+                            <div class="col-md-3">
+                                <label for="end-date" class="form-label">End Date:</label>
+                                <input type="date" id="end-date-fin-mod" class="form-control datepicker" placeholder="DD-MM-YYYY" disabled>
+                            </div>
+                            <div class="col-md-3" style="align-content: end;">
+                                <button id="filterBtnFinMod" class="btn btn-primary">Filter</button>
+                                <button id="resetBtnFinMod" class="btn btn-secondary">Reset</button>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="text-search-fin-mod" class="form-label">Search:</label>
+                                <input type="text" id="text-search-fin-mod" class="form-control" placeholder="Enter id">
                             </div>
                         </div>
-                        <!--end row-->
                     </div>
                 </div>
             </div>
         </div>
-        <!--end col-->
     </div>
-    <!--end row-->
 
     <div class="row py-4">
         <div class="col-lg-12">
@@ -159,16 +135,8 @@
                 <div class="px-4">
                     <div class="row">
                         <div class="col-xxl-12 align-self-center">
-                            <div class="float-start my-3">
-                                <button type="button" class="btn btn-soft-secondary waves-effect float-end">EXPORT PDF</button>
-                                <button type="button" class="btn btn-soft-secondary waves-effect float-end mx-1">EXPORT XLSX</button>
-                            </div>
-
                             <div class="py-4">
-                                {{--                                <h2 class="display-8 coming-soon-text text-success">TEST LIST</h2>--}}
-                                <!-- Striped Rows -->
-
-                                <table id="dt-pos" class="table w-100 table-striped text-center">
+                                <table id="financeModTable" class="table w-100 table-striped text-center">
                                     <thead>
                                     <tr class="text-center bg-dark-subtle">
                                         <th scope="col">TRANSACTION ID</th>

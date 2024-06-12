@@ -19,7 +19,7 @@
             Administration
         @endslot
         @slot('title')
-            Users
+            Audit Log
         @endslot
     @endcomponent
 

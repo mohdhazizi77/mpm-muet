@@ -6,7 +6,7 @@ $(document).ready(function() {
             processing: true,
             serverSide: true,
             ajax: {
-                "url": "/order/ajax",
+                "url": "/candidate/order/ajax",
                 "type": "POST",
                 "data": function (d) {
                     d._token = $('meta[name="csrf-token"]').attr('content')
@@ -59,7 +59,7 @@ $(document).ready(function() {
 
                         // if (row.status != "FAILED" ) {
                             var buttonCheckCert =
-                            '<a href="/muet-status/'+data+'" data-id='+data+' class="btn btn-soft-secondary waves-effect text-black mx-2">' +
+                            '<a href="/candidate/muet-status/'+data+'" data-id='+data+' class="btn btn-soft-secondary waves-effect text-black mx-2">' +
                                 '<i class="ri-list-check-2 label-icon align-middle fs-16 me-2"></i>' +
                                 'CERTIFICATE STATUS' +
                             '</a>'
@@ -113,7 +113,7 @@ $(document).ready(function() {
             processing: true,
             serverSide: true,
             ajax: {
-                "url": "/track-order/ajax",
+                "url": "/candidate/track-order/ajax",
                 "type": "POST",
                 "data": function (d) {
                     d._token = $('meta[name="csrf-token"]').attr('content')

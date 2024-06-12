@@ -82,7 +82,7 @@
                                         {{--                                        </div>--}}
 
                                         <div class="mt-4">
-                                            <button class="btn btn-soft-success btn-border w-md float-end" type="submit">Log In</button>
+                                            <button class="btn btn-soft-success btn-border w-md float-end" type="submit">Submit</button>
                                         </div>
 
                                     </form>

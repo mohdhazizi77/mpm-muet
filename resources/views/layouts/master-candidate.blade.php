@@ -12,9 +12,10 @@
     @include('layouts.head-css')
     <script src="https://code.jquery.com/jquery-3.6.3.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
-    
-    @vite(['resources/js/app.js'])
-    {{-- @vite(['resources/sass/app.scss', 'resources/js/app.js']) --}}
+
+    {{-- @vite(['resources/js/app.js']) --}}
+    @vite(['resources/js/app.js', 'resources/css/app.css'])
+    {{-- @vite(['resources/sass/app.scss']) --}}
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
 </head>

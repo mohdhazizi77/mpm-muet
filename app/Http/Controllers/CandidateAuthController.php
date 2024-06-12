@@ -25,12 +25,12 @@ class CandidateAuthController extends Controller
             return redirect()->route('candidate.index');
         }
 
-        return back()->withInput($request->only('username'))->withErrors(['username' => 'Invalid credentials qwe']);
+        return back()->withInput($request->only('username'))->withErrors(['username' => 'Invalid credentials']);
     }
 
     public function logout()
     {
-        Auth::guard()->logout();
-        return redirect('/candidate/login');
+        Auth::guard('candidate')->logout();
+        return redirect('/');
     }
 }

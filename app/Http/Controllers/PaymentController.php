@@ -12,10 +12,11 @@ use App\Models\Courier;
 use App\Models\Order;
 use App\Models\Payment;
 use App\Models\TrackingOrder;
+
 use Ramsey\Uuid\Uuid;
+use Carbon\Carbon;
 
 use DataTables;
-
 
 class PaymentController extends Controller
 {
@@ -33,18 +34,36 @@ class PaymentController extends Controller
 
     public function getAjax(Request $request)
     {
+        $transaction = Payment::latest();
 
-        $transaction = Payment::latest()->get();
-        // dd($transaction);
-        // if ($request->ajax()) {
+        // Get the current date in the desired format
+        $currentDate = Carbon::now()->format('Y-m-d H:i:s');
 
-        //     $query = Pos::query()->where('id', '<>', '0')
-        //         ->orderBy('date', 'asc');
+        // Apply date range filtering
+        if ($request->has('startDateTrx') && !empty($request->startDateTrx)) {
+            // Convert startDate and endDate to Carbon instances
+            $startDate = Carbon::parse($request->startDateTrx)->startOfDay()->format('Y-m-d H:i:s');
+            $endDate = $request->has('endDateTrx') && !empty($request->endDateTrx)
+                        ? Carbon::parse($request->endDateTrx)->endOfDay()->format('Y-m-d H:i:s')
+                        : $currentDate;
 
-        //     $data = !empty($query) ? $query->get() : [];
+            // Filter based on the date range
+            $transaction->whereBetween('created_at', [$startDate, $endDate]);
+        }
 
-        //     return DataTables::of($data)->addIndexColumn()->toJson();
-        // }
+        // Apply filtering based on name search if provided
+        if ($request->has('textSearchTrx') && !empty($request->textSearchTrx)) {
+            $textSearch = $request->textSearchTrx;
+            $transaction->where(function ($query) use ($textSearch) {
+                $query->where('txn_id', 'LIKE', '%' . $textSearch . '%')
+                    // Add more columns to search in if necessary
+                    ->orWhere('ref_no', 'LIKE', '%' . $textSearch . '%');
+            });
+        }
+
+        // Retrieve the filtered results
+        $transaction = $transaction->get();
+
         $data = [];
         foreach ($transaction as $key => $value) {
             $data[] = [
@@ -55,7 +74,8 @@ class PaymentController extends Controller
                 "method" => $value->method,
                 "amount" => $value->amount,
                 "receipt" =>  $value->receipt,
-                "receipt_number" =>  $value->receipt_number
+                "receipt_number" =>  $value->receipt_number,
+                "ref_no" =>  $value->ref_no
             ];
         }
 
@@ -235,6 +255,8 @@ class PaymentController extends Controller
                 $payment->receipt = $request->receipt;
                 $payment->receipt_number = $request->receipt_number;
                 $payment->error_message = "";
+                $payment->payment_for = $order->payment_for;
+                $payment->type = $order->type;
                 $payment->save();
 
                 if ($order->payment_for == 'MPM_PRINT') {
@@ -305,6 +327,72 @@ class PaymentController extends Controller
 
     }
 
+    public function checkpayment(Request $request){
+
+        $order = Order::where('payment_ref_no', $request->ref_no)->first();
+        $payment = Payment::where('ref_no', $request->ref_no)->first();
+
+        $url = 'https://ebayar-lab.mpm.edu.my/api/payment/status';
+        $token = 'a2aWmIGjPSVZ8F3OvS2BtppKM2j6TKvKXE7u8W7MwbkVyZjwZfSYdNP5ACem';
+        $secret_key = '1eafc1e9-df86-4c8c-a3de-291ada259ab0';
+
+        $data = [
+            "ref_no" => $request->ref_no,
+        ];
+
+        $output = '';
+        $curl = curl_init();
+        curl_setopt($curl, CURLOPT_URL, $url);
+        curl_setopt($curl, CURLOPT_POST, 1);
+        curl_setopt($curl, CURLOPT_HTTPHEADER, array(
+            'Accept: application/json',
+            'MPMToken: ' . $token
+        ));
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($curl, CURLOPT_POSTFIELDS, http_build_query($data));
+        curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, 0);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 0);
+        $output = curl_exec($curl);
+        $output = json_decode($output);
+
+        if (curl_errno($curl)) {
+            $error_msg = curl_error($curl);
+            // var_dump($error_msg);
+            // exit();
+            curl_close($curl);
+
+            $arr = [
+                'success' => false,
+                'message' => $error_msg->message
+            ];
+
+            return response()->json($arr);
+        }
+
+        if (!empty($output->data)) {
+            curl_close($curl);
+            $order->update(['payment_status' => $output->data->txn_status]);
+            $payment->update(['status' => $output->data->txn_status]);
+        } else {
+            // echo "Payment Gateway tidak dapat disambung. Pastikan URL dan TOKEN adalah betul.";
+            curl_close($curl);
+
+            $arr = [
+                'success' => false,
+                'message' => "Payment Gateway tidak dapat disambung. Pastikan URL dan TOKEN adalah betul."
+            ];
+
+            return response()->json($arr);
+        }
+
+        $arr = [
+            'success' => true,
+            'message' => "Payment status updated"
+        ];
+
+        return response()->json($arr);
+    }
+
     function createPayment($url, $data, $token)
     {
         $output = '';
@@ -362,6 +450,6 @@ class PaymentController extends Controller
         $prefix = substr(md5(uniqid()), 0, 8); // Generate a unique prefix
         $suffix = substr(md5(uniqid()), -4); // Generate a unique suffix
 
-        return $prefix . '-' . $suffix;
+        return '-' . $prefix . '-' . $suffix . '-';
     }
 }

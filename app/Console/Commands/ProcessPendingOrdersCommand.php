@@ -18,9 +18,10 @@ class ProcessPendingOrdersCommand extends Command
             ->where('created_at', '<=', now()->subMinutes(5))
             ->get();
 
-            $url = 'https://ebayar-lab.mpm.edu.my/api/payment/status';
-            $token = 'a2aWmIGjPSVZ8F3OvS2BtppKM2j6TKvKXE7u8W7MwbkVyZjwZfSYdNP5ACem';
-            $secret_key = '1eafc1e9-df86-4c8c-a3de-291ada259ab0';
+        $url = 'https://ebayar-lab.mpm.edu.my/api/payment/status';
+        $token = 'a2aWmIGjPSVZ8F3OvS2BtppKM2j6TKvKXE7u8W7MwbkVyZjwZfSYdNP5ACem';
+        $secret_key = '1eafc1e9-df86-4c8c-a3de-291ada259ab0';
+        
         foreach ($ordersToUpdate as $order) {
             // $order->update(['payment_status' => 'FAILED']);
 
@@ -67,6 +68,8 @@ class ProcessPendingOrdersCommand extends Command
                     $payment->receipt = $output->data->receipt_url;
                     $payment->receipt_number = $output->data->receipt_no;
                     $payment->error_message = "";
+                    $payment->payment_for = $order->payment_for;
+                    $payment->type = $order->type;
                     $payment->save();
 
                 }

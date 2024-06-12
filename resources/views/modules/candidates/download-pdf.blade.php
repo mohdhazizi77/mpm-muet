@@ -129,6 +129,10 @@
 <body>
 
 <div id="page-1">
+    {{-- <div class="row logo-container" style="justify-content: center;">
+        <img style="width: 100px" src="{{ asset('build/images/jataNegara.jpg') }}" alt="Logo">
+        <img style="width: 100px" src="{{ asset('build/images/logo-mpm-kuningpinang.jpg') }}" alt="Logo">
+    </div> --}}
     <div id="session">
         <p style="font-weight: bold; font-size: 22px; margin-bottom: 0.1em;">{{ $result['session'] }}</p>
         <p style="font-size: 17px">and obtained the following score</p>

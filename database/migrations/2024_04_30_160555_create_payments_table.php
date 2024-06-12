@@ -24,6 +24,8 @@ return new class extends Migration
             $table->string('receipt')->nullable(); //get from return URL once create payment url
             $table->string('receipt_number')->nullable(); //get from return URL once create payment url
             $table->string('error_message')->nullable();
+            $table->string('payment_for')->nullable();
+            $table->string('type')->nullable();
             $table->timestamps();
 
             $table->index('order_id');

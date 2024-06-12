@@ -64,7 +64,7 @@ class DefaultUserRoleSeeder extends Seeder
 
         $user = new User();
         $user->name = 'FINANCE';
-        $user->email = 'finance@domain.com';
+        $user->email = 'finance@gmail.com';
         $user->password = Hash::make('123456');
 
         $user->email_verified_at = '2023-01-01 00:00:00';

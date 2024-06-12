@@ -1,17 +1,9 @@
 @extends('layouts.master-mpm')
 @section('title')
-
+    Transaction
 @endsection
 @section('css')
-    {{-- <!-- DataTables --> --}}
 
-    {{-- <link href="{{ URL::asset('build/libs/jquery-datatables-checkboxes-1.2.12/css/dataTables.checkboxes.css') }}" rel="stylesheet" type="text/css"/>
-    <link href="{{ URL::asset('build/libs/datatables/datatables.min.css') }}" rel="stylesheet" type="text/css"/>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-
-    <link rel="stylesheet" href="{{ URL::asset('build/libs/@simonwep/pickr/themes/classic.min.css') }}"/> <!-- 'classic' theme -->
-    <link rel="stylesheet" href="{{ URL::asset('build/libs/@simonwep/pickr/themes/monolith.min.css') }}"/> <!-- 'monolith' theme -->
-    <link rel="stylesheet" href="{{ URL::asset('build/libs/@simonwep/pickr/themes/nano.min.css') }}"/> <!-- 'nano' theme --> --}}
 @endsection
 @section('content')
     @component('components.breadcrumb')
@@ -23,30 +15,30 @@
         @endslot
     @endcomponent
 
-
-
-
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="card">
-                <div class="card-body">
-                    <div class="live-preview">
-                        <div class="row gy-1">
-                            <div class="col-lg-3">
-                                <div class="mt-3">
-                                    <label class="form-label mb-3">Date Range</label>
-                                    <input class="form-control" id="basicDate" type="text" placeholder="" data-flatpickr>
-                                </div>
-                            </div>
-                        </div>
-                        <!--end row-->
+    <div class="row mx-1">
+        <div class="card rounded-0 bg-white border-top px-2">
+            <div class="p-4">
+                <div class="row mb-3">
+                    <div class="col-md-3">
+                        <label for="start-date" class="form-label">Start Date:</label>
+                        <input type="date" id="start-date-trx" class="form-control datepicker" placeholder="DD-MM-YYYY">
+                    </div>
+                    <div class="col-md-3">
+                        <label for="end-date" class="form-label">End Date:</label>
+                        <input type="date" id="end-date-trx" class="form-control datepicker" placeholder="DD-MM-YYYY" disabled>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="text-search" class="form-label">Search:</label>
+                        <input type="text" id="text-search-trx" class="form-control" placeholder="Enter text">
+                    </div>
+                    <div class="col-md-3" style="align-content: end;">
+                            <button id="filterBtnTrx" class="btn btn-primary">Filter</button>
+                            <button id="resetBtnTrx" class="btn btn-secondary">Reset</button>
                     </div>
                 </div>
             </div>
         </div>
-        <!--end col-->
     </div>
-    <!--end row-->
 
     <div class="row py-4">
         <div class="col-lg-12">
@@ -61,14 +53,15 @@
 
                             <div class="py-4">
 
-                                <table id="paymentsTable" class="table w-100 table-striped text-center">
+                                <table id="transactionTable" class="table table-sm w-100 table-striped text-center">
                                     <thead>
                                     <tr class="text-center bg-dark-subtle">
-                                        <th width=25% scope="col">DATE</th>
-                                        <th width=25% scope="col">TRANSACTION ID</th>
-                                        <th width=25% scope="col">DETAILS</th>
-                                        <th width=25% scope="col">STATUS</th>
-                                        {{-- <th scope="col">UPDATED DATE</th> --}}
+                                        <th scope="col">DATE</th>
+                                        <th scope="col">TRANSACTION ID</th>
+                                        <th scope="col">REFERENCE ID</th>
+                                        <th scope="col">DETAILS</th>
+                                        <th scope="col">STATUS</th>
+                                        <th scope="col">ACTION</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -89,21 +82,14 @@
 
 @endsection
 @section('script')
-    {{-- <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script> --}}
 
-    {{-- <script>
+    <!-- DataTables Buttons JS -->
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/buttons/1.7.1/js/dataTables.buttons.min.js"></script>
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/buttons/1.7.1/js/buttons.flash.min.js"></script>
+    <script type="text/javascript" charset="utf8" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/buttons/1.7.1/js/buttons.html5.min.js"></script>
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/buttons/1.7.1/js/buttons.print.min.js"></script>
 
-        $(document).ready(function () {
-            $("#basicDate").flatpickr(
-                {
-                    mode: "range",
-                    dateFormat: "d-m-Y",
-                }
-            );
-        });
-
-
-    </script> --}}
 
     {{-- <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script> --}}
 

@@ -48,7 +48,7 @@ $(document).ready(function() {
                         if (row.is_more2year) { //lebih 2 tahun and tak bayar lagi
                             if (row.is_selfPrintPaid) {
                                 buttonPrintPDF =
-                                '<a href="/candidate/'+data+'/printpdf" data-id='+data+' class="btn btn-soft-info waves-effect text-black mx-2 printPdfButton modalVerify">' +
+                                '<a href="/candidate/view-result/'+data+'" data-id='+data+' class="btn btn-soft-info waves-effect text-black mx-2 printPdfButton modalVerify">' +
                                     '<i class="ri-printer-line label-icon align-middle fs-16 me-2"></i>' +
                                     'PRINT PDF' +
                                 '</a>'
@@ -62,7 +62,7 @@ $(document).ready(function() {
                             }
 
                             buttonPrintMPM =
-                            '<a href="/candidate-printmpm/'+data+'" class="btn btn-soft-info waves-effect text-black mx-2 ">' +
+                            '<a href="/candidate/pos-result/'+data+'" class="btn btn-soft-info waves-effect text-black mx-2 ">' +
                                 '<i class="ri-printer-line label-icon align-middle fs-16 me-2"></i> ' +
                                 'PRINTING BY MPM' +
                             '</a> '
@@ -93,7 +93,7 @@ $(document).ready(function() {
 
                         // if (row.is_mpmPrintPaid || row.is_selfPrintPaid ) {
                             var buttonCheckCert =
-                            '<a href="/order/'+data+'" data-id='+data+' class="btn btn-soft-secondary waves-effect text-black mx-2">' +
+                            '<a href="/candidate/order/'+data+'" data-id='+data+' class="btn btn-soft-secondary waves-effect text-black mx-2">' +
                                 '<i class="ri-list-check-2 label-icon align-middle fs-16 me-2"></i>' +
                                 'ORDER HISTORY' +
                             '</a>'
@@ -149,49 +149,11 @@ $(document).ready(function() {
         var certID = $(this).data('id');
         console.log(certID);
         // Construct the dynamic URL based on the data-id
-        var dynamicUrl = '/candidate-selfprint/' + certID;
+        var dynamicUrl = '/candidate/selfprint/' + certID;
 
         // Update the href attribute of the "Continue" button
         $('#modalPayment a.btn-success').attr('href', dynamicUrl);
     });
-
-    // $(document).on('click', '.modalVerify', function() {
-    //     var certID = $(this).data('id');
-
-    //     $(document).on('click', '.verifyIndexNumber', function(){
-    //         var indexNum = $('#indexNumber').val();
-    //         console.log(certID, indexNum);
-    //         // Perform AJAX request to check the index number
-    //         $.ajax({
-    //             url: './candidate/verifyIndexNumber',
-    //             type: 'POST',
-    //             data: {
-    //                 _token: $('meta[name="csrf-token"]').attr('content'),
-    //                 indexNumber: indexNum,
-    //                 certID : certID
-    //             },
-    //             success: function(response) {
-    //                 if (response.success) {
-    //                     // If index number is valid, redirect or perform further actions
-    //                     window.location.href = '/candidate/41/printpdf';
-    //                 } else {
-    //                     // If index number is invalid, show SweetAlert error
-    //                     Swal.fire({
-    //                         title: 'Error!',
-    //                         text: 'Invalid index number. Please try again.',
-    //                         icon: 'error',
-    //                         confirmButtonText: 'OK'
-    //                     });
-    //                 }
-    //             },
-    //             error: function(xhr, status, error) {
-    //                 // Handle AJAX errors
-    //                 console.error(xhr.responseText);
-    //             }
-    //         });
-    //     });
-
-    // });
 
     $(document).on('click', '.modalVerify', function() {
         $('#indexNumber').val('')
@@ -219,9 +181,9 @@ $(document).ready(function() {
                         // If index number is valid, redirect or perform further actions
                         console.log(response)
                         if (type == "MPM_PRINT") {
-                            window.location.href = '/candidate-printmpm/'+response.id;
+                            window.location.href = '/candidate/pos-result/'+response.id;
                         }else{ //SELF_PRINT
-                            window.location.href = '/candidate/'+response.id+'/printpdf';
+                            window.location.href = '/candidate/view-result/'+response.id;
                         }
                     } else {
                         console.log(response)

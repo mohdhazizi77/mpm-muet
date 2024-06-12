@@ -32,14 +32,14 @@ class LoginController extends Controller
             return $this->redirectBasedOnRole();
         }
 
-        return view('auth.candidate-login');
+        return view('auth.admin-login');
     }
 
     protected function redirectBasedOnRole()
     {
         $user = Auth::user();
-
-        if ($user->hasRole('PENTADBIR')) {
+        // $user->hasRole('PENTADBIR')
+        if (in_array($user->getRolesNames()[0], array('PENTADBIR','BPCOM','PSM','FINANCE')) ) {
             return redirect()->route('admin.index');
         } elseif ($user->hasRole('CALON')) {
             return redirect()->route('candidate.index');
@@ -79,8 +79,6 @@ class LoginController extends Controller
             'password' => 'required|min:6',
         ]);
 
-        dd("heloo");
-
         if (Auth::attempt(['username' => $request->username, 'password' => $request->password])) {
             return $this->redirectBasedOnRole();
         }
@@ -88,7 +86,7 @@ class LoginController extends Controller
         //     return redirect()->intended('/candidate');
         // }
 
-        return back()->withInput($request->only('username'))->withErrors(['username' => 'Invalid credentials 456']);
+        return back()->withInput($request->only('username'))->withErrors(['username' => 'Invalid credentials']);
     }
 
     public function candidateLogout(Request $request)

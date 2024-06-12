@@ -21,50 +21,91 @@ use App\Models\ModCalon;
 
 
 use App\Exports\OrdersExport;
+use Carbon\Carbon;
 
 use DataTables;
 use stdClass;
+
 
 class PosController extends Controller
 {
     public function index($type)
     {
-        $user = Auth::User() ? Auth::User() : abort(403);
+        if (!in_array($type, ['new', 'processing', 'completed'])) {
+            abort(404);
+        }
 
-        return view('modules.admin.pos.'.$type.'.index',
-            compact([
-                'user',
-            ]));
+        $user = Auth::user() ?? abort(403);
 
+        return view('modules.admin.pos.' . $type . '.index', compact('user'));
     }
 
     public function getAjax(Request $request, $type)
     {
-        // dd($type, $request->toArray());
+        // Initialize the query with fixed conditions
         $pos = Order::where([
             'payment_for' => 'MPM_PRINT',
             'payment_status' => 'SUCCESS',
-            "current_status" => $request->type
-        ])->get();
+            'current_status' => $request->type
+        ]);
 
-        $data = [];
-        foreach ($pos as $key => $pos) {
+        // Get the current date in the desired format
+        $currentDate = Carbon::now()->format('Y-m-d H:i:s');
 
-            if($pos->muet_calon_id != null){
-                $calon = $pos->muetCalon;
-            } else {
-                $calon = $pos->modCalon;
-            }
+        // Apply date range filtering
+        if ($request->has('startDate') && !empty($request->startDate)) {
+            // Convert startDate and endDate to Carbon instances
+            $startDate = Carbon::parse($request->startDate)->startOfDay()->format('Y-m-d H:i:s');
+            $endDate = $request->has('endDate') && !empty($request->endDate)
+                        ? Carbon::parse($request->endDate)->endOfDay()->format('Y-m-d H:i:s')
+                        : $currentDate;
 
-            $data[] = [
-                'id'         => Crypt::encrypt($pos->id),
-                'order_id'   => $pos->unique_order_id,
-                'order_date' => $pos->created_at->format('d/m/Y'),
-                'order_time' => $pos->created_at->format('H:i:s'),
-                'details'    => $pos->type . " | Sesi ".$calon->sidang." | " . "Angka Giliran : " . $calon->index_number($calon)
-            ];
+            // Filter based on the date range
+            $pos->whereBetween('created_at', [$startDate, $endDate]);
         }
-        return datatables($data)->toJson();
+
+        // Apply filtering based on name search if provided
+        if ($request->has('textSearch') && !empty($request->textSearch)) {
+            $textSearch = $request->textSearch;
+            $pos->where(function ($query) use ($textSearch) {
+                $query->where('name', 'LIKE', '%' . $textSearch . '%')
+                    // Add more columns to search in if necessary
+                    ->orWhere('unique_order_id', 'LIKE', '%' . $textSearch . '%')
+                    ->orWhere('type', 'LIKE', '%' . $textSearch . '%');
+            });
+        }
+
+        // Apply filtering for no tracking number
+        if ($request->has('noTracking') && !empty($request->noTracking)) {
+            if($request->noTracking){//true
+                $pos->where('tracking_number', "");
+            }
+        }
+
+        // Fetch the data
+        $posData = $pos->get();
+
+        // Prepare the data array
+        $data = [];
+        foreach ($posData as $key => $order) {
+            $calon = $order->muet_calon_id != null ? $order->muetCalon : $order->modCalon;
+            $arr = [
+                'id'         => Crypt::encrypt($order->id),
+                'order_id'   => $order->unique_order_id,
+                'order_date' => $order->created_at->format('d/m/Y'),
+                'order_time' => $order->created_at->format('H:i:s'),
+                'details'    => $order->type . " | Sesi " . $calon->sidang . " | Angka Giliran : " . $calon->index_number($calon)
+            ];
+
+            if ($request->type == "PROCESSING") {
+                $arr['tracking_number'] = (!empty($order->tracking_number) ? $order->tracking_number : "") ;
+            };
+
+            $data[] = $arr;
+        }
+
+        // Return the data in JSON format for DataTables
+        return datatables()->of($data)->toJson();
     }
 
     public function getPosDetail(Request $request, $type){
@@ -180,6 +221,41 @@ class PosController extends Controller
         return response()->json($data);
     }
 
+    public function cancel(Request $request, $type){
+
+        try {
+            $id = Crypt::decrypt($request->order_id);
+        } catch (DecryptException $e) {
+            // Log the exception
+            Log::error('Decryption error: ' . $e->getMessage());
+
+            // Return a custom error view
+            $data = [
+                'error'   => 'Decryption error: ' . $e->getMessage(), // The error message
+                'success' => false,
+            ];
+            return response()->json($data);
+        }
+
+        $order = Order::find($id);
+
+        $data['success'] = false;
+
+        if ($type == 'new') {
+
+            $order->tracking_number = "ER".$order->unique_order_id."MY";
+            $order->current_status = "CANCEL";
+        }
+
+        $order->save();
+
+        $data = [
+            'success' => true
+        ];
+
+        return response()->json($data);
+    }
+
     public function updateBulk(Request $request, $type){
 
         foreach ($request->orderID as $key => $value) {
@@ -228,6 +304,10 @@ class PosController extends Controller
                 $tracking->save();
 
             } elseif ($type == 'processing') {
+
+                //bulk update checking no tracking number not process
+                if(empty($order->tracking_number))
+                    continue;
 
                 if ($order->tracking_number !== $request->ship_trackNum) {
                     $order->tracking_number = $request->ship_trackNum;
@@ -288,43 +368,10 @@ class PosController extends Controller
 
             if ($type == 'new') {
 
-                // $connote = self::getConNote($order); // return output or error
-
-                // $order->tracking_number = $connote->ConnoteNo;
                 $order->tracking_number = "ER".$order->unique_order_id."MY";
                 $order->current_status = "CANCEL";
-
-                // $tracking = new TrackingOrder();
-                // $tracking->order_id = $order->id;
-                // $tracking->detail = "MPM currently processing the certificate for shipping";
-                // $tracking->status = "CANCEL";
-                // $tracking->save();
-
             }
-            // elseif ($type == 'processing') {
 
-            //     if ($order->tracking_number !== $request->ship_trackNum) {
-            //         $order->tracking_number = $request->ship_trackNum;
-            //     }
-
-            //     $preAcceptance = self::sendPreAcceptanceSingle($order); // return output or error
-
-            //     if (!$preAcceptance)
-            //         return response()->json($data);
-
-
-            //     $order->current_status = "COMPLETED";
-
-
-            //     $tracking = new TrackingOrder();
-            //     $tracking->order_id = $order->id;
-            //     $tracking->detail = "Tracking number : ";
-            //     $tracking->status = "COMPLETED";
-            //     $tracking->save();
-            // } else {
-            //     // Default case
-            //     // You can add code here if needed
-            // }
             $order->save();
         }
 

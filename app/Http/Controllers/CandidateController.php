@@ -131,27 +131,50 @@ class CandidateController extends Controller
         }
 
         $user = Auth::user();
+        // $current_time = Carbon::now();
+        // $lockout_time = 60; // Lockout time in minutes (1 hour)
+
+        // // Parse the date_verify_index_number into a Carbon instance
+        // $dateVerifyIndexNumber = Carbon::parse($user->date_verify_index_number);
+
+        // // Check if the user has exceeded retry attempts within the lockout time
+        // if ($user->retry_verify_index_number > 2 && $dateVerifyIndexNumber->diffInMinutes($current_time) < $lockout_time) {
+        //     $minutes_left = $lockout_time - $dateVerifyIndexNumber->diffInMinutes($current_time);
+        //     $timer = $minutes_left . ' minute' . ($minutes_left > 1 ? 's' : '');
+
+        //     $data = [
+        //         'success' => false,
+        //         'message' => 'Your account has been locked due to repeated attempts to enter an index number. Please wait for ' . $timer . ' before trying again.'
+        //     ];
+
+        //     return response()->json($data);
+        // }
+
+        // // If more than 1 hour has passed since the last attempt, reset the retry counter
+        // if ($dateVerifyIndexNumber->diffInMinutes($current_time) >= $lockout_time) {
+        //     $user->retry_verify_index_number = 0;
+        // }
+
         $current_time = Carbon::now();
-        $lockout_time = 60; // Lockout time in minutes (1 hour)
+        $lockout_time = 5; // Lockout time in seconds (5 seconds)
 
         // Parse the date_verify_index_number into a Carbon instance
         $dateVerifyIndexNumber = Carbon::parse($user->date_verify_index_number);
 
         // Check if the user has exceeded retry attempts within the lockout time
-        if ($user->retry_verify_index_number > 2 && $dateVerifyIndexNumber->diffInMinutes($current_time) < $lockout_time) {
-            $minutes_left = $lockout_time - $dateVerifyIndexNumber->diffInMinutes($current_time);
-            $timer = $minutes_left . ' minute' . ($minutes_left > 1 ? 's' : '');
+        if ($user->retry_verify_index_number > 1 && $dateVerifyIndexNumber->diffInSeconds($current_time) < $lockout_time) {
+            $seconds_left = $lockout_time - $dateVerifyIndexNumber->diffInSeconds($current_time);
 
             $data = [
                 'success' => false,
-                'message' => 'Your account has been locked due to repeated attempts to enter an index number. Please wait for ' . $timer . ' before trying again.'
+                'message' => 'Your account has been locked due to repeated attempts to enter an index number. Please wait for ' . $seconds_left . ' seconds before trying again.'
             ];
 
             return response()->json($data);
         }
 
-        // If more than 1 hour has passed since the last attempt, reset the retry counter
-        if ($dateVerifyIndexNumber->diffInMinutes($current_time) >= $lockout_time) {
+        // If more than 5 seconds have passed since the last attempt, reset the retry counter
+        if ($dateVerifyIndexNumber->diffInSeconds($current_time) >= $lockout_time) {
             $user->retry_verify_index_number = 0;
         }
 
@@ -268,6 +291,7 @@ class CandidateController extends Controller
                 "agg_score" => 360,
             ];
             $url = 'http://localhost:8000/qrscan'; // Replace with your URL or data
+            $url = env('APP_URL').'/verify/result/'.$cryptId; // Replace with your URL or data /verify/result/{id}
             $qr = QrCode::size(50)->style('round')->generate($url);
 
             $pdf = PDF::loadView('modules.candidates.download-pdf', ['qr' => $qr, 'type' => $type, 'result' => $result, 'candidate' => $candidate, 'scheme' => $scheme, 'pusat' => $pusat])->setPaper('a4', 'portrait');
@@ -385,5 +409,39 @@ class CandidateController extends Controller
         } else {
             return false; // Given year is less than 2 years ago
         }
+    }
+
+    public function verifyResult($cryptId)
+    {
+        try {
+            $id = Crypt::decrypt($cryptId);
+        } catch (Illuminate\Contracts\Encryption\DecryptException $e) {
+            return redirect()->back();
+        }
+
+        $value = explode('-', $id);
+        $certID = $value[0];
+        $type = $value[1];
+
+        if ($type == "MUET") {
+            $candidate = MuetCalon::find($certID);
+        } else {
+            $candidate = ModCalon::find($certID);
+        }
+
+        $result = $candidate->getResult($candidate);
+        $cert = '';
+        $user = Auth::user();
+        $scheme = [
+            "listening" => 90,
+            "speaking" => 90,
+            "reading" => 90,
+            "writing" => 90,
+            "agg_score" => 360,
+        ];
+
+        // dd($candidate->getResult($candidate));
+        return view('modules.candidates.verify-result', compact(['candidate','scheme','result','cryptId']));
+
     }
 }

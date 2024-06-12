@@ -29,7 +29,7 @@ class HomeController extends Controller
      */
     public function index(Request $request)
     {
-        dd(Auth::user(),Auth::check());
+        // dd(Auth::user(),Auth::check());
         if (Auth::check()) {
             $user = Auth::user();
 
@@ -39,7 +39,8 @@ class HomeController extends Controller
                 return redirect()->route('candidate.index');
             }
         } else {
-            return redirect()->route('candidate.login');
+            // return redirect()->route('candidate.login');
+            return view('auth.candidate-login');
         }
 
         return view('auth.candidate-login');
