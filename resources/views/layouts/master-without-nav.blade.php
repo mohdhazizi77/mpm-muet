@@ -10,11 +10,40 @@
     <!-- App favicon -->
     <link rel="shortcut icon" href="{{ URL::asset('build/images/favicon.ico')}}">
     @include('layouts.head-css')
+    <style>
+        .layout-width {
+            max-width: 100%; /* Ensures it can adapt to any screen size */
+            padding: 0 15px; /* Adjust padding as needed */
+            margin: 0 auto; /* Centers the layout horizontally */
+        }
+
+        @media (max-width: 767px) {
+            .content-wrapper {
+                margin-top: 110px; /* Adjust as needed */
+            }
+        }
+    </style>
 </head>
 
 @yield('body')
 
-@yield('content')
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            @include('layouts.topbar-without-logout')
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="content-wrapper">
+                @yield('content')
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
 
 @include('layouts.vendor-scripts')
 </body>
