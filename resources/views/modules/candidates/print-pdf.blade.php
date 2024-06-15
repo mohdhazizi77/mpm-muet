@@ -140,7 +140,7 @@
 
             $('#button-download').on('click', function (e) {
 
-                e.preventDefault();
+                // e.preventDefault();
 
                 // let selectedState = $('#state').val();
                 // let selectedType = $('#type').val();
@@ -158,7 +158,8 @@
                 //     '&course=' + selectedCourse;
 
                 let url = action;
-                window.location.href = url;
+                // window.location.href = url;
+                $(this).attr('href', url);
             })
 
         })
