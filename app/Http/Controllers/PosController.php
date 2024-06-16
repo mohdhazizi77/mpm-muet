@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\OrdersPosExport;
+use App\Imports\OrderPosImport;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
@@ -257,7 +259,6 @@ class PosController extends Controller
     }
 
     public function updateBulk(Request $request, $type){
-
         foreach ($request->orderID as $key => $value) {
 
             if (empty($value))
@@ -491,9 +492,10 @@ class PosController extends Controller
 
         $orders = Order::where([
             "current_status" => $type
-        ])->get();
+        ])
+        ->with('muetCalon','modCalon')->get();
 
-        return Excel::download(new OrdersExport($orders), 'list_pos_' . $type . '.xlsx');
+        return Excel::download(new OrdersExport($orders,$type), 'list_pos_' . $type . '.xlsx');
 
         $arr = []; // Initialize an empty array
 
@@ -537,5 +539,81 @@ class PosController extends Controller
         $export = new OrdersExport($arr);
         // Download the Excel file
         return Excel::download($export, 'orders.xlsx');
+    }
+
+    public function generateExcelPos($type){
+        $orders = Order::where([
+            "current_status" => $type
+        ])
+        ->with('muetCalon','modCalon')->get();
+
+        return Excel::download(new OrdersPosExport($orders,$type), 'list_pos_' . $type . '.xlsx');
+    }
+    
+    public function generateImportExcelPos(Request $request,$type){
+        $this->validate($request, [
+            'file' => 'nullable|mimes:xls,xlsx'
+        ]);
+
+        if ($request->hasFile('file')) {
+            $file = $request->file('file');
+
+            $validationResult = Excel::toCollection(new OrderPosImport, $file);
+
+            $sheet = $validationResult[0];
+            if (!$sheet->first()->has(18)) {
+                return response('Sila gunakan templat senarai order yang betul.', 422);
+            }
+
+            $parcelNoteValues = [];
+            $consinmentteValues = [];
+            $nonExistentOrders = []; // Initialize an empty array to store non-existent orders
+
+            foreach ($validationResult as $orders) {
+                foreach ($orders as $index => $row) {
+                    // dd($row[18] == 'Parcel Notes' && $row[2] == 'Consignment Note');
+                    if ($index === 0 && $row[18] !== 'Parcel Notes' && $row[2] !== 'Consignment Note') {
+                        return response('Column Parcel Notes and/or Consignment Note is not Exist.', 422);
+                    }
+            
+                    // Proceed if the headers match the expected values and data is valid
+                    if ($index > 0 && isset($row[18]) && isset($row[2]) && $row[18] !== null && $row[18] !== '') {
+                        $parcelNoteValues[] = $row[18];
+                        $consinmentteValues[] = $row[2];
+                    }
+                }
+            }
+
+            // Check existence of all unique_order_id values first
+            foreach ($parcelNoteValues as $parcelNote) {
+                $order = Order::where('unique_order_id', $parcelNote)->exists();
+                
+                if (!$order) {
+                    $nonExistentOrders[] = $parcelNote; // Store non-existent unique_order_id
+                }
+            }
+
+            // If there are any non-existent unique_order_id values, return an error response
+            if (!empty($nonExistentOrders)) {
+                return response('Orders with unique_order_id ' . implode(', ', $nonExistentOrders) . ' do not exist.', 422);
+            }
+
+            // All unique_order_id values exist, proceed with updating tracking_number
+            foreach ($parcelNoteValues as $key => $parcelNote) {
+                $consinment = $consinmentteValues[$key]; 
+                
+                $order = Order::where('unique_order_id', $parcelNote)->first();
+                
+                // Update tracking_number if order exists
+                if ($order) {
+                    $order->tracking_number = $consinment;
+                    $order->save();
+                }
+            }
+
+            return response('Successfully processed the Excel file.', 200);
+        }
+
+        return response()->json(['error' => 'Tiada fail yang disediakan.']);
     }
 }

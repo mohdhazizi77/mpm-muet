@@ -101,6 +101,7 @@ Route::group(['middleware' => ['role:PENTADBIR|BPKOM|PSM|FINANCE']], function ()
         Route::get('/pos-management/{type}/getPosDetail', [PosController::class, 'getPosDetail']);
         Route::get('/pos-management/{type}/generateExcel', [PosController::class, 'generateExcel']);
         Route::get('/pos-management/{type}/generateExcelPos', [PosController::class, 'generateExcelPos']);
+        Route::post('/pos-management/{type}/generateImportExcelPos', [PosController::class, 'generateImportExcelPos']);
 
         Route::get('/transaction', [PaymentController::class, 'index'])->name('transaction.index');
         Route::post('/transaction/ajax', [PaymentController::class, 'getAjax'])->name('transaction.ajax');
@@ -109,7 +110,8 @@ Route::group(['middleware' => ['role:PENTADBIR|BPKOM|PSM|FINANCE']], function ()
         Route::get('/finance/{exam_type}', [FinanceController::class, 'index'])->name('finance.index');
         Route::post('/finance/{exam_type}/ajax', [FinanceController::class, 'getAjax'])->name('finance.ajax');
 
-        Route::resource('finance-statement', FinanceStatementController::class);
+        Route::get('finance-statement', [FinanceStatementController::class, 'index'])->name('finance-statement.index');
+        Route::post('finance-statement/download-excel', [FinanceStatementController::class, 'downloadExcel'])->name('finance-statement.download_excel');
 
         // Route::resource('finance/muet', FinanceMuetController::class);
         // Route::post('finance/muet/ajax', [FinanceMuetController::class, 'getAjax'])->name('finance-muet.ajax');

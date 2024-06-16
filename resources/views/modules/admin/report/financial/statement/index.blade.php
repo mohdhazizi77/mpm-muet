@@ -33,10 +33,7 @@
                             <div class="col-lg-3">
                                 <div class="mt-3">
                                     <label class="form-label mb-3">Year</label>
-                                    <select class="form-select mb-3" aria-label="Default select example">
-                                        <option selected value="2022">-PLEASE SELECT-</option>
-                                        <option value="2022">2022</option>
-                                        <option value="2023">2023</option>
+                                    <select id="year-select" class="form-select mb-3" aria-label="Default select example">
                                     </select>
                                 </div>
                             </div>
@@ -45,7 +42,7 @@
                         <div class="col-lg-3">
                             <div class="mt-3">
                                 <!-- Soft Buttons -->
-                                <button type="button" class="btn btn-soft-primary waves-effect waves-light material-shadow-none">Search</button>
+                                <button type="button" id="search" class="btn btn-soft-primary waves-effect waves-light material-shadow-none">Search</button>
                             </div>
                         </div>
                         <!--end row-->
@@ -75,127 +72,8 @@
                                         <th scope="col">ACTION</th>
                                     </tr>
                                     </thead>
-                                    <tbody>
-                                    <tr class="align-middle">
-                                        <th scope="row">1</th>
-                                        <td>31 JANUARY, 2023</td>
-                                        <td>
-                                            <button type="button" class="btn btn-soft-info waves-effect text-black mx-2" data-bs-toggle="modal" data-bs-target="#modalVerifyPDF">
-                                                <i class="ri-printer-line label-icon align-middle fs-16 me-2"></i>
-                                                DOWNLOAD
-                                            </button>
-                                        </td>
-                                    </tr>
-                                    <tr class="align-middle">
-                                        <th scope="row">2</th>
-                                        <td>28 FEBRUARY, 2023</td>
-                                        <td>
-                                            <button type="button" class="btn btn-soft-info waves-effect text-black mx-2" data-bs-toggle="modal" data-bs-target="#modalVerifyPDF">
-                                                <i class="ri-printer-line label-icon align-middle fs-16 me-2"></i>
-                                                DOWNLOAD
-                                            </button>
-                                        </td>
-                                    </tr>
-                                    <tr class="align-middle">
-                                        <th scope="row">3</th>
-                                        <td>31 MARCH, 2023</td>
-                                        <td>
-                                            <button type="button" class="btn btn-soft-info waves-effect text-black mx-2" data-bs-toggle="modal" data-bs-target="#modalVerifyPDF">
-                                                <i class="ri-printer-line label-icon align-middle fs-16 me-2"></i>
-                                                DOWNLOAD
-                                            </button>
-                                        </td>
-                                    </tr>
-                                    <tr class="align-middle">
-                                        <th scope="row">4</th>
-                                        <td>30 APRIL, 2023</td>
-                                        <td>
-                                            <button type="button" class="btn btn-soft-info waves-effect text-black mx-2" data-bs-toggle="modal" data-bs-target="#modalVerifyPDF">
-                                                <i class="ri-printer-line label-icon align-middle fs-16 me-2"></i>
-                                                DOWNLOAD
-                                            </button>
-                                        </td>
-                                    </tr>
-                                    <tr class="align-middle">
-                                        <th scope="row">5</th>
-                                        <td>31 MAY, 2023</td>
-                                        <td>
-                                            <button type="button" class="btn btn-soft-info waves-effect text-black mx-2" data-bs-toggle="modal" data-bs-target="#modalVerifyPDF">
-                                                <i class="ri-printer-line label-icon align-middle fs-16 me-2"></i>
-                                                DOWNLOAD
-                                            </button>
-                                        </td>
-                                    </tr>
-                                    <tr class="align-middle">
-                                        <th scope="row">6</th>
-                                        <td>30 JUNE, 2023</td>
-                                        <td>
-                                            <button type="button" class="btn btn-soft-info waves-effect text-black mx-2" data-bs-toggle="modal" data-bs-target="#modalVerifyPDF">
-                                                <i class="ri-printer-line label-icon align-middle fs-16 me-2"></i>
-                                                DOWNLOAD
-                                            </button>
-                                        </td>
-                                    </tr>
-                                    <tr class="align-middle">
-                                        <th scope="row">7</th>
-                                        <td>31 JULY, 2023</td>
-                                        <td>
-                                            <button type="button" class="btn btn-soft-info waves-effect text-black mx-2" data-bs-toggle="modal" data-bs-target="#modalVerifyPDF">
-                                                <i class="ri-printer-line label-icon align-middle fs-16 me-2"></i>
-                                                DOWNLOAD
-                                            </button>
-                                        </td>
-                                    </tr>
-                                    <tr class="align-middle">
-                                        <th scope="row">8</th>
-                                        <td>31 AUGUST, 2023</td>
-                                        <td>
-                                            <button type="button" class="btn btn-soft-info waves-effect text-black mx-2" data-bs-toggle="modal" data-bs-target="#modalVerifyPDF">
-                                                <i class="ri-printer-line label-icon align-middle fs-16 me-2"></i>
-                                                DOWNLOAD
-                                            </button>
-                                        </td>
-                                    </tr>
-                                    <tr class="align-middle">
-                                        <th scope="row">9</th>
-                                        <td>30 SEPTEMBER, 2023</td>
-                                        <td>
-                                            <button type="button" class="btn btn-soft-info waves-effect text-black mx-2" data-bs-toggle="modal" data-bs-target="#modalVerifyPDF">
-                                                <i class="ri-printer-line label-icon align-middle fs-16 me-2"></i>
-                                                DOWNLOAD
-                                            </button>
-                                        </td>
-                                    </tr>
-                                    <tr class="align-middle">
-                                        <th scope="row">10</th>
-                                        <td>31 OCTOBER, 2023</td>
-                                        <td>
-                                            <button type="button" class="btn btn-soft-info waves-effect text-black mx-2" data-bs-toggle="modal" data-bs-target="#modalVerifyPDF">
-                                                <i class="ri-printer-line label-icon align-middle fs-16 me-2"></i>
-                                                DOWNLOAD
-                                            </button>
-                                        </td>
-                                    </tr>
-                                    <tr class="align-middle">
-                                        <th scope="row">11</th>
-                                        <td>30 NOVEMBER, 2023</td>
-                                        <td>
-                                            <button type="button" class="btn btn-soft-info waves-effect text-black mx-2" data-bs-toggle="modal" data-bs-target="#modalVerifyPDF">
-                                                <i class="ri-printer-line label-icon align-middle fs-16 me-2"></i>
-                                                DOWNLOAD
-                                            </button>
-                                        </td>
-                                    </tr>
-                                    <tr class="align-middle">
-                                        <th scope="row">12</th>
-                                        <td>31 DECEMBER, 2023</td>
-                                        <td>
-                                            <button type="button" class="btn btn-soft-info waves-effect text-black mx-2" data-bs-toggle="modal" data-bs-target="#modalVerifyPDF">
-                                                <i class="ri-printer-line label-icon align-middle fs-16 me-2"></i>
-                                                DOWNLOAD
-                                            </button>
-                                        </td>
-                                    </tr>
+                                    <tbody id="dynamic-table-body">
+                                        <!-- Rows will be appended here -->
                                     </tbody>
                                 </table>
 
@@ -220,18 +98,104 @@
     <script>
 
         $(document).ready(function () {
-            $("#basicDate").flatpickr(
-                {
-                    mode: "range",
-                    dateFormat: "d-m-Y",
+            // $("#basicDate").flatpickr(
+            //     {
+            //         mode: "range",
+            //         dateFormat: "d-m-Y",
+            //     }
+            // );
+
+            var startYear = 2022;
+            var currentDate = new Date();
+            var currentYear = currentDate.getFullYear();
+
+            $('#year-select').append('<option selected disabled>-PLEASE SELECT-</option>');
+            for (var year = startYear; year <= currentYear; year++) {
+                $('#year-select').append('<option value="' + year + '">' + year + '</option>');
+            }
+
+            $('#search').on('click', function() {
+                var selectedYear = $('#year-select').val();
+                generateTableRows(selectedYear)
+            });
+
+            generateTableRows(currentYear);
+            
+            function generateTableRows(selectedYear) {
+                $('#dynamic-table-body').empty();
+                var startDate = new Date(selectedYear, 0, 1);
+                var endDate = new Date(selectedYear, 11, 31); // End of selected year
+                var counter = 1;
+
+                // Ensure the startDate does not exceed currentDate
+                while (startDate <= currentDate && startDate <= endDate) {
+                    var day = getLastDayOfMonth(startDate.getMonth(), startDate.getFullYear());
+                    var month = startDate.toLocaleString('default', { month: 'long' }).toUpperCase();
+                    var year = startDate.getFullYear();
+                    var formattedDate = day + ' ' + month + ', ' + year;
+
+                    // Append row to the table body
+                    $('#dynamic-table-body').append(
+                        '<tr class="align-middle">' +
+                            '<th scope="row">' + counter + '</th>' +
+                            '<td>' + formattedDate + '</td>' +
+                            '<td>' +
+                                '<button type="button" class="btn btn-soft-info waves-effect text-black mx-2 download-button"data-year="' + year + '" data-month="' + (startDate.getMonth() + 1) + '">' +
+                                    '<i class="ri-printer-line label-icon align-middle fs-16 me-2"></i>' +
+                                    'DOWNLOAD' +
+                                '</button>' +
+                            '</td>' +
+                        '</tr>'
+                    );
+
+                    // Move to the next month
+                    startDate.setMonth(startDate.getMonth() + 1);
+                    counter++;
                 }
-            );
+
+                $('.download-button').on('click', function() {
+                    var year = $(this).data('year');
+                    var month = $(this).data('month');
+
+                    var csrfToken = $('meta[name="csrf-token"]').attr('content');
+                    
+                    $.ajax({
+                        url: '{{ route('finance-statement.download_excel') }}',
+                        method: 'POST',
+                        data: { year: year, month: month },
+                        xhrFields: {
+                            responseType: 'blob' // Important for file download
+                        },
+                        headers: {
+                            'X-CSRF-TOKEN': csrfToken
+                        },
+                        success: function(data) {
+                            var a = document.createElement('a');
+                            var url = window.URL.createObjectURL(data);
+                            a.href = url;
+                            a.download = 'report-' + year + '-' + month + '.xlsx';
+                            document.body.append(a);
+                            a.click();
+                            a.remove();
+                            window.URL.revokeObjectURL(url);
+                        },
+                        error: function() {
+                            alert('Error generating the report.');
+                        }
+                    });
+                });
+            }
+
+            function getLastDayOfMonth(month, year) {
+                return new Date(year, month + 1, 0).getDate();
+            }
         });
 
 
     </script>
 
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 
     <script src="{{ URL::asset('build/libs/datatables/datatables.min.js') }}"></script>
     <script src="{{ URL::asset('build/libs/jquery-datatables-checkboxes-1.2.12/js/dataTables.checkboxes.js') }}"></script>
