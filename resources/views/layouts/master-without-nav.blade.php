@@ -1,3 +1,4 @@
+
 <!doctype html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}" data-layout="vertical" data-layout-style="detached" data-sidebar="light" data-topbar="dark" data-sidebar-size="lg" data-sidebar-image="none" data-preloader="disable">
 
@@ -11,17 +12,34 @@
     <link rel="shortcut icon" href="{{ URL::asset('build/images/favicon.ico')}}">
     @include('layouts.head-css')
     <style>
-        .layout-width {
-            max-width: 100%; /* Ensures it can adapt to any screen size */
-            padding: 0 15px; /* Adjust padding as needed */
-            margin: 0 auto; /* Centers the layout horizontally */
+        #page-top {
+            position: fixed;
+            top: 0;
+            right: 0;
+            left: 0;
+            z-index: 1002;
+            background-color: #132649;
+            transition: all 0.1s ease-out;
+            border-bottom: 1px solid #132649;
+        }
+        #page-top.topbar-shadow {
+            box-shadow: 0 1px 2px #38414a26;
         }
 
         @media (max-width: 767px) {
             .content-wrapper {
-                margin-top: 110px; /* Adjust as needed */
+                margin-top: 110px;
+                padding-left: 10px;
+                padding-right: 10px;
             }
         }
+
+        @media (min-width: 768px) and (max-width: 1024px) {
+            .content-wrapper {
+                padding: 25px 20px; /* Moderate padding for tablets */
+            }
+        }
+
     </style>
 </head>
 
