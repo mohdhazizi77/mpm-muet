@@ -4,7 +4,23 @@
 @endsection
 
 @section('css')
+    <style>
+        .button-container {
+            display: flex;
+            justify-content: space-between; /* Ensure buttons are spaced apart */
+            align-items: center; /* Vertically align buttons */
+            flex-wrap: wrap; /* Allow wrapping for smaller screens */
+            gap: 10px; /* Gap between buttons */
+        }
 
+        /* Media queries for mobile screens */
+        @media (max-width: 767px) {
+            .button-container {
+                flex-direction: column; /* Stack buttons vertically on small screens */
+                align-items: stretch; /* Stretch buttons to fit container width */
+            }
+        }
+    </style>
 @endsection
 
 @section('content')
@@ -53,18 +69,30 @@
                             <div class="col-xxl-6 align-self-center">
                                 <div class="py-3">
                                     <h3 class="fw-bold">CANDIDATE'S DETAILS</h3>
-                                    <table class="table-borderless fs-16 mt-3 fw-bold">
-                                        <tr>
-                                            <td>NAME</td>
-                                            <td class="px-2">:</td>
-                                            <td>{{ $user->name }}</td>
-                                        </tr>
-                                        <tr>
-                                            <td>IDENTIFICATION CARD NUMBER</td>
-                                            <td class="px-2">:</td>
-                                            <td>{{ $user->identity_card_number }}</td>
-                                        </tr>
-                                    </table>
+                                    <div style="overflow-x:auto;">
+                                        <table class="table-borderless fs-16 mt-3 fw-bold">
+                                            <tr>
+                                                <td>NAME</td>
+                                                <td class="px-2">:</td>
+                                                <td class="d-none d-xxl-table-cell">{{ $user->name }}</td>
+                                            </tr>
+                                            <tr class="d-xxl-none">
+                                                <td colspan="3">
+                                                    {{ $user->name }}
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>IDENTIFICATION CARD NUMBER</td>
+                                                <td class="px-2">:</td>
+                                                <td class="d-none d-xxl-table-cell">{{ $user->identity_card_number }}</td>
+                                            </tr>
+                                            <tr class="d-xxl-none">
+                                                <td colspan="3">
+                                                     {{ $user->identity_card_number }}
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -302,14 +330,12 @@
             <!--end col-->
         </div>
 
-        <div>
-
+        <div class="button-container">
             <x-button.back></x-button.back>
             <a id="button-payment" href="#" class="btn btn-soft-success btn-label btn-border waves-effect waves-light w-lg float-end">
-                <i class="ri-secure-payment-fill label-icon align-middle fs-16 me-2"></i>PROCEED TO PAYMENT</a>
+                <i class="ri-secure-payment-fill label-icon align-middle fs-16 me-2"></i>PROCEED TO PAYMENT
+            </a>
         </div>
-
-
     </div>
 @endsection
 @section('script')

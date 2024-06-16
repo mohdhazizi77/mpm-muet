@@ -17,25 +17,32 @@
                             <div class="col-xxl-6 align-self-center">
                                 <div class="py-3">
                                     <h3 class="fw-bold">CANDIDATE'S DETAILS</h3>
-                                    <table class="table-borderless fs-16 mt-3 fw-bold">
-                                        <tr>
-                                            <td>NAME</td>
-                                            <td class="px-2">:</td>
-                                            <td>{{ $user->name }}</td>
-                                        </tr>
-                                        <tr>
-                                            <td>IDENTIFICATION CARD NUMBER</td>
-                                            <td class="px-2">:</td>
-                                            <td>{{ $user->identity_card_number }}</td>
-                                        </tr>
-                                    </table>
+                                    <div style="overflow-x:auto;">
+                                        <table class="table-borderless fs-16 mt-3 fw-bold">
+                                            <tr>
+                                                <td>NAME</td>
+                                                <td class="px-2">:</td>
+                                                <td class="d-none d-xxl-table-cell">{{ $user->name }}</td>
+                                            </tr>
+                                            <tr class="d-xxl-none">
+                                                <td colspan="3">
+                                                    {{ $user->name }}
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>IDENTIFICATION CARD NUMBER</td>
+                                                <td class="px-2">:</td>
+                                                <td class="d-none d-xxl-table-cell">{{ $user->identity_card_number }}</td>
+                                            </tr>
+                                            <tr class="d-xxl-none">
+                                                <td colspan="3">
+                                                     {{ $user->identity_card_number }}
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
                                 </div>
                             </div>
-                            {{--                        <div class="col-xxl-3 ms-auto">--}}
-                            {{--                            <div class="mb-n5 pb-1 faq-img d-none d-xxl-block">--}}
-                            {{--                                <img src="{{ URL::asset('build/images/faq-img.png') }}" alt="" class="img-fluid">--}}
-                            {{--                            </div>--}}
-                            {{--                        </div>--}}
                         </div>
                     </div>
                     <!-- end card body -->
@@ -140,7 +147,7 @@
 
             $('#button-download').on('click', function (e) {
 
-                e.preventDefault();
+                // e.preventDefault();
 
                 // let selectedState = $('#state').val();
                 // let selectedType = $('#type').val();
@@ -158,7 +165,8 @@
                 //     '&course=' + selectedCourse;
 
                 let url = action;
-                window.location.href = url;
+                // window.location.href = url;
+                $(this).attr('href', url);
             })
 
         })
