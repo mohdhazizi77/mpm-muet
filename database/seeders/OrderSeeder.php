@@ -23,7 +23,7 @@ class OrderSeeder extends Seeder
         $order->name = 'luqman';
         $order->email = 'luqman@gmail.com';
         $order->phone_num = '0123456789';
-        $order->shipping_address = 'jalan kolam air';
+        // $order->shipping_address = 'jalan kolam air';
         $order->type = "MUET";
         $order->payment_for = 'SELF_PRINT'; //SELF_PRINT, MPM_PRINT
         $order->payment_status = 'PENDING';
@@ -49,7 +49,7 @@ class OrderSeeder extends Seeder
             $order->name = $faker->name;
             $order->email = $faker->email;
             $order->phone_num = $faker->phoneNumber;
-            $order->shipping_address = $faker->address;
+            // $order->shipping_address = $faker->address;
             $order->type = $type[array_rand($type)]; //MUET, MOD
             $order->payment_for = $payment_for[array_rand($payment_for)]; //SELF_PRINT, MPM_PRINT
             $order->payment_status = $payment_status[array_rand($payment_status)]; //'PENDING', 'SUCCESS', 'FAILED';

@@ -62,13 +62,13 @@
                     <div class="row">
                         <div class="col-xxl-12 align-self-center">
                             <div class="float-start my-3">
-                                <button id="button-export-pos-xlsx" type="button" class="btn btn-soft-secondary waves-effect float-end mx-1">IMPORT POS XLSX</button>
-                                <button id="button-export-pos-xlsx" type="button" class="btn btn-soft-secondary waves-effect float-end mx-1">EXPORT POS XLSX</button>
-                                <button id="button-export-xlsx" type="button" class="btn btn-soft-secondary waves-effect float-end mx-1">EXPORT XLSX</button>
+                                <button id="button-import-pos-xlsx" type="button" class="btn btn-soft-secondary waves-effect float-end mx-1">IMPORT POS XLSX</button>
+                                <button id="button-export-pos-xlsx" data-type="PROCESSING" type="button" class="btn btn-soft-secondary waves-effect float-end mx-1">EXPORT POS XLSX</button>
+                                <button id="button-export-xlsx" data-type="PROCESSING" type="button" class="btn btn-soft-secondary waves-effect float-end mx-1">EXPORT XLSX</button>
                             </div>
                             <div class="float-end my-3">
-                                <button type="button" id="btnBulkComplete" class="btn btn-soft-success waves-effect float-end mx-1">COMPLETE</button>
-                                <button type="button" class="btn btn-soft-success waves-effect float-end ">PRINT CERTIFICATE</button>
+                                <button type="button" id="btnBulkProcessing" class="btn btn-soft-success waves-effect float-end mx-1">COMPLETE</button>
+                                <button type="button" id="" class="btn btn-soft-success waves-effect float-end ">PRINT CERTIFICATE</button>
                             </div>
                     </div>
 
@@ -386,7 +386,7 @@
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
-
+    @include('modules.admin.pos.processing.modal.upload')
 @endsection
 @section('script')
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>

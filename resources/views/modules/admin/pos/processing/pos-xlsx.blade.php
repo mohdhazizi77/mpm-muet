@@ -1,181 +1,33 @@
 <table>
     <thead>
     <tr>
-        <th>Sender Name</th>
-        <th>Sender Email</th>
-        <th>Sender Contact No</th>
-        <th>Sender Address</th>
-        <th>Sender Postcode</th>
-        <th>Receiver Name</th>
-        <th>Receiver Email</th>
-        <th>Receiver Contact No</th>
-        <th>Receiver Address</th>
-        <th>Receiver Postcode</th>
-        <th>Item Weight (kg)</th>
-        <th>Item Width (cm)</th>
-        <th>Item Length (cm)</th>
-        <th>Item Height (cm)</th>
-        <th>Category</th>
-        <th>Item Description</th>
-        <th>Parcel Notes</th>
-        <th>Sender Ref No</th>
-        <th>Insurance (MYR)</th>
+        
     </tr>
     </thead>
-    <tbody>
-    <tr>
-        <td>Majlis Peperiksaan Malaysia</td>
-        <td>muet@mpm.edu.my</td>
-        <td></td>
-        <td>Majlis Peperiksaan Malaysia, Persiaran 1, Bandar Baru Selayang</td>
-        <td>68100</td>
-        <td>ALI BIN ABU</td>
-        <td>aliabu@gmail.com</td>
-        <td>'01634523433</td>
-        <td>LORONG TAMAN SAUJANA</td>
-        <td>'62832</td>
-        <td>'0.50</td>
-        <td>'0.10</td>
-        <td>'0.10</td>
-        <td>'0.10</td>
-        <td>Document</td>
-        <td>MUET Certificate</td>
-        <td>Do not fold</td>
-        <td>'MSA1036482</td>
-        <td></td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>Majlis Peperiksaan Malaysia</td>
-        <td>muet@mpm.edu.my</td>
-        <td></td>
-        <td>Majlis Peperiksaan Malaysia, Persiaran 1, Bandar Baru Selayang</td>
-        <td>68100</td>
-        <td>ALI BIN ABU</td>
-        <td>aliabu@gmail.com</td>
-        <td>'01634523433</td>
-        <td>LORONG TAMAN SAUJANA</td>
-        <td>'62832</td>
-        <td>'0.50</td>
-        <td>'0.10</td>
-        <td>'0.10</td>
-        <td>'0.10</td>
-        <td>Document</td>
-        <td>MUET Certificate</td>
-        <td>Do not fold</td>
-        <td>'MSB1036482</td>
-        <td></td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>Majlis Peperiksaan Malaysia</td>
-        <td>muet@mpm.edu.my</td>
-        <td></td>
-        <td>Majlis Peperiksaan Malaysia, Persiaran 1, Bandar Baru Selayang</td>
-        <td>68100</td>
-        <td>ALI BIN ABU</td>
-        <td>aliabu@gmail.com</td>
-        <td>'01634523433</td>
-        <td>LORONG TAMAN SAUJANA</td>
-        <td>'62832</td>
-        <td>'0.50</td>
-        <td>'0.10</td>
-        <td>'0.10</td>
-        <td>'0.10</td>
-        <td>Document</td>
-        <td>MUET Certificate</td>
-        <td>Do not fold</td>
-        <td>'MSA1036482</td>
-        <td></td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>Majlis Peperiksaan Malaysia</td>
-        <td>muet@mpm.edu.my</td>
-        <td></td>
-        <td>Majlis Peperiksaan Malaysia, Persiaran 1, Bandar Baru Selayang</td>
-        <td>68100</td>
-        <td>ALI BIN ABU</td>
-        <td>aliabu@gmail.com</td>
-        <td>'01634523433</td>
-        <td>LORONG TAMAN SAUJANA</td>
-        <td>'62832</td>
-        <td>'0.50</td>
-        <td>'0.10</td>
-        <td>'0.10</td>
-        <td>'0.10</td>
-        <td>Document</td>
-        <td>MUET Certificate</td>
-        <td>Do not fold</td>
-        <td>'MSA1036482</td>
-        <td></td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>Majlis Peperiksaan Malaysia</td>
-        <td>muet@mpm.edu.my</td>
-        <td></td>
-        <td>Majlis Peperiksaan Malaysia, Persiaran 1, Bandar Baru Selayang</td>
-        <td>68100</td>
-        <td>ALI BIN ABU</td>
-        <td>aliabu@gmail.com</td>
-        <td>'01634523433</td>
-        <td>LORONG TAMAN SAUJANA</td>
-        <td>'62832</td>
-        <td>'0.50</td>
-        <td>'0.10</td>
-        <td>'0.10</td>
-        <td>'0.10</td>
-        <td>Document</td>
-        <td>MUET Certificate</td>
-        <td>Do not fold</td>
-        <td>'MSA1036482</td>
-        <td></td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>Majlis Peperiksaan Malaysia</td>
-        <td>muet@mpm.edu.my</td>
-        <td></td>
-        <td>Majlis Peperiksaan Malaysia, Persiaran 1, Bandar Baru Selayang</td>
-        <td>68100</td>
-        <td>ALI BIN ABU</td>
-        <td>aliabu@gmail.com</td>
-        <td>'01634523433</td>
-        <td>LORONG TAMAN SAUJANA</td>
-        <td>'62832</td>
-        <td>'0.50</td>
-        <td>'0.10</td>
-        <td>'0.10</td>
-        <td>'0.10</td>
-        <td>Document</td>
-        <td>MUET Certificate</td>
-        <td>Do not fold</td>
-        <td>'MSA1036482</td>
-        <td></td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>Majlis Peperiksaan Malaysia</td>
-        <td>muet@mpm.edu.my</td>
-        <td></td>
-        <td>Majlis Peperiksaan Malaysia, Persiaran 1, Bandar Baru Selayang</td>
-        <td>68100</td>
-        <td>ALI BIN ABU</td>
-        <td>aliabu@gmail.com</td>
-        <td>'01634523433</td>
-        <td>LORONG TAMAN SAUJANA</td>
-        <td>'62832</td>
-        <td>'0.50</td>
-        <td>'0.10</td>
-        <td>'0.10</td>
-        <td>'0.10</td>
-        <td>Document</td>
-        <td>MUET Certificate</td>
-        <td>Do not fold</td>
-        <td>'MSA1036482</td>
-        <td></td>
-        <td></td>
-    </tr>
+    
+</table>
+
+<table>
+    <thead>
+        <tr>
+            <th>Bil</th>
+            <th>Date</th>
+            <th>Reference ID</th>
+            <th>Detail</th>
+        </tr>
+    </thead>
+    <tbody style="text-align: center">
+        @foreach ($orders as $order)
+            @php
+                $calon = $order->muet_calon_id != null ? $order->muetCalon : $order->modCalon;
+            @endphp
+            <tr>
+                <td>{{ $loop->iteration }}</td>
+                <td>{{ date('d/m/Y' , strtotime($order->created_at))}}</td>
+                <td>{{ $order->unique_order_id }}</td>
+                <td>{{ $order->type . " | Sesi " . $calon->sidang . " | Angka Giliran : " . $calon->index_number($calon) }}</td>
+            </tr>
+        @endforeach
     </tbody>
 </table>
+

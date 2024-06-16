@@ -3,30 +3,31 @@
 namespace App\Exports;
 
 use App\Models\Order;
-use Maatwebsite\Excel\Concerns\FromCollection;
-use Maatwebsite\Excel\Concerns\WithHeadings;
+use Illuminate\Contracts\View\View;
+use Maatwebsite\Excel\Concerns\FromView;
+use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 
-class OrdersExport implements FromCollection, WithHeadings
+class OrdersExport implements FromView, ShouldAutoSize
 {
     protected $orders;
+    protected $type;
 
-    public function __construct($orders)
+    public function __construct($orders,$type)
     {
         $this->orders = $orders;
+        $this->type = $type;
     }
 
-    public function collection()
+    public function view(): view
     {
-        // return $this->orders;
-        return collect($this->orders);
-    }
-
-    public function headings(): array
-    {
-        return [
-            'Date',
-            'Reference ID',
-            'Detail'
-        ];
+        if($this->type == 'NEW'){
+            return view('modules.admin.pos.' . $this->type . '.new-xlsx', [
+                'orders' => $this->orders,
+            ]);
+        }else{
+            return view('modules.admin.pos.' . $this->type . '.pos-xlsx', [
+                'orders' => $this->orders,
+            ]);
+        }
     }
 }

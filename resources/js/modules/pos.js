@@ -812,6 +812,193 @@ $(document).ready(function() {
 
         var type = $(this).data('type');
         window.location.href = '/admin/pos-management/'+type+'/generateExcel';
-    })
+    });
+    
+    $(document).on('click', '#button-export-xlsx', function (){
+
+        var type = $(this).data('type');
+        window.location.href = '/admin/pos-management/'+type+'/generateExcel';
+    });
+    
+    $(document).on('click', '#button-export-pos-xlsx', function (){
+
+        var type = $(this).data('type');
+        window.location.href = '/admin/pos-management/'+type+'/generateExcelPos';
+    });
+    
+    $(document).on('click', '#button-import-pos-xlsx', function (){
+        $('#formFile').val('');
+        $('#modal_upload_xlsx').modal('show');
+    });
+
+    $(document).on('click', '#submit-upload', function(e) {
+        var csrfToken = $('meta[name="csrf-token"]').attr('content');
+        var formData = new FormData($('#form_upluad_xlsx')[0]);
+
+        Swal.fire({
+            type: 'warning',
+            title: 'Adakah Anda Pasti?',
+            text: 'Fail Xlsx Akan di Muat Naik!',
+            customClass: {
+                popup: 'my-swal-popup',
+                confirmButton: 'my-swal-confirm',
+                cancelButton: 'my-swal-cancel',
+            },
+            showCancelButton: true, // Show the cancel button
+            confirmButtonText: 'Ya',
+            cancelButtonText: 'Tidak'
+        }).then((result) => {
+            if (result.value) { 
+                var type = 'PROCESSING'; 
+                var url = '/admin/pos-management/' + type + '/generateImportExcelPos';
+                $.ajax({
+                    url: url,
+                    method: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    headers: {
+                        'X-CSRF-TOKEN': csrfToken
+                    },
+                    beforeSend:function(){
+                        Swal.fire({
+                            title: 'Loading...', // Optional title for the alert
+                            allowEscapeKey: false,  // Disables escape key closing the alert
+                            allowOutsideClick: false, // Disables outside click closing the alert
+                            showConfirmButton: false, // Hides the "Confirm" button
+                            didOpen: () => {
+                                Swal.showLoading(Swal.getDenyButton()); // Show loading indicator on the Deny button
+                            }
+                        });
+                    },
+                    success: function(response) {
+                        $('#form_upluad_xlsx').removeClass('was-validated');
+                        Swal.fire({
+                            type: 'success',
+                            title: 'Berjaya',
+                            text: 'Berjaya Muat Naik Xlsx',
+                            customClass: {
+                                popup: 'my-swal-popup',
+                                confirmButton: 'my-swal-confirm',
+                                cancelButton: 'my-swal-cancel',
+                            }
+                        }).then((result) => {
+                            if (result.value) {
+                                $('#modal_upload_xlsx').modal('hide');
+                                window.location.reload();
+                            }
+                        });
+                    },
+                    error: function(xhr, status, errors) {
+                        $('#form_upluad_xlsx').addClass('was-validated');
+                        if (xhr.responseJSON && xhr.responseJSON.errors) {
+                            console.log(xhr.responseJSON.errors);
+                            Swal.fire({
+                                icon: "error",
+                                title: 'Gagal',
+                                text: xhr.responseJSON.message,
+                                customClass: {
+                                    popup: 'my-swal-popup',
+                                    confirmButton: 'my-swal-confirm',
+                                    cancelButton: 'my-swal-cancel',
+                                }
+                            });
+
+                            var firstError = Object.values(xhr.responseJSON.errors)[0][0];
+                            $('#show-validate').text(firstError);
+                        }else{
+                            Swal.fire({
+                                icon: "error",
+                                title: 'Gagal',
+                                text: xhr.responseText,
+                                customClass: {
+                                    popup: 'my-swal-popup',
+                                    confirmButton: 'my-swal-confirm',
+                                    cancelButton: 'my-swal-cancel',
+                                }
+                            });
+                            $('#show-validate').text(xhr.responseText);
+                        }
+                    }
+                });
+            }
+        });
+    });
+
+    $(document).on('click', '#btnBulkProcessing', function() {
+        var orderIds = [];
+
+        $('.row-checkbox:checked').each(function() {
+            orderIds.push($(this).data('id'));
+        });
+
+        var postData = {
+            _token: $('meta[name="csrf-token"]').attr('content'),
+            orderID: orderIds
+        };
+
+        if(orderIds.length > 0){
+            Swal.fire({
+                title: "Are you sure to bulk approve?",
+                text: "Once approved, the data will be updated!",
+                icon: "warning",
+                // showDenyButton: true,
+                showCancelButton: true,
+                confirmButtonText: "Save",
+                reverseButtons: true
+                // denyButtonText: `Don't save`
+              }).then((result) => {
+                /* Read more about isConfirmed, isDenied below */
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: '/pos/processing/bulk/update',
+                        type: 'POST',
+                        data: postData,
+                        beforeSend:function(){
+                            Swal.fire({
+                                title: 'Loading...', // Optional title for the alert
+                                allowEscapeKey: false,  // Disables escape key closing the alert
+                                allowOutsideClick: false, // Disables outside click closing the alert
+                                showConfirmButton: false, // Hides the "Confirm" button
+                                didOpen: () => {
+                                    Swal.showLoading(Swal.getDenyButton()); // Show loading indicator on the Deny button
+                                }
+                            });
+                        },
+                        success: function(response){
+                            Swal.close()
+                            if (response.success) {
+                                // Close modal
+                                $('#modalUpdatePos').modal('hide');
+
+                                Swal.fire("Saved!", "", "success");
+
+                                // Refresh data table
+                                $('#posProcessTable').DataTable().ajax.reload(); // This line refreshes the DataTable
+
+                                // Optionally, you can also redraw the DataTable to update the UI
+                                $('#posProcessTable').DataTable().draw(); // This line redraws the DataTable
+                            } else {
+                                Swal.fire("Error!", response.message, "error");
+                            }
+                        },
+                        error: function(xhr, status, error){
+                            // Handle error
+                            Swal.fire("Error!", "Failed to update data.", "error");
+                        }
+                    });
+                } else {
+
+                }
+            });
+        } else {
+            Swal.fire({
+                title: "No row selected",
+                // text: "Once approved, the data will be updated!",
+                icon: "error",
+              })
+        }
+
+    });
 
 });

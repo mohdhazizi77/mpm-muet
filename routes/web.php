@@ -101,6 +101,7 @@ Route::group(['middleware' => ['role:PENTADBIR|BPKOM|PSM|FINANCE']], function ()
         Route::get('/pos-management/{type}/getPosDetail', [PosController::class, 'getPosDetail']);
         Route::get('/pos-management/{type}/generateExcel', [PosController::class, 'generateExcel']);
         Route::get('/pos-management/{type}/generateExcelPos', [PosController::class, 'generateExcelPos']);
+        Route::post('/pos-management/{type}/generateImportExcelPos', [PosController::class, 'generateImportExcelPos']);
 
         Route::get('/transaction', [PaymentController::class, 'index'])->name('transaction.index');
         Route::post('/transaction/ajax', [PaymentController::class, 'getAjax'])->name('transaction.ajax');
