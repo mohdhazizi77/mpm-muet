@@ -1,11 +1,13 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Exports\TransactionExport;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 
+use Barryvdh\DomPDF\Facade\Pdf;
 use App\Http\Requests\PaymentRequest;
 use App\Models\Candidate;
 use App\Models\Courier;
@@ -13,6 +15,7 @@ use App\Models\Order;
 use App\Models\Payment;
 use App\Models\TrackingOrder;
 
+use Maatwebsite\Excel\Facades\Excel;
 use Ramsey\Uuid\Uuid;
 use Carbon\Carbon;
 
@@ -391,6 +394,20 @@ class PaymentController extends Controller
         ];
 
         return response()->json($arr);
+    }
+
+    public function generateExcel(){
+        $transaction = Payment::get();
+
+        return Excel::download(new TransactionExport($transaction), 'transaction_' . now() . '.xlsx');
+    }
+    
+    public function generatePdf(){
+        $transaction = Payment::get();
+
+        $pdf = PDF::loadView('modules.admin.report.transaction.pdf.transaction', ['transactions' => $transaction]);
+
+        return $pdf->stream('ListTransaction.pdf');
     }
 
     function createPayment($url, $data, $token)

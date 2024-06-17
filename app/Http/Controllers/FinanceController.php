@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Payment;
 use App\Models\Order;
 
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -101,6 +102,19 @@ class FinanceController extends Controller
         }
 
         return datatables($data)->toJson();
+    }
+
+    public function generatePdf(Request $request){
+        $payments = Payment::where('type', strtoupper($request->exam_type))->get();
+        
+        if($request->exam_type == 'mod'){
+            $pdf = Pdf::loadView('modules.admin.report.financial.mod.pdf', ['payments' => $payments]);
+
+        }else{
+            $pdf = Pdf::loadView('modules.admin.report.financial.muet.pdf', ['payments' => $payments]);
+        }
+
+        return $pdf->stream('List_finance_' . $request->exam_type . '.pdf');
     }
 
     public function ajaxDashboard(){
