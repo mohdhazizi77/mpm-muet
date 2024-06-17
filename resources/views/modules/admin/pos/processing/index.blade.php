@@ -68,7 +68,7 @@
                             </div>
                             <div class="float-end my-3">
                                 <button type="button" id="btnBulkProcessing" class="btn btn-soft-success waves-effect float-end mx-1">COMPLETE</button>
-                                <button type="button" id="" class="btn btn-soft-success waves-effect float-end ">PRINT CERTIFICATE</button>
+                                <button type="button" id="btnBulkPrintProcessing" class="btn btn-soft-success waves-effect float-end ">PRINT CERTIFICATE</button>
                             </div>
                     </div>
 

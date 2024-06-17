@@ -616,4 +616,10 @@ class PosController extends Controller
 
         return response()->json(['error' => 'Tiada fail yang disediakan.']);
     }
+
+    public function printBulk(Request $request){
+        $orderIds = $request->query('orderIds', []);
+
+        dd($orderIds);
+    }
 }

@@ -1000,5 +1000,44 @@ $(document).ready(function() {
         }
 
     });
+    
+    $(document).on('click', '#btnBulkPrintProcessing', function() {
+        var orderIds = [];
+
+        $('.row-checkbox:checked').each(function() {
+            orderIds.push($(this).data('id'));
+        });
+
+        if(orderIds.length > 0){
+            var csrfToken = $('meta[name="csrf-token"]').attr('content');
+                    
+            $.ajax({
+                url: './pos/processing/bulk/print',
+                method: 'POST',
+                data: { orderIds: orderIds },
+                xhrFields: {
+                    responseType: 'blob' // Important for file download
+                },
+                headers: {
+                    'X-CSRF-TOKEN': csrfToken
+                },
+                success: function(data) {
+                    var a = document.createElement('a');
+                    var url = window.URL.createObjectURL(data);
+                    window.open(url, '_blank');
+                },
+                error: function() {
+                    alert('Error generating the report.');
+                }
+            });
+        } else {
+            Swal.fire({
+                title: "No row selected",
+                // text: "Once approved, the data will be updated!",
+                icon: "error",
+              })
+        }
+
+    });
 
 });
