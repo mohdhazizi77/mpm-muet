@@ -44,14 +44,18 @@
         <div class="col-lg-12">
             <div class="card rounded-0 bg-white mx-n4 mt-n4 border-top">
                 <div class="px-4">
+                    <div class="row p-0">
+                        <div class="col-xxl-12 align-self-center">
+                            <div class="float-start my-3">
+                                <button id="button-export-pdf-trans" target="_blank"  type="button" class="btn btn-soft-secondary waves-effect float-end mx-1">EXPORT PDF</button>
+                                <button id="button-export-xlsx-trans"  type="button" class="btn btn-soft-secondary waves-effect float-end mx-1">EXPORT XLSX</button>
+                            </div>
+                    </div>
+
                     <div class="row">
                         <div class="col-xxl-12 align-self-center">
-                            {{-- <div class="float-start my-3">
-                                <button type="button" class="btn btn-soft-secondary waves-effect float-end">EXPORT XLSX</button>
-                                <button type="button" class="btn btn-soft-secondary waves-effect float-end mx-1">EXPORT PDF</button>
-                            </div> --}}
 
-                            <div class="py-4">
+                            <div class="">
 
                                 <table id="transactionTable" class="table table-sm w-100 table-striped text-center">
                                     <thead>

@@ -35,13 +35,13 @@
                         <label for="end-date" class="form-label">End Date:</label>
                         <input type="date" id="end-date" class="form-control datepicker" placeholder="DD-MM-YYYY" disabled>
                     </div>
-                    {{-- <div class="col-md-3">
-                        <label for="text-search" class="form-label">Text Search:</label>
-                        <input type="text" id="text-search" class="form-control" placeholder="Enter text">
-                    </div> --}}
                     <div class="col-md-3" style="align-content: end;">
                             <button id="filterBtn" class="btn btn-primary">Filter</button>
                             <button id="resetBtn" class="btn btn-secondary">Reset</button>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="text-search" class="form-label">Text Search:</label>
+                        <input type="text" id="text-search" class="form-control" placeholder="Enter text">
                     </div>
                 </div>
             </div>
