@@ -3,26 +3,26 @@ $(document).ready(function() {
     if ($("#transactionTable").length>0) {
 
         var tableTrx = $('#transactionTable').DataTable({
-            dom: 'Bfrtip',
-            buttons: [
-                'excel','print'
-            ],
-            buttons: [
-                {
-                    extend: 'excel',
-                    text: 'EXPORT XLSX',
-                    className: 'btn btn-soft-secondary waves-effect mb-2 btn-excel-trx',
-                    filename: 'ListTransation',
-                    title: 'List of Transaction'
-                },
-                {
-                    extend: 'print',
-                    text: 'EXPORT PDF',
-                    className: 'btn btn-soft-secondary waves-effect mb-2 btn-print-trx',
-                    filename: 'ListTransation',
-                    title: 'List of Transaction'
-                }
-            ],
+            // dom: 'Bfrtip',
+            // buttons: [
+            //     'excel','print'
+            // ],
+            // buttons: [
+            //     {
+            //         extend: 'excel',
+            //         text: 'EXPORT XLSX',
+            //         className: 'btn btn-soft-secondary waves-effect mb-2 btn-excel-trx',
+            //         filename: 'ListTransation',
+            //         title: 'List of Transaction'
+            //     },
+            //     {
+            //         extend: 'print',
+            //         text: 'EXPORT PDF',
+            //         className: 'btn btn-soft-secondary waves-effect mb-2 btn-print-trx',
+            //         filename: 'ListTransation',
+            //         title: 'List of Transaction',
+            //     }
+            // ],
 
             processing: true,
             serverSide: true,
@@ -209,4 +209,12 @@ $(document).ready(function() {
             }
         });
     })
+
+    $(document).on('click', '#button-export-xlsx-trans', function (){
+        window.location.href = './transaction/excel';
+    });
+    
+    $(document).on('click', '#button-export-pdf-trans', function (){
+        window.open('./transaction/pdf', '_blank');
+    });
 });

@@ -21,7 +21,10 @@ $(document).ready(function() {
                     text: 'EXPORT PDF',
                     className: 'btn btn-soft-secondary waves-effect mb-2 btn-print-fin-muet',
                     filename: 'ListTransation',
-                    title: 'List of Transaction'
+                    title: 'List of Transaction',
+                    action: function (e, dt, button, config) {
+                        window.open('./muet/pdf', '_blank');
+                    }
                 }
             ],
 
@@ -210,7 +213,10 @@ $(document).ready(function() {
                     text: 'EXPORT PDF',
                     className: 'btn btn-soft-secondary waves-effect mb-2 btn-print-fin-mod',
                     filename: 'ListTransation',
-                    title: 'List of Transaction'
+                    title: 'List of Transaction',
+                    action: function (e, dt, button, config) {
+                        window.open('./mod/pdf', '_blank');
+                    }
                 }
             ],
 
