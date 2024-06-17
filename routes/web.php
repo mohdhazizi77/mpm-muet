@@ -151,6 +151,9 @@ Route::group(['middleware' => ['role:PENTADBIR|BPKOM|PSM|FINANCE']], function ()
 
 });
 
+Route::get('users/verify-password/{id}', [UserController::class, 'verifyIndex'])->name('users.verify_index');
+Route::post('users/verify-password/{id}/update', [UserController::class, 'updatePassword'])->name('users.verify_index_update');
+
 //Update User Details
 Route::post('/update-profile/{id}', [App\Http\Controllers\HomeController::class, 'updateProfile'])->name('updateProfile');
 Route::post('/update-password/{id}', [App\Http\Controllers\HomeController::class, 'updatePassword'])->name('updatePassword');
