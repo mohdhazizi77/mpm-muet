@@ -7,6 +7,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\CandidateAuthController;
 use App\Http\Controllers\CandidateController;
 use App\Http\Controllers\CandidatesResultController;
+use App\Http\Controllers\CourierController;
 use App\Http\Controllers\FinanceController;
 use App\Http\Controllers\FinanceModController;
 use App\Http\Controllers\FinanceMuetController;
@@ -121,6 +122,12 @@ Route::group(['middleware' => ['role:PENTADBIR|BPKOM|PSM|FINANCE']], function ()
 
         // Route::resource('finance/mod', FinanceModController::class);
         // Route::post('finance/mod/ajax', [FinanceModController::class, 'getAjax'])->name('finance-mod.ajax');
+
+        Route::get('/courier', [CourierController::class, 'index'])->name('courier.index');
+        Route::post('/courier/ajax', [CourierController::class, 'getAjax'])->name('courier.ajax');
+        Route::post('/courier/store', [CourierController::class, 'store'])->name('courier.store');
+        Route::post('/courier/update/{id}', [CourierController::class, 'update'])->name('courier.update');
+        Route::delete('/courier/destroy/{id}', [CourierController::class, 'destroy'])->name('courier.destroy');
     });
 
     Route::get('/pos/token', [PosController::class, 'getBearerToken']);
