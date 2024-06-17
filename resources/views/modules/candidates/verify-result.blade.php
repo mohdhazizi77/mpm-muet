@@ -1,4 +1,4 @@
-@extends('layouts.master-without-nav')
+@extends('layouts.master-qr-nav')
 @section('title')
     MUET Online Certificate
 @endsection

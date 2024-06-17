@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Notifications\VerifyPasswordNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
@@ -29,6 +30,25 @@ class UserController extends Controller
                 'user',
             ]));
 
+    }
+
+    public function verifyIndex(Request $request, $id)
+    {
+        return view('auth.admin-verify-password', compact('id'));
+    }
+    
+    public function updatePassword(Request $request, $id)
+    {
+        $request->validate([
+            'password' => 'required|string',
+        ]);
+
+        $user = User::findOrFail($id);
+        $user->password = Hash::make($request->password);
+        $user->email_verified_at = now();
+        $user->save();
+
+        return redirect()->route('admin.login');
     }
 
     public function getAjax(){
@@ -88,6 +108,14 @@ class UserController extends Controller
         $user->phone_num = $request->phonenumber;
         $user->is_deleted = $request->status;
         $user->save();
+
+        $user->refresh();
+        $userEmail = User::where('id', $user->id)->first();
+        try {
+            $userEmail->notify(new VerifyPasswordNotification($user));
+        } catch (\Exception $e) {
+            \Log::error('Error sending email notification: ' . $e->getMessage());
+        }
 
         //assign role
         $user->assignRole($request->role);
