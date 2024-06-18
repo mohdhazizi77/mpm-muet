@@ -51,7 +51,7 @@ class PaymentController extends Controller
                         : $currentDate;
 
             // Filter based on the date range
-            $transaction->whereBetween('created_at', [$startDate, $endDate]);
+            $transaction->whereBetween('payment_date', [$startDate, $endDate]);
         }
 
         // Apply filtering based on name search if provided

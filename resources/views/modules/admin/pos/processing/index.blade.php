@@ -3,6 +3,43 @@
     POS Management
 @endsection
 @section('css')
+    <style>
+        .toggle-button {
+            display: inline-block;
+            width: 60px;
+            height: 30px;
+            cursor: pointer;
+            border: 1px solid #ccc;
+            border-radius: 15px;
+            position: relative;
+            overflow: hidden;
+        }
+        .toggle-button:before {
+            content: '';
+            position: absolute;
+            top: 1px;
+            left: 1px;
+            width: 28px;
+            height: 28px;
+            background-color: #ccc;
+            border-radius: 50%;
+            transition: transform 0.3s ease;
+        }
+        .toggle-button.active:before {
+            transform: translateX(30px);
+            background-color: #28a745; /* Green color for active state */
+        }
+        .toggle-button .status {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 14px;
+            color: #333;
+        }
+
+    </style>
     {{-- <!-- DataTables --> --}}
 
     {{-- <link href="{{ URL::asset('build/libs/jquery-datatables-checkboxes-1.2.12/css/dataTables.checkboxes.css') }}" rel="stylesheet" type="text/css"/>
@@ -27,29 +64,33 @@
         <div class="card rounded-0 bg-white border-top px-2">
             <div class="p-4">
                 <div class="row mb-3">
-                    <div class="col-md-3">
-                        <label for="start-date" class="form-label">Start Date:</label>
-                        <input type="date" id="start-date" class="form-control datepicker" placeholder="DD-MM-YYYY">
+                    <div class="col-md-8">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label for="start-date" class="form-label">Start Date:</label>
+                                <input type="date" id="start-date" class="form-control datepicker" placeholder="DD-MM-YYYY">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="end-date" class="form-label">End Date:</label>
+                                <input type="date" id="end-date" class="form-control datepicker" placeholder="DD-MM-YYYY">
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-md-6">
+                                <input type="checkbox" class="btn-check" id="noTracking" value="0">
+                                <label id="noTrackingLabel" class="btn btn-outline-secondary material-shadow" for="noTracking">Unchecked</label>
+                                <label for="noTracking" style="margin-left: 10px">Record no Tracking Numbers</label>
+                            </div>
+                            <div class="col-md-6 text-md-end mt-2 mt-md-0">
+                                <button id="filterBtn" class="btn btn-primary">Filter</button>
+                                <button id="resetBtn" class="btn btn-secondary">Reset</button>
+                            </div>
+                        </div>
                     </div>
-                    <div class="col-md-3">
-                        <label for="end-date" class="form-label">End Date:</label>
-                        <input type="date" id="end-date" class="form-control datepicker" placeholder="DD-MM-YYYY" disabled>
-                    </div>
-                    <div class="col-md-3" style="align-content: end;">
-                        <input type="checkbox" class="form-check-input" id="noTracking" value="0"/>
-                        <label for="noTracking">Record no Tracking Numbers</label>
-                    </div>
-                    <div class="col-md-3" style="align-content: end;">
-                            <button id="filterBtn" class="btn btn-primary">Filter</button>
-                            <button id="resetBtn" class="btn btn-secondary">Reset</button>
-                    </div>
-                    <div class="col-md-3">
+                    <div class="col-md-3 mt-3 mt-md-0 offset-md-1">
                         <label for="text-search" class="form-label">Text Search:</label>
                         <input type="text" id="text-search" class="form-control" placeholder="Enter text">
                     </div>
-                </div>
-                <div class="row">
-
                 </div>
             </div>
         </div>
@@ -76,20 +117,22 @@
 
                             <div class="py-1">
 
-                                <table id="posProcessTable" data-type="PROCESSING" class="table w-100 table-striped text-center">
-                                    <thead>
-                                    <tr class="text-center bg-dark-subtle">
-                                        <th scope="col"><input type="checkbox" class="form-check-input row-checkbox check-all"></th>
-                                        {{-- <th scope="col">#</th> --}}
-                                        <th scope="col">DATE</th>
-                                        <th scope="col">REFERENCE ID</th>
-                                        <th scope="col">DETAILS</th>
-                                        <th scope="col">ACTION</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    </tbody>
-                                </table>
+                                <div class="table-processing" style="overflow-x: auto">
+                                    <table id="posProcessTable" data-type="PROCESSING" class="table w-100 table-striped text-center">
+                                        <thead>
+                                        <tr class="text-center bg-dark-subtle">
+                                            <th scope="col"><input type="checkbox" class="form-check-input row-checkbox check-all"></th>
+                                            {{-- <th scope="col">#</th> --}}
+                                            <th scope="col">DATE</th>
+                                            <th scope="col">REFERENCE ID</th>
+                                            <th scope="col">DETAILS</th>
+                                            <th scope="col">ACTION</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                    </table>
+                                </div>
 
                             </div>
                         </div>

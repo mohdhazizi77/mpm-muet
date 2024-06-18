@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Courier;
+use App\Services\AuditLogService;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
@@ -57,18 +58,63 @@ class CourierController extends Controller
         $courier->duration = $request->duration;
         $courier->save();
 
+        $old = [
+            "name" => '',
+            "disp_name" => '',
+            "rate" => '',
+            "currency" => '',
+            "duration" => '',
+        ];
+
+        $new = [
+            "name" => $courier->name,
+            "disp_name" => $courier->disp_name,
+            "rate" => $courier->rate,
+            "currency" => $courier->currency,
+            "duration" => $courier->duration,
+        ];
+
+        // Log the activity
+        AuditLogService::log($courier, 'Create', $old, $new);
+
         return response()->json(['success' => true]);
     }
     
     public function update(Request $request, $id)
     {
         $courier = Courier::findOrFail($id);
+        $old = [
+            "name" => $courier->name,
+            "disp_name" => $courier->disp_name,
+            "rate" => $courier->rate,
+            "currency" => $courier->currency,
+            "duration" => $courier->duration,
+        ];
+
         $courier->name = $request->name;
         $courier->disp_name = $request->name;
         $courier->rate = $request->rate;
         $courier->currency = $request->currency;
         $courier->duration = $request->duration;
         $courier->save();
+
+        $new = [
+            "name" => $courier->name,
+            "disp_name" => $courier->disp_name,
+            "rate" => $courier->rate,
+            "currency" => $courier->currency,
+            "duration" => $courier->duration,
+        ];
+
+        foreach ($old as $key => $value) {
+            if ($old[$key] === $new[$key]) {
+                unset($old[$key]);
+                unset($new[$key]);
+            }
+        }
+
+        // Log the activity
+        AuditLogService::log($courier, 'Update', $old, $new);
 
         return response()->json(['success' => true]);
     }

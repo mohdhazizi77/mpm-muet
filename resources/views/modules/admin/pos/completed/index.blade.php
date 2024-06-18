@@ -33,7 +33,7 @@
                     </div>
                     <div class="col-md-3">
                         <label for="end-date" class="form-label">End Date:</label>
-                        <input type="date" id="end-date" class="form-control datepicker" placeholder="DD-MM-YYYY" disabled>
+                        <input type="date" id="end-date" class="form-control datepicker" placeholder="DD-MM-YYYY">
                     </div>
                     <div class="col-md-3" style="align-content: end;">
                             <button id="filterBtn" class="btn btn-primary">Filter</button>
@@ -64,19 +64,21 @@
                                 {{--                                <h2 class="display-8 coming-soon-text text-success">TEST LIST</h2>--}}
                                 <!-- Striped Rows -->
 
-                                <table id="posCompleteTable" data-type="COMPLETED" class="table w-100 table-striped text-center">
-                                    <thead>
-                                    <tr class="text-center bg-dark-subtle">
-                                        <th scope="col"></th>
-                                        <th scope="col">DATE</th>
-                                        <th scope="col">REFERENCE ID</th>
-                                        <th scope="col">DETAILS</th>
-                                        <th scope="col">ACTION</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    </tbody>
-                                </table>
+                                <div style="overflow-x: auto">
+                                    <table id="posCompleteTable" data-type="COMPLETED" class="table w-100 table-striped text-center">
+                                        <thead>
+                                        <tr class="text-center bg-dark-subtle">
+                                            <th scope="col"></th>
+                                            <th scope="col">DATE</th>
+                                            <th scope="col">REFERENCE ID</th>
+                                            <th scope="col">DETAILS</th>
+                                            <th scope="col">ACTION</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                    </table>
+                                </div>
 
                             </div>
                         </div>
