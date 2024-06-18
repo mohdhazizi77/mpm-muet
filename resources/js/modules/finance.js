@@ -74,7 +74,7 @@ $(document).ready(function() {
                     render(data, type, row) {
                         let html = '';
                         // html = '<p> Receipt No : <a href="'+row.receipt+'">'+row.receipt_number+'</a></p> <p> Amount : RM'+row.amount+'</p>';
-                        html = '<p> Amount : RM'+data+'</p>';
+                        html = '<p> Amount : RM '+data+'</p>';
                         return html;
                     }
                 },

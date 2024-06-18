@@ -97,6 +97,9 @@ Route::group(['middleware' => ['role:PENTADBIR|BPKOM|PSM|FINANCE']], function ()
 
     Route::prefix('admin')->group(function () {
         Route::get('/', [AdminController::class, 'index'])->name('admin.index');
+        Route::get('/dashboard-muet-pie-chart', [AdminController::class, 'muetPieChart'])->name('admin.muet_pie_chart');
+        Route::get('/dashboard-mod-pie-chart', [AdminController::class, 'modPieChart'])->name('admin.mod_pie_chart');
+        Route::get('/dashboard-line-chart', [AdminController::class, 'lineChart'])->name('admin.line_chart');
 
         Route::get('/pos-management/{type}', [PosController::class, 'index'])->middleware('poslaju.token');
         Route::get('/pos-management/{type}/getPosDetail', [PosController::class, 'getPosDetail']);

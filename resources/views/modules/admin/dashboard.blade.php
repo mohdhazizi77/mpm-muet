@@ -7,6 +7,54 @@
     <link href="build/libs/jsvectormap/css/jsvectormap.min.css" rel="stylesheet" type="text/css"/>
 
     <link href="build/libs/swiper/swiper-bundle.min.css" rel="stylesheet"/>
+
+    <style>
+        .gradient-card {
+            /* background: linear-gradient(270deg, #66ffff, #0099ff, #66ffff); */
+            background: linear-gradient(to left, #ffffff 0%, #0099ff 100%);
+            /* background-size: 600% 600%; */
+            /* animation: gradientAnimation 8s ease infinite; */
+        }
+        .gradient-card-second {
+            background: linear-gradient(to left, #ffffff 0%, #0099ff 100%);
+            /* background-size: 600% 600%; */
+            /* animation: gradientAnimation 9s ease infinite; */
+        }
+        .gradient-card-third {
+            background: linear-gradient(to left, #ffffff 0%, #0099ff 100%);
+            /* background-size: 600% 600%; */
+            /* animation: gradientAnimation 10s ease infinite; */
+        }
+        
+        .gradient-card-yellow {
+            /* background: linear-gradient(270deg, #ffcccc, #ff9900, #ffcccc); */
+            background: linear-gradient(to left, #ffffff 0%, #ffcc66 100%);
+            /* background-size: 600% 600%; */
+            /* animation: gradientAnimation 5s ease infinite; */
+        }
+        .gradient-card-yellow-second {
+            background: linear-gradient(to left, #ffffff 0%, #ffcc66 100%);
+            /* background-size: 600% 600%; */
+            /* animation: gradientAnimation 6s ease infinite; */
+        }
+        .gradient-card-yellow-third {
+            background: linear-gradient(to left, #ffffff 0%, #ffcc66 100%);
+            /* background-size: 600% 600%; */
+            /* animation: gradientAnimation 7s ease infinite; */
+        }
+
+        @keyframes gradientAnimation {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+    </style>
 @endsection
 @section('content')
 
@@ -20,63 +68,92 @@
 
             <div class="col-xl-4 col-md-6">
                 <!-- card -->
-                <div class="card card-animate bg-warning">
-                    <div class="card-body">
-                        <div class="d-flex align-items-center">
-                            <div class="flex-grow-1">
-                                <p class="text-uppercase fw-semibold mb-0">NEW</p>
+                <div class="card card-animate gradient-card">
+                    <div class="card-body text-dark">
+                        <div class="row mt-2">
+                            <div class="col-6" style="padding-left: 20px">
+                                <div>
+                                    <p class="text-uppercase fw-semibold mb-0">NEW</p>
+                                </div>
+                                <div class="mt-3">
+                                    <h1 class="fs-22 fw-semibold ff-secondary mb-2">
+                                        <span class="counter-value" id="muetNew-count" data-target="1234">{{ $count['orderNewMUET'] }}</span>
+                                    </h1>
+                                </div>
+                            </div>
+                            <div class="col" style="padding-top: 10px">
+                                <div class="align-middle text-center">
+                                    {{-- <i class="fas fa-location-arrow text-dark" style="font-size: 50px;"></i> --}}
+                                    {{-- <i class="ri-star-fill" style="font-size: 24px;"></i> --}}
+                                    <img src="{{ asset('build/images/dashboard/megaphone.png') }}"
+                                                    width="50px" class="icon-info">
+                                </div>
                             </div>
                         </div>
-                        <div class="d-flex align-items-end justify-content-between mt-4">
-                            <div>
-                                <h4 class="fs-22 fw-semibold ff-secondary mb-2">
-                                    <span class="counter-value" id="muetNew-count" data-target="1234">{{ $count['orderNewMUET'] }}</span>
-                                </h4>
-                            </div>
-                        </div>
-                    </div><!-- end card body -->
-                </div><!-- end card -->
-            </div><!-- end col -->
+                    </div>
+                    <!-- end card body -->
+                </div>
+                <!-- end card -->
+            </div>
+            <!-- end col -->
 
             <div class="col-xl-4 col-md-6">
                 <!-- card -->
-                <div class="card card-animate bg-warning bg-opacity-50">
+                <div class="card card-animate bg-opacity-50 gradient-card-second">
                     <div class="card-body">
-                        <div class="d-flex align-items-center">
-                            <div class="flex-grow-1">
-                                <p class="text-uppercase fw-semibold mb-0">PROCESSING</p>
+                        <div class="row mt-2">
+                            <div class="col-6" style="padding-left: 20px">
+                                <div>
+                                    <p class="text-uppercase fw-semibold mb-0">PROCESSING</p>
+                                </div>
+                                <div class="mt-3">
+                                    <h1 class="fs-22 fw-semibold ff-secondary mb-2">
+                                        <span class="counter-value" data-target="1234">{{ $count['orderProcessingMUET'] }}</span>
+                                    </h1>
+                                </div>
                             </div>
-                        </div>
-                        <div class="d-flex align-items-end justify-content-between mt-4">
-                            <div>
-                                <h4 class="fs-22 fw-semibold ff-secondary mb-2">
-                                    <span class="counter-value" data-target="1234">{{ $count['orderProcessingMUET'] }}</span>
-                                </h4>
+                            <div class="col" style="padding-top: 10px">
+                                <div class="align-middle text-center">
+                                    {{-- <i class="fas fa-location-arrow text-dark" style="font-size: 50px;"></i> --}}
+                                    {{-- <i class="ri-star-fill" style="font-size: 24px;"></i> --}}
+                                    <img src="{{ asset('build/images/dashboard/process.png') }}"
+                                                    width="50px" class="icon-info">
+                                </div>
                             </div>
                         </div>
                     </div><!-- end card body -->
                 </div><!-- end card -->
-            </div><!-- end col -->
+            </div>
+            <!-- end col -->
 
             <div class="col-xl-4 col-md-6">
                 <!-- card -->
-                <div class="card card-animate bg-secondary">
+                <div class="card card-animate gradient-card-third">
                     <div class="card-body">
-                        <div class="d-flex align-items-center">
-                            <div class="flex-grow-1">
-                                <p class="text-uppercase fw-semibold mb-0">COMPLETED</p>
+                        <div class="row mt-2">
+                            <div class="col-6" style="padding-left: 20px">
+                                <div>
+                                    <p class="text-uppercase fw-semibold mb-0">COMPLETED</p>
+                                </div>
+                                <div class="mt-3">
+                                    <h1 class="fs-22 fw-semibold ff-secondary mb-2">
+                                        <span class="counter-value" data-target="6000">{{ $count['orderCompleteMUET'] }}</span>
+                                    </h1>
+                                </div>
                             </div>
-                        </div>
-                        <div class="d-flex align-items-end justify-content-between mt-4">
-                            <div>
-                                <h4 class="fs-22 fw-semibold ff-secondary mb-2">
-                                    <span class="counter-value" data-target="6000">{{ $count['orderCompleteMUET'] }}</span>
-                                </h4>
+                            <div class="col" style="padding-top: 10px">
+                                <div class="align-middle text-center">
+                                    {{-- <i class="fas fa-location-arrow text-dark" style="font-size: 50px;"></i> --}}
+                                    {{-- <i class="ri-star-fill" style="font-size: 24px;"></i> --}}
+                                    <img src="{{ asset('build/images/dashboard/checked.png') }}"
+                                                    width="50px" class="icon-info">
+                                </div>
                             </div>
                         </div>
                     </div><!-- end card body -->
                 </div><!-- end card -->
-            </div><!-- end col -->
+            </div>
+            <!-- end col -->
 
         </div>
     @endrole
@@ -91,61 +168,88 @@
 
             <div class="col-xl-4 col-md-6">
                 <!-- card -->
-                <div class="card card-animate bg-warning">
-                    <div class="card-body">
-                        <div class="d-flex align-items-center">
-                            <div class="flex-grow-1">
-                                <p class="text-uppercase fw-semibold mb-0">NEW</p>
+                <div class="card card-animate gradient-card-yellow" >
+                    <div class="card-body text-dark">
+                        <div class="row mt-2">
+                            <div class="col-6" style="padding-left: 20px">
+                                <div>
+                                    <p class="text-uppercase fw-semibold mb-0">NEW</p>
+                                </div>
+                                <div class="mt-3">
+                                    <h1 class="fs-22 fw-semibold ff-secondary mb-2">
+                                        <span class="counter-value" id="muetNew-count" data-target="1234">{{ $count['orderNewMOD'] }}</span>
+                                    </h1>
+                                </div>
+                            </div>
+                            <div class="col" style="padding-top: 10px">
+                                <div class="align-middle text-center">
+                                    {{-- <i class="fas fa-location-arrow text-dark" style="font-size: 50px;"></i> --}}
+                                    {{-- <i class="ri-star-fill" style="font-size: 24px;"></i> --}}
+                                    <img src="{{ asset('build/images/dashboard/megaphone.png') }}"
+                                                    width="50px" class="icon-info">
+                                </div>
                             </div>
                         </div>
-                        <div class="d-flex align-items-end justify-content-between mt-4">
-                            <div>
-                                <h4 class="fs-22 fw-semibold ff-secondary mb-2">
-                                    <span class="counter-value" data-target="1234">{{ $count['orderNewMOD'] }}</span>
-                                </h4>
-                            </div>
-                        </div>
-                    </div><!-- end card body -->
+                    </div>
+                    <!-- end card body -->
                 </div><!-- end card -->
             </div><!-- end col -->
 
             <div class="col-xl-4 col-md-6">
                 <!-- card -->
-                <div class="card card-animate bg-warning bg-opacity-50">
+                <div class="card card-animate bg-opacity-50 gradient-card-yellow-second">
                     <div class="card-body">
-                        <div class="d-flex align-items-center">
-                            <div class="flex-grow-1">
-                                <p class="text-uppercase fw-semibold mb-0">PROCESSING</p>
+                        <div class="row mt-2">
+                            <div class="col-6" style="padding-left: 20px">
+                                <div>
+                                    <p class="text-uppercase fw-semibold mb-0">PROCESSING</p>
+                                </div>
+                                <div class="mt-3">
+                                    <h1 class="fs-22 fw-semibold ff-secondary mb-2">
+                                        <span class="counter-value" data-target="1234">{{ $count['orderProcessingMOD'] }}</span>
+                                    </h1>
+                                </div>
+                            </div>
+                            <div class="col" style="padding-top: 10px">
+                                <div class="align-middle text-center">
+                                    {{-- <i class="fas fa-location-arrow text-dark" style="font-size: 50px;"></i> --}}
+                                    {{-- <i class="ri-star-fill" style="font-size: 24px;"></i> --}}
+                                    <img src="{{ asset('build/images/dashboard/process.png') }}"
+                                                    width="50px" class="icon-info">
+                                </div>
                             </div>
                         </div>
-                        <div class="d-flex align-items-end justify-content-between mt-4">
-                            <div>
-                                <h4 class="fs-22 fw-semibold ff-secondary mb-2">
-                                    <span class="counter-value" data-target="1234">{{ $count['orderProcessingMOD'] }}</span>
-                                </h4>
-                            </div>
-                        </div>
-                    </div><!-- end card body -->
+                    </div>
+                    <!-- end card body -->
                 </div><!-- end card -->
             </div><!-- end col -->
 
             <div class="col-xl-4 col-md-6">
                 <!-- card -->
-                <div class="card card-animate bg-secondary">
+                <div class="card card-animate gradient-card-yellow-third">
                     <div class="card-body">
-                        <div class="d-flex align-items-center">
-                            <div class="flex-grow-1">
-                                <p class="text-uppercase fw-semibold mb-0">COMPLETED</p>
+                        <div class="row mt-2">
+                            <div class="col-6" style="padding-left: 20px">
+                                <div>
+                                    <p class="text-uppercase fw-semibold mb-0">COMPLETED</p>
+                                </div>
+                                <div class="mt-3">
+                                    <h1 class="fs-22 fw-semibold ff-secondary mb-2">
+                                        <span class="counter-value" data-target="6000">{{ $count['orderCompleteMOD'] }}</span>
+                                    </h1>
+                                </div>
+                            </div>
+                            <div class="col" style="padding-top: 10px">
+                                <div class="align-middle text-center">
+                                    {{-- <i class="fas fa-location-arrow text-dark" style="font-size: 50px;"></i> --}}
+                                    {{-- <i class="ri-star-fill" style="font-size: 24px;"></i> --}}
+                                    <img src="{{ asset('build/images/dashboard/checked.png') }}"
+                                                    width="50px" class="icon-info">
+                                </div>
                             </div>
                         </div>
-                        <div class="d-flex align-items-end justify-content-between mt-4">
-                            <div>
-                                <h4 class="fs-22 fw-semibold ff-secondary mb-2">
-                                    <span class="counter-value" data-target="6000">{{ $count['orderCompleteMOD'] }}</span>
-                                </h4>
-                            </div>
-                        </div>
-                    </div><!-- end card body -->
+                    </div>
+                    <!-- end card body -->
                 </div><!-- end card -->
             </div><!-- end col -->
 
@@ -157,12 +261,13 @@
             <h5 class="text-decoration-underline mb-3 pb-1">FINANCE</h5>
         </div>
     </div>
+
     @role('FINANCE|PSM|PENTADBIR')
         <div class="row">
 
             <div class="col-xl-4 col-md-6">
                 <!-- card -->
-                <div class="card card-animate" style="background-color: #b38ed5e7">
+                <div class="card card-animate" style="background-color: #66ffff">
                     <div class="card-body">
                         <div class="d-flex align-items-center">
                             <div class="flex-grow-1">
@@ -182,7 +287,7 @@
 
             <div class="col-xl-4 col-md-6">
                 <!-- card -->
-                <div class="card card-animate" style="background-color: #f86624">
+                <div class="card card-animate" style="background-color: #66ffff">
                     <div class="card-body">
                         <div class="d-flex align-items-center">
                             <div class="flex-grow-1">
@@ -202,7 +307,7 @@
 
             <div class="col-xl-4 col-md-6">
                 <!-- card -->
-                <div class="card card-animate" style="background-color: #68d4cd">
+                <div class="card card-animate" style="background-color: #00ccff">
                     <div class="card-body">
                         <div class="d-flex align-items-center">
                             <div class="flex-grow-1">
@@ -228,7 +333,7 @@
 
             <div class="col-xl-4 col-md-6">
                 <!-- card -->
-                <div class="card card-animate" style="background-color: #b38ed5e7">
+                <div class="card card-animate" style="background-color: #ffcccc">
                     <div class="card-body">
                         <div class="d-flex align-items-center">
                             <div class="flex-grow-1">
@@ -248,7 +353,7 @@
 
             <div class="col-xl-4 col-md-6">
                 <!-- card -->
-                <div class="card card-animate" style="background-color: #f86624">
+                <div class="card card-animate" style="background-color: #ffcccc">
                     <div class="card-body">
                         <div class="d-flex align-items-center">
                             <div class="flex-grow-1">
@@ -268,7 +373,7 @@
 
             <div class="col-xl-4 col-md-6">
                 <!-- card -->
-                <div class="card card-animate" style="background-color: #cff67b">
+                <div class="card card-animate" style="background-color: #ffcc99">
                     <div class="card-body">
                         <div class="d-flex align-items-center">
                             <div class="flex-grow-1">
@@ -292,7 +397,7 @@
 
     <div class="row">
         @role('PSM|PENTADBIR')
-            <div class="col-xl-3">
+            <div class="col-xl-6">
                 <div class="card">
                     <div class="card-header">
                         <h4 class="card-title mb-0">MUET Collection</h4>
@@ -307,7 +412,7 @@
         @endrole
 
         @role('BPKOM|PENTADBIR')
-            <div class="col-xl-3">
+            <div class="col-xl-6">
                 <div class="card">
                     <div class="card-header">
                         <h4 class="card-title mb-0">MOD Collection</h4>
@@ -321,9 +426,11 @@
             </div>
         @endrole
 
+    </div>
 
+    <div class="row">
         @role('FINANCE|PENTADBIR')
-            <div class="col-xl-6">
+            <div class="col">
                 <div class="card">
                     <div class="card-header">
                         <h4 class="card-title mb-0">Total Collection for Year 2024</h4>
@@ -335,11 +442,13 @@
                 </div><!-- end card -->
             </div>
         @endrole
-
     </div>
 
 @endsection
 @section('script')
+    <script>
+
+    </script>
     <!-- apexcharts -->
     {{-- <script src="{{ URL::asset('build/libs/apexcharts/apexcharts.min.js') }}"></script> --}}
     {{-- <script src="{{ URL::asset('build/js/pages/apexcharts-pie.init.js') }}"></script> --}}

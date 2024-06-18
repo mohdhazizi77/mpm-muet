@@ -258,6 +258,7 @@ $(document).ready(function() {
                     d.startDate = $('#start-date').val();
                     d.endDate = $('#end-date').val();
                     d.noTracking = $('#noTracking').val();
+                    d.textSearch = $('#text-search').val();
                 }
             },
             columns: [
@@ -350,8 +351,10 @@ $(document).ready(function() {
     $('#noTracking').on('change', function() {
         if (this.checked) {
             $(this).prop('value', '1');
+            $('#noTrackingLabel').text('Checked');
         } else {
             $(this).prop('value', '0');
+            $('#noTrackingLabel').text('Unchecked');
         }
     });
 
@@ -413,6 +416,9 @@ $(document).ready(function() {
                 "data": function (d) {
                     d._token = $('meta[name="csrf-token"]').attr('content');
                     d.type = $('#posCompleteTable').data('type');
+                    d.textSearch = $('#text-search').val();
+                    d.startDate = $('#start-date').val();
+                    d.endDate = $('#end-date').val();
                 }
             },
             columns: [

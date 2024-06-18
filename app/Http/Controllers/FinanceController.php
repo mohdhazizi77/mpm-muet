@@ -29,11 +29,13 @@ class FinanceController extends Controller
         $type = $exam_type;
         $exam_type = strtoupper($exam_type);
 
-        $payments = Payment::whereBetween('created_at', [$startDate, $endDate])->where('type', $exam_type);
+        // $payments = Payment::whereBetween('created_at', [$startDate, $endDate])->where('type', $exam_type);
+        $payments = Payment::where('type', $exam_type);
 
         $totalSuccess   = $payments->where('status', 'SUCCESS')->count();
         $totalPay60     = $payments->where('amount','=', 60.0)->where('type', $exam_type)->sum('amount');
-        $totalPay20     = $payments->where('amount','=', 20.0)->where('type', $exam_type)->sum('amount');
+        $totalPay20     = Payment::where('amount', 20.0)->where('type', $exam_type)->sum('amount');
+        // dd($totalPay60);
         $totalCollect   = $totalPay60 + $totalPay20;
 
         $count = [
@@ -72,7 +74,7 @@ class FinanceController extends Controller
                         : $currentDate;
 
             // Filter based on the date range
-            $payments->whereBetween('created_at', [$startDate, $endDate]);
+            $payments->whereBetween('payment_date', [$startDate, $endDate]);
         }
 
         // Apply filtering based on name search if provided
@@ -91,13 +93,13 @@ class FinanceController extends Controller
         $data = [];
         foreach ($payments as $key => $payment) {
             $data[] = [
-                'txn_id' => $payment->txn_id,
-                'receipt_no' => $payment->receipt_number,
-                'trx_date' => $payment->payment_date,
-                'candidate_name' => $payment->order->candidate->name,
-                'amount' => $payment->amount,
-                'status' => $payment->status,
-                'receipt' => $payment->receipt,
+                'txn_id' => $payment->txn_id ?? 'Tiada Rekod',
+                'receipt_no' => $payment->receipt_number ?? 'Tiada Rekod',
+                'trx_date' => $payment->payment_date ?? 'Tiada Rekod',
+                'candidate_name' => $payment->order?->candidate?->name ?? 'Tiada Rekod',
+                'amount' => $payment->amount ?? 'Tiada Rekod',
+                'status' => $payment->status ?? 'Tiada Rekod',
+                'receipt' => $payment->receipt ?? 'Tiada Rekod',
             ];
         }
 

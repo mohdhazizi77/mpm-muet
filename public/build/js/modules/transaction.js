@@ -152,6 +152,10 @@ $(document).ready(function() {
     $(document).on('click', '#filterBtnTrx', function (){
         tableTrx.ajax.reload();
     })
+    
+    $('#text-search-trx').on('keyup change', function() {
+        tableTrx.search(this.value).draw();
+    });
 
     //clear filter
     $(document).on('click', '#resetBtnTrx', function (){

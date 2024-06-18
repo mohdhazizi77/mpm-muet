@@ -25,15 +25,15 @@
                     </div>
                     <div class="col-md-3">
                         <label for="end-date" class="form-label">End Date:</label>
-                        <input type="date" id="end-date-trx" class="form-control datepicker" placeholder="DD-MM-YYYY" disabled>
+                        <input type="date" id="end-date-trx" class="form-control datepicker" placeholder="DD-MM-YYYY">
+                    </div>
+                    <div class="col-md-3" style="align-content: end;">
+                        <button id="filterBtnTrx" class="btn btn-primary">Filter</button>
+                        <button id="resetBtnTrx" class="btn btn-secondary">Reset</button>
                     </div>
                     <div class="col-md-3">
                         <label for="text-search" class="form-label">Search:</label>
                         <input type="text" id="text-search-trx" class="form-control" placeholder="Enter text">
-                    </div>
-                    <div class="col-md-3" style="align-content: end;">
-                            <button id="filterBtnTrx" class="btn btn-primary">Filter</button>
-                            <button id="resetBtnTrx" class="btn btn-secondary">Reset</button>
                     </div>
                 </div>
             </div>

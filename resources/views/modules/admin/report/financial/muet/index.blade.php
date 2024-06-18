@@ -120,7 +120,7 @@
                             </div>
                             <div class="col-md-3">
                                 <label for="end-date" class="form-label">End Date:</label>
-                                <input type="date" id="end-date-fin-muet" class="form-control datepicker" placeholder="DD-MM-YYYY" disabled>
+                                <input type="date" id="end-date-fin-muet" class="form-control datepicker" placeholder="DD-MM-YYYY">
                             </div>
                             <div class="col-md-3" style="align-content: end;">
                                 <button id="filterBtnFinMuet" class="btn btn-primary">Filter</button>
