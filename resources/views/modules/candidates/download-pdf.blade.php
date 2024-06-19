@@ -872,14 +872,20 @@
                             <th style="border: 1px solid black; text-align: center;padding: 5px;font-size: 10pt">CEFR Level</th>
                         </tr>
                         <tr>
-                            <td style="border: 1px solid black; text-align: center;padding: 5px;font-size: 10pt">331 - 360</td>
-                            <td style="border: 1px solid black; text-align: center;padding: 5px;font-size: 10pt">5+</td>
-                            <td style="border: 1px solid black; text-align: center;padding: 5px;font-size: 10pt">C1+</td>
+                            <td style="border: 1px solid black; text-align: center;padding: 5px;font-size: 10pt"
+                            class={{ ($result['agg_score'] >= 331 && $result['agg_score'] <= 360) ? 'highlight' : 'border' }}>331 - 360</td>
+                            <td style="border: 1px solid black; text-align: center;padding: 5px;font-size: 10pt" 
+                            class={{ ($result['agg_score'] >= 331 && $result['agg_score'] <= 360) ? 'highlight' : 'border' }}>5+</td>
+                            <td style="border: 1px solid black; text-align: center;padding: 5px;font-size: 10pt" 
+                            class={{ ($result['agg_score'] >= 331 && $result['agg_score'] <= 360) ? 'highlight' : 'border' }}>C1+</td>
                         </tr>
                         <tr>
-                            <td style="border: 1px solid black; text-align: center;padding: 5px;font-size: 10pt">294-330</td>
-                            <td style="border: 1px solid black; text-align: center;padding: 5px;font-size: 10pt">5.0</td>
-                            <td style="border: 1px solid black; text-align: center;padding: 5px;font-size: 10pt">C1</td>
+                            <td style="border: 1px solid black; text-align: center;padding: 5px;font-size: 10pt" 
+                            class={{ ($result['agg_score'] >= 294 && $result['agg_score'] <= 330) ? 'highlight' : 'border' }}>294 - 330</td>
+                            <td style="border: 1px solid black; text-align: center;padding: 5px;font-size: 10pt" 
+                            class={{ ($result['agg_score'] >= 294 && $result['agg_score'] <= 330) ? 'highlight' : 'border' }}>5.0</td>
+                            <td style="border: 1px solid black; text-align: center;padding: 5px;font-size: 10pt"
+                            class={{ ($result['agg_score'] >= 294 && $result['agg_score'] <= 330) ? 'highlight' : 'border' }}>C1</td>
                         </tr>
                         <tr>
                             <th colspan="3" style="border: 1px solid black;font-size: 10pt">Descriptions</th>
@@ -912,14 +918,20 @@
                             <th style="border: 1px solid black; text-align: center;padding: 5px;font-size: 10pt">CEFR Level</th>
                         </tr>
                         <tr>
-                            <td style="border: 1px solid black; text-align: center;padding: 5px;font-size: 10pt">258-293</td>
-                            <td style="border: 1px solid black; text-align: center;padding: 5px;font-size: 10pt">4.5</td>
-                            <td style="border: 1px solid black; text-align: center;padding: 5px;font-size: 10pt">B2</td>
+                            <td style="border: 1px solid black; text-align: center;padding: 5px;font-size: 10pt" 
+                            class={{ ($result['agg_score'] >= 258 && $result['agg_score'] <= 293) ? 'highlight' : 'border' }}>258 - 293</td>
+                            <td style="border: 1px solid black; text-align: center;padding: 5px;font-size: 10pt" 
+                            class={{ ($result['agg_score'] >= 258 && $result['agg_score'] <= 293) ? 'highlight' : 'border' }}>4.5</td>
+                            <td style="border: 1px solid black; text-align: center;padding: 5px;font-size: 10pt" 
+                            class={{ ($result['agg_score'] >= 258 && $result['agg_score'] <= 293) ? 'highlight' : 'border' }}>B2</td>
                         </tr>
                         <tr>
-                            <td style="border: 1px solid black; text-align: center;padding: 5px;font-size: 10pt">211-257</td>
-                            <td style="border: 1px solid black; text-align: center;padding: 5px;font-size: 10pt">4.0</td>
-                            <td style="border: 1px solid black; text-align: center;padding: 5px;font-size: 10pt">B2</td>
+                            <td style="border: 1px solid black; text-align: center;padding: 5px;font-size: 10pt"
+                            class={{ ($result['agg_score'] >= 211 && $result['agg_score'] <= 257) ? 'highlight' : 'border' }}>211 - 257</td>
+                            <td style="border: 1px solid black; text-align: center;padding: 5px;font-size: 10pt"
+                            class={{ ($result['agg_score'] >= 211 && $result['agg_score'] <= 257) ? 'highlight' : 'border' }}>4.0</td>
+                            <td style="border: 1px solid black; text-align: center;padding: 5px;font-size: 10pt"
+                            class={{ ($result['agg_score'] >= 211 && $result['agg_score'] <= 257) ? 'highlight' : 'border' }}>B2</td>
                         </tr>
                         <tr>
                             <th colspan="3" style="border: 1px solid black;font-size: 10pt">Descriptions</th>
@@ -952,14 +964,20 @@
                             <th style="border: 1px solid black; text-align: center;padding: 5px;font-size: 10pt">CEFR Level</th>
                         </tr>
                         <tr>
-                            <td style="border: 1px solid black; text-align: center;padding: 5px;font-size: 10pt">264-210</td>
-                            <td style="border: 1px solid black; text-align: center;padding: 5px;font-size: 10pt">3.5</td>
-                            <td style="border: 1px solid black; text-align: center;padding: 5px;font-size: 10pt">B1</td>
+                            <td style="border: 1px solid black; text-align: center;padding: 5px;font-size: 10pt"
+                            class={{ ($result['agg_score'] >= 264 && $result['agg_score'] <= 210) ? 'highlight' : 'border' }}>264 - 210</td>
+                            <td style="border: 1px solid black; text-align: center;padding: 5px;font-size: 10pt" 
+                            class={{ ($result['agg_score'] >= 264 && $result['agg_score'] <= 210) ? 'highlight' : 'border' }}>3.5</td>
+                            <td style="border: 1px solid black; text-align: center;padding: 5px;font-size: 10pt" 
+                            class={{ ($result['agg_score'] >= 264 && $result['agg_score'] <= 210) ? 'highlight' : 'border' }}>B1</td>
                         </tr>
                         <tr>
-                            <td style="border: 1px solid black; text-align: center;padding: 5px;font-size: 10pt">123-163</td>
-                            <td style="border: 1px solid black; text-align: center;padding: 5px;font-size: 10pt">3.0</td>
-                            <td style="border: 1px solid black; text-align: center;padding: 5px;font-size: 10pt">B1</td>
+                            <td style="border: 1px solid black; text-align: center;padding: 5px;font-size: 10pt" 
+                            class={{ ($result['agg_score'] >= 123 && $result['agg_score'] <= 163) ? 'highlight' : 'border' }}>123 - 163</td>
+                            <td style="border: 1px solid black; text-align: center;padding: 5px;font-size: 10pt" 
+                            class={{ ($result['agg_score'] >= 123 && $result['agg_score'] <= 163) ? 'highlight' : 'border' }}>3.0</td>
+                            <td style="border: 1px solid black; text-align: center;padding: 5px;font-size: 10pt"
+                            class={{ ($result['agg_score'] >= 123 && $result['agg_score'] <= 163) ? 'highlight' : 'border' }}>B1</td>
                         </tr>
                         <tr>
                             <th colspan="3" style="border: 1px solid black;font-size: 10pt">Descriptions</th>
@@ -992,19 +1010,28 @@
                             <th style="border: 1px solid black; text-align: center;padding: 5px;font-size: 10pt">CEFR Level</th>
                         </tr>
                         <tr>
-                            <td style="border: 1px solid black; text-align: center;padding: 5px;font-size: 10pt">82-122</td>
-                            <td style="border: 1px solid black; text-align: center;padding: 5px;font-size: 10pt">2.5</td>
-                            <td style="border: 1px solid black; text-align: center;padding: 5px;font-size: 10pt">A2</td>
+                            <td style="border: 1px solid black; text-align: center;padding: 5px;font-size: 10pt"
+                            class={{ ($result['agg_score'] >= 82 && $result['agg_score'] <= 122) ? 'highlight' : 'border' }}>82 - 122</td>
+                            <td style="border: 1px solid black; text-align: center;padding: 5px;font-size: 10pt" 
+                            class={{ ($result['agg_score'] >= 82 && $result['agg_score'] <= 122) ? 'highlight' : 'border' }}>2.5</td>
+                            <td style="border: 1px solid black; text-align: center;padding: 5px;font-size: 10pt"
+                            class={{ ($result['agg_score'] >= 82 && $result['agg_score'] <= 122) ? 'highlight' : 'border' }}>A2</td>
                         </tr>
                         <tr>
-                            <td style="border: 1px solid black; text-align: center;padding: 5px;font-size: 10pt">36-81</td>
-                            <td style="border: 1px solid black; text-align: center;padding: 5px;font-size: 10pt">2.0</td>
-                            <td style="border: 1px solid black; text-align: center;padding: 5px;font-size: 10pt">A2</td>
+                            <td style="border: 1px solid black; text-align: center;padding: 5px;font-size: 10pt"
+                            class={{ ($result['agg_score'] >= 36 && $result['agg_score'] <= 81) ? 'highlight' : 'border' }}>36 - 81</td>
+                            <td style="border: 1px solid black; text-align: center;padding: 5px;font-size: 10pt"
+                            class={{ ($result['agg_score'] >= 36 && $result['agg_score'] <= 81) ? 'highlight' : 'border' }}>2.0</td>
+                            <td style="border: 1px solid black; text-align: center;padding: 5px;font-size: 10pt"
+                            class={{ ($result['agg_score'] >= 36 && $result['agg_score'] <= 81) ? 'highlight' : 'border' }}>A2</td>
                         </tr>
                         <tr>
-                            <td style="border: 1px solid black; text-align: center;padding: 5px;font-size: 10pt">1-35</td>
-                            <td style="border: 1px solid black; text-align: center;padding: 5px;font-size: 10pt">1.0</td>
-                            <td style="border: 1px solid black; text-align: center;padding: 5px;font-size: 10pt">A2</td>
+                            <td style="border: 1px solid black; text-align: center;padding: 5px;font-size: 10pt"
+                            class={{ ($result['agg_score'] >= 1 && $result['agg_score'] <= 35) ? 'highlight' : 'border' }}>1 - 35</td>
+                            <td style="border: 1px solid black; text-align: center;padding: 5px;font-size: 10pt"
+                            class={{ ($result['agg_score'] >= 1 && $result['agg_score'] <= 35) ? 'highlight' : 'border' }}>1.0</td>
+                            <td style="border: 1px solid black; text-align: center;padding: 5px;font-size: 10pt"
+                            class={{ ($result['agg_score'] >= 1 && $result['agg_score'] <= 35) ? 'highlight' : 'border' }}>A2</td>
                         </tr>
                         <tr>
                             <th colspan="3" style="border: 1px solid black;font-size: 10pt">Descriptions</th>
