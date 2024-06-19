@@ -103,13 +103,10 @@
                     <div class="collapse menu-dropdown show" id="Administration">
                         <ul class="nav nav-sm flex-column">
                             <li class="nav-item">
-                                <a href="#" class="nav-link">General Settings</a>
+                                <a href="{{ route('general_setting.index') }}" class="nav-link">General Settings</a>
                             </li>
                             <li class="nav-item">
                                 <a href="{{ route('users.index') }}" class="nav-link">Users and Access</a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="{{ route('courier.index') }}" class="nav-link">Courier</a>
                             </li>
                             {{--                            <li class="nav-item">--}}
                             {{--                                <a href="#" class="nav-link">General Configuration</a>--}}

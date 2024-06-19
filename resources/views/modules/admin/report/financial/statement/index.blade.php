@@ -140,7 +140,7 @@
                             '<th scope="row">' + counter + '</th>' +
                             '<td>' + formattedDate + '</td>' +
                             '<td>' +
-                                '<button type="button" class="btn btn-soft-info waves-effect text-black mx-2 download-button"data-year="' + year + '" data-month="' + (startDate.getMonth() + 1) + '">' +
+                                '<button type="button" target="_blank" class="btn btn-soft-info waves-effect text-black mx-2 download-button" data-year="' + year + '" data-month="' + (startDate.getMonth() + 1) + '">' +
                                     '<i class="ri-printer-line label-icon align-middle fs-16 me-2"></i>' +
                                     'DOWNLOAD' +
                                 '</button>' +
@@ -157,32 +157,36 @@
                     var year = $(this).data('year');
                     var month = $(this).data('month');
 
-                    var csrfToken = $('meta[name="csrf-token"]').attr('content');
+                    const url = `./finance-statement/download-pdf?year=${encodeURIComponent(year)}
+                        &month=${encodeURIComponent(month)}`;
+
+                    window.open(url, '_blank');
+                    // var csrfToken = $('meta[name="csrf-token"]').attr('content');
                     
-                    $.ajax({
-                        url: '{{ route('finance-statement.download_excel') }}',
-                        method: 'POST',
-                        data: { year: year, month: month },
-                        xhrFields: {
-                            responseType: 'blob' // Important for file download
-                        },
-                        headers: {
-                            'X-CSRF-TOKEN': csrfToken
-                        },
-                        success: function(data) {
-                            var a = document.createElement('a');
-                            var url = window.URL.createObjectURL(data);
-                            a.href = url;
-                            a.download = 'report-' + year + '-' + month + '.xlsx';
-                            document.body.append(a);
-                            a.click();
-                            a.remove();
-                            window.URL.revokeObjectURL(url);
-                        },
-                        error: function() {
-                            alert('Error generating the report.');
-                        }
-                    });
+                    // $.ajax({
+                    //     url: '{{ route('finance-statement.download_excel') }}',
+                    //     method: 'POST',
+                    //     data: { year: year, month: month },
+                    //     xhrFields: {
+                    //         responseType: 'blob' // Important for file download
+                    //     },
+                    //     headers: {
+                    //         'X-CSRF-TOKEN': csrfToken
+                    //     },
+                    //     success: function(data) {
+                    //         var a = document.createElement('a');
+                    //         var url = window.URL.createObjectURL(data);
+                    //         a.href = url;
+                    //         a.download = 'report-' + year + '-' + month + '.xlsx';
+                    //         document.body.append(a);
+                    //         a.click();
+                    //         a.remove();
+                    //         window.URL.revokeObjectURL(url);
+                    //     },
+                    //     error: function() {
+                    //         alert('Error generating the report.');
+                    //     }
+                    // });
                 });
             }
 

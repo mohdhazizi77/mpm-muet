@@ -12,6 +12,7 @@ use App\Http\Controllers\FinanceController;
 use App\Http\Controllers\FinanceModController;
 use App\Http\Controllers\FinanceMuetController;
 use App\Http\Controllers\FinanceStatementController;
+use App\Http\Controllers\GeneralSettingController;
 use App\Http\Controllers\PosCompletedController;
 use App\Http\Controllers\PosController;
 use App\Http\Controllers\PosNewController;
@@ -119,7 +120,7 @@ Route::group(['middleware' => ['role:PENTADBIR|BPKOM|PSM|FINANCE']], function ()
         Route::get('/finance/{exam_type}/pdf', [FinanceController::class, 'generatePdf'])->name('finance.pdf');
 
         Route::get('finance-statement', [FinanceStatementController::class, 'index'])->name('finance-statement.index');
-        Route::post('finance-statement/download-excel', [FinanceStatementController::class, 'downloadExcel'])->name('finance-statement.download_excel');
+        Route::get('finance-statement/download-pdf', [FinanceStatementController::class, 'downloadExcel'])->name('finance-statement.download_excel');
 
         // Route::resource('finance/muet', FinanceMuetController::class);
         // Route::post('finance/muet/ajax', [FinanceMuetController::class, 'getAjax'])->name('finance-muet.ajax');
@@ -127,7 +128,8 @@ Route::group(['middleware' => ['role:PENTADBIR|BPKOM|PSM|FINANCE']], function ()
         // Route::resource('finance/mod', FinanceModController::class);
         // Route::post('finance/mod/ajax', [FinanceModController::class, 'getAjax'])->name('finance-mod.ajax');
 
-        Route::get('/courier', [CourierController::class, 'index'])->name('courier.index');
+        Route::get('/general-setting', [GeneralSettingController::class, 'index'])->name('general_setting.index');
+
         Route::post('/courier/ajax', [CourierController::class, 'getAjax'])->name('courier.ajax');
         Route::post('/courier/store', [CourierController::class, 'store'])->name('courier.store');
         Route::post('/courier/update/{id}', [CourierController::class, 'update'])->name('courier.update');
@@ -155,7 +157,9 @@ Route::group(['middleware' => ['role:PENTADBIR|BPKOM|PSM|FINANCE']], function ()
     Route::get('users/create', [UserController::class, 'create'])->name('users.create');
     Route::post('users/store', [UserController::class, 'store'])->name('users.store');
     Route::get('users/edit/{id}', [UserController::class, 'edit'])->name('users.edit');
-    Route::put('users/update/{user}', [UserController::class, 'update'])->name('users.update');
+    Route::post('users/update/{user}', [UserController::class, 'update'])->name('users.update');
+    Route::post('users/actived/{user}', [UserController::class, 'activated'])->name('users.activated');
+    Route::post('users/deactived/{user}', [UserController::class, 'deactived'])->name('users.deactived');
 
     Route::resource('audit-logs', AuditLogsController::class);
     Route::post('audit-logs/ajax', [AuditLogsController::class, 'getAjax'])->name('audit-logs.ajax');

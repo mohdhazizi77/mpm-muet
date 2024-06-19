@@ -36,7 +36,7 @@
         <div class="col-lg-12">
             <div class="card rounded-0 bg-white mx-n4 mt-n4 border-top">
                 <div class="px-4">
-                    <form action="{{ route('users.store') }}" method="POST">
+                    <form id="form_users_add" method="POST" enctype="multipart/form-data">
                         @csrf
                         <div class="row py-4">
                             <div class="col-12">

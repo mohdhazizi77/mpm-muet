@@ -37,21 +37,13 @@
                     </div>
                 </form>
             </div>
-            <div class="modal-footer row">
-                <div class="col text-left" style="text-align: left">
-                    <button class="btn btn-soft-danger waves-effect waves-light" id="delete">
-                        <i class="ri-delete-bin-6-line"></i>
-                        Padam
-                    </button>
-                </div>
-                <div class="col text-right" style="text-align: right">
-                    <button type="button" class="btn btn-soft-dark waves-effect waves-light mr-1" data-bs-dismiss="modal">
-                        Kembali
-                    </button>
-                    <button type="button" id="submit" class="btn btn-soft-primary waves-effect waves-light" >
-                        Simpan
-                    </button>
-                </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-soft-dark waves-effect waves-light mr-1" data-bs-dismiss="modal">
+                    Kembali
+                </button>
+                <button type="button" id="submit" class="btn btn-soft-primary waves-effect waves-light" >
+                    Simpan
+                </button>
             </div>
         </div>
     </div>

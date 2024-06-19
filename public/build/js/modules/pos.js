@@ -823,9 +823,15 @@ $(document).ready(function() {
         });
 
         var csrfToken = $('meta[name="csrf-token"]').attr('content');
+        const startDate = $('#start-date').val();
+        const endDate = $('#end-date').val();
+        const textSearch = $('#text-search').val();
 
         var postData = {
-            orderID: orderIds
+            orderID: orderIds,
+            startDate: startDate,
+            endDate: endDate,
+            textSearch: textSearch,
         };
 
         if(orderIds.length > 0){
@@ -898,9 +904,16 @@ $(document).ready(function() {
         });
 
         var csrfToken = $('meta[name="csrf-token"]').attr('content');
-
+        const startDate = $('#start-date').val();
+        const endDate = $('#end-date').val();
+        const textSearch = $('#text-search').val();
+        const noTracking = $('#noTracking').val();
         var postData = {
-            orderID: orderIds
+            orderID: orderIds,
+            startDate: startDate,
+            endDate: endDate,
+            textSearch: textSearch,
+            noTracking: noTracking,
         };
 
         if(orderIds.length > 0){
@@ -973,9 +986,17 @@ $(document).ready(function() {
         });
 
         var csrfToken = $('meta[name="csrf-token"]').attr('content');
+        const startDate = $('#start-date').val();
+        const endDate = $('#end-date').val();
+        const textSearch = $('#text-search').val();
+        const noTracking = $('#noTracking').val();
 
         var postData = {
-            orderID: orderIds
+            orderID: orderIds,
+            startDate: startDate,
+            endDate: endDate,
+            textSearch: textSearch,
+            noTracking: noTracking,
         };
 
         if(orderIds.length > 0){
