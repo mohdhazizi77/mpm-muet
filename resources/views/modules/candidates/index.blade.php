@@ -142,7 +142,7 @@
                                                             <label class="form-label">Candidate must pay RM20 to print MUET certificate</label>
                                                         </div>
                                                         <div class="text-end">
-                                                            <a href="#" class="btn btn-success btn-animation waves-effect waves-light" data-text="Continue"><span>Agree</span></a>
+                                                            <a href="#" class="btn btn-success btn-animation waves-effect waves-light" data-text="Agree"><span>Agree</span></a>
                                                         </div>
                                                     </form>
                                                 </div>
