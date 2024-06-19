@@ -23,7 +23,22 @@ $(document).ready(function() {
                     filename: 'ListTransation',
                     title: 'List of Transaction',
                     action: function (e, dt, button, config) {
-                        window.open('./muet/pdf', '_blank');
+                        const textSearch = $('#text-search-fin-muet').val();
+                        const startDate = $('#start-date-fin-muet').val();
+                        const endDate = $('#end-date-fin-muet').val();
+                        const exam_type_select = $('#exam_type').val();
+                        const payment_for = $('#payment_for').val();
+                        const status = $('#status_muet').val();
+
+
+                        const url = `./muet/pdf?textSearch=${encodeURIComponent(textSearch)}
+                        &startDate=${encodeURIComponent(startDate)}
+                        &endDate=${encodeURIComponent(endDate)}
+                        &exam_type_select=${encodeURIComponent(exam_type_select)}
+                        &payment_for=${encodeURIComponent(payment_for)}
+                        &status=${encodeURIComponent(status)}`;
+
+                        window.open(url, '_blank');
                     }
                 }
             ],
@@ -39,6 +54,9 @@ $(document).ready(function() {
                     d.startDate = $('#start-date-fin-muet').val();
                     d.endDate = $('#end-date-fin-muet').val();
                     d.textSearch = $('#text-search-fin-muet').val();
+                    d.exam_type_select = $('#exam_type').val();
+                    d.payment_for = $('#payment_for').val();
+                    d.status = $('#status_muet').val();
                 }
             },
             columns: [
@@ -173,6 +191,7 @@ $(document).ready(function() {
     //filter
     $(document).on('click', '#filterBtnFinMuet', function (){
         tableMuet.ajax.reload();
+        fetchDataMuet();
     })
 
     //clear filter
@@ -180,6 +199,10 @@ $(document).ready(function() {
         $('#start-date-fin-muet').val('');
         $('#end-date-fin-muet').val('');
         $('#text-search-fin-muet').val('');
+        $('#exam_type').val('');
+        $('#payment_for').val('');
+        $('#status_muet').val('');
+        fetchDataMuet();
 
         tableMuet.draw();
     })
@@ -187,6 +210,7 @@ $(document).ready(function() {
     //text search
     $('#text-search-fin-muet').on('keyup change', function() {
         tableMuet.search(this.value).draw();
+        fetchDataMuet();
     });
 
 
@@ -215,7 +239,22 @@ $(document).ready(function() {
                     filename: 'ListTransation',
                     title: 'List of Transaction',
                     action: function (e, dt, button, config) {
-                        window.open('./mod/pdf', '_blank');
+                        const textSearch = $('#text-search-fin-mod').val();
+                        const startDate = $('#start-date-fin-mod').val();
+                        const endDate = $('#end-date-fin-mod').val();
+                        const exam_type_select = $('#exam_type_mod').val();
+                        const payment_for = $('#payment_for_mod').val();
+                        const status = $('#status_mod').val();
+
+
+                        const url = `./mod/pdf?textSearch=${encodeURIComponent(textSearch)}
+                        &startDate=${encodeURIComponent(startDate)}
+                        &endDate=${encodeURIComponent(endDate)}
+                        &exam_type_select=${encodeURIComponent(exam_type_select)}
+                        &payment_for=${encodeURIComponent(payment_for)}
+                        &status=${encodeURIComponent(status)}`;
+
+                        window.open(url, '_blank');
                     }
                 }
             ],
@@ -231,6 +270,9 @@ $(document).ready(function() {
                     d.startDate = $('#start-date-fin-mod').val();
                     d.endDate = $('#end-date-fin-mod').val();
                     d.textSearch = $('#text-search-fin-mod').val();
+                    d.exam_type_select = $('#exam_type_mod').val();
+                    d.payment_for = $('#payment_for_mod').val();
+                    d.status = $('#status_mod').val();
                 }
             },
             columns: [
@@ -362,15 +404,20 @@ $(document).ready(function() {
     });
 
     //filter
-    $(document).on('click', '#filterBtnFinMuet', function (){
+    $(document).on('click', '#filterBtnFinMod', function (){
         tableMod.ajax.reload();
+        fetchDataMod();
     })
 
     //clear filter
-    $(document).on('click', '#resetBtnFinMuet', function (){
+    $(document).on('click', '#resetBtnFinMod', function (){
         $('#start-date-fin-mod').val('');
         $('#end-date-fin-mod').val('');
         $('#text-search-fin-mod').val('');
+        $('#exam_type_mod').val('');
+        $('#payment_for_mod').val('');
+        $('#status_mod').val('');
+        fetchDataMod();
 
         tableMod.draw();
     })
@@ -380,5 +427,85 @@ $(document).ready(function() {
         tableMod.search(this.value).draw();
     });
 
+    fetchDataMuet();
+    fetchDataMod();
+
+    // $('#start-date-fin-muet').on('click', button id="end-date-fin-muet" fetchDataMuet);
 });
+
+function fetchDataMuet(){
+    var csrfToken = $('meta[name="csrf-token"]').attr('content');
+
+    const startDate = $('#start-date-fin-muet').val();
+    const endDate = $('#end-date-fin-muet').val();
+    const exam_type = $('#exam_type').val();
+    const payment_for = $('#payment_for').val();
+    const status = $('#status_muet').val();
+    const textSearch = $('#text-search-fin-muet').val();
+
+    $.ajax({
+        url: './muet/data', // Replace with your backend URL
+        type: 'post', // or 'POST' depending on your backend method
+        dataType: 'json',
+        data: { 
+            startDate: startDate,
+            endDate: endDate,
+            textSearch: textSearch,
+            exam_type: exam_type,
+            payment_for: payment_for,
+            status: status,
+        },
+        headers: {
+            'X-CSRF-TOKEN': csrfToken
+        },
+        success: function(data) {
+            $('#total_success').text(data.totalSuccess);
+            $('#mpm_print').text(data.totalPayMpm);
+            $('#self_print').text(data.totalPaySelf);
+            $('#total_collection').text('RM ' +data.totalColection);
+            // You can update your HTML elements with the fetched data here
+        },
+        error: function(xhr, status, error) {
+            console.error('Error fetching data:', error);
+        }
+    });
+}
+
+function fetchDataMod(){
+    var csrfToken = $('meta[name="csrf-token"]').attr('content');
+
+    const startDate = $('#start-date-fin-mod').val();
+    const endDate = $('#end-date-fin-mod').val();
+    const exam_type = $('#exam_type_mod').val();
+    const payment_for = $('#payment_for_mod').val();
+    const status = $('#status_mod').val();
+    const textSearch = $('#text-search-fin-mod').val();
+
+    $.ajax({
+        url: './mod/data', // Replace with your backend URL
+        type: 'post', // or 'POST' depending on your backend method
+        dataType: 'json',
+        data: { 
+            startDate: startDate,
+            endDate: endDate,
+            textSearch: textSearch,
+            exam_type: exam_type,
+            payment_for: payment_for,
+            status: status,
+        },
+        headers: {
+            'X-CSRF-TOKEN': csrfToken
+        },
+        success: function(data) {
+            $('#total_success_mod').text(data.totalSuccess);
+            $('#mpm_print_mod').text(data.totalPayMpm);
+            $('#self_print_mod').text(data.totalPaySelf);
+            $('#total_collection_mod').text('RM ' +data.totalColection);
+            // You can update your HTML elements with the fetched data here
+        },
+        error: function(xhr, status, error) {
+            console.error('Error fetching data:', error);
+        }
+    });
+}
 
