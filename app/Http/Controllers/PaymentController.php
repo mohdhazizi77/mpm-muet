@@ -406,40 +406,81 @@ class PaymentController extends Controller
     }
 
     public function generateExcel(){
-        $trx = Payment::latest();
 
+        $currentDate = Carbon::now()->format('Y-m-d H:i:s');
+        $transactions = Payment::latest();
         // list by transaction by role
         switch (Auth::User()->getRoleNames()[0]) {
             case 'PSM':
-                $trx->where('type', 'MUET');
+                $transactions->where('type', 'MUET');
                 break;
             case 'BPKOM':
-                $trx->where('type', 'MOD');
+                $transactions->where('type', 'MOD');
                 break;
         }
 
-        $transaction = $trx->get();
+        if(filled($request->startDate) || filled($request->endDate)){
+            $startDate = Carbon::parse($request->startDate)->startOfDay()->format('Y-m-d H:i:s');
+            $endDate = $request->has('endDateTrx') && !empty($request->endDate)
+                        ? Carbon::parse($request->endDate)->endOfDay()->format('Y-m-d H:i:s')
+                        : $currentDate;
 
-        return Excel::download(new TransactionExport($transaction), 'transaction_' . now() . '.xlsx');
+            // Filter based on the date range
+            $transactions->whereBetween('created_at', [$startDate, $endDate]);
+        }
+
+        if(filled($request->textSearch)){
+            $textSearch = $request->textSearch;
+            $transactions->where(function ($query) use ($textSearch) {
+                $query->where('txn_id', 'LIKE', '%' . $textSearch . '%')
+                    // Add more columns to search in if necessary
+                    ->orWhere('ref_no', 'LIKE', '%' . $textSearch . '%');
+            });
+        }
+
+        $transactions = $transactions->get();
+
+        return Excel::download(new TransactionExport($transactions), 'transaction_' . now() . '.xlsx');
     }
 
     public function generatePdf(){
 
-        $trx = Payment::latest();
+
+        $currentDate = Carbon::now()->format('Y-m-d H:i:s');
+
+        $transactions = Payment::latest();
 
         // list by transaction by role
         switch (Auth::User()->getRoleNames()[0]) {
             case 'PSM':
-                $trx->where('type', 'MUET');
+                $transactions->where('type', 'MUET');
                 break;
             case 'BPKOM':
-                $trx->where('type', 'MOD');
+                $transactions->where('type', 'MOD');
                 break;
         }
+        if(filled($request->startDate) || filled($request->endDate)){
+            $startDate = Carbon::parse($request->startDate)->startOfDay()->format('Y-m-d H:i:s');
+            $endDate = $request->has('endDateTrx') && !empty($request->endDate)
+                        ? Carbon::parse($request->endDate)->endOfDay()->format('Y-m-d H:i:s')
+                        : $currentDate;
 
-        $transaction = $trx->get();
+            // Filter based on the date range
+            $transactions->whereBetween('created_at', [$startDate, $endDate]);
+        }
 
-        $pdf = PDF::loadView('modules.admin.report.transaction.pdf.transaction', ['transactions' => $transaction]);
+        if(filled($request->textSearch)){
+            $textSearch = $request->textSearch;
+            $transactions->where(function ($query) use ($textSearch) {
+                $query->where('txn_id', 'LIKE', '%' . $textSearch . '%')
+                    // Add more columns to search in if necessary
+                    ->orWhere('ref_no', 'LIKE', '%' . $textSearch . '%');
+            });
+        }
+
+        $transactions = $transactions->get();
+
+        $pdf = PDF::loadView('modules.admin.report.transaction.pdf.transaction', ['transactions' => $transactions]);
 
         return $pdf->stream('ListTransaction.pdf');
     }

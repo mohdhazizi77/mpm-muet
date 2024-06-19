@@ -215,10 +215,23 @@ $(document).ready(function() {
     })
 
     $(document).on('click', '#button-export-xlsx-trans', function (){
-        window.location.href = './transaction/excel';
+        const textSearch = $('#text-search-trx').val();
+        const startDate = $('#start-date-trx').val();
+        const endDate = $('#end-date-trx').val();
+
+        const url = `./transaction/excel?textSearch=${encodeURIComponent(textSearch)}&startDate=${encodeURIComponent(startDate)}&endDate=${encodeURIComponent(endDate)}`;
+
+        window.location.href = url;
     });
     
     $(document).on('click', '#button-export-pdf-trans', function (){
-        window.open('./transaction/pdf', '_blank');
+        const textSearch = $('#text-search-trx').val();
+        const startDate = $('#start-date-trx').val();
+        const endDate = $('#end-date-trx').val();
+
+        const url = `./transaction/pdf?textSearch=${encodeURIComponent(textSearch)}&startDate=${encodeURIComponent(startDate)}&endDate=${encodeURIComponent(endDate)}`;
+
+        // Open the URL in a new tab
+        window.open(url, '_blank');
     });
 });

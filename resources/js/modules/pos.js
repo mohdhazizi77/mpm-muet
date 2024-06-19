@@ -816,20 +816,227 @@ $(document).ready(function() {
 
     $(document).on('click', '#btnExportExcel', function (){
 
-        var type = $(this).data('type');
-        window.location.href = '/admin/pos-management/'+type+'/generateExcel';
+        var orderIds = [];
+
+        $('.row-checkbox:checked').each(function() {
+            orderIds.push($(this).data('id'));
+        });
+
+        var csrfToken = $('meta[name="csrf-token"]').attr('content');
+
+        var postData = {
+            orderID: orderIds
+        };
+
+        if(orderIds.length > 0){
+            Swal.fire({
+                title: "Are you sure to bulk approve?",
+                text: "Once approved, the data will be updated!",
+                icon: "warning",
+                // showDenyButton: true,
+                showCancelButton: true,
+                confirmButtonText: "Save",
+                reverseButtons: true
+                // denyButtonText: `Don't save`
+              }).then((result) => {
+                /* Read more about isConfirmed, isDenied below */
+                if (result.isConfirmed) {
+                    var type = $(this).data('type');
+                    const url = '/admin/pos-management/'+type+'/generateExcel';
+                    $.ajax({
+                        url: url,
+                        method: 'POST',
+                        data: postData,
+                        xhrFields: {
+                            responseType: 'blob' // Important for file download
+                        },
+                        headers: {
+                            'X-CSRF-TOKEN': csrfToken
+                        },
+                        beforeSend:function(){
+                            Swal.fire({
+                                title: 'Loading...', // Optional title for the alert
+                                allowEscapeKey: false,  // Disables escape key closing the alert
+                                allowOutsideClick: false, // Disables outside click closing the alert
+                                showConfirmButton: false, // Hides the "Confirm" button
+                                didOpen: () => {
+                                    Swal.showLoading(Swal.getDenyButton()); // Show loading indicator on the Deny button
+                                }
+                            });
+                        },
+                        success: function(data) {
+                            var a = document.createElement('a');
+                            var url = window.URL.createObjectURL(data);
+                            a.href = url;
+                            a.download = 'report-' + type + '.xlsx';
+                            document.body.append(a);
+                            a.click();
+                            a.remove();
+                            window.URL.revokeObjectURL(url);
+                        },
+                        error: function() {
+                            alert('Error generating the report.');
+                        }
+                    });
+                }
+            });
+        } else {
+            Swal.fire({
+                title: "No row selected",
+                // text: "Once approved, the data will be updated!",
+                icon: "error",
+              })
+        }
     });
     
     $(document).on('click', '#button-export-xlsx', function (){
 
-        var type = $(this).data('type');
-        window.location.href = '/admin/pos-management/'+type+'/generateExcel';
+        var orderIds = [];
+
+        $('.row-checkbox:checked').each(function() {
+            orderIds.push($(this).data('id'));
+        });
+
+        var csrfToken = $('meta[name="csrf-token"]').attr('content');
+
+        var postData = {
+            orderID: orderIds
+        };
+
+        if(orderIds.length > 0){
+            Swal.fire({
+                title: "Are you sure to bulk approve?",
+                text: "Once approved, the data will be updated!",
+                icon: "warning",
+                // showDenyButton: true,
+                showCancelButton: true,
+                confirmButtonText: "Save",
+                reverseButtons: true
+                // denyButtonText: `Don't save`
+              }).then((result) => {
+                /* Read more about isConfirmed, isDenied below */
+                if (result.isConfirmed) {
+                    var type = $(this).data('type');
+                    const url = '/admin/pos-management/'+type+'/generateExcel';
+                    $.ajax({
+                        url: url,
+                        method: 'POST',
+                        data: postData,
+                        xhrFields: {
+                            responseType: 'blob' // Important for file download
+                        },
+                        headers: {
+                            'X-CSRF-TOKEN': csrfToken
+                        },
+                        beforeSend:function(){
+                            Swal.fire({
+                                title: 'Loading...', // Optional title for the alert
+                                allowEscapeKey: false,  // Disables escape key closing the alert
+                                allowOutsideClick: false, // Disables outside click closing the alert
+                                showConfirmButton: false, // Hides the "Confirm" button
+                                didOpen: () => {
+                                    Swal.showLoading(Swal.getDenyButton()); // Show loading indicator on the Deny button
+                                }
+                            });
+                        },
+                        success: function(data) {
+                            var a = document.createElement('a');
+                            var url = window.URL.createObjectURL(data);
+                            a.href = url;
+                            a.download = 'report-' + type + '.xlsx';
+                            document.body.append(a);
+                            a.click();
+                            a.remove();
+                            window.URL.revokeObjectURL(url);
+                        },
+                        error: function() {
+                            alert('Error generating the report.');
+                        }
+                    });
+                }
+            });
+        } else {
+            Swal.fire({
+                title: "No row selected",
+                // text: "Once approved, the data will be updated!",
+                icon: "error",
+              })
+        }
     });
     
     $(document).on('click', '#button-export-pos-xlsx', function (){
 
-        var type = $(this).data('type');
-        window.location.href = '/admin/pos-management/'+type+'/generateExcelPos';
+        var orderIds = [];
+
+        $('.row-checkbox:checked').each(function() {
+            orderIds.push($(this).data('id'));
+        });
+
+        var csrfToken = $('meta[name="csrf-token"]').attr('content');
+
+        var postData = {
+            orderID: orderIds
+        };
+
+        if(orderIds.length > 0){
+            Swal.fire({
+                title: "Are you sure to bulk approve?",
+                text: "Once approved, the data will be updated!",
+                icon: "warning",
+                // showDenyButton: true,
+                showCancelButton: true,
+                confirmButtonText: "Save",
+                reverseButtons: true
+                // denyButtonText: `Don't save`
+              }).then((result) => {
+                /* Read more about isConfirmed, isDenied below */
+                if (result.isConfirmed) {
+                    var type = $(this).data('type');
+                    const url = '/admin/pos-management/'+type+'/generateExcelPos';
+                    $.ajax({
+                        url: url,
+                        method: 'POST',
+                        data: postData,
+                        xhrFields: {
+                            responseType: 'blob' // Important for file download
+                        },
+                        headers: {
+                            'X-CSRF-TOKEN': csrfToken
+                        },
+                        beforeSend:function(){
+                            Swal.fire({
+                                title: 'Loading...', // Optional title for the alert
+                                allowEscapeKey: false,  // Disables escape key closing the alert
+                                allowOutsideClick: false, // Disables outside click closing the alert
+                                showConfirmButton: false, // Hides the "Confirm" button
+                                didOpen: () => {
+                                    Swal.showLoading(Swal.getDenyButton()); // Show loading indicator on the Deny button
+                                }
+                            });
+                        },
+                        success: function(data) {
+                            var a = document.createElement('a');
+                            var url = window.URL.createObjectURL(data);
+                            a.href = url;
+                            a.download = 'report-' + type + '.xlsx';
+                            document.body.append(a);
+                            a.click();
+                            a.remove();
+                            window.URL.revokeObjectURL(url);
+                        },
+                        error: function() {
+                            alert('Error generating the report.');
+                        }
+                    });
+                }
+            });
+        } else {
+            Swal.fire({
+                title: "No row selected",
+                // text: "Once approved, the data will be updated!",
+                icon: "error",
+              })
+        }
     });
     
     $(document).on('click', '#button-import-pos-xlsx', function (){
