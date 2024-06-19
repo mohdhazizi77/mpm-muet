@@ -526,153 +526,139 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td style="text-align: center; border: 1px solid black; font-size: 10pt">260 – 300
-                            </td>
-                            <td style="text-align: center; border: 1px solid black; font-size: 10pt">6</td>
-                            <td style="text-align: center; border: 1px solid black; font-size: 10pt">Very good
-                                user</td>
-                            <td style="text-align: center; border: 1px solid black; font-size: 10pt">Very good
-                                command of the
-                                language</td>
-                            <td style="text-align: center; border: 1px solid black; font-size: 10pt">Highly
-                                expressive,
-                                accurate and
-                                appropriate; hardly any
-                                inaccuracies</td>
-                            <td style="text-align: center; border: 1px solid black; font-size: 10pt">High
-                                level of
-                                understanding of the
-                                language
-                            </td>
-                            <td style="text-align: center; border: 1px solid black; font-size: 10pt">Functions
-                                extremely
-                                well in the language</td>
+                            <td class={{ ($result['agg_score'] >= 260 && $result['agg_score'] <= 300) ? 'highlight' : 'border' }} style="text-align: center; border: 1px solid black; font-size: 10pt">260 – 300 </td>
+                            <td class={{ ($result['agg_score'] >= 260 && $result['agg_score'] <= 300) ? 'highlight' : 'border' }} style="text-align: center; border: 1px solid black; font-size: 10pt">6</td>
+                            <td class={{ ($result['agg_score'] >= 260 && $result['agg_score'] <= 300) ? 'highlight' : 'border' }} style="text-align: center; border: 1px solid black; font-size: 10pt">Very good user</td>
+                            <td class={{ ($result['agg_score'] >= 260 && $result['agg_score'] <= 300) ? 'highlight' : 'border' }} style="text-align: center; border: 1px solid black; font-size: 10pt">Very good command of the language</td>
+                            <td class={{ ($result['agg_score'] >= 260 && $result['agg_score'] <= 300) ? 'highlight' : 'border' }} style="text-align: center; border: 1px solid black; font-size: 10pt">Highly expressive, accurate and appropriate; hardly any inaccuracies</td>
+                            <td class={{ ($result['agg_score'] >= 260 && $result['agg_score'] <= 300) ? 'highlight' : 'border' }} style="text-align: center; border: 1px solid black; font-size: 10pt">High level of understanding of the language</td>
+                            <td class={{ ($result['agg_score'] >= 260 && $result['agg_score'] <= 300) ? 'highlight' : 'border' }} style="text-align: center; border: 1px solid black; font-size: 10pt">Functions extremely well in the language</td>
                         </tr>
                         <tr>
-                            <td style="text-align: center; border: 1px solid black; font-size: 10pt">220 – 259
+                            <td class={{ ($result['agg_score'] >= 220 && $result['agg_score'] <= 259) ? 'highlight' : 'border' }} style="text-align: center; border: 1px solid black; font-size: 10pt">220 – 259
                             </td>
-                            <td style="text-align: center; border: 1px solid black; font-size: 10pt">5</td>
-                            <td style="text-align: center; border: 1px solid black; font-size: 10pt">Good user
+                            <td class={{ ($result['agg_score'] >= 220 && $result['agg_score'] <= 259) ? 'highlight' : 'border' }} style="text-align: center; border: 1px solid black; font-size: 10pt">5</td>
+                            <td class={{ ($result['agg_score'] >= 220 && $result['agg_score'] <= 259) ? 'highlight' : 'border' }} style="text-align: center; border: 1px solid black; font-size: 10pt">Good user
                             </td>
-                            <td style="text-align: center; border: 1px solid black; font-size: 10pt">Good
+                            <td class={{ ($result['agg_score'] >= 220 && $result['agg_score'] <= 259) ? 'highlight' : 'border' }} style="text-align: center; border: 1px solid black; font-size: 10pt">Good
                                 command of
                                 the language</td>
-                            <td style="text-align: center; border: 1px solid black; font-size: 10pt">
+                            <td class={{ ($result['agg_score'] >= 220 && $result['agg_score'] <= 259) ? 'highlight' : 'border' }} style="text-align: center; border: 1px solid black; font-size: 10pt">
                                 Expressive, accurate
                                 and appropriate but
                                 with minor
                                 inaccuracies</td>
-                            <td style="text-align: center; border: 1px solid black; font-size: 10pt">Good
+                            <td class={{ ($result['agg_score'] >= 220 && $result['agg_score'] <= 259) ? 'highlight' : 'border' }} style="text-align: center; border: 1px solid black; font-size: 10pt">Good
                                 level of
                                 understanding of the
                                 language
                             </td>
-                            <td style="text-align: center; border: 1px solid black; font-size: 10pt">
+                            <td class={{ ($result['agg_score'] >= 220 && $result['agg_score'] <= 259) ? 'highlight' : 'border' }} style="text-align: center; border: 1px solid black; font-size: 10pt">
                                 Functions well in the
                                 language</td>
                         </tr>
                         <tr>
-                            <td style="text-align: center; border: 1px solid black; font-size: 10pt">180 –
+                            <td class={{ ($result['agg_score'] >= 180 && $result['agg_score'] <= 219) ? 'highlight' : 'border' }} style="text-align: center; border: 1px solid black; font-size: 10pt">180 –
                                 219</td>
-                            <td style="text-align: center; border: 1px solid black; font-size: 10pt">4</td>
-                            <td style="text-align: center; border: 1px solid black; font-size: 10pt">
+                            <td class={{ ($result['agg_score'] >= 180 && $result['agg_score'] <= 219) ? 'highlight' : 'border' }} style="text-align: center; border: 1px solid black; font-size: 10pt">4</td>
+                            <td class={{ ($result['agg_score'] >= 180 && $result['agg_score'] <= 219) ? 'highlight' : 'border' }} style="text-align: center; border: 1px solid black; font-size: 10pt">
                                 Competent
                                 user
                             </td>
-                            <td style="text-align: center; border: 1px solid black; font-size: 10pt">
+                            <td class={{ ($result['agg_score'] >= 180 && $result['agg_score'] <= 219) ? 'highlight' : 'border' }} style="text-align: center; border: 1px solid black; font-size: 10pt">
                                 Satisfactory
                                 command of the
                                 language</td>
-                            <td style="text-align: center; border: 1px solid black; font-size: 10pt">
+                            <td class={{ ($result['agg_score'] >= 180 && $result['agg_score'] <= 219) ? 'highlight' : 'border' }} style="text-align: center; border: 1px solid black; font-size: 10pt">
                                 Generally expressive
                                 and appropriate but
                                 with occasional
                                 inaccuracies</td>
-                            <td style="text-align: center; border: 1px solid black; font-size: 10pt">
+                            <td class={{ ($result['agg_score'] >= 180 && $result['agg_score'] <= 219) ? 'highlight' : 'border' }} style="text-align: center; border: 1px solid black; font-size: 10pt">
                                 Satisfactory level of
                                 understanding of the
                                 language
                             </td>
-                            <td style="text-align: center; border: 1px solid black; font-size: 10pt">
+                            <td class={{ ($result['agg_score'] >= 180 && $result['agg_score'] <= 219) ? 'highlight' : 'border' }} style="text-align: center; border: 1px solid black; font-size: 10pt">
                                 Functions
                                 reasonably well in
                                 the language</td>
                         </tr>
                         <tr>
-                            <td style="text-align: center; border: 1px solid black; font-size: 10pt">140 –
+                            <td class={{ ($result['agg_score'] >= 140 && $result['agg_score'] <= 179) ? 'highlight' : 'border' }} style="text-align: center; border: 1px solid black; font-size: 10pt">140 –
                                 179</td>
-                            <td style="text-align: center; border: 1px solid black; font-size: 10pt">3</td>
-                            <td style="text-align: center; border: 1px solid black; font-size: 10pt">
+                            <td class={{ ($result['agg_score'] >= 140 && $result['agg_score'] <= 179) ? 'highlight' : 'border' }} style="text-align: center; border: 1px solid black; font-size: 10pt">3</td>
+                            <td class={{ ($result['agg_score'] >= 140 && $result['agg_score'] <= 179) ? 'highlight' : 'border' }} style="text-align: center; border: 1px solid black; font-size: 10pt">
                                 Modest user
                             </td>
-                            <td style="text-align: center; border: 1px solid black; font-size: 10pt">
+                            <td class={{ ($result['agg_score'] >= 140 && $result['agg_score'] <= 179) ? 'highlight' : 'border' }} style="text-align: center; border: 1px solid black; font-size: 10pt">
                                 Fair command of
                                 the language</td>
-                            <td style="text-align: center; border: 1px solid black; font-size: 10pt">
+                            <td class={{ ($result['agg_score'] >= 140 && $result['agg_score'] <= 179) ? 'highlight' : 'border' }} style="text-align: center; border: 1px solid black; font-size: 10pt">
                                 Fairly expressive,
                                 usually appropriate but
                                 with noticeable
                                 inaccuracies</td>
-                            <td style="text-align: center; border: 1px solid black; font-size: 10pt">
+                            <td class={{ ($result['agg_score'] >= 140 && $result['agg_score'] <= 179) ? 'highlight' : 'border' }} style="text-align: center; border: 1px solid black; font-size: 10pt">
                                 Able to understand
                                 but with some
                                 misinterpretation
                             </td>
-                            <td style="text-align: center; border: 1px solid black; font-size: 10pt">
+                            <td class={{ ($result['agg_score'] >= 140 && $result['agg_score'] <= 179) ? 'highlight' : 'border' }} style="text-align: center; border: 1px solid black; font-size: 10pt">
                                 Able to function but
                                 with some effort</td>
                         </tr>
                         <tr>
-                            <td style="text-align: center; border: 1px solid black; font-size: 10pt">100 –
+                            <td class={{ ($result['agg_score'] >= 100 && $result['agg_score'] <= 139) ? 'highlight' : 'border' }} style="text-align: center; border: 1px solid black; font-size: 10pt">100 –
                                 139</td>
-                            <td style="text-align: center; border: 1px solid black; font-size: 10pt">2</td>
-                            <td style="text-align: center; border: 1px solid black; font-size: 10pt">
+                            <td class={{ ($result['agg_score'] >= 100 && $result['agg_score'] <= 139) ? 'highlight' : 'border' }} style="text-align: center; border: 1px solid black; font-size: 10pt">2</td>
+                            <td class={{ ($result['agg_score'] >= 100 && $result['agg_score'] <= 139) ? 'highlight' : 'border' }} style="text-align: center; border: 1px solid black; font-size: 10pt">
                                 Limited user
                             </td>
-                            <td style="text-align: center; border: 1px solid black; font-size: 10pt">
+                            <td class={{ ($result['agg_score'] >= 100 && $result['agg_score'] <= 139) ? 'highlight' : 'border' }} style="text-align: center; border: 1px solid black; font-size: 10pt">
                                 Limited command
                                 of the language</td>
-                            <td style="text-align: center; border: 1px solid black; font-size: 10pt">
+                            <td class={{ ($result['agg_score'] >= 100 && $result['agg_score'] <= 139) ? 'highlight' : 'border' }} style="text-align: center; border: 1px solid black; font-size: 10pt">
                                 Lacks expressiveness
                                 and appropriacy;
                                 inaccurate use of the
                                 language resulting in
                                 frequent breakdowns
                                 in communication</td>
-                            <td style="text-align: center; border: 1px solid black; font-size: 10pt">
+                            <td class={{ ($result['agg_score'] >= 100 && $result['agg_score'] <= 139) ? 'highlight' : 'border' }} style="text-align: center; border: 1px solid black; font-size: 10pt">
                                 Limited
                                 understanding of the
                                 language
                             </td>
-                            <td style="text-align: center; border: 1px solid black; font-size: 10pt">
+                            <td class={{ ($result['agg_score'] >= 100 && $result['agg_score'] <= 139) ? 'highlight' : 'border' }} style="text-align: center; border: 1px solid black; font-size: 10pt">
                                 Limited ability to
                                 function in the
                                 language</td>
                         </tr>
                         <tr>
-                            <td style="text-align: center; border: 1px solid black; font-size: 10pt">Below
+                            <td class={{ ($result['agg_score'] >= 1 && $result['agg_score'] <= 100) ? 'highlight' : 'border' }} style="text-align: center; border: 1px solid black; font-size: 10pt">Below
                                 100</td>
-                            <td style="text-align: center; border: 1px solid black; font-size: 10pt">1</td>
-                            <td style="text-align: center; border: 1px solid black; font-size: 10pt">
+                            <td class={{ ($result['agg_score'] >= 1 && $result['agg_score'] <= 100) ? 'highlight' : 'border' }} style="text-align: center; border: 1px solid black; font-size: 10pt">1</td>
+                            <td class={{ ($result['agg_score'] >= 1 && $result['agg_score'] <= 100) ? 'highlight' : 'border' }} style="text-align: center; border: 1px solid black; font-size: 10pt">
                                 Extremely
                                 limited user
                             </td>
-                            <td style="text-align: center; border: 1px solid black; font-size: 10pt">
+                            <td class={{ ($result['agg_score'] >= 1 && $result['agg_score'] <= 100) ? 'highlight' : 'border' }} style="text-align: center; border: 1px solid black; font-size: 10pt">
                                 Poor command of
                                 the language</td>
-                            <td style="text-align: center; border: 1px solid black; font-size: 10pt">
+                            <td class={{ ($result['agg_score'] >= 1 && $result['agg_score'] <= 100) ? 'highlight' : 'border' }} style="text-align: center; border: 1px solid black; font-size: 10pt">
                                 Inexpressive and
                                 inaccurate use of the
                                 language resulting in
                                 very frequent
                                 breakdowns in
                                 communication</td>
-                            <td style="text-align: center; border: 1px solid black; font-size: 10pt">
+                            <td class={{ ($result['agg_score'] >= 1 && $result['agg_score'] <= 100) ? 'highlight' : 'border' }} style="text-align: center; border: 1px solid black; font-size: 10pt">
                                 Poor understanding
                                 of the language
 
                             </td>
-                            <td style="text-align: center; border: 1px solid black; font-size: 10pt">
+                            <td class={{ ($result['agg_score'] >= 1 && $result['agg_score'] <= 100) ? 'highlight' : 'border' }} style="text-align: center; border: 1px solid black; font-size: 10pt">
                                 Hardly able to
                                 function in the
                                 language</td>
@@ -721,120 +707,120 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td style="text-align: center; border: 1px solid black; font-size: 10pt">260 – 300
+                            <td class={{ ($result['agg_score'] >= 260 && $result['agg_score'] <= 300) ? 'highlight' : 'border' }} style="text-align: center; border: 1px solid black; font-size: 10pt">260 – 300
                             </td>
-                            <td style="text-align: center; border: 1px solid black; font-size: 10pt">6</td>
-                            <td style="text-align: center; border: 1px solid black; font-size: 10pt">Highly
+                            <td class={{ ($result['agg_score'] >= 260 && $result['agg_score'] <= 300) ? 'highlight' : 'border' }} style="text-align: center; border: 1px solid black; font-size: 10pt">6</td>
+                            <td class={{ ($result['agg_score'] >= 260 && $result['agg_score'] <= 300) ? 'highlight' : 'border' }} style="text-align: center; border: 1px solid black; font-size: 10pt">Highly
                                 proficient
                                 user</td>
-                            <td style="text-align: center; border: 1px solid black; font-size: 10pt">Very fluent; highly
+                            <td class={{ ($result['agg_score'] >= 260 && $result['agg_score'] <= 300) ? 'highlight' : 'border' }} style="text-align: center; border: 1px solid black; font-size: 10pt">Very fluent; highly
                                 appropriate use of
                                 language; hardly any
                                 grammatical error</td>
-                            <td style="text-align: center; border: 1px solid black; font-size: 10pt">Very fluent; highly
+                            <td class={{ ($result['agg_score'] >= 260 && $result['agg_score'] <= 300) ? 'highlight' : 'border' }} style="text-align: center; border: 1px solid black; font-size: 10pt">Very fluent; highly
                                 appropriate use of
                                 language; hardly any
                                 grammatical error
                             </td>
-                            <td style="text-align: center; border: 1px solid black; font-size: 10pt">Very high ability to
+                            <td class={{ ($result['agg_score'] >= 260 && $result['agg_score'] <= 300) ? 'highlight' : 'border' }} style="text-align: center; border: 1px solid black; font-size: 10pt">Very high ability to
                                 function in the
                                 language</td>
                         </tr>
                         <tr>
-                            <td style="text-align: center; border: 1px solid black; font-size: 10pt">220 – 259
+                            <td class={{ ($result['agg_score'] >= 220 && $result['agg_score'] <= 259) ? 'highlight' : 'border' }} style="text-align: center; border: 1px solid black; font-size: 10pt">220 – 259
                             </td>
-                            <td style="text-align: center; border: 1px solid black; font-size: 10pt">5</td>
-                            <td style="text-align: center; border: 1px solid black; font-size: 10pt">Proficient
+                            <td class={{ ($result['agg_score'] >= 220 && $result['agg_score'] <= 259) ? 'highlight' : 'border' }} style="text-align: center; border: 1px solid black; font-size: 10pt">5</td>
+                            <td class={{ ($result['agg_score'] >= 220 && $result['agg_score'] <= 259) ? 'highlight' : 'border' }} style="text-align: center; border: 1px solid black; font-size: 10pt">Proficient
                                 user
                             </td>
-                            <td style="text-align: center; border: 1px solid black; font-size: 10pt">
+                            <td class={{ ($result['agg_score'] >= 220 && $result['agg_score'] <= 259) ? 'highlight' : 'border' }} style="text-align: center; border: 1px solid black; font-size: 10pt">
                                 Fluent; appropriate use of
                                 language; few
                                 grammatical errors</td>
-                            <td style="text-align: center; border: 1px solid black; font-size: 10pt">Good understanding of
+                            <td class={{ ($result['agg_score'] >= 220 && $result['agg_score'] <= 259) ? 'highlight' : 'border' }} style="text-align: center; border: 1px solid black; font-size: 10pt">Good understanding of
                                 language and context
                             </td>
-                            <td style="text-align: center; border: 1px solid black; font-size: 10pt">
+                            <td class={{ ($result['agg_score'] >= 220 && $result['agg_score'] <= 259) ? 'highlight' : 'border' }} style="text-align: center; border: 1px solid black; font-size: 10pt">
                                 High ability to
                                 function in the
                                 language</td>
                         </tr>
                         <tr>
-                            <td style="text-align: center; border: 1px solid black; font-size: 10pt">180 –
+                            <td class={{ ($result['agg_score'] >= 180 && $result['agg_score'] <= 219) ? 'highlight' : 'border' }} style="text-align: center; border: 1px solid black; font-size: 10pt">180 –
                                 219</td>
-                            <td style="text-align: center; border: 1px solid black; font-size: 10pt">4</td>
-                            <td style="text-align: center; border: 1px solid black; font-size: 10pt">
+                            <td class={{ ($result['agg_score'] >= 180 && $result['agg_score'] <= 219) ? 'highlight' : 'border' }} style="text-align: center; border: 1px solid black; font-size: 10pt">4</td>
+                            <td class={{ ($result['agg_score'] >= 180 && $result['agg_score'] <= 219) ? 'highlight' : 'border' }} style="text-align: center; border: 1px solid black; font-size: 10pt">
                                 Satisfactory
                                 user
                             </td>
-                            <td style="text-align: center; border: 1px solid black; font-size: 10pt">
+                            <td class={{ ($result['agg_score'] >= 180 && $result['agg_score'] <= 219) ? 'highlight' : 'border' }} style="text-align: center; border: 1px solid black; font-size: 10pt">
                                 Generally fluent; generally
                                 appropriate use of
                                 language; some
                                 grammatical errors</td>
-                            <td style="text-align: center; border: 1px solid black; font-size: 10pt">
+                            <td class={{ ($result['agg_score'] >= 180 && $result['agg_score'] <= 219) ? 'highlight' : 'border' }} style="text-align: center; border: 1px solid black; font-size: 10pt">
                                 Satisfactory
                                 understanding of
                                 language and context
                             </td>
-                            <td style="text-align: center; border: 1px solid black; font-size: 10pt">
+                            <td class={{ ($result['agg_score'] >= 180 && $result['agg_score'] <= 219) ? 'highlight' : 'border' }} style="text-align: center; border: 1px solid black; font-size: 10pt">
                                 Satisfactory ability to
                                 function in the
                                 language</td>
                         </tr>
                         <tr>
-                            <td style="text-align: center; border: 1px solid black; font-size: 10pt">140 –
+                            <td class={{ ($result['agg_score'] >= 140 && $result['agg_score'] <= 179) ? 'highlight' : 'border' }} style="text-align: center; border: 1px solid black; font-size: 10pt">140 –
                                 179</td>
-                            <td style="text-align: center; border: 1px solid black; font-size: 10pt">3</td>
-                            <td style="text-align: center; border: 1px solid black; font-size: 10pt">
+                            <td class={{ ($result['agg_score'] >= 140 && $result['agg_score'] <= 179) ? 'highlight' : 'border' }} style="text-align: center; border: 1px solid black; font-size: 10pt">3</td>
+                            <td class={{ ($result['agg_score'] >= 140 && $result['agg_score'] <= 179) ? 'highlight' : 'border' }} style="text-align: center; border: 1px solid black; font-size: 10pt">
                                 Modest user
                             </td>
-                            <td style="text-align: center; border: 1px solid black; font-size: 10pt">
+                            <td class={{ ($result['agg_score'] >= 140 && $result['agg_score'] <= 179) ? 'highlight' : 'border' }} style="text-align: center; border: 1px solid black; font-size: 10pt">
                                 Fairly fluent; fairly
                                 appropriate use of
                                 language; many
                                 grammatical errors
                             </td>
-                            <td style="text-align: center; border: 1px solid black; font-size: 10pt">
+                            <td class={{ ($result['agg_score'] >= 140 && $result['agg_score'] <= 179) ? 'highlight' : 'border' }} style="text-align: center; border: 1px solid black; font-size: 10pt">
                                 Fair understanding of language and context
                             </td>
-                            <td style="text-align: center; border: 1px solid black; font-size: 10pt">
+                            <td class={{ ($result['agg_score'] >= 140 && $result['agg_score'] <= 179) ? 'highlight' : 'border' }} style="text-align: center; border: 1px solid black; font-size: 10pt">
                                 Fair ability to function the language
                             </td>
                         </tr>
                         <tr>
-                            <td style="text-align: center; border: 1px solid black; font-size: 10pt">100 –
+                            <td class={{ ($result['agg_score'] >= 100 && $result['agg_score'] <= 139) ? 'highlight' : 'border' }} style="text-align: center; border: 1px solid black; font-size: 10pt">100 –
                                 139</td>
-                            <td style="text-align: center; border: 1px solid black; font-size: 10pt">2</td>
-                            <td style="text-align: center; border: 1px solid black; font-size: 10pt">
+                            <td class={{ ($result['agg_score'] >= 100 && $result['agg_score'] <= 139) ? 'highlight' : 'border' }} style="text-align: center; border: 1px solid black; font-size: 10pt">2</td>
+                            <td class={{ ($result['agg_score'] >= 100 && $result['agg_score'] <= 139) ? 'highlight' : 'border' }} style="text-align: center; border: 1px solid black; font-size: 10pt">
                                 Limited user
                             </td>
-                            <td style="text-align: center; border: 1px solid black; font-size: 10pt">
+                            <td class={{ ($result['agg_score'] >= 100 && $result['agg_score'] <= 139) ? 'highlight' : 'border' }} style="text-align: center; border: 1px solid black; font-size: 10pt">
                                 Not fluent; inappropriate use of language; very frequent grammatical
                                 errors
                             </td>
-                            <td style="text-align: center; border: 1px solid black; font-size: 10pt">
+                            <td class={{ ($result['agg_score'] >= 100 && $result['agg_score'] <= 139) ? 'highlight' : 'border' }} style="text-align: center; border: 1px solid black; font-size: 10pt">
                                 Limited understanding of language and contex
                             </td>
-                            <td style="text-align: center; border: 1px solid black; font-size: 10pt">
+                            <td class={{ ($result['agg_score'] >= 100 && $result['agg_score'] <= 139) ? 'highlight' : 'border' }} style="text-align: center; border: 1px solid black; font-size: 10pt">
                                 Limited ability to function in the
                                 language
                             </td>
                         </tr>
                         <tr>
-                            <td style="text-align: center; border: 1px solid black; font-size: 10pt">Below
+                            <td class={{ ($result['agg_score'] >= 1 && $result['agg_score'] <= 100) ? 'highlight' : 'border' }} style="text-align: center; border: 1px solid black; font-size: 10pt">Below
                                 100</td>
-                            <td style="text-align: center; border: 1px solid black; font-size: 10pt">1</td>
-                            <td style="text-align: center; border: 1px solid black; font-size: 10pt">
+                            <td class={{ ($result['agg_score'] >= 1 && $result['agg_score'] <= 100) ? 'highlight' : 'border' }} style="text-align: center; border: 1px solid black; font-size: 10pt">1</td>
+                            <td class={{ ($result['agg_score'] >= 1 && $result['agg_score'] <= 100) ? 'highlight' : 'border' }} style="text-align: center; border: 1px solid black; font-size: 10pt">
                                 Very limited user
                             </td>
-                            <td style="text-align: center; border: 1px solid black; font-size: 10pt">
+                            <td class={{ ($result['agg_score'] >= 1 && $result['agg_score'] <= 100) ? 'highlight' : 'border' }} style="text-align: center; border: 1px solid black; font-size: 10pt">
                                 Hardly able to use the language
                             </td>
-                            <td style="text-align: center; border: 1px solid black; font-size: 10pt">
+                            <td class={{ ($result['agg_score'] >= 1 && $result['agg_score'] <= 100) ? 'highlight' : 'border' }} style="text-align: center; border: 1px solid black; font-size: 10pt">
                                 Very limited understanding of language and context
                             </td>
-                            <td style="text-align: center; border: 1px solid black; font-size: 10pt">
+                            <td class={{ ($result['agg_score'] >= 1 && $result['agg_score'] <= 100) ? 'highlight' : 'border' }} style="text-align: center; border: 1px solid black; font-size: 10pt">
                                 Very limited ability to function in the language
                             </td>
                         </tr>
@@ -872,14 +858,14 @@
                             <th style="border: 1px solid black; text-align: center;padding: 5px;font-size: 10pt">CEFR Level</th>
                         </tr>
                         <tr>
-                            <td style="border: 1px solid black; text-align: center;padding: 5px;font-size: 10pt">331 - 360</td>
-                            <td style="border: 1px solid black; text-align: center;padding: 5px;font-size: 10pt">5+</td>
-                            <td style="border: 1px solid black; text-align: center;padding: 5px;font-size: 10pt">C1+</td>
+                            <td class={{ ($result['agg_score'] >= 331 && $result['agg_score'] <= 360) ? 'highlight' : 'border' }} style="border: 1px solid black; text-align: center;padding: 5px;font-size: 10pt">331 - 360</td>
+                            <td class={{ ($result['agg_score'] >= 331 && $result['agg_score'] <= 360) ? 'highlight' : 'border' }} style="border: 1px solid black; text-align: center;padding: 5px;font-size: 10pt">5+</td>
+                            <td class={{ ($result['agg_score'] >= 331 && $result['agg_score'] <= 360) ? 'highlight' : 'border' }} style="border: 1px solid black; text-align: center;padding: 5px;font-size: 10pt">C1+</td>
                         </tr>
                         <tr>
-                            <td style="border: 1px solid black; text-align: center;padding: 5px;font-size: 10pt">294-330</td>
-                            <td style="border: 1px solid black; text-align: center;padding: 5px;font-size: 10pt">5.0</td>
-                            <td style="border: 1px solid black; text-align: center;padding: 5px;font-size: 10pt">C1</td>
+                            <td class={{ ($result['agg_score'] >= 294 && $result['agg_score'] <= 330) ? 'highlight' : 'border' }} style="border: 1px solid black; text-align: center;padding: 5px;font-size: 10pt">294-330</td>
+                            <td class={{ ($result['agg_score'] >= 294 && $result['agg_score'] <= 330) ? 'highlight' : 'border' }} style="border: 1px solid black; text-align: center;padding: 5px;font-size: 10pt">5.0</td>
+                            <td class={{ ($result['agg_score'] >= 294 && $result['agg_score'] <= 330) ? 'highlight' : 'border' }} style="border: 1px solid black; text-align: center;padding: 5px;font-size: 10pt">C1</td>
                         </tr>
                         <tr>
                             <th colspan="3" style="border: 1px solid black;font-size: 10pt">Descriptions</th>
@@ -912,14 +898,14 @@
                             <th style="border: 1px solid black; text-align: center;padding: 5px;font-size: 10pt">CEFR Level</th>
                         </tr>
                         <tr>
-                            <td style="border: 1px solid black; text-align: center;padding: 5px;font-size: 10pt">258-293</td>
-                            <td style="border: 1px solid black; text-align: center;padding: 5px;font-size: 10pt">4.5</td>
-                            <td style="border: 1px solid black; text-align: center;padding: 5px;font-size: 10pt">B2</td>
+                            <td class={{ ($result['agg_score'] >= 258 && $result['agg_score'] <= 293) ? 'highlight' : 'border' }} style="border: 1px solid black; text-align: center;padding: 5px;font-size: 10pt">258-293</td>
+                            <td class={{ ($result['agg_score'] >= 258 && $result['agg_score'] <= 293) ? 'highlight' : 'border' }} style="border: 1px solid black; text-align: center;padding: 5px;font-size: 10pt">4.5</td>
+                            <td class={{ ($result['agg_score'] >= 258 && $result['agg_score'] <= 293) ? 'highlight' : 'border' }} style="border: 1px solid black; text-align: center;padding: 5px;font-size: 10pt">B2</td>
                         </tr>
                         <tr>
-                            <td style="border: 1px solid black; text-align: center;padding: 5px;font-size: 10pt">211-257</td>
-                            <td style="border: 1px solid black; text-align: center;padding: 5px;font-size: 10pt">4.0</td>
-                            <td style="border: 1px solid black; text-align: center;padding: 5px;font-size: 10pt">B2</td>
+                            <td class={{ ($result['agg_score'] >= 211 && $result['agg_score'] <= 257) ? 'highlight' : 'border' }} style="border: 1px solid black; text-align: center;padding: 5px;font-size: 10pt">211-257</td>
+                            <td class={{ ($result['agg_score'] >= 211 && $result['agg_score'] <= 257) ? 'highlight' : 'border' }} style="border: 1px solid black; text-align: center;padding: 5px;font-size: 10pt">4.0</td>
+                            <td class={{ ($result['agg_score'] >= 211 && $result['agg_score'] <= 257) ? 'highlight' : 'border' }} style="border: 1px solid black; text-align: center;padding: 5px;font-size: 10pt">B2</td>
                         </tr>
                         <tr>
                             <th colspan="3" style="border: 1px solid black;font-size: 10pt">Descriptions</th>
@@ -935,7 +921,7 @@
                         </tr>
                     </table>
                 </div>
-                
+
                 <div id="independent-user-2" style="padding-top: 10px">
                     <table
                         style="text-align: center; width: 100%; margin-left: -15px; margin-right: -15px; border-collapse: collapse">
@@ -952,14 +938,14 @@
                             <th style="border: 1px solid black; text-align: center;padding: 5px;font-size: 10pt">CEFR Level</th>
                         </tr>
                         <tr>
-                            <td style="border: 1px solid black; text-align: center;padding: 5px;font-size: 10pt">264-210</td>
-                            <td style="border: 1px solid black; text-align: center;padding: 5px;font-size: 10pt">3.5</td>
-                            <td style="border: 1px solid black; text-align: center;padding: 5px;font-size: 10pt">B1</td>
+                            <td class={{ ($result['agg_score'] >= 164 && $result['agg_score'] <= 210) ? 'highlight' : 'border' }} style="border: 1px solid black; text-align: center;padding: 5px;font-size: 10pt">164-210</td>
+                            <td class={{ ($result['agg_score'] >= 164 && $result['agg_score'] <= 210) ? 'highlight' : 'border' }} style="border: 1px solid black; text-align: center;padding: 5px;font-size: 10pt">3.5</td>
+                            <td class={{ ($result['agg_score'] >= 164 && $result['agg_score'] <= 210) ? 'highlight' : 'border' }} style="border: 1px solid black; text-align: center;padding: 5px;font-size: 10pt">B1</td>
                         </tr>
                         <tr>
-                            <td style="border: 1px solid black; text-align: center;padding: 5px;font-size: 10pt">123-163</td>
-                            <td style="border: 1px solid black; text-align: center;padding: 5px;font-size: 10pt">3.0</td>
-                            <td style="border: 1px solid black; text-align: center;padding: 5px;font-size: 10pt">B1</td>
+                            <td class={{ ($result['agg_score'] >= 123 && $result['agg_score'] <= 163) ? 'highlight' : 'border' }} style="border: 1px solid black; text-align: center;padding: 5px;font-size: 10pt">123-163</td>
+                            <td class={{ ($result['agg_score'] >= 123 && $result['agg_score'] <= 163) ? 'highlight' : 'border' }} style="border: 1px solid black; text-align: center;padding: 5px;font-size: 10pt">3.0</td>
+                            <td class={{ ($result['agg_score'] >= 123 && $result['agg_score'] <= 163) ? 'highlight' : 'border' }} style="border: 1px solid black; text-align: center;padding: 5px;font-size: 10pt">B1</td>
                         </tr>
                         <tr>
                             <th colspan="3" style="border: 1px solid black;font-size: 10pt">Descriptions</th>
@@ -975,7 +961,7 @@
                         </tr>
                     </table>
                 </div>
-                
+
                 <div id="independent-user-2" style="padding-top: 10px">
                     <table
                         style="text-align: center; width: 100%; margin-left: -15px; margin-right: -15px; border-collapse: collapse">
@@ -992,19 +978,19 @@
                             <th style="border: 1px solid black; text-align: center;padding: 5px;font-size: 10pt">CEFR Level</th>
                         </tr>
                         <tr>
-                            <td style="border: 1px solid black; text-align: center;padding: 5px;font-size: 10pt">82-122</td>
-                            <td style="border: 1px solid black; text-align: center;padding: 5px;font-size: 10pt">2.5</td>
-                            <td style="border: 1px solid black; text-align: center;padding: 5px;font-size: 10pt">A2</td>
+                            <td class={{ ($result['agg_score'] >= 82 && $result['agg_score'] <= 122) ? 'highlight' : 'border' }} style="border: 1px solid black; text-align: center;padding: 5px;font-size: 10pt">82-122</td>
+                            <td class={{ ($result['agg_score'] >= 82 && $result['agg_score'] <= 122) ? 'highlight' : 'border' }} style="border: 1px solid black; text-align: center;padding: 5px;font-size: 10pt">2.5</td>
+                            <td class={{ ($result['agg_score'] >= 82 && $result['agg_score'] <= 122) ? 'highlight' : 'border' }} style="border: 1px solid black; text-align: center;padding: 5px;font-size: 10pt">A2</td>
                         </tr>
                         <tr>
-                            <td style="border: 1px solid black; text-align: center;padding: 5px;font-size: 10pt">36-81</td>
-                            <td style="border: 1px solid black; text-align: center;padding: 5px;font-size: 10pt">2.0</td>
-                            <td style="border: 1px solid black; text-align: center;padding: 5px;font-size: 10pt">A2</td>
+                            <td class={{ ($result['agg_score'] >= 36 && $result['agg_score'] <= 81) ? 'highlight' : 'border' }} style="border: 1px solid black; text-align: center;padding: 5px;font-size: 10pt">36-81</td>
+                            <td class={{ ($result['agg_score'] >= 36 && $result['agg_score'] <= 81) ? 'highlight' : 'border' }} style="border: 1px solid black; text-align: center;padding: 5px;font-size: 10pt">2.0</td>
+                            <td class={{ ($result['agg_score'] >= 36 && $result['agg_score'] <= 81) ? 'highlight' : 'border' }} style="border: 1px solid black; text-align: center;padding: 5px;font-size: 10pt">A2</td>
                         </tr>
                         <tr>
-                            <td style="border: 1px solid black; text-align: center;padding: 5px;font-size: 10pt">1-35</td>
-                            <td style="border: 1px solid black; text-align: center;padding: 5px;font-size: 10pt">1.0</td>
-                            <td style="border: 1px solid black; text-align: center;padding: 5px;font-size: 10pt">A2</td>
+                            <td class={{ ($result['agg_score'] >= 1 && $result['agg_score'] <= 35) ? 'highlight' : 'border' }} style="border: 1px solid black; text-align: center;padding: 5px;font-size: 10pt">1-35</td>
+                            <td class={{ ($result['agg_score'] >= 1 && $result['agg_score'] <= 35) ? 'highlight' : 'border' }} style="border: 1px solid black; text-align: center;padding: 5px;font-size: 10pt">1.0</td>
+                            <td class={{ ($result['agg_score'] >= 1 && $result['agg_score'] <= 35) ? 'highlight' : 'border' }} style="border: 1px solid black; text-align: center;padding: 5px;font-size: 10pt">A2</td>
                         </tr>
                         <tr>
                             <th colspan="3" style="border: 1px solid black;font-size: 10pt">Descriptions</th>
