@@ -64,6 +64,16 @@ class PaymentController extends Controller
             });
         }
 
+        // list by transaction by role
+        switch (Auth::User()->getRoleNames()[0]) {
+            case 'PSM':
+                $transaction->where('type', 'MUET');
+                break;
+            case 'BPKOM':
+                $transaction->where('type', 'MOD');
+                break;
+        }
+
         // Retrieve the filtered results
         $transaction = $transaction->get();
 
@@ -87,7 +97,6 @@ class PaymentController extends Controller
     }
 
     public function makepayment(PaymentRequest $request)
-    // public function makepayment(Request $request)
     {
         try {
             $string = Crypt::decrypt($request->crypt_id);
@@ -397,13 +406,38 @@ class PaymentController extends Controller
     }
 
     public function generateExcel(){
-        $transaction = Payment::get();
+        $trx = Payment::latest();
+
+        // list by transaction by role
+        switch (Auth::User()->getRoleNames()[0]) {
+            case 'PSM':
+                $trx->where('type', 'MUET');
+                break;
+            case 'BPKOM':
+                $trx->where('type', 'MOD');
+                break;
+        }
+
+        $transaction = $trx->get();
 
         return Excel::download(new TransactionExport($transaction), 'transaction_' . now() . '.xlsx');
     }
-    
+
     public function generatePdf(){
-        $transaction = Payment::get();
+
+        $trx = Payment::latest();
+
+        // list by transaction by role
+        switch (Auth::User()->getRoleNames()[0]) {
+            case 'PSM':
+                $trx->where('type', 'MUET');
+                break;
+            case 'BPKOM':
+                $trx->where('type', 'MOD');
+                break;
+        }
+
+        $transaction = $trx->get();
 
         $pdf = PDF::loadView('modules.admin.report.transaction.pdf.transaction', ['transactions' => $transaction]);
 
