@@ -129,7 +129,7 @@ Route::group(['middleware' => ['role:PENTADBIR|BPKOM|PSM|FINANCE']], function ()
         // Route::post('finance/mod/ajax', [FinanceModController::class, 'getAjax'])->name('finance-mod.ajax');
 
         Route::get('/general-setting', [GeneralSettingController::class, 'index'])->name('general_setting.index');
-        
+
         Route::post('/courier/ajax', [CourierController::class, 'getAjax'])->name('courier.ajax');
         Route::post('/courier/store', [CourierController::class, 'store'])->name('courier.store');
         Route::post('/courier/update/{id}', [CourierController::class, 'update'])->name('courier.update');
@@ -157,7 +157,9 @@ Route::group(['middleware' => ['role:PENTADBIR|BPKOM|PSM|FINANCE']], function ()
     Route::get('users/create', [UserController::class, 'create'])->name('users.create');
     Route::post('users/store', [UserController::class, 'store'])->name('users.store');
     Route::get('users/edit/{id}', [UserController::class, 'edit'])->name('users.edit');
-    Route::put('users/update/{user}', [UserController::class, 'update'])->name('users.update');
+    Route::post('users/update/{user}', [UserController::class, 'update'])->name('users.update');
+    Route::post('users/actived/{user}', [UserController::class, 'activated'])->name('users.activated');
+    Route::post('users/deactived/{user}', [UserController::class, 'deactived'])->name('users.deactived');
 
     Route::resource('audit-logs', AuditLogsController::class);
     Route::post('audit-logs/ajax', [AuditLogsController::class, 'getAjax'])->name('audit-logs.ajax');
