@@ -11,34 +11,34 @@
     <style>
         .gradient-card {
             /* background: linear-gradient(270deg, #66ffff, #0099ff, #66ffff); */
-            background: linear-gradient(to left, #ffffff 0%, #0099ff 100%);
+            background: linear-gradient(to left, #78D5f5 0%, #787ff6 100%);
             /* background-size: 600% 600%; */
             /* animation: gradientAnimation 8s ease infinite; */
         }
         .gradient-card-second {
-            background: linear-gradient(to left, #ffffff 0%, #0099ff 100%);
+            background: linear-gradient(to left, #78D5f5 0%, #787ff6 100%);
             /* background-size: 600% 600%; */
             /* animation: gradientAnimation 9s ease infinite; */
         }
         .gradient-card-third {
-            background: linear-gradient(to left, #ffffff 0%, #0099ff 100%);
+            background: linear-gradient(to left, #78D5f5 0%, #787ff6 100%);
             /* background-size: 600% 600%; */
             /* animation: gradientAnimation 10s ease infinite; */
         }
         
         .gradient-card-yellow {
             /* background: linear-gradient(270deg, #ffcccc, #ff9900, #ffcccc); */
-            background: linear-gradient(to left, #ffffff 0%, #ffcc66 100%);
+            background: linear-gradient(to left, #ffbe88 0%, #ffcc66 100%);
             /* background-size: 600% 600%; */
             /* animation: gradientAnimation 5s ease infinite; */
         }
         .gradient-card-yellow-second {
-            background: linear-gradient(to left, #ffffff 0%, #ffcc66 100%);
+            background: linear-gradient(to left, #ffbe88 0%, #ffcc66 100%);
             /* background-size: 600% 600%; */
             /* animation: gradientAnimation 6s ease infinite; */
         }
         .gradient-card-yellow-third {
-            background: linear-gradient(to left, #ffffff 0%, #ffcc66 100%);
+            background: linear-gradient(to left, #ffbe88 0%, #ffcc66 100%);
             /* background-size: 600% 600%; */
             /* animation: gradientAnimation 7s ease infinite; */
         }
@@ -267,7 +267,7 @@
 
             <div class="col-xl-4 col-md-6">
                 <!-- card -->
-                <div class="card card-animate" style="background-color: #66ffff">
+                <div class="card card-animate" style="background-color: #bce6ff">
                     <div class="card-body">
                         <div class="d-flex align-items-center">
                             <div class="flex-grow-1">
@@ -287,7 +287,7 @@
 
             <div class="col-xl-4 col-md-6">
                 <!-- card -->
-                <div class="card card-animate" style="background-color: #66ffff">
+                <div class="card card-animate" style="background-color: #bce6ff">
                     <div class="card-body">
                         <div class="d-flex align-items-center">
                             <div class="flex-grow-1">
@@ -307,7 +307,7 @@
 
             <div class="col-xl-4 col-md-6">
                 <!-- card -->
-                <div class="card card-animate" style="background-color: #00ccff">
+                <div class="card card-animate" style="background-color: #7fcdfa">
                     <div class="card-body">
                         <div class="d-flex align-items-center">
                             <div class="flex-grow-1">
@@ -333,7 +333,7 @@
 
             <div class="col-xl-4 col-md-6">
                 <!-- card -->
-                <div class="card card-animate" style="background-color: #ffcccc">
+                <div class="card card-animate" style="background-color: #aab6fb">
                     <div class="card-body">
                         <div class="d-flex align-items-center">
                             <div class="flex-grow-1">
@@ -353,7 +353,7 @@
 
             <div class="col-xl-4 col-md-6">
                 <!-- card -->
-                <div class="card card-animate" style="background-color: #ffcccc">
+                <div class="card card-animate" style="background-color: #aab6fb">
                     <div class="card-body">
                         <div class="d-flex align-items-center">
                             <div class="flex-grow-1">
@@ -373,7 +373,7 @@
 
             <div class="col-xl-4 col-md-6">
                 <!-- card -->
-                <div class="card card-animate" style="background-color: #ffcc99">
+                <div class="card card-animate" style="background-color: #8798fb">
                     <div class="card-body">
                         <div class="d-flex align-items-center">
                             <div class="flex-grow-1">
