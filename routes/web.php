@@ -115,6 +115,7 @@ Route::group(['middleware' => ['role:PENTADBIR|BPKOM|PSM|FINANCE']], function ()
 
         Route::get('/finance/{exam_type}', [FinanceController::class, 'index'])->name('finance.index');
         Route::post('/finance/{exam_type}/ajax', [FinanceController::class, 'getAjax'])->name('finance.ajax');
+        Route::post('/finance/{exam_type}/data', [FinanceController::class, 'getData'])->name('finance.data');
         Route::get('/finance/{exam_type}/pdf', [FinanceController::class, 'generatePdf'])->name('finance.pdf');
 
         Route::get('finance-statement', [FinanceStatementController::class, 'index'])->name('finance-statement.index');

@@ -35,7 +35,7 @@ class FinanceController extends Controller
         $totalSuccess   = $payments->where('status', 'SUCCESS')->count();
         $totalPay60     = $payments->where('amount','=', 60.0)->where('type', $exam_type)->sum('amount');
         $totalPay20     = Payment::where('amount', 20.0)->where('type', $exam_type)->sum('amount');
-        // dd($totalPay60);
+
         $totalCollect   = $totalPay60 + $totalPay20;
 
         $count = [
@@ -60,7 +60,21 @@ class FinanceController extends Controller
     public function getAjax(Request $request)
     {
 
-        $payments = Payment::where('type', strtoupper($request->exam_type));
+        $payments = Payment::latest();
+
+        if ($request->has('exam_type_select') && !empty($request->exam_type_select)) {
+            $payments->where('type', $request->exam_type_select);
+        }else{
+            $payments->where('type', strtoupper($request->exam_type));
+        }
+
+        if ($request->has('payment_for') && !empty($request->payment_for)) {
+            $payments->where('payment_for', $request->payment_for);
+        }
+        
+        if ($request->has('status') && !empty($request->status)) {
+            $payments->where('status', $request->status);
+        }
 
         // Get the current date in the desired format
         $currentDate = Carbon::now()->format('Y-m-d H:i:s');
@@ -74,7 +88,7 @@ class FinanceController extends Controller
                         : $currentDate;
 
             // Filter based on the date range
-            $payments->whereBetween('payment_date', [$startDate, $endDate]);
+            $payments->whereBetween('created_at', [$startDate, $endDate]);
         }
 
         // Apply filtering based on name search if provided
@@ -106,8 +120,151 @@ class FinanceController extends Controller
         return datatables($data)->toJson();
     }
 
+    public function getData(Request $request, $exam_type)
+    {
+        $type = $exam_type;
+        $exam_type = strtoupper($exam_type);
+
+        $totalSuccess   = Payment::when($request->filled('exam_type'), function ($query) use ($request) {
+                                return $query->where('type', 'like', "%{$request->input('exam_type')}%");
+                            }, function ($query) use ($exam_type){
+                                return $query->where('type', $exam_type);
+                            })
+                            ->when($request->filled('startDate') || $request->filled('endDate'), function ($query) use ($request) {
+                                $currentDate = Carbon::now()->format('Y-m-d H:i:s');
+
+                                $startDate = Carbon::parse($request->startDate)->startOfDay()->format('Y-m-d H:i:s');
+                                $endDate = $request->has('endDate') && !empty($request->endDate)
+                                            ? Carbon::parse($request->endDate)->endOfDay()->format('Y-m-d H:i:s')
+                                            : $currentDate;
+
+                                $query->whereBetween('created_at', [$startDate, $endDate]);
+                            })
+                            ->when($request->filled('payment_for'), function ($query) use ($request) {
+                                return $query->where('payment_for', 'like', "%{$request->input('payment_for')}%");
+                            })
+                            ->when($request->filled('textSearch'), function ($query) use ($request) {
+                                $textSearch = $request->textSearch;
+                                $request->where(function ($query) use ($textSearch) {
+                                    $query->where('txn_id', 'LIKE', '%' . $textSearch . '%')
+                                        ->orWhere('ref_no', 'LIKE', '%' . $textSearch . '%');
+                                });
+                            })
+                            ->when($request->filled('status'), fn($query) => $query->where('status', 'like', "%{$request->input('status')}%"))
+                            ->count();
+
+        $totalPayMpm = Payment::when($request->filled('exam_type'), function ($query) use ($request) {
+                                return $query->where('type', 'like', "%{$request->input('exam_type')}%");
+                            }, function ($query) use ($exam_type){
+                                return $query->where('type', $exam_type);
+                            })
+                            ->when($request->filled('payment_for'), function ($query) use ($request) {
+                                $paymentFor = $request->input('payment_for');
+                                if ($paymentFor == 'MPM_PRINT') {
+                                    return $query->where('payment_for', 'MPM_PRINT');
+                                }else{
+                                    return $query->where('payment_for', 'SELF_PRINT')->whereRaw('false');
+                                }
+                            }, function ($query) {
+                                return $query->where('payment_for', 'MPM_PRINT');
+                            })
+                            ->when($request->filled('startDate') || $request->filled('endDate'), function ($query) use ($request) {
+                                $currentDate = Carbon::now()->format('Y-m-d H:i:s');
+
+                                $startDate = Carbon::parse($request->startDate)->startOfDay()->format('Y-m-d H:i:s');
+                                $endDate = $request->has('endDate') && !empty($request->endDate)
+                                            ? Carbon::parse($request->endDate)->endOfDay()->format('Y-m-d H:i:s')
+                                            : $currentDate;
+
+                                // Filter based on the date range
+                                $query->whereBetween('payment_date', [$startDate, $endDate]);
+                            })
+                            ->when($request->filled('textSearch'), function ($query) use ($request) {
+                                $textSearch = $request->textSearch;
+                                $request->where(function ($query) use ($textSearch) {
+                                    $query->where('txn_id', 'LIKE', '%' . $textSearch . '%')
+                                        ->orWhere('ref_no', 'LIKE', '%' . $textSearch . '%');
+                                });
+                            })
+                            ->when($request->filled('status'), fn($query) => $query->where('status', 'like', "%{$request->input('status')}%"))
+                            ->sum('amount');
+
+        $totalPaySelf = Payment::when($request->filled('exam_type'), function ($query) use ($request) {
+                                return $query->where('type', 'like', "%{$request->input('exam_type')}%");
+                            }, function ($query) use ($exam_type){
+                                return $query->where('type', $exam_type);
+                            })
+                            ->when($request->filled('payment_for'), function ($query) use ($request) {
+                                $paymentFor = $request->input('payment_for');
+                                if ($paymentFor == 'SELF_PRINT') {
+                                    return $query->where('payment_for', 'SELF_PRINT');
+                                }else{
+                                    return $query->where('payment_for', 'MPM_PRINT')->whereRaw('false');
+                                }
+                            }, function ($query) {
+                                return $query->where('payment_for', 'SELF_PRINT');
+                            })
+                            ->when($request->filled('startDate') || $request->filled('endDate'), function ($query) use ($request) {
+                                $currentDate = Carbon::now()->format('Y-m-d H:i:s');
+
+                                $startDate = Carbon::parse($request->startDate)->startOfDay()->format('Y-m-d H:i:s');
+                                $endDate = $request->has('endDate') && !empty($request->endDate)
+                                            ? Carbon::parse($request->endDate)->endOfDay()->format('Y-m-d H:i:s')
+                                            : $currentDate;
+
+                                // Filter based on the date range
+                                $query->whereBetween('payment_date', [$startDate, $endDate]);
+                            })
+                            ->when($request->filled('textSearch'), function ($query) use ($request) {
+                                $textSearch = $request->textSearch;
+                                $request->where(function ($query) use ($textSearch) {
+                                    $query->where('txn_id', 'LIKE', '%' . $textSearch . '%')
+                                        ->orWhere('ref_no', 'LIKE', '%' . $textSearch . '%');
+                                });
+                            })
+                            ->when($request->filled('status'), fn($query) => $query->where('status', 'like', "%{$request->input('status')}%"))
+                            ->sum('amount');
+
+        $totalColection = $totalPayMpm + $totalPaySelf;
+                        
+
+        return [
+            'totalSuccess' => $totalSuccess,
+            'totalPayMpm' => $totalPayMpm,
+            'totalPaySelf' => $totalPaySelf,
+            'totalColection' => $totalColection,
+        ];
+    }
+
     public function generatePdf(Request $request){
-        $payments = Payment::where('type', strtoupper($request->exam_type))->get();
+        $payments = Payment::when($request->filled('exam_type_select'), function ($query) use ($request) {
+                        return $query->where('type', $request->input('exam_type_select'));
+                    }, function ($query) use ($request){
+                        return $query->where('type', strtoupper($request->exam_type));
+                    })
+                    ->when($request->filled('payment_for'), function ($query) use ($request) {
+                        return $query->where('payment_for', 'like', "%{$request->input('payment_for')}%");
+                    })
+                    ->when($request->filled('startDate') || $request->filled('endDate'), function ($query) use ($request) {
+                        $currentDate = Carbon::now()->format('Y-m-d H:i:s');
+
+                        $startDate = Carbon::parse($request->startDate)->startOfDay()->format('Y-m-d H:i:s');
+                        $endDate = $request->has('endDate') && !empty($request->endDate)
+                                    ? Carbon::parse($request->endDate)->endOfDay()->format('Y-m-d H:i:s')
+                                    : $currentDate;
+
+                        // Filter based on the date range
+                        $query->whereBetween('payment_date', [$startDate, $endDate]);
+                    })
+                    ->when($request->filled('textSearch'), function ($query) use ($request) {
+                        $textSearch = $request->textSearch;
+                        $request->where(function ($query) use ($textSearch) {
+                            $query->where('txn_id', 'LIKE', '%' . $textSearch . '%')
+                                ->orWhere('ref_no', 'LIKE', '%' . $textSearch . '%');
+                        });
+                    })
+                    ->when($request->filled('status'), fn($query) => $query->where('status', 'like', "%{$request->input('status')}%"))
+                    ->get();
         
         if($request->exam_type == 'mod'){
             $pdf = Pdf::loadView('modules.admin.report.financial.mod.pdf', ['payments' => $payments]);
