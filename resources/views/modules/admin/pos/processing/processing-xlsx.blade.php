@@ -47,7 +47,9 @@
                 <td>0.10</td>
                 <td>Document</td>
                 <td>MUET Certificate</td>
-                <td>{{ $order->unique_order_id }}</td>
+                <td>
+                    {{ $order->unique_order_id }} <span>(Do Not Fold)</span>
+                </td>
                 <td></td>
                 <td></td>
             </tr>
