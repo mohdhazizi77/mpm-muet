@@ -75,7 +75,7 @@ class CandidateController extends Controller
             $is_selfPrintPaid = false;
             $is_mpmPrintPaid = false;
             if ($is_more2year) {
-                $res = $muet->getOrder->where('payment_status','SUCCESS')->where('payment_for', 'SELF_PRINT')->toArray();
+                // $res = $muet->getOrder->where('payment_status','SUCCESS')->where('payment_for', 'SELF_PRINT')->toArray();
 
                 $res = $muet->getOrder()
                         ->where('payment_status', 'SUCCESS')
@@ -252,7 +252,6 @@ class CandidateController extends Controller
             "agg_score" => 360,
         ];
 
-        // dd($candidate->getResult($candidate));
         return view('modules.candidates.print-pdf', compact(['user','scheme','result','cryptId']));
 
     }
@@ -329,16 +328,26 @@ class CandidateController extends Controller
             "agg_score" => 360,
         ];
 
+        // $muet = $candidate->muetCalon;
+        // dd($candidate);
         //show result untuk tak lebih 2 tahun
         $is_more2year = self::checkYear($candidate->getTarikh->tahun);
+
+        $cutoffTime = Carbon::now()->subDay(); // Get the current time and subtract 24 hours to get the cutoff time
+
         if ($is_more2year) {
-            //check order
-            $res = $candidate->getOrder->where('payment_status','SUCCESS')->where('payment_for', 'SELF_PRINT')->toArray(); //check if already paid for slefprint
-            $show_result = count($res)>0 ? true : false ;
+            $res = $candidate->getOrder()
+                        ->where('payment_status', 'SUCCESS')
+                        ->where('payment_for', 'SELF_PRINT')
+                        ->where('created_at', '>=', $cutoffTime)
+                        ->get()
+                        ->toArray();
+
+            $show_result = count($res)>0 ? true : false;
         } else {
             $show_result = true ;
         }
-        // dd($candidate->getOrder);
+
         return view('modules.candidates.print-mpm', compact([
             'show_result',
             'result',
