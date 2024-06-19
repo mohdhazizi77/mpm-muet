@@ -64,6 +64,16 @@ class PaymentController extends Controller
             });
         }
 
+        // list by transaction by role
+        switch (Auth::User()->getRoleNames()[0]) {
+            case 'PSM':
+                $transaction->where('type', 'MUET');
+                break;
+            case 'BPKOM':
+                $transaction->where('type', 'MOD');
+                break;
+        }
+
         // Retrieve the filtered results
         $transaction = $transaction->get();
 
@@ -87,7 +97,6 @@ class PaymentController extends Controller
     }
 
     public function makepayment(PaymentRequest $request)
-    // public function makepayment(Request $request)
     {
         try {
             $string = Crypt::decrypt($request->crypt_id);
@@ -396,10 +405,19 @@ class PaymentController extends Controller
         return response()->json($arr);
     }
 
-    public function generateExcel(Request $request){
-        $currentDate = Carbon::now()->format('Y-m-d H:i:s');
+    public function generateExcel(){
 
+        $currentDate = Carbon::now()->format('Y-m-d H:i:s');
         $transactions = Payment::latest();
+        // list by transaction by role
+        switch (Auth::User()->getRoleNames()[0]) {
+            case 'PSM':
+                $transactions->where('type', 'MUET');
+                break;
+            case 'BPKOM':
+                $transactions->where('type', 'MOD');
+                break;
+        }
 
         if(filled($request->startDate) || filled($request->endDate)){
             $startDate = Carbon::parse($request->startDate)->startOfDay()->format('Y-m-d H:i:s');
@@ -424,13 +442,23 @@ class PaymentController extends Controller
 
         return Excel::download(new TransactionExport($transactions), 'transaction_' . now() . '.xlsx');
     }
-    
-    public function generatePdf(Request $request){
+
+    public function generatePdf(){
+
 
         $currentDate = Carbon::now()->format('Y-m-d H:i:s');
 
         $transactions = Payment::latest();
 
+        // list by transaction by role
+        switch (Auth::User()->getRoleNames()[0]) {
+            case 'PSM':
+                $transactions->where('type', 'MUET');
+                break;
+            case 'BPKOM':
+                $transactions->where('type', 'MOD');
+                break;
+        }
         if(filled($request->startDate) || filled($request->endDate)){
             $startDate = Carbon::parse($request->startDate)->startOfDay()->format('Y-m-d H:i:s');
             $endDate = $request->has('endDateTrx') && !empty($request->endDate)

@@ -84,6 +84,16 @@ class PosController extends Controller
             }
         }
 
+        // list by transaction by role
+        switch (Auth::User()->getRoleNames()[0]) {
+            case 'PSM':
+                $pos->where('type', 'MUET');
+                break;
+            case 'BPKOM':
+                $pos->where('type', 'MOD');
+                break;
+        }
+
         // Fetch the data
         $posData = $pos->get();
 
@@ -631,7 +641,7 @@ class PosController extends Controller
         // Return the Excel download with all collected orders
         return Excel::download(new OrdersPosExport($orders, $type), 'list_pos_' . $type . '.xlsx');
     }
-    
+
     public function generateImportExcelPos(Request $request,$type){
         $this->validate($request, [
             'file' => 'nullable|mimes:xls,xlsx'
@@ -657,10 +667,10 @@ class PosController extends Controller
                     if ($index === 0 && $row[18] !== 'Parcel Notes' && $row[2] !== 'Consignment Note') {
                         return response('Column Parcel Notes and/or Consignment Note is not Exist.', 422);
                     }
-            
+
                     // Proceed if the headers match the expected values and data is valid
                     if ($index > 0 && isset($row[18]) && isset($row[2]) && $row[18] !== null && $row[18] !== '') {
-                        $parcelNoteValues[] = $row[18];
+                        $parcelNoteValues[] = $row[18]; //explode(" ", $row[18])[0];
                         $consinmentteValues[] = $row[2];
                     }
                 }
@@ -669,7 +679,7 @@ class PosController extends Controller
             // Check existence of all unique_order_id values first
             foreach ($parcelNoteValues as $parcelNote) {
                 $order = Order::where('unique_order_id', $parcelNote)->exists();
-                
+
                 if (!$order) {
                     $nonExistentOrders[] = $parcelNote; // Store non-existent unique_order_id
                 }
@@ -682,10 +692,10 @@ class PosController extends Controller
 
             // All unique_order_id values exist, proceed with updating tracking_number
             foreach ($parcelNoteValues as $key => $parcelNote) {
-                $consinment = $consinmentteValues[$key]; 
-                
+                $consinment = $consinmentteValues[$key];
+
                 $order = Order::where('unique_order_id', $parcelNote)->first();
-                
+
                 // Update tracking_number if order exists
                 if ($order) {
                     $order->tracking_number = $consinment;
