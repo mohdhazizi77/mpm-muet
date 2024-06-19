@@ -488,14 +488,31 @@ class PosController extends Controller
         return true;
     }
 
-    public function generateExcel($type){
-
-        $orders = Order::where([
-            "current_status" => $type
-        ])
-        ->with('muetCalon','modCalon')->get();
-
-        return Excel::download(new OrdersExport($orders,$type), 'list_pos_' . $type . '.xlsx');
+    public function generateExcel(Request $request, $type){
+        
+        $orderIDs = array_filter($request->orderID, function ($value) {
+            return !is_null($value);
+        });
+    
+        $orders = collect();
+    
+        // Gather all orders matching the given criteria
+        foreach ($orderIDs as $value) {
+            $id = Crypt::decrypt($value);
+    
+            $order = Order::where([
+                    "current_status" => $type,
+                    'id' => $id
+                ])
+                ->with('muetCalon','modCalon')
+                ->get();
+    
+            // Merge the collected orders
+            $orders = $orders->merge($order);
+        }
+    
+        // Return the Excel download with all collected orders
+        return Excel::download(new OrdersExport($orders, $type), 'list_pos_' . $type . '.xlsx');
 
         $arr = []; // Initialize an empty array
 
@@ -541,13 +558,31 @@ class PosController extends Controller
         return Excel::download($export, 'orders.xlsx');
     }
 
-    public function generateExcelPos($type){
-        $orders = Order::where([
-            "current_status" => $type
-        ])
-        ->with('muetCalon','modCalon')->get();
+    public function generateExcelPos(Request $request, $type){
 
-        return Excel::download(new OrdersPosExport($orders,$type), 'list_pos_' . $type . '.xlsx');
+        $orderIDs = array_filter($request->orderID, function ($value) {
+            return !is_null($value);
+        });
+    
+        $orders = collect();
+    
+        // Gather all orders matching the given criteria
+        foreach ($orderIDs as $value) {
+            $id = Crypt::decrypt($value);
+    
+            $order = Order::where([
+                    "current_status" => $type,
+                    'id' => $id
+                ])
+                ->with('muetCalon','modCalon')
+                ->get();
+    
+            // Merge the collected orders
+            $orders = $orders->merge($order);
+        }
+    
+        // Return the Excel download with all collected orders
+        return Excel::download(new OrdersPosExport($orders, $type), 'list_pos_' . $type . '.xlsx');
     }
     
     public function generateImportExcelPos(Request $request,$type){
