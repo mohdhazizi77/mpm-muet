@@ -119,7 +119,7 @@ Route::group(['middleware' => ['role:PENTADBIR|BPKOM|PSM|FINANCE']], function ()
         Route::get('/finance/{exam_type}/pdf', [FinanceController::class, 'generatePdf'])->name('finance.pdf');
 
         Route::get('finance-statement', [FinanceStatementController::class, 'index'])->name('finance-statement.index');
-        Route::post('finance-statement/download-excel', [FinanceStatementController::class, 'downloadExcel'])->name('finance-statement.download_excel');
+        Route::get('finance-statement/download-pdf', [FinanceStatementController::class, 'downloadExcel'])->name('finance-statement.download_excel');
 
         // Route::resource('finance/muet', FinanceMuetController::class);
         // Route::post('finance/muet/ajax', [FinanceMuetController::class, 'getAjax'])->name('finance-muet.ajax');

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Exports\FinancialStatementExport;
+use Barryvdh\DomPDF\Facade\Pdf;
 use App\Models\Payment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -29,6 +30,9 @@ class FinanceStatementController extends Controller
                     ->whereMonth('payment_date', $month)
                     ->get();
 
-        return Excel::download(new FinancialStatementExport($payments), 'list_alumni.xlsx');
+        $pdf = Pdf::loadView('modules.admin.report.financial.statement.pdf.statement', ['payments' => $payments]);
+
+        return $pdf->stream('List_financial_statment_' . now() . '.pdf');
+        // return Excel::download(new FinancialStatementExport($payments), 'list_alumni.xlsx');
     }
 }
