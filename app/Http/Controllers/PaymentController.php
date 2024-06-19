@@ -396,16 +396,63 @@ class PaymentController extends Controller
         return response()->json($arr);
     }
 
-    public function generateExcel(){
-        $transaction = Payment::get();
+    public function generateExcel(Request $request){
+        $currentDate = Carbon::now()->format('Y-m-d H:i:s');
 
-        return Excel::download(new TransactionExport($transaction), 'transaction_' . now() . '.xlsx');
+        $transactions = Payment::latest();
+
+        if(filled($request->startDate) || filled($request->endDate)){
+            $startDate = Carbon::parse($request->startDate)->startOfDay()->format('Y-m-d H:i:s');
+            $endDate = $request->has('endDateTrx') && !empty($request->endDate)
+                        ? Carbon::parse($request->endDate)->endOfDay()->format('Y-m-d H:i:s')
+                        : $currentDate;
+
+            // Filter based on the date range
+            $transactions->whereBetween('created_at', [$startDate, $endDate]);
+        }
+
+        if(filled($request->textSearch)){
+            $textSearch = $request->textSearch;
+            $transactions->where(function ($query) use ($textSearch) {
+                $query->where('txn_id', 'LIKE', '%' . $textSearch . '%')
+                    // Add more columns to search in if necessary
+                    ->orWhere('ref_no', 'LIKE', '%' . $textSearch . '%');
+            });
+        }
+
+        $transactions = $transactions->get();
+
+        return Excel::download(new TransactionExport($transactions), 'transaction_' . now() . '.xlsx');
     }
     
-    public function generatePdf(){
-        $transaction = Payment::get();
+    public function generatePdf(Request $request){
 
-        $pdf = PDF::loadView('modules.admin.report.transaction.pdf.transaction', ['transactions' => $transaction]);
+        $currentDate = Carbon::now()->format('Y-m-d H:i:s');
+
+        $transactions = Payment::latest();
+
+        if(filled($request->startDate) || filled($request->endDate)){
+            $startDate = Carbon::parse($request->startDate)->startOfDay()->format('Y-m-d H:i:s');
+            $endDate = $request->has('endDateTrx') && !empty($request->endDate)
+                        ? Carbon::parse($request->endDate)->endOfDay()->format('Y-m-d H:i:s')
+                        : $currentDate;
+
+            // Filter based on the date range
+            $transactions->whereBetween('created_at', [$startDate, $endDate]);
+        }
+
+        if(filled($request->textSearch)){
+            $textSearch = $request->textSearch;
+            $transactions->where(function ($query) use ($textSearch) {
+                $query->where('txn_id', 'LIKE', '%' . $textSearch . '%')
+                    // Add more columns to search in if necessary
+                    ->orWhere('ref_no', 'LIKE', '%' . $textSearch . '%');
+            });
+        }
+
+        $transactions = $transactions->get();
+
+        $pdf = PDF::loadView('modules.admin.report.transaction.pdf.transaction', ['transactions' => $transactions]);
 
         return $pdf->stream('ListTransaction.pdf');
     }
