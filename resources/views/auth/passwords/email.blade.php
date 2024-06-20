@@ -190,7 +190,7 @@
                         Swal.fire({
                             type: 'success',
                             title: 'Success',
-                            text: 'Your email exists!',
+                            text: 'Please check your email to renew your password!',
                             customClass: {
                                 popup: 'my-swal-popup',
                                 confirmButton: 'my-swal-confirm',
@@ -198,7 +198,7 @@
                             }
                         }).then((result) => {
                             if (result.isConfirmed) {
-                                window.location.href = '{{ route('users.verify_index', '') }}/' + response.id;
+                                window.location.href = '{{ route('admin.login') }}/';
                             }
                         });
                     },

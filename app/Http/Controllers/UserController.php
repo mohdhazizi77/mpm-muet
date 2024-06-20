@@ -261,7 +261,12 @@ class UserController extends Controller
         $user = User::where('email', $request->email)->first();
 
         if($user){
-            // return redirect()->route('users.verify_index', ['id' => $user->id]);
+            try {
+                $user->notify(new VerifyPasswordNotification($user));
+            } catch (\Exception $e) {
+                \Log::error('Error sending email notification: ' . $e->getMessage());
+            }
+            
             return response()->json(['success' => true, 'id' => $user->id]);
         }else{
             return response('Email is not on record!', 422);

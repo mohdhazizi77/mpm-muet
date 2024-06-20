@@ -81,6 +81,11 @@
                                 <div class="text-center mt-2">
                                     <h3 class="text-primary">MUET Online Certificate System</h3>
                                 </div>
+                                @if (session('fail'))
+                                    <div id="failMessage" class="alert alert-danger">
+                                        {{ session('fail') }}
+                                    </div>
+                                @endif
                                 <div class="p-2 mt-4">
                                     <form action="{{ route('admin.login') }}" method="POST">
                                         @csrf
@@ -138,7 +143,18 @@
     </div>
 @endsection
 @section('script')
-    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check if the success message exists
+            const failMessage = document.getElementById('failMessage');
+            if (failMessage) {
+                // Hide the success message after 5 seconds
+                setTimeout(function() {
+                    failMessage.style.display = 'none';
+                }, 5000); // 5000 milliseconds = 5 seconds
+            }
+        });
+    </script>
     <script src="{{ URL::asset('build/libs/particles.js/particles.js') }}"></script>
     <script src="{{ URL::asset('build/js/pages/particles.app.js') }}"></script>
     <script src="{{ URL::asset('build/js/pages/password-addon.init.js') }}"></script>
