@@ -18,10 +18,11 @@ class CheckBearerTokenPos
      */
     public function handle($request, Closure $next)
     {
+        $this->getNewToken();
+
         // Check if the token exists in the session
         if (!$this->tokenExists()) {
             // Token doesn't exist, get a new one
-            // dd("h");
             $this->getNewToken();
         }
 
@@ -53,61 +54,68 @@ class CheckBearerTokenPos
     {
 
         try {
-            // $url = "https://gateway-usc.pos.com.my/security/connect/token";
-            // $data = [
-            //     'client_id' => "6652e0d504a9d7000e8a878a",
-            //     'client_secret' => "pOJY4eHX6fvKjBcpyP1jQtqCwi3ImC2qiDPPKJlodc8=",
-            //     'grant_type' => "client_credentials",
-            //     'scope' => "as01.gen-connote.all"
-            // ];
+            $url = "https://gateway-usc.pos.com.my/security/connect/token";
+            $data = [
+                'client_id' => "66712e0af304bd000e908bb5",
+                'client_secret' => "1tG5mGMAvAzu5qyM59iqWE4lSQFmDohRhN/HuPusnoM=",
+                'grant_type' => "client_credentials",
+                'scope' => "as01.gen-connote.all as2corporate.preacceptancessingle.all as01.routing-code.all as2corporate.v2trackntracewebapijson.all as01.generate-pl9-with-connote.all"
+            ];
 
-            // $output = '';
-            // $curl = curl_init();
-            // curl_setopt($curl, CURLOPT_URL, $url);
-            // curl_setopt($curl, CURLOPT_POST, 1);
-            // curl_setopt($curl, CURLOPT_HTTPHEADER, array(
-            //     'Accept: application/json',
-            // ));
-            // curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-            // curl_setopt($curl, CURLOPT_POSTFIELDS, http_build_query($data));
-            // curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, 0);
-            // curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 0);
-            // $output = curl_exec($curl);
-            // $output = json_decode($output);
-            // // dd($output);
+            $output = '';
+            $curl = curl_init();
+            curl_setopt($curl, CURLOPT_URL, $url);
+            curl_setopt($curl, CURLOPT_POST, 1);
+            curl_setopt($curl, CURLOPT_HTTPHEADER, array(
+                'Accept: application/json',
+            ));
+            curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+            curl_setopt($curl, CURLOPT_POSTFIELDS, http_build_query($data));
+            curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, 0);
+            curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 0);
+            $output = curl_exec($curl);
+            $output = json_decode($output);
 
-            // if (curl_errno($curl)) {
-            //     $error_msg = curl_error($curl);
-            //     error_log("cURL error: " . $error_msg); // Log the error
-            //     curl_close($curl);
-            //     return "An error occurred while connecting to the courier API. Please try again later.";
-            // }
+            if (curl_errno($curl)) {
+                $error_msg = curl_error($curl);
+                error_log("cURL error: " . $error_msg); // Log the error
+                curl_close($curl);
+                return "An error occurred while connecting to the POS API. Please try again later.";
+            }
 
-            // $http_status = curl_getinfo($curl, CURLINFO_HTTP_CODE);
-            // if ($http_status != 200) {
-            //     $error_msg = "HTTP Status Code: " . $http_status;
-            //     error_log("cURL error: " . $error_msg); // Log the error
-            //     curl_close($curl);
-            //     return "An error occurred with the courier API. Please try again later.";
-            // }
+            $http_status = curl_getinfo($curl, CURLINFO_HTTP_CODE);
 
-            // if (!empty($output)) {
-            //     curl_close($curl);
-            //     return $output;
-            // } else {
-            //     $error_msg = "Failed to connect to the payment gateway. URL or TOKEN may be incorrect.";
-            //     error_log("Connection error: " . $error_msg); // Log the error
-            //     curl_close($curl);
-            //     return "An error occurred while processing your request. Please try again later.";
-            // }
+            if ($http_status != 200) {
+                $error_msg = "HTTP Status Code: " . $http_status;
+                error_log("cURL error: " . $error_msg); // Log the error
+                curl_close($curl);
+                return "An error occurred with the POS API. Please try again later.";
+            }
 
-            $token = "POS_BEARER_TOKEN";
-            // Store the token in the session
-            Session::put('bearer_token', $token);
+            if (!empty($output)) {
+                curl_close($curl);
 
-            // Set the expiration time
-            $expiresAt = now()->addHours(12);
-            Session::put('bearer_token_expires_at', $expiresAt);
+                $token = $output->access_token;
+                $durationInSeconds = $output->expires_in;
+
+                // Convert the duration from seconds to hours
+                $durationInHours = $durationInSeconds / 3600;
+
+                // Store the token in the session
+                Session::put('bearer_token', $token);
+
+                // Set the expiration time
+                $expiresAt = now()->addHours($durationInHours);
+                Session::put('bearer_token_expires_at', $expiresAt);
+
+                return $output;
+            } else {
+                $error_msg = "Failed to connect to the POS API. URL or TOKEN may be incorrect.";
+                error_log("Connection error: " . $error_msg); // Log the error
+                curl_close($curl);
+                return "An error occurred while processing your request. Please try again later.";
+            }
+
         } catch (\Exception $e) {
             // Handle API call failure (e.g., log error)
         }

@@ -21,6 +21,8 @@ use App\Models\User;
 use App\Models\MuetCalon;
 use App\Models\ModCalon;
 
+use GuzzleHttp\Client;
+use GuzzleHttp\Exception\RequestException;
 
 use App\Exports\OrdersExport;
 use Carbon\Carbon;
@@ -36,9 +38,7 @@ class PosController extends Controller
         if (!in_array($type, ['new', 'processing', 'completed'])) {
             abort(404);
         }
-
         $user = Auth::user() ?? abort(403);
-
         return view('modules.admin.pos.' . $type . '.index', compact('user'));
     }
 
@@ -183,22 +183,36 @@ class PosController extends Controller
         }
 
         $order = Order::find($id);
+        $stringOrderID = $order->unique_order_id;
 
         $data['success'] = false;
 
         if ($type == 'new') {
 
-            // $connote = self::getConNote($order); // return output or error
+            $connote = self::getConNote([$stringOrderID]); // return output or error
 
-            // $order->tracking_number = $connote->ConnoteNo;
-            $order->tracking_number = "ER".$order->unique_order_id."MY";
-            $order->current_status = "PROCESSING";
+            if($connote['success']){ //true
 
-            $tracking = new TrackingOrder();
-            $tracking->order_id = $order->id;
-            $tracking->detail = "MPM currently processing the certificate for shipping";
-            $tracking->status = "PROCESSING";
-            $tracking->save();
+                $order->tracking_number = $connote['con_note'];
+                // $order->tracking_number = "ER".$order->unique_order_id."MY";
+                $order->current_status = "PROCESSING";
+
+                $tracking = new TrackingOrder();
+                $tracking->order_id = $order->id;
+                $tracking->detail = "MPM currently processing the certificate for shipping";
+                $tracking->status = "PROCESSING";
+                $tracking->save();
+
+            } else { // if api pos down
+                $data = [
+                    'success' => false,
+                    'message' => $connote['message'],
+                    'message_detail' => $connote['message_detail'],
+                ];
+
+                return response()->json($data);
+            }
+
 
         } elseif ($type == 'processing') {
 
@@ -297,22 +311,34 @@ class PosController extends Controller
             }
 
             $order = Order::find($id);
+            $stringOrderID = $order->unique_order_id;
 
             $data['success'] = false;
 
             if ($type == 'new') {
+                 $connote = self::getConNote([$stringOrderID]); // return output or error
 
-                // $connote = self::getConNote($order); // return output or error
+                if($connote['success']){ //true
 
-                // $order->tracking_number = $connote->ConnoteNo;
-                $order->tracking_number = "ER".$order->unique_order_id."MY";
-                $order->current_status = "PROCESSING";
+                    // $order->tracking_number = $connote->ConnoteNo;
+                    $order->tracking_number = "ER".$order->unique_order_id."MY";
+                    $order->current_status = "PROCESSING";
 
-                $tracking = new TrackingOrder();
-                $tracking->order_id = $order->id;
-                $tracking->detail = "MPM currently processing the certificate for shipping";
-                $tracking->status = "PROCESSING";
-                $tracking->save();
+                    $tracking = new TrackingOrder();
+                    $tracking->order_id = $order->id;
+                    $tracking->detail = "MPM currently processing the certificate for shipping";
+                    $tracking->status = "PROCESSING";
+                    $tracking->save();
+                } else { // if api pos down
+                    $data = [
+                        'success' => false,
+                        'message' => $connote['message'],
+                        'message_detail' => $connote['message_detail'],
+                    ];
+
+                    return response()->json($data);
+                }
+
 
             } elseif ($type == 'processing') {
 
@@ -443,53 +469,96 @@ class PosController extends Controller
         // }
     }
 
-    function getConNote(){
-        $url = "https://gateway-usc.pos.com.my/security/connect/token";
-        $data = [
-            'client_id' => "665b49e6f304bd000e908742",
-            'client_secret' => "8FfMy7W3e4BYsSs4y1y50jshkLr6oVHd4nh3TKES1lY=",
-            'grant_type' => "client_credentials",
-            'scope' => "as01.gen-connote.all as2corporate.preacceptancessingle.all as01.routing-code.all as2corporate.v2trackntracewebapijson.all"
-        ];
+    function getConNote($orders){
 
-        $output = '';
-        $curl = curl_init();
-        curl_setopt($curl, CURLOPT_URL, $url);
-        curl_setopt($curl, CURLOPT_POST, 1);
-        curl_setopt($curl, CURLOPT_HTTPHEADER, array(
-            'Accept: application/json',
-        ));
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($curl, CURLOPT_POSTFIELDS, http_build_query($data));
-        curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, 0);
-        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 0);
-        $output = curl_exec($curl);
-        $output = json_decode($output);
-        // dd($output);
-
-        if (curl_errno($curl)) {
-            $error_msg = curl_error($curl);
-            error_log("cURL error: " . $error_msg); // Log the error
-            curl_close($curl);
-            return "An error occurred while connecting to the courier API. Please try again later.";
+        // Ensure you have a valid session token
+        $bearerToken = Session::get('bearer_token');
+        if (!$bearerToken) {
+            die('Bearer token is not available in the session.');
         }
 
-        $http_status = curl_getinfo($curl, CURLINFO_HTTP_CODE);
-        if ($http_status != 200) {
-            $error_msg = "HTTP Status Code: " . $http_status;
-            error_log("cURL error: " . $error_msg); // Log the error
-            curl_close($curl);
-            return "An error occurred with the courier API. Please try again later.";
-        }
+        // Create a new Guzzle HTTP client
+        $client = new Client();
 
-        if (!empty($output)) {
-            curl_close($curl);
-            return $output;
-        } else {
-            $error_msg = "Failed to connect to the pos api. URL or TOKEN may be incorrect.";
-            error_log("Connection error: " . $error_msg); // Log the error
-            curl_close($curl);
-            return "An error occurred while processing your request. Please try again later.";
+        try {
+            // Send a GET request
+            $response = $client->request('GET', 'https://gateway-usc.pos.com.my/staging/as01/gen-connote/v1/api/GConnote', [
+                'query' => [
+                    'numberOfItem' => count($orders),
+                    'Prefix' => 'ER',
+                    'ApplicationCode' => 'StagingPos',
+                    'Secretid' => 'StagingPos@1234',
+                    'Orderid' => implode(', ', $orders),
+                    'username' => 'StagingPos'
+                ],
+                'headers' => [
+                    'Authorization' => 'Bearer ' . $bearerToken,
+                ]
+            ]);
+
+            // Output the response body
+            $response = json_decode($response->getBody()->getContents());
+            if ($response->StatusCode == "01") {
+                return [
+                    'success' => true,
+                    'con_note' => $response->ConnoteNo,
+                ];
+            } else {
+                return [
+                    'success' => false,
+                    'message' => $response->Message,
+                    'message_detail' => '',
+                ];
+            }
+
+        } catch (ConnectException $e) {
+            // Handle connection errors (e.g., DNS issues, server not reachable)
+            return [
+                'success' => false,
+                'error' => 'Connection error',
+                'message' => 'The POS API is not reachable. Please check your network connection or try again later.',
+                'message_detail' => '',
+                'details' => $e->getMessage()
+            ];
+        } catch (ServerException $e) {
+            // Handle server errors (e.g., 500 Internal Server Error)
+            return [
+                'error' => 'Server error',
+                'success' => false,
+                'message' => 'The POS API encountered an unexpected condition. Please try again later.',
+                'message_detail' => 'Please contact POS IT Team for more info.',
+                'details' => $e->getResponse()->getBody()->getContents()
+            ];
+        } catch (RequestException $e) {
+            // Handle other request errors
+            if ($e->hasResponse()) {
+                $statusCode = $e->getResponse()->getStatusCode();
+                if ($statusCode == 503) {
+                    return [
+                            'success' => false,
+                            'error' => 'Service unavailable',
+                            'message' => 'API POS is temporarily down for maintenance. Please try again later.',
+                            'message_detail' => 'Please contact POS IT Team for more info.',
+                            'details' => $e->getResponse()->getBody()->getContents()
+                        ];
+                } else {
+                    return [
+                            'success' => false,
+                            'error' => 'Request error',
+                            'message' => 'An error occurred while processing your request.',
+                            'message_detail' => 'Please contact POS IT Team for more info.',
+                            'details' => $e->getResponse()->getBody()->getContents()
+                        ];
+                }
+            } else {
+                return [
+                    'success' => false,
+                    'error' => 'Request error',
+                    'message' => 'Have error when connection to POS API. No response received from the server.',
+                    'message_detail' => 'Please contact POS IT Team for more info.',
+                    'details' => $e->getMessage()
+                ];
+            }
         }
     }
 
@@ -499,28 +568,28 @@ class PosController extends Controller
     }
 
     public function generateExcel(Request $request, $type){
-        
+
         $orderIDs = array_filter($request->orderID, function ($value) {
             return !is_null($value);
         });
-    
+
         $orders = collect();
-    
+
         // Gather all orders matching the given criteria
         foreach ($orderIDs as $value) {
             $id = Crypt::decrypt($value);
-    
+
             $order = Order::where([
                     "current_status" => $type,
                     'id' => $id
                 ])
                 ->with('muetCalon','modCalon')
                 ->get();
-    
+
             // Merge the collected orders
             $orders = $orders->merge($order);
         }
-    
+
         // Return the Excel download with all collected orders
         return Excel::download(new OrdersExport($orders, $type), 'list_pos_' . $type . '.xlsx');
 
@@ -573,24 +642,24 @@ class PosController extends Controller
         $orderIDs = array_filter($request->orderID, function ($value) {
             return !is_null($value);
         });
-    
+
         $orders = collect();
-    
+
         // Gather all orders matching the given criteria
         foreach ($orderIDs as $value) {
             $id = Crypt::decrypt($value);
-    
+
             $order = Order::where([
                     "current_status" => $type,
                     'id' => $id
                 ])
                 ->with('muetCalon','modCalon')
                 ->get();
-    
+
             // Merge the collected orders
             $orders = $orders->merge($order);
         }
-    
+
         // Return the Excel download with all collected orders
         return Excel::download(new OrdersPosExport($orders, $type), 'list_pos_' . $type . '.xlsx');
     }
