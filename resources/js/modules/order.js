@@ -19,10 +19,10 @@ $(document).ready(function() {
                     data: "no",
                     orderable: false,
                 },
-                // {
-                //     data: "uniqueOrderId",
-                //     orderable: false,
-                // },
+                {
+                    data: "uniqueOrderId",
+                    orderable: false,
+                },
                 {
                     data: "orderDate",
                     orderable: false,

@@ -91,12 +91,12 @@
                                     style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                                     <thead>
                                     <tr class="text-center bg-dark-subtle">
-                                        <th scope="col">DATE</th>
-                                        <th scope="col">TRANSACTION ID</th>
+                                        <th scope="col">DATE CREATED</th>
                                         <th scope="col">REFERENCE ID</th>
-                                        <th scope="col">DETAILS</th>
+                                        <th scope="col">CANDIDATE DETAIL</th>
+                                        <th scope="col">CERT TYPE</th>
+                                        <th scope="col">TRANSACTION TYPE</th>
                                         <th scope="col">STATUS</th>
-                                        <th scope="col">ACTION</th>
                                     </tr>
                                     </thead>
                                     <tbody>

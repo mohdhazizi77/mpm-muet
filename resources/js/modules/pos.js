@@ -5,7 +5,7 @@ $(document).ready(function() {
         var table = $('#posNewTable').DataTable({
             // dom: '<"top"rt><"bottom"lp><"clear">', // Hides the built-in search bar
             processing: true,
-            serverSide: true,           
+            serverSide: true,
 
             ajax: {
                 "url": "/pos/new/ajax",
@@ -60,7 +60,7 @@ $(document).ready(function() {
             ],
             dom: 'frtp',
             // pageLength: 50,
-            // order: [[0, "asc"]],
+            order: [[0, "asc"]],
             // buttons: {
             //     dom: {
             //         button: {
@@ -91,7 +91,7 @@ $(document).ready(function() {
                 // "search": "Carian:"
             },
             searching: true,
-            lengthChange: false,
+            lengthChange: true,
             // scrollX: true,
             // initComplete: function(settings, json) {
             //     $('.dt-scroll-body thead').css('visibility', 'visible');
@@ -246,7 +246,7 @@ $(document).ready(function() {
                     $('#ship_trackNum').val(response.order.tracking_number)
                     $('#ship_trackRemarks').val(response.order.type)
 
-                    $('#button-print-certificate-pdf').attr('href', '/pos/candidates-downloadpdf/' + response.candidate.candidate_cryptId);
+                    $('#button-print-certificate-pdf').attr('href', '/pos/downloadpdf/' + response.candidate.candidate_cryptId);
 
                 }
 
@@ -330,7 +330,7 @@ $(document).ready(function() {
                 },
             ],
             dom: 'frtp',
-            // pageLength: 50,
+            pageLength: 50,
             // order: [[0, "asc"]],
             // buttons: {
             //     dom: {
@@ -362,7 +362,7 @@ $(document).ready(function() {
                 // "search": "Carian:"
             },
             searching: false,
-            lengthChange: false,
+            lengthChange: true,
             // scrollX: true,
             // initComplete: function(settings, json) {
             //     $('.dt-scroll-body thead').css('visibility', 'visible');
@@ -379,17 +379,17 @@ $(document).ready(function() {
             //         }
             //     }).trigger('resize');
             // },
-            
+
         });
     }
 
     $('#noTracking').on('change', function() {
         if (this.checked) {
             $(this).prop('value', '1');
-            $('#noTrackingLabel').text('Checked');
+            $('#noTrackingLabel').text('Got Tracking Number');
         } else {
             $(this).prop('value', '0');
-            $('#noTrackingLabel').text('Unchecked');
+            $('#noTrackingLabel').text('Get Orders Without Tracking');
         }
     });
 
@@ -441,6 +441,69 @@ $(document).ready(function() {
         });
     })
 
+    $(document).on('click', '#button-save-pos-processing', function() {
+
+        if (
+            $('#ship_name').val() == "" ||
+            $('#ship_phoneNum').val() == "" ||
+            $('#ship_email').val() == "" ||
+            $('#ship_address').val() == "" ||
+            $('#ship_postcode').val() == "" ||
+            $('#ship_city').val() == "" ||
+            $('#ship_state').val() == "" ||
+            $('#ship_trackNum').val() == ""
+        ) {
+            Swal.fire("Error!", "Please fill all field", "error");
+        } else {
+
+            Swal.fire({
+                title: "Are you sure?",
+                text: "Once approved, the data will be updated!",
+                icon: "warning",
+                // showDenyButton: true,
+                showCancelButton: true,
+                confirmButtonText: "Save",
+                reverseButtons: true
+                // denyButtonText: `Don't save`
+              }).then((result) => {
+                /* Read more about isConfirmed, isDenied below */
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: '/pos/save/update',
+                        type: 'POST',
+                        data: $('form').serialize(),
+                        success: function(response){
+                            if (response.success) {
+                                // Close modal
+                                $('#modalUpdatePos').modal('hide');
+
+                                Swal.fire("Saved!", "", "success");
+
+                                // Refresh data table
+                                table.ajax.reload(); // This line refreshes the DataTable
+
+                                // Optionally, you can also redraw the DataTable to update the UI
+                                table.draw(); // This line redraws the DataTable
+                            } else {
+                                console.log(response);
+                                // Swal.fire("Error!", "Failed to update data.", "error");
+                                Swal.fire("Error!", response.message, "error");
+
+                            }
+                        },
+                        error: function(xhr, status, error){
+                            // Handle error
+                            Swal.fire("Error!", "Failed to update data.", "error");
+                        }
+                    });
+                } else {
+
+                }
+            });
+        }
+
+    })
+
     if ($('#posCompleteTable').length) {
         var table = $('#posCompleteTable').DataTable({
             processing: true,
@@ -461,9 +524,16 @@ $(document).ready(function() {
                     data: null,
                     orderable: false,
                     render: function(data, type, row, meta) {
-                        return meta.row + 1;
+                        return '<input type="checkbox" class="form-check-input row-checkbox" data-id="' + data.id + '">';
                     }
                 },
+                // {
+                //     data: null,
+                //     orderable: false,
+                //     render: function(data, type, row, meta) {
+                //         return meta.row + 1;
+                //     }
+                // },
                 {
                     data: "order_date",
                     orderable: true,
@@ -483,7 +553,8 @@ $(document).ready(function() {
                     searchable: false,
                     render(data, type, row) {
                         let btn = '';
-                        btn = '<button type="button" data-id="'+data+'" class="btn btn-info btn-icon waves-effect waves-light me-2 btn-update-pos"><i class="ri-information-line fs-22"></i></button>';
+                        btn = '<a href="'+row.consignment_note+'" target=_blank type="button" data-id="'+data+'" class="btn btn-info btn-icon waves-effect waves-light me-2"><i class="ri-download-2-line" aria-hidden="true"></i></a>';
+                        btn += '<button type="button" data-id="'+data+'" class="btn btn-info btn-icon waves-effect waves-light me-2 btn-update-pos"><i class="ri-information-line fs-22"></i></button>';
                         return btn;
                     }
                 }
@@ -522,7 +593,7 @@ $(document).ready(function() {
                 // "search": "Carian:"
             },
             searching: false,
-            lengthChange: false,
+            lengthChange: true,
             // scrollX: true,
             // initComplete: function(settings, json) {
             //     $('.dt-scroll-body thead').css('visibility', 'visible');
@@ -946,7 +1017,7 @@ $(document).ready(function() {
               })
         }
     });
-    
+
     $(document).on('click', '#button-export-xlsx', function (){
 
         var orderIds = [];
@@ -970,8 +1041,8 @@ $(document).ready(function() {
 
         if(orderIds.length > 0){
             Swal.fire({
-                title: "Are you sure to bulk approve?",
-                text: "Once approved, the data will be updated!",
+                title: "Are you sure want to export record to excel?",
+                // text: "Once approved, the data will be updated!",
                 icon: "warning",
                 // showDenyButton: true,
                 showCancelButton: true,
@@ -1028,7 +1099,7 @@ $(document).ready(function() {
               })
         }
     });
-    
+
     $(document).on('click', '#button-export-pos-xlsx', function (){
 
         var orderIds = [];
@@ -1053,8 +1124,8 @@ $(document).ready(function() {
 
         if(orderIds.length > 0){
             Swal.fire({
-                title: "Are you sure to bulk approve?",
-                text: "Once approved, the data will be updated!",
+                title: "Are you sure want to export POS excel?",
+                // text: "Once approved, the data will be updated!",
                 icon: "warning",
                 // showDenyButton: true,
                 showCancelButton: true,
@@ -1111,7 +1182,7 @@ $(document).ready(function() {
               })
         }
     });
-    
+
     $(document).on('click', '#button-import-pos-xlsx', function (){
         $('#formFile').val('');
         $('#modal_upload_xlsx').modal('show');
@@ -1134,8 +1205,8 @@ $(document).ready(function() {
             confirmButtonText: 'Ya',
             cancelButtonText: 'Tidak'
         }).then((result) => {
-            if (result.value) { 
-                var type = 'PROCESSING'; 
+            if (result.value) {
+                var type = 'PROCESSING';
                 var url = '/admin/pos-management/' + type + '/generateImportExcelPos';
                 $.ajax({
                     url: url,
@@ -1286,19 +1357,27 @@ $(document).ready(function() {
         }
 
     });
-    
+
     $(document).on('click', '#btnBulkPrintProcessing', function() {
         var orderIds = [];
-
         $('.row-checkbox:checked').each(function() {
             orderIds.push($(this).data('id'));
         });
 
         if(orderIds.length > 0){
+            Swal.fire({
+                title: 'Preparing Bulk MUET Result...', // Optional title for the alert
+                allowEscapeKey: false,  // Disables escape key closing the alert
+                allowOutsideClick: false, // Disables outside click closing the alert
+                showConfirmButton: false, // Hides the "Confirm" button
+                didOpen: () => {
+                    Swal.showLoading(Swal.getDenyButton()); // Show loading indicator on the Deny button
+                }
+            });
             var csrfToken = $('meta[name="csrf-token"]').attr('content');
-                    
+
             $.ajax({
-                url: './pos/processing/bulk/print',
+                url: '/pos/bulkdownloadpdf',
                 method: 'POST',
                 data: { orderIds: orderIds },
                 xhrFields: {
@@ -1311,9 +1390,15 @@ $(document).ready(function() {
                     var a = document.createElement('a');
                     var url = window.URL.createObjectURL(data);
                     window.open(url, '_blank');
+                    Swal.close();
                 },
                 error: function() {
-                    alert('Error generating the report.');
+                    Swal.close();
+                    Swal.fire({
+                        title: "Error generating the Bulk Result",
+                        // text: "Once approved, the data will be updated!",
+                        icon: "error",
+                      })
                 }
             });
         } else {
@@ -1325,5 +1410,60 @@ $(document).ready(function() {
         }
 
     });
+
+    $(document).on('click', '#btnBulkConsignment', function() {
+        var orderIds = [];
+        $('.row-checkbox:checked').each(function() {
+            orderIds.push($(this).data('id'));
+        });
+
+        if(orderIds.length > 0){
+            Swal.fire({
+                title: 'Preparing Bulk Consignment Note...', // Optional title for the alert
+                allowEscapeKey: false,  // Disables escape key closing the alert
+                allowOutsideClick: false, // Disables outside click closing the alert
+                showConfirmButton: false, // Hides the "Confirm" button
+                didOpen: () => {
+                    Swal.showLoading(Swal.getDenyButton()); // Show loading indicator on the Deny button
+                }
+            });
+            var csrfToken = $('meta[name="csrf-token"]').attr('content');
+
+            $.ajax({
+                url: '/pos/bulkdownloadconnote',
+                method: 'POST',
+                data: { orderIds: orderIds },
+                xhrFields: {
+                    responseType: 'blob' // Important for file download
+                },
+                headers: {
+                    'X-CSRF-TOKEN': csrfToken
+                },
+                success: function(data) {
+                    var a = document.createElement('a');
+                    var url = window.URL.createObjectURL(data);
+                    window.open(url, '_blank');
+                    Swal.close();
+                },
+                error: function() {
+                    Swal.close();
+                    Swal.fire({
+                        title: "Error generating the Bulk Result",
+                        // text: "Once approved, the data will be updated!",
+                        icon: "error",
+                      })
+                }
+            });
+        } else {
+            Swal.fire({
+                title: "No row selected",
+                // text: "Once approved, the data will be updated!",
+                icon: "error",
+              })
+        }
+
+    });
+
+
 
 });

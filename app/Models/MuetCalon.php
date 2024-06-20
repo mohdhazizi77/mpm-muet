@@ -28,7 +28,7 @@ class MuetCalon extends Model
 
     public function getTarikh()
     {
-        return $this->hasOne('App\Models\MuetTarikh', 'tahun', 'tahun')->where('sidang', $this->sidang);
+        return $this->hasOne('App\Models\MuetTarikh', 'tahun', 'tahun')->where('sidang', $this->sidang)->where('tahun', $this->tahun);
     }
 
     public function getOrder()

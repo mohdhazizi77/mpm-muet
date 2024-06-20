@@ -26,9 +26,11 @@ use GuzzleHttp\Exception\RequestException;
 
 use App\Exports\OrdersExport;
 use Carbon\Carbon;
-
+use setasign\Fpdi\Fpdi;
+use setasign\Fpdf\Fpdf;
 use DataTables;
 use stdClass;
+use TCPDF;
 
 
 class PosController extends Controller
@@ -106,6 +108,7 @@ class PosController extends Controller
                 'order_id'   => $order->unique_order_id,
                 'order_date' => $order->created_at->format('d/m/Y'),
                 'order_time' => $order->created_at->format('H:i:s'),
+                'consignment_note' => $order->consignment_note,
                 'details'    => $order->type . " | Sesi " . $calon->sidang . " | Angka Giliran : " . $calon->index_number($calon)
             ];
 
@@ -157,7 +160,6 @@ class PosController extends Controller
     }
 
     public function update(Request $request, $type){
-
         // If validation fails, return error response
         if (empty($request->ship_trackNum) === "processing") {
             $data = [
@@ -221,12 +223,12 @@ class PosController extends Controller
             }
 
             $preAcceptance = self::sendPreAcceptanceSingle($order); // return output or error
-
             if (!$preAcceptance)
                 return response()->json($data);
 
-
+            // dd($preAcceptance);
             $order->current_status = "COMPLETED";
+            $order->consignment_note = $preAcceptance->pdf;
 
 
             $tracking = new TrackingOrder();
@@ -235,11 +237,16 @@ class PosController extends Controller
             $tracking->status = "COMPLETED";
             $tracking->save();
         } else {
-            // Default case
-            // You can add code here if needed
+            $order->name = $request->ship_name;
+            $order->phone_num = $request->ship_phoneNum;
+            $order->email = $request->ship_email;
+            $order->address1 = $request->ship_address;
+            $order->postcode = $request->ship_postcode;
+            $order->city = $request->ship_city;
+            $order->state = $request->ship_state;
+            $order->tracking_number = $request->ship_trackNum;
         }
         $order->save();
-
         $data = [
             'success' => true
         ];
@@ -287,6 +294,7 @@ class PosController extends Controller
 
             if (empty($value))
                 continue;
+
             // If validation fails, return error response
             if (empty($request->ship_trackNum) === "processing") {
                 $data = [
@@ -320,8 +328,8 @@ class PosController extends Controller
 
                 if($connote['success']){ //true
 
-                    // $order->tracking_number = $connote->ConnoteNo;
-                    $order->tracking_number = "ER".$order->unique_order_id."MY";
+                    $order->tracking_number = $connote['con_note'];
+                    // $order->tracking_number = "ER".$order->unique_order_id."MY";
                     $order->current_status = "PROCESSING";
 
                     $tracking = new TrackingOrder();
@@ -330,15 +338,15 @@ class PosController extends Controller
                     $tracking->status = "PROCESSING";
                     $tracking->save();
                 } else { // if api pos down
-                    $data = [
-                        'success' => false,
-                        'message' => $connote['message'],
-                        'message_detail' => $connote['message_detail'],
-                    ];
+                    // $data = [
+                    //     'success' => false,
+                    //     'message' => $connote['message'],
+                    //     'message_detail' => $connote['message_detail'],
+                    // ];
 
-                    return response()->json($data);
+                    // return response()->json($data);
+                    continue;
                 }
-
 
             } elseif ($type == 'processing') {
 
@@ -356,6 +364,7 @@ class PosController extends Controller
                     return response()->json($data);
 
 
+                $order->consignment_note = $preAcceptance->pdf;
                 $order->current_status = "COMPLETED";
 
 
@@ -562,8 +571,99 @@ class PosController extends Controller
         }
     }
 
-    function sendPreAcceptanceSingle(){
-        // return false;
+    function sendPreAcceptanceSingle($order){
+
+        // Ensure you have a valid session token
+        $bearerToken = Session::get('bearer_token');
+        if (!$bearerToken) {
+            die('Bearer token is not available in the session.');
+        }
+
+        $client = new Client();
+        $url = 'https://gateway-usc.pos.com.my/staging/as2corporate/preacceptancessingle/v1/Tracking.PreAcceptance.WebApi/api/PreAcceptancesSingle';
+
+        $headers = [
+            'Content-Type' => 'application/json',
+            'Authorization' => 'Bearer ' . $bearerToken,
+        ];
+
+        $body = [
+            "subscriptionCode" => "ECON001", //need to confirm back
+            "requireToPickup" => false, //need to confirm back
+            "requireWebHook" => false, //need to confirm back
+            "accountNo" => 9999999999, //need to confirm back
+            "callerName" => "SUB(PSM)",
+            "callerPhone" => "0361261600",
+            "pickupLocationID" => ".",//Merchants Unique Register ID
+            "pickupLocationName" => ".",
+            "contactPerson" => ".",
+            "phoneNo" => "0361261600",
+            "pickupAddress" => "Majlis Peperiksaan Malaysia, Persiaran 1, Bandar Baru Selayang",
+            "pickupDistrict" => "Batu Caves",
+            "pickupProvince" => "Selangor",
+            "pickupCountry" => "MY",
+            "pickupLocation" => "",
+            "pickupEmail" => "muet@mpm.edu.my",
+            "postCode" => 68100,
+            "ItemType" => 2,
+            "Amount" => "0",
+            "totalQuantityToPickup" => 1,
+            "totalWeight" => 0.5,
+            "ConsignmentNoteNumber" => $order->tracking_number,
+            "CreatedDate" => "26052022: 11:47:21",
+            "PaymentType" => 2,
+            "readyToCollectAt" => "11:30 AM",
+            "closeAt" => "05:00 PM",
+            "receiverName" => $order->name,
+            "receiverID" => "",
+            "receiverAddress" => $order->address1,
+            "receiverAddress2" => "",
+            "receiverDistrict" => $order->city,
+            "receiverProvince" => $order->state, //need to check with state array pass id
+            "receiverCity" => $order->city,
+            "receiverPostCode" => $order->postcode,
+            "receiverCountry" => "MY",
+            "receiverEmail" => "",
+            "receiverPhone01" => $order->phone_num,
+            "receiverPhone02" => $order->phone_num,
+            "sellerReferenceNo" => "",
+            "itemDescription" => "",
+            "sellerOrderNo" => "",
+            "comments" => ",",
+            "packDesc" => "",
+            "packVol" => "",
+            "packLeng" => "0.1",
+            "packWidth" => "0.1",
+            "packHeight" => "0.1",
+            "packTotalitem" => "1",
+            "orderDate" => "",
+            "packDeliveryType" => "",
+            "ShipmentName" => "PosLaju",
+            "pickupProv" => "",
+            "deliveryProv" => "",
+            "postalCode" => "",
+            "currency" => "MYR",
+            "countryCode" => "MY",
+            "pickupDate" => ""
+        ];
+
+        try {
+            $response = $client->post($url, [
+                'headers' => $headers,
+                'json' => $body,
+            ]);
+
+            $responseBody = $response->getBody()->getContents();
+
+            return json_decode($responseBody);
+        } catch (RequestException $e) {
+            if ($e->hasResponse()) {
+                $errorResponse = $e->getResponse()->getBody()->getContents();
+                return response()->json(['error' => json_decode($errorResponse)], $e->getResponse()->getStatusCode());
+            } else {
+                return response()->json(['error' => 'Request failed'], 500);
+            }
+        }
         return true;
     }
 
@@ -779,9 +879,105 @@ class PosController extends Controller
         return response()->json(['error' => 'Tiada fail yang disediakan.']);
     }
 
-    public function printBulk(Request $request){
-        $orderIds = $request->query('orderIds', []);
+    public function bulkDownloadConnote(Request $request){
 
-        dd($orderIds);
+        // dd($request->toArray() ,$request->orderIds);
+        $connote_arr= [];
+        foreach ($request->orderIds as $key => $value) {
+            if (empty($value))
+                continue;
+
+            try {
+                $id = Crypt::decrypt($value);
+            } catch (DecryptException $e) {
+                // Log the exception
+                Log::error('Decryption error: ' . $e->getMessage());
+
+                // Return a custom error view
+                $data = [
+                    'error'   => 'Decryption error: ' . $e->getMessage(), // The error message
+                    'success' => false,
+                ];
+                return response()->json($data);
+            }
+
+            $order = Order::find($id);
+            $connote_arr[] =  $order->consignment_note;
+        }
+
+        self::processBulkPDFs($connote_arr);
+
+        return true;
+    }
+
+    function downloadPDFFromURL($pdfUrl, $tempDir)
+    {
+        $client = new Client();
+        $response = $client->request('GET', $pdfUrl);
+        $fileName = uniqid() . '.pdf'; // Generate unique filename
+        $filePath = $tempDir . '/' . $fileName;
+        file_put_contents($filePath, $response->getBody());
+        return $filePath;
+    }
+
+    function mergePDFs($pdfPaths, $outputFileName)
+    {
+        // $pdfMerger = new PdfMerger();
+
+        // foreach ($pdfPaths as $pdfPath) {
+        //     $pdfMerger->addPDF($pdfPath);
+        // }
+
+        // $outputFilePath = storage_path('app/public/') . $outputFileName . '.pdf';
+        // $pdfMerger->merge($outputFilePath);
+
+        // return $outputFilePath;
+
+        $pdf = new Fpdi();
+
+        foreach ($pdfPaths as $pdfPath) {
+            $pageCount = $pdf->setSourceFile($pdfPath);
+            for ($i = 1; $i <= $pageCount; $i++) {
+                $templateId = $pdf->importPage($i);
+                $size = $pdf->getTemplateSize($templateId);
+
+                $pdf->AddPage($size['orientation'], [$size['width'], $size['height']]);
+                $pdf->useTemplate($templateId);
+            }
+        }
+
+        $mergedPdfPath = storage_path('app/temp/merged_result.pdf');
+        $pdf->Output($mergedPdfPath, 'F');
+
+        return $mergedPdfPath;
+    }
+
+    function processBulkPDFs($pdfUrls)
+    {
+        // Temporary directory to store downloaded PDFs
+        $tempDir = storage_path('app/temp');
+        if (!file_exists($tempDir)) {
+            mkdir($tempDir, 0777, true);
+        }
+
+        // Download PDFs from URLs
+        $pdfPaths = [];
+        foreach ($pdfUrls as $pdfUrl) {
+            $pdfPath = self::downloadPDFFromURL($pdfUrl, $tempDir);
+            $pdfPaths[] = $pdfPath;
+        }
+
+        // Merge downloaded PDFs
+        $outputFileName = 'merged_result_' . time();
+        $mergedPdfPath = self::mergePDFs($pdfPaths, $outputFileName);
+
+        // Clean up temporary files
+        foreach ($pdfPaths as $pdfPath) {
+            unlink($pdfPath);
+        }
+        rmdir($tempDir);
+
+        // Download the merged PDF
+        return response()->download($mergedPdfPath, 'Merged_Result.pdf')->deleteFileAfterSend(true);
     }
 }

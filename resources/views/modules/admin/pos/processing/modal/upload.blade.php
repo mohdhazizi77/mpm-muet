@@ -1,4 +1,4 @@
-a<!--  Add News -->
+<!--  Add News -->
 <div id="modal_upload_xlsx" class="modal modal-form fade bs-example-modal-lg" data-bs-backdrop="static"  data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-md">
         <div class="modal-content">

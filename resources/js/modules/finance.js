@@ -61,20 +61,20 @@ $(document).ready(function() {
             },
             columns: [
                 {
-                    data: "txn_id",
+                    data: "date_created",
                     orderable: false,
                     // render: ,
                     // className: ,
                 },
                 {
-                    data: "receipt_no",
+                    data: "reference_id",
                     orderable: false,
                     // render: function(data, type, row, meta) {
                     //     return meta.row + 1;
                     // }
                 },
                 {
-                    data: "trx_date",
+                    data: "ref_no",
                     orderable: true,
                     // render(data, type, row) {
                     //     let html = '';
@@ -82,10 +82,10 @@ $(document).ready(function() {
                     //     return html;
                     // }
                 },
-                {
-                    data: "candidate_name",
-                    orderable: true,
-                },
+                // {
+                //     data: "candidate_name",
+                //     orderable: true,
+                // },
                 {
                     data: "amount",
                     orderable: true,
@@ -130,6 +130,15 @@ $(document).ready(function() {
                         return html;
                     }
                 },
+                {
+                    data: "ref_no",
+                    orderable: true,
+                    render(data, type, row) {
+                        let html = '';
+                        html = '<a class="btn btn-sm btn-warning btnCheckTrxStatus" data-id="'+data+'"><i class="bx bx-refresh"></i> Refetch </a>';
+                        return html;
+                    }
+                },
             ],
             dom: 'frtp',
             pageLength: 100,
@@ -166,6 +175,9 @@ $(document).ready(function() {
             searching: true,
             lengthChange: false,
         });
+
+    fetchDataMuet();
+
     }
 
     $('.dt-search').hide();
@@ -216,7 +228,7 @@ $(document).ready(function() {
 
 
     // -------------------------------------------------------------------------
-    
+
     if ($("#financeModTable").length>0) {
 
         var tableMod = $('#financeModTable').DataTable({
@@ -383,6 +395,8 @@ $(document).ready(function() {
             searching: true,
             lengthChange: false,
         });
+
+        fetchDataMod();
     }
 
     $('.dt-search').hide();
@@ -429,10 +443,58 @@ $(document).ready(function() {
         tableMod.search(this.value).draw();
     });
 
-    fetchDataMuet();
-    fetchDataMod();
+    // fetchDataMuet();
+    // fetchDataMod();
 
     // $('#start-date-fin-muet').on('click', button id="end-date-fin-muet" fetchDataMuet);
+
+    $(document).on('click', '.btnCheckTrxStatus', function(){
+
+        var ref_no = $(this).data('id')
+
+        var postData = {
+            _token: $('meta[name="csrf-token"]').attr('content'),
+            ref_no: ref_no
+        };
+
+        $.ajax({
+            url: '/admin/transaction/check',
+            type: 'POST',
+            data: postData,
+            beforeSend:function(){
+                Swal.fire({
+                    title: 'Loading...', // Optional title for the alert
+                    allowEscapeKey: false,  // Disables escape key closing the alert
+                    allowOutsideClick: false, // Disables outside click closing the alert
+                    showConfirmButton: false, // Hides the "Confirm" button
+                    didOpen: () => {
+                        Swal.showLoading(Swal.getDenyButton()); // Show loading indicator on the Deny button
+                    }
+                });
+            },
+            success: function(response){
+                Swal.close()
+                if (response.success) {
+
+                    // Swal.fire("Error!", response.message, "success");
+
+                    Swal.fire("Saved!", response.message, "success");
+
+                    // Refresh data table
+                    $('#transactionTable').DataTable().ajax.reload(); // This line refreshes the DataTable
+
+                    // Optionally, you can also redraw the DataTable to update the UI
+                    $('#transactionTable').DataTable().draw(); // This line redraws the DataTable
+                } else {
+                    Swal.fire("Error!", response.message, "error");
+                }
+            },
+            error: function(xhr, status, error){
+                // Handle error
+                Swal.fire("Error!", "Failed to update data.", "error");
+            }
+        });
+    })
 });
 
 function fetchDataMuet(){
@@ -449,7 +511,7 @@ function fetchDataMuet(){
         url: './muet/data', // Replace with your backend URL
         type: 'post', // or 'POST' depending on your backend method
         dataType: 'json',
-        data: { 
+        data: {
             startDate: startDate,
             endDate: endDate,
             textSearch: textSearch,
@@ -487,7 +549,7 @@ function fetchDataMod(){
         url: './mod/data', // Replace with your backend URL
         type: 'post', // or 'POST' depending on your backend method
         dataType: 'json',
-        data: { 
+        data: {
             startDate: startDate,
             endDate: endDate,
             textSearch: textSearch,
@@ -510,4 +572,5 @@ function fetchDataMod(){
         }
     });
 }
+
 

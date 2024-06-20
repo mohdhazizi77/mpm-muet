@@ -78,8 +78,8 @@
                         <div class="row mt-3">
                             <div class="col-md-6">
                                 <input type="checkbox" class="btn-check" id="noTracking" value="0">
-                                <label id="noTrackingLabel" class="btn btn-outline-secondary material-shadow" for="noTracking">Unchecked</label>
-                                <label for="noTracking" style="margin-left: 10px">Record no Tracking Numbers</label>
+                                <label id="noTrackingLabel" class="btn btn-outline-secondary material-shadow" for="noTracking">Get Orders Without Tracking</label>
+                                {{-- <label for="noTracking" style="margin-left: 10px">Record no Tracking Numbers</label> --}}
                             </div>
                             <div class="col-md-6 text-md-end mt-2 mt-md-0">
                                 <button id="filterBtn" class="btn btn-primary">Filter</button>
@@ -122,7 +122,6 @@
                                     <thead>
                                     <tr class="text-center bg-dark-subtle">
                                         <th scope="col"><input type="checkbox" class="form-check-input row-checkbox check-all"></th>
-                                        {{-- <th scope="col">#</th> --}}
                                         <th scope="col">DATE</th>
                                         <th scope="col">REFERENCE ID</th>
                                         <th scope="col">DETAILS</th>
@@ -149,7 +148,9 @@
     <div class="modal fade modalUpdatePos" id="modalUpdatePos" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
-                <div class="container">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" style="position: absolute; top: 10px; right: 10px;"></button>
+
+                <div class="container mt-3">
                     <div class="row mx-3">
                         <div class="col-xl-12">
 
@@ -300,13 +301,13 @@
                                                                 <div class="col-6">
                                                                     <div class="mb-3">
                                                                         <label for="name" class="form-label">Name</label>
-                                                                        <input disabled type="text" class="form-control" placeholder="Enter your name" id="ship_name" name="ship_name" value="">
+                                                                        <input type="text" class="form-control" placeholder="Enter your name" id="ship_name" name="ship_name" value="" required>
                                                                     </div>
                                                                 </div><!--end col-->
                                                                 <div class="col-6">
                                                                     <div class="mb-3">
                                                                         <label for="ship_phoneNum" class="form-label">Phone Number</label>
-                                                                        <input disabled type="text" class="form-control" placeholder="Enter your phone_number" id="ship_phoneNum" name="ship_phoneNum" value="">
+                                                                        <input type="text" class="form-control" placeholder="Enter your phone_number" id="ship_phoneNum" name="ship_phoneNum" value="" required>
                                                                     </div>
                                                                 </div><!--end col-->
                                                             </div><!--end row-->
@@ -333,7 +334,7 @@
                                                                 <div class="col-6">
                                                                     <div class="mb-3">
                                                                         <label for="email" class="form-label">Email</label>
-                                                                        <input disabled type="text" class="form-control" placeholder="Enter your email" id="ship_email" name="ship_email" value="">
+                                                                        <input type="text" class="form-control" placeholder="Enter your email" id="ship_email" name="ship_email" value="" required>
                                                                     </div>
                                                                 </div><!--end col-->
                                                             </div><!--end row-->
@@ -343,7 +344,7 @@
                                                                 <div class="col-12">
                                                                     <div class="mb-3">
                                                                         <label for="address" class="form-label">Address</label>
-                                                                        <input disabled  type="text" class="form-control" placeholder="Enter your address" id="ship_address" name="ship_address" value="">
+                                                                        <input type="text" class="form-control" placeholder="Enter your address" id="ship_address" name="ship_address" value="" required>
                                                                     </div>
                                                                 </div><!--end col-->
 
@@ -354,21 +355,21 @@
                                                                 <div class="col-4">
                                                                     <div class="mb-3">
                                                                         <label for="postcode" class="form-label">Postcode</label>
-                                                                        <input disabled  type="text" class="form-control" placeholder="Enter your postcode" id="ship_postcode" name="ship_postcode" value="">
+                                                                        <input type="text" class="form-control" placeholder="Enter your postcode" id="ship_postcode" name="ship_postcode" value="" required>
                                                                     </div>
                                                                 </div><!--end col-->
 
                                                                 <div class="col-4">
                                                                     <div class="mb-3">
                                                                         <label for="city" class="form-label">City</label>
-                                                                        <input disabled  type="text" class="form-control" placeholder="Enter your city" id="ship_city" name="ship_city" value="">
+                                                                        <input type="text" class="form-control" placeholder="Enter your city" id="ship_city" name="ship_city" value="" required>
                                                                     </div>
                                                                 </div><!--end col-->
 
                                                                 <div class="col-4">
                                                                     <div class="mb-3">
                                                                         <label for="state" class="form-label" >State</label>
-                                                                        <select readonly class="form-select mb-3" id="ship_state" disabled name="ship_state">
+                                                                        <select  class="form-select mb-3" id="ship_state" name="ship_state" required>
                                                                             <option selected disabled>Select State</option>
                                                                             @foreach (App\Models\User::getStates() as $key => $value)
                                                                                 <option value="{{ $key }}" @if(old('state') == $key) selected @endif>{{ $value }}</option>
@@ -380,16 +381,16 @@
                                                                 <div class="col-4">
                                                                     <div class="mb-3">
                                                                         <label for="track_num" class="form-label">Tracking Number</label>
-                                                                        <input type="text" class="form-control" placeholder="Enter tracking number" id="ship_trackNum" name="ship_trackNum" value="" >
+                                                                        <input type="text" class="form-control" placeholder="Enter tracking number" id="ship_trackNum" name="ship_trackNum" value=""  required>
                                                                     </div>
                                                                 </div><!--end col-->
 
-                                                                <div class="col-4">
+                                                                {{-- <div class="col-4">
                                                                     <div class="mb-3">
                                                                         <label for="track_remarks" class="form-label">Notes</label>
                                                                         <input type="text" class="form-control" placeholder="" id="ship_trackRemarks" name="ship_trackRemarks" value="" >
                                                                     </div>
-                                                                </div><!--end col-->
+                                                                </div> --}}
 
                                                             </div>
                                                             <input type="text" id="order_id" name="order_id" value="" style="display: none">
@@ -418,16 +419,15 @@
                     </div>
 
                     <div class="modal-footer">
-                        <a href="javascript:void(0);" class="btn btn-link link-success fw-medium"
-                           data-bs-dismiss="modal"><i class="ri-close-line me-1 align-middle"></i>
-                            Close</a>
+                        {{-- <a href="javascript:void(0);" class="btn btn-link link-success fw-medium" data-bs-dismiss="modal"><i class="ri-close-line me-1 align-middle"></i> Close</a> --}}
                         <a href='#' id="button-print-certificate-pdf" class="btn btn-outline-secondary float-end" target="_blank">Print Certificate</a>
-                        <button type="button" class="btn btn-outline-success float-end btn-approve-processing">Continue</button>
+                        <a id="button-save-pos-processing" class="btn btn-outline-secondary float-end">Save</a>
+                        <button type="button" class="btn btn-outline-success float-end btn-approve-processing">Approve</button>
                     </div>
                 </div>
-            </div><!-- /.modal-content -->
-        </div><!-- /.modal-dialog -->
-    </div><!-- /.modal -->
+            </div>
+        </div>
+    </div>
     @include('modules.admin.pos.processing.modal.upload')
 @endsection
 @section('script')

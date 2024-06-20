@@ -24,8 +24,8 @@
                                     <thead>
                                         <tr class="text-center bg-dark-subtle">
                                             <th scope="col">NO.</th>
-                                            {{-- <th scope="col">ORDER ID</th> --}}
                                             <th scope="col">DATE TIME</th>
+                                            <th scope="col">ORDER ID</th>
                                             <th scope="col">DETAIL</th>
                                             <th scope="col">PAYMENT STATUS</th>
                                             <th scope="col">ACTION</th>
@@ -58,7 +58,7 @@
                 <!-- end col -->
             </div>
             <!-- end row -->
-        
+
             <div class="row mt-4">
                 <div class="col-lg-12">
                     <x-button.back></x-button.back>

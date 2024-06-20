@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\Storage;
+
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Barryvdh\DomPDF\Facade\Pdf;
 
@@ -16,15 +18,17 @@ use App\Models\Candidate;
 use App\Models\MuetCalon;
 use App\Models\MuetSkor;
 use App\Models\ModCalon;
+use App\Models\ModSkor;
 use App\Models\Certificate;
 use App\Models\Courier;
 use App\Models\Order;
 use App\Models\TrackingOrder;
 use App\Models\Payment;
 use Carbon\Carbon;
+use setasign\Fpdi\Fpdi;
+use setasign\Fpdf\Fpdf;
 use Exception;
 use DataTables;
-
 class CandidateController extends Controller
 {
 
@@ -180,6 +184,7 @@ class CandidateController extends Controller
 
         // Retrieve index numbers
         $arr_index_number = $user->getIndexNumber($user->id);
+        // dd($arr_index_number );
         $res = array_search($request->indexNumber, $arr_index_number);
 
         if ($res !== false) {
@@ -281,6 +286,7 @@ class CandidateController extends Controller
                 $candidate = ModCalon::find($certID);
             }
             $pusat = $candidate->getPusat->first();
+            $tarikh = $candidate->getTarikh->first();
             $result = $candidate->getResult($candidate);
             $scheme = [
                 "listening" => 90,
@@ -293,7 +299,8 @@ class CandidateController extends Controller
             $url = env('APP_URL').'/verify/result/'.$cryptId; // Replace with your URL or data /verify/result/{id}
             $qr = QrCode::size(50)->style('round')->generate($url);
 
-            $pdf = PDF::loadView('modules.candidates.download-pdf', ['qr' => $qr, 'type' => $type, 'result' => $result, 'candidate' => $candidate, 'scheme' => $scheme, 'pusat' => $pusat])->setPaper('a4', 'portrait');
+            $pdf = PDF::loadView('modules.candidates.download-pdf', [
+                    'tarikh' => $tarikh,'qr' => $qr, 'type' => $type, 'result' => $result, 'candidate' => $candidate, 'scheme' => $scheme, 'pusat' => $pusat])->setPaper('a4', 'portrait');
 
             // return $pdf->download($type.' RESULT.pdf');
             return $pdf->stream($result['index_number'].' '.$type.' RESULT.pdf');
@@ -302,6 +309,83 @@ class CandidateController extends Controller
         (Exception $e) {
             return back()->withError($e->getMessage());
         }
+    }
+
+    public function singleDownloadPdf($cryptId)
+    {
+        try {
+            $id = Crypt::decrypt($cryptId);
+        } catch (Illuminate\Contracts\Encryption\DecryptException $e) {
+            dd($e);
+        }
+
+        try {
+
+            $value = explode('-', $id);
+            $certID = $value[0];
+            $type = $value[1];
+
+            if ($type == "MUET") {
+                $candidate = MuetCalon::find($certID);
+            } else {
+                $candidate = ModCalon::find($certID);
+            }
+            $pusat = $candidate->getPusat->first();
+            $tarikh = $candidate->getTarikh->first();
+            $result = $candidate->getResult($candidate);
+            $scheme = [
+                "listening" => 90,
+                "speaking" => 90,
+                "reading" => 90,
+                "writing" => 90,
+                "agg_score" => 360,
+            ];
+            $url = 'http://localhost:8000/qrscan'; // Replace with your URL or data
+            $url = env('APP_URL').'/verify/result/'.$cryptId; // Replace with your URL or data /verify/result/{id}
+            $qr = QrCode::size(50)->style('round')->generate($url);
+
+            $pdf = PDF::loadView('modules.candidates.download-pdf', [
+                    'tarikh' => $tarikh, 'qr' => $qr, 'type' => $type, 'result' => $result, 'candidate' => $candidate, 'scheme' => $scheme, 'pusat' => $pusat])->setPaper('a4', 'portrait');
+
+            return $pdf->download($result['index_number'].' '.$type.' RESULT.pdf');
+
+        } catch
+        (Exception $e) {
+            return back()->withError($e->getMessage());
+        }
+    }
+
+    public function bulkDownloadPdf(Request $request)
+    {
+        // dd($request->toArray());
+        $arr_calon= [];
+        foreach ($request->orderIds as $key => $value) {
+            if (empty($value))
+                continue;
+
+            try {
+                $id = Crypt::decrypt($value);
+            } catch (DecryptException $e) {
+                // Log the exception
+                Log::error('Decryption error: ' . $e->getMessage());
+
+                // Return a custom error view
+                $data = [
+                    'error'   => 'Decryption error: ' . $e->getMessage(), // The error message
+                    'success' => false,
+                ];
+                return response()->json($data);
+            }
+
+            $order = Order::find($id);
+            if ($order->muet_calon_id != null) { //MUET
+                $arr_calon[] =  $order->muet_calon_id.'-MUET';
+            } else { //MOD
+                $arr_calon[] = $order->mod_calon_id.'-MOD';
+            }
+        }
+
+        return self::processBulkPDF($arr_calon);
     }
 
     public function printmpm($cryptId)
@@ -452,5 +536,80 @@ class CandidateController extends Controller
         // dd($candidate->getResult($candidate));
         return view('modules.candidates.verify-result', compact(['candidate','scheme','result','cryptId']));
 
+    }
+
+    function generatePDF($id) {
+        $value = explode('-', $id);
+        $certID = $value[0];
+        $type = $value[1];
+
+        if ($type == "MUET") {
+            $candidate = MuetCalon::find($certID);
+        } else {
+            $candidate = ModCalon::find($certID);
+        }
+        $pusat = $candidate->getPusat->first();
+        $tarikh = $candidate->getTarikh->first();
+        $result = $candidate->getResult($candidate);
+        $scheme = [
+            "listening" => 90,
+            "speaking" => 90,
+            "reading" => 90,
+            "writing" => 90,
+            "agg_score" => 360,
+        ];
+        $url = env('APP_URL').'/verify/result/'.$id;
+        $qr = QrCode::size(50)->style('round')->generate($url);
+
+        $pdf = PDF::loadView('modules.candidates.download-pdf', [
+            'qr' => $qr,
+            'type' => $type,
+            'result' => $result,
+            'candidate' => $candidate,
+            'scheme' => $scheme,
+            'pusat' => $pusat,
+            'tarikh' => $tarikh,
+        ])->setPaper('a4', 'portrait');
+
+        $pdfPath = storage_path('app/temp/'.$id.'.pdf');
+        $pdf->save($pdfPath);
+
+        return $pdfPath;
+    }
+
+    function mergePDFs($pdfPaths) {
+        $pdf = new Fpdi();
+
+        foreach ($pdfPaths as $pdfPath) {
+            $pageCount = $pdf->setSourceFile($pdfPath);
+            for ($i = 1; $i <= $pageCount; $i++) {
+                $templateId = $pdf->importPage($i);
+                $size = $pdf->getTemplateSize($templateId);
+
+                $pdf->AddPage($size['orientation'], [$size['width'], $size['height']]);
+                $pdf->useTemplate($templateId);
+            }
+        }
+
+        $mergedPdfPath = storage_path('app/temp/merged_result.pdf');
+        $pdf->Output($mergedPdfPath, 'F');
+
+        return $mergedPdfPath;
+    }
+
+    function processBulkPDF($ids) {
+        $pdfPaths = [];
+        foreach ($ids as $id) {
+            $pdfPaths[] = self::generatePDF($id);
+        }
+
+        $mergedPdfPath = self::mergePDFs($pdfPaths);
+
+        // Clean up temporary files
+        foreach ($pdfPaths as $pdfPath) {
+            Storage::delete($pdfPath);
+        }
+
+        return response()->download($mergedPdfPath, 'List Bulk Muet '.date('d_m_y').' RESULT.pdf')->deleteFileAfterSend(true);
     }
 }

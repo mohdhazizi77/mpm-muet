@@ -23,6 +23,8 @@ class Order extends Model
         "courier_id",
         "muet_calon_id",
         "mod_calon_id",
+        "tracking_number",
+        "consigment_note",
     ];
 
     public function certificate()

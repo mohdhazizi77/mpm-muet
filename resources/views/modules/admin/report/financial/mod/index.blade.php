@@ -179,68 +179,20 @@
                                 style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                                     <thead>
                                     <tr class="text-center bg-dark-subtle">
-                                        <th scope="col">TRANSACTION ID</th>
-                                        <th scope="col">RECEIPT NO.</th>
-                                        <th scope="col">TRANSACTION DATE</th>
-                                        <th scope="col">CANDIDATE NAME</th>
+                                        <th scope="col">DATE CREATED</th>
+                                        <th scope="col">REFERENCE ID</th>
+                                        <th scope="col">PAYMENT REFERENCE</th>
                                         <th scope="col">AMOUNT</th>
                                         <th scope="col">STATUS</th>
                                         <th scope="col">RECEIPT</th>
+                                        <th scope="col">ACTION</th>
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    {{--                                    <tr class="align-middle">--}}
-                                    {{--                                        <th scope="row">1</th>--}}
-                                    {{--                                        <td>25/11/2023</td>--}}
-                                    {{--                                        <td>2312071620520408</td>--}}
-                                    {{--                                        <td>MUET Certificate (MPM) | Session 1, 2020 | Ali Bin Abu | 1234567890</td>--}}
-                                    {{--                                        <td><h5><span class="badge rounded-pill bg-primary">NEW</span></h5></td>--}}
-                                    {{--                                        <td>--}}
-                                    {{--                                            <button type="button" class="btn btn-success btn-icon waves-effect waves-light me-2"><i class="ri-check-line"></i></button>--}}
-                                    {{--                                            <button type="button" class="btn btn-danger btn-icon waves-effect waves-light me-2"><i class="ri-close-line"></i></button>--}}
-                                    {{--                                        </td>--}}
-                                    {{--                                    </tr>--}}
-                                    {{--                                    <tr class="align-middle">--}}
-                                    {{--                                        <th scope="row">2</th>--}}
-                                    {{--                                        <td>21/11/2023</td>--}}
-                                    {{--                                        <td>2312080113550968</td>--}}
-                                    {{--                                        <td>MUET Certificate (MPM) | Session 1, 2020 | Ali Bin Abu | 1234567890</td>--}}
-                                    {{--                                        <td><h5><span class="badge rounded-pill bg-info">PROCESSING</span></h5></td>--}}
-                                    {{--                                        <td>--}}
-                                    {{--                                            <button type="button" class="btn btn-info btn-icon waves-effect waves-light me-2"><i class="ri-information-line"></i></button>--}}
-                                    {{--                                            <button type="button" class="btn btn-secondary btn-icon waves-effect waves-light me-2"><i class="ri-printer-line"></i></button>--}}
-                                    {{--                                        </td>--}}
-                                    {{--                                    </tr>--}}
-                                    {{--                                    <tr class="align-middle">--}}
-                                    {{--                                        <th scope="row">3</th>--}}
-                                    {{--                                        <td>15/11/2023</td>--}}
-                                    {{--                                        <td>2312080116370971</td>--}}
-                                    {{--                                        <td>MUET Certificate (MPM) | Session 1, 2020 | Ali Bin Abu | 1234567890</td>--}}
-                                    {{--                                        <td><h5><span class="badge rounded-pill bg-success">COMPLETED</span></h5></td>--}}
-                                    {{--                                        <td>--}}
-                                    {{--                                            <button type="button" class="btn btn-info btn-icon waves-effect waves-light me-2"><i class="ri-information-line"></i></button>--}}
-                                    {{--                                        </td>--}}
-                                    {{--                                    </tr>--}}
-                                    {{--                                    <tr class="align-middle">--}}
-                                    {{--                                        <th scope="row">4</th>--}}
-                                    {{--                                        <td>12/11/2023</td>--}}
-                                    {{--                                        <td>2312080950550195</td>--}}
-                                    {{--                                        <td>MUET Certificate (MPM) | Session 1, 2020 | Ali Bin Abu | 1234567890</td>--}}
-                                    {{--                                        <td><h5><span class="badge rounded-pill bg-warning">CANCELLED</span></h5></td>--}}
-                                    {{--                                        <td>--}}
-                                    {{--                                            <button type="button" class="btn btn-info btn-icon waves-effect waves-light me-2"><i class="ri-information-line"></i></button>--}}
-                                    {{--                                        </td>--}}
-                                    {{--                                    </tr>--}}
-                                    {{--                                    </tbody>--}}
                                 </table>
 
                             </div>
                         </div>
-                        {{--                        <div class="col-xxl-3 ms-auto">--}}
-                        {{--                            <div class="mb-n5 pb-1 faq-img d-none d-xxl-block">--}}
-                        {{--                                <img src="{{ asset('build/images/faq-img.png') }}" alt="" class="img-fluid">--}}
-                        {{--                            </div>--}}
-                        {{--                        </div>--}}
                     </div>
                 </div>
                 <!-- end card body -->

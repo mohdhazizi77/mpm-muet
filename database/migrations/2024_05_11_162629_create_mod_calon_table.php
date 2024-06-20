@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('kodpusat');
             $table->string('nocalon');
             $table->string('reg_id');
+            $table->string('angka_giliran')->nullable();
             $table->string('alamat1');
             $table->string('alamat2')->nullable();
             $table->string('alamat3')->nullable();

@@ -54,21 +54,30 @@
                 <div class="px-4">
                     <div class="row">
                         <div class="col-xxl-12 align-self-center">
+                            <div class="float-start my-3">
+                                {{-- <button id="button-import-pos-xlsx" type="button" class="btn btn-soft-secondary waves-effect float-end mx-1">IMPORT POS XLSX</button>
+                                <button id="button-export-pos-xlsx" data-type="PROCESSING" type="button" class="btn btn-soft-secondary waves-effect float-end mx-1">EXPORT POS XLSX</button>
+                                <button id="button-export-xlsx" data-type="PROCESSING" type="button" class="btn btn-soft-secondary waves-effect float-end mx-1">EXPORT XLSX</button> --}}
+                            </div>
+                            <div class="float-end my-3">
+                                <button type="button" id="btnBulkConsignment" class="btn btn-soft-success waves-effect float-end mx-1">CONSIGNMENT NOTES</button>
+                                {{-- <button type="button" id="btnBulkPrintProcessing" class="btn btn-soft-success waves-effect float-end ">PRINT CERTIFICATE</button> --}}
+                            </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xxl-12 align-self-center">
                             {{-- <div class="float-start my-3">
                                 <button id="button-export-xlsx" type="button" class="btn btn-soft-secondary waves-effect float-end mx-1">EXPORT XLSX</button>
                             </div>
                             <div class="float-end my-3">
                                 <button type="button" class="btn btn-soft-success waves-effect float-end ">PRINT CERTIFICATE</button>
                             </div> --}}
-                            <div class="py-4">
-                                {{--                                <h2 class="display-8 coming-soon-text text-success">TEST LIST</h2>--}}
-                                <!-- Striped Rows -->
-
+                            <div class="py-1">
                                 <table id="posCompleteTable" data-type="COMPLETED" class="table w-100 table-striped text-center dt-responsive nowrap dataTable"
                                 style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                                     <thead>
                                     <tr class="text-center bg-dark-subtle">
-                                        <th scope="col"></th>
+                                        <th scope="col"><input type="checkbox" class="form-check-input row-checkbox check-all"></th>
                                         <th scope="col">DATE</th>
                                         <th scope="col">REFERENCE ID</th>
                                         <th scope="col">DETAILS</th>

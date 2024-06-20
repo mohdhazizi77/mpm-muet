@@ -32,6 +32,7 @@ return new class extends Migration
             $table->string('muet_calon_id')->nullable();
             $table->string('mod_calon_id')->nullable();
             $table->string('tracking_number')->nullable();
+            $table->string('consignment_note')->nullable();
 
             $table->timestamps();
 

@@ -71,7 +71,7 @@ class FinanceController extends Controller
         if ($request->has('payment_for') && !empty($request->payment_for)) {
             $payments->where('payment_for', $request->payment_for);
         }
-        
+
         if ($request->has('status') && !empty($request->status)) {
             $payments->where('status', $request->status);
         }
@@ -107,6 +107,9 @@ class FinanceController extends Controller
         $data = [];
         foreach ($payments as $key => $payment) {
             $data[] = [
+                'date_created' => $payment->created_at->format('d/m/y H:i:s'),
+                'reference_id' => $payment->order->unique_order_id,
+                'ref_no' => $payment->ref_no,
                 'txn_id' => $payment->txn_id ?? 'Tiada Rekod',
                 'receipt_no' => $payment->receipt_number ?? 'Tiada Rekod',
                 'trx_date' => $payment->payment_date ?? 'Tiada Rekod',
@@ -226,7 +229,7 @@ class FinanceController extends Controller
                             ->sum('amount');
 
         $totalColection = $totalPayMpm + $totalPaySelf;
-                        
+
 
         return [
             'totalSuccess' => $totalSuccess,
@@ -265,7 +268,7 @@ class FinanceController extends Controller
                     })
                     ->when($request->filled('status'), fn($query) => $query->where('status', 'like', "%{$request->input('status')}%"))
                     ->get();
-        
+
         if($request->exam_type == 'mod'){
             $pdf = Pdf::loadView('modules.admin.report.financial.mod.pdf', ['payments' => $payments]);
 

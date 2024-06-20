@@ -16,7 +16,7 @@ class Candidate extends Authenticatable
 {
     use HasRoles;
     // use HasFactory;
-    protected $fillable = ['name','identity_card_number'];
+    protected $fillable = ['name','identity_card_number','password'];
 
 
     public function user()

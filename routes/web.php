@@ -150,7 +150,9 @@ Route::group(['middleware' => ['role:PENTADBIR|BPKOM|PSM|FINANCE']], function ()
     })->middleware('poslaju.token');
 
     // download pdf
-    Route::get('/pos/candidates-downloadpdf/{id}', [CandidateController::class, 'downloadpdf'])->name('mpm.downloadpdf');
+    Route::get('/pos/downloadpdf/{id}', [CandidateController::class, 'singleDownloadPdf'])->name('mpm.singledownloadpdf');
+    Route::post('/pos/bulkdownloadpdf', [CandidateController::class, 'bulkDownloadPdf'])->name('mpm.bulkdownloadpdf');
+    Route::post('/pos/bulkdownloadconnote', [PosController::class, 'bulkDownloadConnote'])->name('mpm.bulkdownloadconnote');
 
     Route::get('users', [UserController::class, 'index'])->name('users.index');
     Route::post('users/ajax', [UserController::class, 'getAjax'])->name('users.ajax');

@@ -16,6 +16,13 @@ use App\Models\Candidate;
 use App\Models\Certificate;
 use App\Models\ExamSession;
 
+use App\Models\MuetCalon;
+use App\Models\MuetSkor;
+use App\Models\ModCalon;
+use App\Models\ModSkor;
+
+use App\Models\Kodkts;
+
 class ImportCandidate implements ToCollection
 {
     /**
@@ -36,87 +43,79 @@ class ImportCandidate implements ToCollection
                 $nric = str_replace('-', '', $nric); // buang '-' dekat ic
             }
 
-            $address = [
-                'address1' => $row[4],
-                'address2' => $row[5],
-                'postcode' => $row[6],
-                'city'     => $row[7],
-                'state'    => $row[8],
-            ];
-            $userData = [
-                'name'     => $row[2],
-                'address'  => serialize($address),
-                'password' => Hash::make($nric),
-            ];
-            $user = User::updateOrCreate(['identity_card_number' => $nric], $userData);
+            $user = Candidate::updateOrCreate(
+                [
+                    'identity_card_number' => $nric
+                ],
+                [
+                    'name'     => $row[2],
+                    'password' => Hash::make($nric),
+                ]
+            );
+
             $user->assignRole('CALON');
 
-            //find index_number in Candidate table
-            //if not found then create new Candidate
-            //if found return user_id.
-            //compare user_id with $user->id
-            // if same then continue
-            // if not same then contniue, add log row ke berapa got duplicate angka giliran | format : row no. , angka giliran , nama ,user_id |current import
-            $idx_num = $row[9];
-            // $candidateData = [
-            //     'user_id' => $user->id,
-            // ];
-            // $user = Candidate::updateOrCreate(['index_number' => $idx_num], $candidateData);
-            // try {
-            //     $candidate = Candidate::create([
-            //         'user_id'       => $user->id,
-            //         'index_number'  => $idx_num,
-            //     ]);
-            // } catch (\Throwable $th) {
-            //     Log::info('Angka giliran already exist '.$idx_num.'\n Skip record row number: '.($key+1).'\n Error: '.$th);
-            //     continue;
-            //     //throw $th;
-            // }
+            // year and session
+            $seperator = " ";
+            $year_session = explode(" ", $row[1]);
+
+            $sesi = $year_session[1];
+            $year = $year_session[2];
+
+            $index_number = $row[9];
+            // Split the string by "/"
+            $parts = explode("/", $index_number);
+
+            // Process the first part
+            $part1 = $parts[0];
+            $kodnegeri = substr($part1, 0, 2); // "MW"
+            $kodpusat = substr($part1, 2, 4); // "3101"
+
+            // Process the second part
+            $part2 = $parts[1];
+            $jcalon = substr($part2, 0, 1); // "3"
+            $nocalon = substr($part2, 1, 3); // "001"
+
+            $calon = new MuetCalon();
+            $calon->tahun           = $year;
+            $calon->sidang          = $sesi;
+            $calon->nama            = $row[2];
+            $calon->kp              = $nric;
+            $calon->kodnegeri       = $kodnegeri;
+            $calon->kodpusat        = $kodpusat;
+            $calon->jcalon          = $jcalon;
+            $calon->nocalon         = $nocalon;
+            $calon->alamat1         = $row[4];
+            $calon->alamat2         = $row[5];
+            $calon->poskod          = $row[6];
+            $calon->bandar          = $row[7];
+            $calon->negeri          = $row[8];
+            $calon->skor_agregat    = $row[16];
+            $calon->band            = $row[17];
+            $calon->angka_giliran   = $index_number;
+            $calon->save();
+
+            $skor = new MuetSkor();
 
             $result = [
-                'listening' => $row[12],
-                'speaking'  => $row[13],
-                'reading'   => $row[14],
-                'writing'   => $row[15],
-                'agg_score' => $row[16],
-                'band'      => $row[17],
+                1 => $row[12], //listening
+                2 => $row[13], //speaking
+                3 => $row[14], //reading
+                4 => $row[15], //writing
             ];
 
-            list($session1, $session2, $year) = explode(' ', $row[1], 3);
-            $session = $session1." ".$session2;
-
-            // Check if a record with the same session and year exists
-            $session_rec = ExamSession::where('name', $session)->where('year', $year)->first();
-
-            if ($session_rec) {
-                $sessionId = $session_rec->id;
-                Log::info('Session Record:', ['session_rec' => $session_rec]);
-            } else {
-                $newSession = ExamSession::create([
-                    'name' => $session,
-                    'year' => $year,
-                    'exam_type' => 'MUET', //need to state in excel
-                ]);
-                $sessionId = $newSession->id;
+            foreach ($result as $key => $value) {
+                $ms = new MuetSkor();
+                $ms->tahun = $year;
+                $ms->sidang = $sesi;
+                $ms->kodnegeri = $kodnegeri;
+                $ms->kodpusat = $kodpusat;
+                $ms->jcalon = $jcalon;
+                $ms->nocalon = $nocalon;
+                $ms->kodkts = $key;
+                $ms->mkhbaru = $value;
+                $ms->save();
             }
-
-            try {
-                $certificate = Certificate::create([
-                    'user_id'           => $user->id,
-                    'index_number'      => $idx_num,
-                    'cid'               => $row[0],
-                    'exam_session_id'   => $sessionId,
-                    'result'            => serialize($result),
-                    'issue_date'        => date('Y-m-d H:i:s', strtotime($row[10])), //E.g '10 January 2024'
-                    'expire_date'       => date('Y-m-d H:i:s', strtotime($row[11])), //E.g '10 January 2024',
-                    'muet_center_id'    => 1,
-                ]);
-            } catch (\Throwable $th) {
-                Log::info('Angka giliran already exist '.$idx_num.'\n Skip record row number: '.($key+1).'\n Error: '.$th);
-                continue;
-                //throw $th;
-            }
-
 
             $processedCount++;
         }
