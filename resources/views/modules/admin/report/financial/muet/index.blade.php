@@ -183,7 +183,8 @@
                         <div class="col-xxl-12 align-self-center">
 
                             <div class="py-4">
-                                <table id="financeMuetTable" class="table table-sm w-100 table-striped text-center">
+                                <table id="financeMuetTable" class="table w-100 table-striped text-center dt-responsive nowrap dataTable"
+                                        style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                                     <thead>
                                     <tr class="text-center bg-dark-subtle">
                                         <th scope="col">TRANSACTION ID</th>

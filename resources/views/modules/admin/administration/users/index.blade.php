@@ -52,7 +52,8 @@
                         <div class="col-xxl-12 align-self-center">
                             <div class="py-2">
 
-                                <table id="dt-user" class="table table-striped text-center" width="100%">
+                                <table id="dt-user" class="table w-100 table-striped text-center dt-responsive nowrap dataTable"
+                                style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                                     <thead>
                                         <tr class="text-center bg-dark-subtle">
                                             <th>NO.</th>

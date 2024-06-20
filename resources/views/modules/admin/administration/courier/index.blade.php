@@ -32,7 +32,8 @@
 
                             <div class="py-2">
 
-                                <table id="dt-courier" class="table table-striped text-center">
+                                <table id="dt-courier" class="table w-100 table-striped text-center dt-responsive nowrap dataTable"
+                                    style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                                     <thead>
                                         <tr class="text-center bg-dark-subtle">
                                             <th>NO.</th>
@@ -110,6 +111,7 @@
                             name: 'action'
                         },
                     ],
+                    dom: 'frtp',
                     pageLength: 100,
                     language: {
                         // "zeroRecords": "Tiada rekod untuk dipaparkan.",

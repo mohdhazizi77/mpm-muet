@@ -110,6 +110,7 @@ $(document).ready(function() {
                 },
             ],
             pageLength: 100,
+            dom: 'frtp',
             // order: [[0, "asc"]],
             // buttons: {
             //     dom: {
