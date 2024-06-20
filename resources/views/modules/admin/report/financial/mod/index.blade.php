@@ -29,13 +29,15 @@
                                     <div class="card-body">
                                         <div class="d-flex align-items-center">
                                             <div class="flex-grow-1">
-                                                <p class="text-uppercase fw-semibold text-white mb-0">Successful Transaction</p>
+                                                <p class="text-uppercase fw-semibold text-white mb-0">Total Transaction</p>
                                             </div>
                                         </div>
                                         <div class="d-flex align-items-end justify-content-between mt-2">
                                             <div>
                                                 <h4 class="fs-22 fw-semibold ff-secondary mb-2 text-white">
-                                                    <span class="counter-value" data-target="36894">{{ $count['totalSuccess'] }}</span></h4>
+                                                    {{-- <span class="counter-value" data-target="36894">{{ $count['totalSuccess'] }}</span> --}}
+                                                    <span class="counter-value" data-target="36894" id="total_success_mod">0</span>
+                                                </h4>
                                             </div>
 
                                         </div>
@@ -49,13 +51,15 @@
                                     <div class="card-body">
                                         <div class="d-flex align-items-center">
                                             <div class="flex-grow-1">
-                                                <p class="text-uppercase fw-semibold text-white mb-0">TOTAL PAYMENT - RM60</p>
+                                                <p class="text-uppercase fw-semibold text-white mb-0">TOTAL PAYMENT - MPM PRINT</p>
                                             </div>
                                         </div>
                                         <div class="d-flex align-items-end justify-content-between mt-2">
                                             <div>
                                                 <h4 class="fs-22 fw-semibold ff-secondary mb-2 text-white">
-                                                    <span class="counter-value" data-target="36894">{{ $count['totalPay60'] }}</span></h4>
+                                                    {{-- <span class="counter-value" data-target="36894">{{ $count['totalPay60'] }}</span> --}}
+                                                    <span class="counter-value" data-target="36894" id="mpm_print_mod">0</span>
+                                                </h4>
                                             </div>
 
                                         </div>
@@ -69,13 +73,15 @@
                                     <div class="card-body">
                                         <div class="d-flex align-items-center">
                                             <div class="flex-grow-1">
-                                                <p class="text-uppercase fw-semibold text-white mb-0">TOTAL PAYMENT - RM20</p>
+                                                <p class="text-uppercase fw-semibold text-white mb-0">TOTAL PAYMENT - SELF PRINT</p>
                                             </div>
                                         </div>
                                         <div class="d-flex align-items-end justify-content-between mt-2">
                                             <div>
                                                 <h4 class="fs-22 fw-semibold ff-secondary mb-2 text-white">
-                                                    <span class="counter-value" data-target="36894">{{ $count['totalPay20'] }}</span></h4>
+                                                    {{-- <span class="counter-value" data-target="36894">{{ $count['totalPay20'] }}</span> --}}
+                                                    <span class="counter-value" data-target="36894" id="self_print_mod">0</span>
+                                                </h4>
                                             </div>
 
                                         </div>
@@ -95,7 +101,9 @@
                                         <div class="d-flex align-items-end justify-content-between mt-2">
                                             <div>
                                                 <h4 class="fs-22 fw-semibold ff-secondary mb-2 text-white">
-                                                    <span class="counter-value" data-target="36894">RM {{ $count['totalCollect'] }}</span></h4>
+                                                    {{-- <span class="counter-value" data-target="36894">RM {{ $count['totalCollect'] }}</span> --}}
+                                                    <span class="counter-value" data-target="36894" id="total_collection_mod">RM 0</span></h4>
+                                                </h4>
                                             </div>
                                         </div>
                                     </div><!-- end card body -->
@@ -123,6 +131,37 @@
                                 <input type="text" id="text-search-fin-mod" class="form-control" placeholder="Enter id">
                             </div>
                         </div>
+
+                        <div class="row gy-1 mt-2">
+                            <div class="col-md-3">
+                                <label for="start-date" class="form-label">Exam type</label>
+                                <select name="exam_type_mod" id="exam_type_mod" class="form-control">
+                                    <option value="">Please Select</option>
+                                    <option value="MUET">MUET</option>
+                                    <option value="MOD">MOD</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="end-date" class="form-label">Payment For</label>
+                                <select name="payment_for_mod" id="payment_for_mod" class="form-control">
+                                    <option value="">Please Select</option>
+                                    <option value="MPM_PRINT">MPM PRINT</option>
+                                    <option value="SELF_PRINT">SELF PRINT</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="row gy-1 mt-2">
+                            <div class="col-md-3">
+                                <label for="start-date" class="form-label">Status</label>
+                                <select name="status_mod" id="status_mod" class="form-control">
+                                    <option value="">Please Select</option>
+                                    <option value="SUCCESS">SUCCESS</option>
+                                    <option value="FAIL">FAIL</option>
+                                </select>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             </div>

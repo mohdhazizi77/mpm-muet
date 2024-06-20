@@ -10,10 +10,6 @@ use Yajra\DataTables\DataTables;
 
 class CourierController extends Controller
 {
-    public function index(){
-        return view('modules.admin.administration.courier.index');
-    }
-
     public function getAjax(DataTables $dataTables,Request $request)
     {
         $data = $dataTables->eloquent(
@@ -33,8 +29,11 @@ class CourierController extends Controller
             return $courier->duration;
         })
         ->addColumn('action', function ($courier) {
-            $html = '<button type="button" class="btn btn-soft-warning waves-effect waves-light btn-icon" id="show_edit_modal" value="' . $courier->id . '">
-                   <i class="ri-edit-line mr-2"></i>
+            $html = '<button type="button" class="btn btn-soft-warning waves-effect waves-light btn-icon" style="margin-right: 10px;" id="show_edit_modal" value="' . $courier->id . '">
+                   <i class="ri-edit-line"></i>
+                </button>';
+            $html = $html . '<button type="button" class="btn btn-soft-danger waves-effect waves-light btn-icon" id="delete" value="' . $courier->id . '">
+                   <i class="ri-delete-bin-line"></i>
                 </button>';
 
             return $html;

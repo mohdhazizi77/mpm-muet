@@ -29,18 +29,18 @@
                         @foreach ($payments as $payment)
                             <tr style="border: 1px solid black; padding: 5px">
                                 <td style="border: 1px solid black; padding: 5px">{{ $loop->iteration }}</td>
-                                <td style="border: 1px solid black; padding: 5px">{{ $payment->txn_id  ?? 'Tiada Rekod' }}</td>
-                                <td style="border: 1px solid black; padding: 5px">{{ $payment->receipt_number  ?? 'Tiada Rekod' }}</td>
+                                <td style="border: 1px solid black; padding: 5px">{{ $payment->txn_id  ?? 'No Record' }}</td>
+                                <td style="border: 1px solid black; padding: 5px">{{ $payment->receipt_number  ?? 'No Record' }}</td>
                                 <td style="border: 1px solid black; padding: 5px">{{ date('d/m/Y' , strtotime($payment->payment_date)) }}</td>
-                                <td style="border: 1px solid black; padding: 5px">{{ $payment->order?->candidate?->name ?? 'Tiada Rekod' }}</td>
-                                <td style="border: 1px solid black; padding: 5px">{{ $payment->amount  ?? 'Tiada Rekod' }}</td>
-                                <td style="border: 1px solid black; padding: 5px">{{ $payment->status  ?? 'Tiada Rekod' }}</td>
-                                <td style="border: 1px solid black; padding: 5px">{{ $payment->receipt  ?? 'Tiada Rekod' }}</td>
+                                <td style="border: 1px solid black; padding: 5px">{{ $payment->order?->candidate?->name ?? 'No Record' }}</td>
+                                <td style="border: 1px solid black; padding: 5px">{{ $payment->amount  ?? 'No Record' }}</td>
+                                <td style="border: 1px solid black; padding: 5px">{{ $payment->status  ?? 'No Record' }}</td>
+                                <td style="border: 1px solid black; padding: 5px">{{ $payment->receipt  ?? 'No Record' }}</td>
                             </tr>
                         @endforeach
                 @else
                     <tr>
-                        <td colspan="8" style="text-align: center;border: 1px solid black; padding: 5px">Tiada Rekod</td>
+                        <td colspan="8" style="text-align: center;border: 1px solid black; padding: 5px">No Records</td>
                     </tr>
                 @endif
             </tbody>

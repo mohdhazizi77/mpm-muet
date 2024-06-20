@@ -12,8 +12,7 @@
     <link rel="stylesheet" href="{{ URL::asset('build/libs/@simonwep/pickr/themes/classic.min.css') }}"/> <!-- 'classic' theme -->
     <link rel="stylesheet" href="{{ URL::asset('build/libs/@simonwep/pickr/themes/monolith.min.css') }}"/> <!-- 'monolith' theme -->
     <link rel="stylesheet" href="{{ URL::asset('build/libs/@simonwep/pickr/themes/nano.min.css') }}"/> <!-- 'nano' theme --> --}}
-
-    @endsection
+@endsection
 @section('content')
     @component('components.breadcrumb')
         @slot('li_1')
@@ -29,100 +28,44 @@
             {{ session('success') }}
         </div>
     @endif
-    <div class="row py-4">
+    <div class="row py-4 px-3">
         <div class="col-lg-12">
-            <div class="card rounded-0 bg-white mx-n4 mt-n4 border-top">
-                <div class="px-4">
-                    <div class="row">
-                        <div class="col-xxl-12 align-self-center">
-                            <div class="row mt-3">
-                                <div class="float-start">
-                                    {{--                                <button id="button-export-xlsx" type="button" class="btn btn-soft-secondary waves-effect float-end mx-1">EXPORT XLSX</button>--}}
+            <div class="card rounded-0 bg-white mx-n4 mt-n4 border-top card-custom">
+                <div class="card-header">
+                    <div class="card-title">
+                        <div class="card-label">
+                            <div class="row">
+                                <div class="col" style="text-align: left; padding-top: 10px">
+                                    <h4>List Users</h4>
                                 </div>
-                                <div class="float-end">
-                                    <a href="{{ route('users.create') }}" class="btn btn-soft-success waves-effect float-end">NEW USER</a>
+                                <div class="col" style="text-align: right">
+                                    <button class="btn btn-soft-success waves-effect float-end" id="show_create_modal">NEW
+                                        USER</button>
                                 </div>
                             </div>
 
+                        </div>
+                    </div>
+                </div>
+                <div class="px-4">
+                    <div class="row">
+                        <div class="col-xxl-12 align-self-center">
                             <div class="py-2">
 
-                                <table id="dt-user" class="table table-striped text-center">
+                                <table id="dt-user" class="table table-striped text-center" width="100%">
                                     <thead>
-                                    <tr class="text-center bg-dark-subtle">
-                                        <th>NO.</th>
-                                        <th>NAME</th>
-                                        <th>EMAIL</th>
-                                        <th>PHONE NUMBER</th>
-                                        <th>ROLE</th>
-                                        <th>STATUS</th>
-                                        <th>ACTION</th>
-                                    </tr>
+                                        <tr class="text-center bg-dark-subtle">
+                                            <th>NO.</th>
+                                            <th>NAME</th>
+                                            <th>EMAIL</th>
+                                            <th>PHONE NUMBER</th>
+                                            <th>ROLE</th>
+                                            <th>STATUS</th>
+                                            <th>TOGGLE STATUS</th>
+                                            <th>ACTION</th>
+                                        </tr>
                                     </thead>
                                     <tbody>
-                                    {{-- <tr>
-                                        <td>1</td>
-                                        <td>ADMINISTRATOR</td>
-                                        <td>MOHD HAZIZI</td>
-                                        <td>admin@gmail.com</td>
-                                        <td>01122223333</td>
-                                        <td>
-                                            <button type="button" class="btn btn-soft-info waves-effect text-black mx-2" data-bs-toggle="modal" data-bs-target="#modalVerifyPDF">
-                                                <i class="ri-edit-line label-icon align-middle fs-16 me-2"></i>
-                                                EDIT
-                                            </button>
-                                        </td>
-                                    </tr> --}}
-                                    {{-- <tr>
-                                        <td>2</td>
-                                        <td>PSM</td>
-                                        <td>PSM_ADMIN</td>
-                                        <td>adminpsm@gmail.com</td>
-                                        <td>0126742643</td>
-                                        <td>
-                                            <button type="button" class="btn btn-soft-info waves-effect text-black mx-2" data-bs-toggle="modal" data-bs-target="#modalVerifyPDF">
-                                                <i class="ri-edit-line label-icon align-middle fs-16 me-2"></i>
-                                                EDIT
-                                            </button>
-                                            <button type="button" class="btn btn-soft-danger waves-effect text-black mx-2" data-bs-toggle="modal" data-bs-target="#modalVerifyMPM">
-                                                <i class="ri-delete-bin-2-line label-icon align-middle fs-16 me-2"></i>
-                                                DELETE
-                                            </button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>3</td>
-                                        <td>BPKOM</td>
-                                        <td>BPKOM_ADMIN</td>
-                                        <td>adminbpkom@gmail.com</td>
-                                        <td>0126742643</td>
-                                        <td>
-                                            <button type="button" class="btn btn-soft-info waves-effect text-black mx-2" data-bs-toggle="modal" data-bs-target="#modalVerifyPDF">
-                                                <i class="ri-edit-line label-icon align-middle fs-16 me-2"></i>
-                                                EDIT
-                                            </button>
-                                            <button type="button" class="btn btn-soft-danger waves-effect text-black mx-2" data-bs-toggle="modal" data-bs-target="#modalVerifyMPM">
-                                                <i class="ri-delete-bin-2-line label-icon align-middle fs-16 me-2"></i>
-                                                DELETE
-                                            </button>
-                                        </td>
-                                    </tr>
-                                    <tr> --}}
-                                        {{-- <td>4</td>
-                                        <td>KEWANGAN</td>
-                                        <td>KEWANGAN_ADMIN</td>
-                                        <td>adminkewangan@gmail.com</td>
-                                        <td>0175236443</td>
-                                        <td>
-                                            <button type="button" class="btn btn-soft-info waves-effect text-black mx-2" data-bs-toggle="modal" data-bs-target="#modalVerifyPDF">
-                                                <i class="ri-edit-line label-icon align-middle fs-16 me-2"></i>
-                                                EDIT
-                                            </button>
-                                            <button type="button" class="btn btn-soft-danger waves-effect text-black mx-2" data-bs-toggle="modal" data-bs-target="#modalVerifyMPM">
-                                                <i class="ri-delete-bin-2-line label-icon align-middle fs-16 me-2"></i>
-                                                DELETE
-                                            </button>
-                                        </td>
-                                    </tr> --}}
                                     </tbody>
                                 </table>
 
@@ -136,11 +79,14 @@
 
             </div>
             <!--end col-->
-        </div>
 
-        @endsection
-        @section('script')
-            {{-- <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+            @include('modules.admin.administration.users.modal.create')
+            @include('modules.admin.administration.users.modal.edit')
+        </div>
+    </div>
+    @endsection
+    @section('script')
+        {{-- <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
             <script>
 
@@ -169,6 +115,4 @@
 
             <script src="{{ URL::asset('build/libs/datatables/datatables.min.js') }}"></script>
             <script src="{{ URL::asset('build/libs/jquery-datatables-checkboxes-1.2.12/js/dataTables.checkboxes.js') }}"></script> --}}
-
-@endsection
-
+    @endsection

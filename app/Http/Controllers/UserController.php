@@ -24,10 +24,11 @@ class UserController extends Controller
     public function index()
     {
         $user = Auth::User() ? Auth::User() : abort(403);
+        $role = Role::where('name', '!=', 'CALON')->get();
 
         return view('modules.admin.administration.users.index',
             compact([
-                'user',
+                'user','role',
             ]));
 
     }
@@ -58,7 +59,8 @@ class UserController extends Controller
         $data = [];
         foreach($users as $user){
             $data[] = [
-                "id"    => Crypt::encrypt($user->id),
+                // "id"    => Crypt::encrypt($user->id),
+                "id"    => $user->id,
                 "role"  => $user->getRoleNames()[0],
                 "name"  => $user->name,
                 "email" => $user->email,
@@ -146,9 +148,8 @@ class UserController extends Controller
 
     }
 
-    public function update(UserRequest $request, User $user)
+    public function update(UserRequest $request,User $user)
     {
-
         // Old data
         $old = [
             "name" => $user->name,
@@ -187,5 +188,71 @@ class UserController extends Controller
         AuditLogService::log($user, 'Update', $old, $new);
 
         return redirect()->route('users.index')->with('success', 'User updated successfully.');
+    }
+
+    public function activated(Request $request,User $user)
+    {
+        // Old data
+        $old = [
+            "name" => $user->name,
+            "email" => $user->email,
+            "phone_num" => $user->phone_num,
+            "role" => $user->roles->pluck('name')->first(),
+            "status" => $user->is_deleted == 0 ? "Active" : "Inactive",
+        ];
+
+        $new = [
+            "name" => $user->name,
+            "email" => $user->email,
+            "phone_num" => $user->phone_num,
+            "role" => $user->roles->pluck('name')->first(),
+            "status" => 'Active',
+        ];
+
+        $user->is_deleted = 0;
+        $user->save();
+
+        // Compare old and new data, and unset identical values
+        foreach ($old as $key => $value) {
+            if ($old[$key] === $new[$key]) {
+                unset($old[$key]);
+                unset($new[$key]);
+            }
+        }
+
+        AuditLogService::log($user, 'Active', $old, $new);
+    }
+    
+    public function deactived(Request $request,User $user)
+    {
+        // Old data
+        $old = [
+            "name" => $user->name,
+            "email" => $user->email,
+            "phone_num" => $user->phone_num,
+            "role" => $user->roles->pluck('name')->first(),
+            "status" => $user->is_deleted == 0 ? "Active" : "Inactive",
+        ];
+
+        $new = [
+            "name" => $user->name,
+            "email" => $user->email,
+            "phone_num" => $user->phone_num,
+            "role" => $user->roles->pluck('name')->first(),
+            "status" => 'Inactive',
+        ];
+
+        $user->is_deleted = 1;
+        $user->save();
+
+        // Compare old and new data, and unset identical values
+        foreach ($old as $key => $value) {
+            if ($old[$key] === $new[$key]) {
+                unset($old[$key]);
+                unset($new[$key]);
+            }
+        }
+
+        AuditLogService::log($user, 'Inactive', $old, $new);
     }
 }

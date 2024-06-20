@@ -584,6 +584,30 @@ class PosController extends Controller
                     'id' => $id
                 ])
                 ->with('muetCalon','modCalon')
+                ->when($request->filled('startDate') || $request->filled('endDate'), function ($query) use ($request) {
+                    $currentDate = Carbon::now()->format('Y-m-d H:i:s');
+
+                    $startDate = Carbon::parse($request->startDate)->startOfDay()->format('Y-m-d H:i:s');
+                    $endDate = $request->has('endDate') && !empty($request->endDate)
+                                ? Carbon::parse($request->endDate)->endOfDay()->format('Y-m-d H:i:s')
+                                : $currentDate;
+
+                    // Filter based on the date range
+                    $query->whereBetween('created_at', [$startDate, $endDate]);
+                })
+                ->when($request->filled('textSearch'), function ($query) use ($request) {
+                    $textSearch = $request->textSearch;
+                    $request->where(function ($query) use ($textSearch) {
+                        $query->where('name', 'LIKE', '%' . $textSearch . '%')
+                        ->orWhere('unique_order_id', 'LIKE', '%' . $textSearch . '%')
+                        ->orWhere('type', 'LIKE', '%' . $textSearch . '%');
+                    });
+                })
+                ->when($request->filled('noTracking'), function ($query) use ($request) {
+                    if($request->noTracking){//true
+                        $query->where('tracking_number', "");
+                    }
+                })
                 ->get();
 
             // Merge the collected orders
@@ -654,6 +678,30 @@ class PosController extends Controller
                     'id' => $id
                 ])
                 ->with('muetCalon','modCalon')
+                ->when($request->filled('startDate') || $request->filled('endDate'), function ($query) use ($request) {
+                    $currentDate = Carbon::now()->format('Y-m-d H:i:s');
+
+                    $startDate = Carbon::parse($request->startDate)->startOfDay()->format('Y-m-d H:i:s');
+                    $endDate = $request->has('endDate') && !empty($request->endDate)
+                                ? Carbon::parse($request->endDate)->endOfDay()->format('Y-m-d H:i:s')
+                                : $currentDate;
+
+                    // Filter based on the date range
+                    $query->whereBetween('created_at', [$startDate, $endDate]);
+                })
+                ->when($request->filled('textSearch'), function ($query) use ($request) {
+                    $textSearch = $request->textSearch;
+                    $request->where(function ($query) use ($textSearch) {
+                        $query->where('name', 'LIKE', '%' . $textSearch . '%')
+                        ->orWhere('unique_order_id', 'LIKE', '%' . $textSearch . '%')
+                        ->orWhere('type', 'LIKE', '%' . $textSearch . '%');
+                    });
+                })
+                ->when($request->filled('noTracking'), function ($query) use ($request) {
+                    if($request->noTracking){//true
+                        $query->where('tracking_number', "");
+                    }
+                })
                 ->get();
 
             // Merge the collected orders

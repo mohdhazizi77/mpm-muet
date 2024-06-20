@@ -23,16 +23,22 @@
                 </tr>
             </thead>
             <tbody style="text-align: center">
-                @foreach ($transactions as $transaction)
-                    <tr style="border: 1px solid black; padding: 5px">
-                        <td style="border: 1px solid black; padding: 5px">{{ $loop->iteration }}</td>
-                        <td style="border: 1px solid black; padding: 5px">{{ date('d/m/Y' , strtotime($transaction->payment_date)) }}</td>
-                        <td style="border: 1px solid black; padding: 5px">{{ $transaction->txn_id }}</td>
-                        <td style="border: 1px solid black; padding: 5px">{{ $transaction->ref_no }}</td>
-                        <td style="border: 1px solid black; padding: 5px">Amount : RM {{ $transaction->amount }}</td>
-                        <td style="border: 1px solid black; padding: 5px">{{ $transaction->status }}</td>
+                @if ($transactions->count() > 0)
+                    @foreach ($transactions as $transaction)
+                        <tr style="border: 1px solid black; padding: 5px">
+                            <td style="border: 1px solid black; padding: 5px">{{ $loop->iteration }}</td>
+                            <td style="border: 1px solid black; padding: 5px">{{ date('d/m/Y' , strtotime($transaction->payment_date)) }}</td>
+                            <td style="border: 1px solid black; padding: 5px">{{ $transaction->txn_id }}</td>
+                            <td style="border: 1px solid black; padding: 5px">{{ $transaction->ref_no }}</td>
+                            <td style="border: 1px solid black; padding: 5px">Amount : RM {{ $transaction->amount }}</td>
+                            <td style="border: 1px solid black; padding: 5px">{{ $transaction->status }}</td>
+                        </tr>
+                    @endforeach
+                @else
+                    <tr>
+                        <td colspan="6" style="text-align: center;border: 1px solid black; padding: 5px">No Records</td>
                     </tr>
-                @endforeach
+                @endif
             </tbody>
         </table>
     </div>
