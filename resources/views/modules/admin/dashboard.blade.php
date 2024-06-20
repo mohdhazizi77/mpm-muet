@@ -73,20 +73,20 @@
                         <div class="row mt-2">
                             <div class="col-6" style="padding-left: 20px">
                                 <div>
-                                    <p class="text-uppercase fw-semibold mb-0">NEW</p>
+                                    <p class="text-uppercase fw-semibold mb-0" style="font-weight: bolder; font-size: 15pt;color: #fff">NEW</p>
                                 </div>
                                 <div class="mt-3">
-                                    <h1 class="fs-22 fw-semibold ff-secondary mb-2">
+                                    <h1 class=" fw-semibold ff-secondary mb-2" style="font-weight: bolder; font-size: 30pt;color: #fff">
                                         <span class="counter-value" id="muetNew-count" data-target="1234">{{ $count['orderNewMUET'] }}</span>
                                     </h1>
                                 </div>
                             </div>
-                            <div class="col" style="padding-top: 10px">
+                            <div class="col" style="padding-top: 10px; padding-bottom: 20px">
                                 <div class="align-middle text-center">
                                     {{-- <i class="fas fa-location-arrow text-dark" style="font-size: 50px;"></i> --}}
                                     {{-- <i class="ri-star-fill" style="font-size: 24px;"></i> --}}
-                                    <img src="{{ asset('build/images/dashboard/megaphone.png') }}"
-                                                    width="50px" class="icon-info">
+                                    <img src="{{ asset('build/images/dashboard/megaphone_white.png') }}"
+                                                    width="60px" class="icon-info">
                                 </div>
                             </div>
                         </div>
@@ -104,20 +104,20 @@
                         <div class="row mt-2">
                             <div class="col-6" style="padding-left: 20px">
                                 <div>
-                                    <p class="text-uppercase fw-semibold mb-0">PROCESSING</p>
+                                    <p class="text-uppercase fw-semibold mb-0" style="font-weight: bolder; font-size: 15pt;color: #fff">PROCESSING</p>
                                 </div>
                                 <div class="mt-3">
-                                    <h1 class="fs-22 fw-semibold ff-secondary mb-2">
+                                    <h1 class="fw-semibold ff-secondary mb-2" style="font-weight: bolder; font-size: 30pt;color: #fff">
                                         <span class="counter-value" data-target="1234">{{ $count['orderProcessingMUET'] }}</span>
                                     </h1>
                                 </div>
                             </div>
-                            <div class="col" style="padding-top: 10px">
+                            <div class="col" style="padding-top: 10px; padding-bottom: 20px">
                                 <div class="align-middle text-center">
                                     {{-- <i class="fas fa-location-arrow text-dark" style="font-size: 50px;"></i> --}}
                                     {{-- <i class="ri-star-fill" style="font-size: 24px;"></i> --}}
-                                    <img src="{{ asset('build/images/dashboard/process.png') }}"
-                                                    width="50px" class="icon-info">
+                                    <img src="{{ asset('build/images/dashboard/process_white.png') }}"
+                                                    width="60px" class="icon-info">
                                 </div>
                             </div>
                         </div>
@@ -133,20 +133,20 @@
                         <div class="row mt-2">
                             <div class="col-6" style="padding-left: 20px">
                                 <div>
-                                    <p class="text-uppercase fw-semibold mb-0">COMPLETED</p>
+                                    <p class="text-uppercase fw-semibold mb-0" style="font-weight: bolder; font-size: 15pt;color: #fff">COMPLETED</p>
                                 </div>
                                 <div class="mt-3">
-                                    <h1 class="fs-22 fw-semibold ff-secondary mb-2">
+                                    <h1 class="fw-semibold ff-secondary mb-2" style="font-weight: bolder; font-size: 30pt;color: #fff">
                                         <span class="counter-value" data-target="6000">{{ $count['orderCompleteMUET'] }}</span>
                                     </h1>
                                 </div>
                             </div>
-                            <div class="col" style="padding-top: 10px">
+                            <div class="col" style="padding-top: 10px; padding-bottom: 10px">
                                 <div class="align-middle text-center">
                                     {{-- <i class="fas fa-location-arrow text-dark" style="font-size: 50px;"></i> --}}
                                     {{-- <i class="ri-star-fill" style="font-size: 24px;"></i> --}}
-                                    <img src="{{ asset('build/images/dashboard/checked.png') }}"
-                                                    width="50px" class="icon-info">
+                                    <img src="{{ asset('build/images/dashboard/checked_white.png') }}"
+                                                    width="80px" class="icon-info">
                                 </div>
                             </div>
                         </div>
@@ -173,20 +173,20 @@
                         <div class="row mt-2">
                             <div class="col-6" style="padding-left: 20px">
                                 <div>
-                                    <p class="text-uppercase fw-semibold mb-0">NEW</p>
+                                    <p class="text-uppercase fw-semibold mb-0" style="font-weight: bolder; font-size: 15pt;">NEW</p>
                                 </div>
                                 <div class="mt-3">
-                                    <h1 class="fs-22 fw-semibold ff-secondary mb-2">
+                                    <h1 class="fw-semibold ff-secondary mb-2" style="font-weight: bolder; font-size: 30pt;">
                                         <span class="counter-value" id="muetNew-count" data-target="1234">{{ $count['orderNewMOD'] }}</span>
                                     </h1>
                                 </div>
                             </div>
-                            <div class="col" style="padding-top: 10px">
+                            <div class="col" style="padding-top: 10px; padding-bottom: 10px">
                                 <div class="align-middle text-center">
                                     {{-- <i class="fas fa-location-arrow text-dark" style="font-size: 50px;"></i> --}}
                                     {{-- <i class="ri-star-fill" style="font-size: 24px;"></i> --}}
-                                    <img src="{{ asset('build/images/dashboard/megaphone.png') }}"
-                                                    width="50px" class="icon-info">
+                                    <img src="{{ asset('build/images/dashboard/megaphone_black.png') }}"
+                                                    width="60px" class="icon-info">
                                 </div>
                             </div>
                         </div>
@@ -202,20 +202,20 @@
                         <div class="row mt-2">
                             <div class="col-6" style="padding-left: 20px">
                                 <div>
-                                    <p class="text-uppercase fw-semibold mb-0">PROCESSING</p>
+                                    <p class="text-uppercase fw-semibold mb-0" style="font-weight: bolder; font-size: 15pt;">PROCESSING</p>
                                 </div>
                                 <div class="mt-3">
-                                    <h1 class="fs-22 fw-semibold ff-secondary mb-2">
+                                    <h1 class="fw-semibold ff-secondary mb-2" style="font-weight: bolder; font-size: 30pt;">
                                         <span class="counter-value" data-target="1234">{{ $count['orderProcessingMOD'] }}</span>
                                     </h1>
                                 </div>
                             </div>
-                            <div class="col" style="padding-top: 10px">
+                            <div class="col" style="padding-top: 10px; padding-bottom: 10px">
                                 <div class="align-middle text-center">
                                     {{-- <i class="fas fa-location-arrow text-dark" style="font-size: 50px;"></i> --}}
                                     {{-- <i class="ri-star-fill" style="font-size: 24px;"></i> --}}
-                                    <img src="{{ asset('build/images/dashboard/process.png') }}"
-                                                    width="50px" class="icon-info">
+                                    <img src="{{ asset('build/images/dashboard/process_black.png') }}"
+                                                    width="60px" class="icon-info">
                                 </div>
                             </div>
                         </div>
@@ -231,20 +231,20 @@
                         <div class="row mt-2">
                             <div class="col-6" style="padding-left: 20px">
                                 <div>
-                                    <p class="text-uppercase fw-semibold mb-0">COMPLETED</p>
+                                    <p class="text-uppercase fw-semibold mb-0" style="font-weight: bolder; font-size: 15pt;">COMPLETED</p>
                                 </div>
                                 <div class="mt-3">
-                                    <h1 class="fs-22 fw-semibold ff-secondary mb-2">
+                                    <h1 class="fw-semibold ff-secondary mb-2" style="font-weight: bolder; font-size: 30pt;">
                                         <span class="counter-value" data-target="6000">{{ $count['orderCompleteMOD'] }}</span>
                                     </h1>
                                 </div>
                             </div>
-                            <div class="col" style="padding-top: 10px">
+                            <div class="col" style="padding-top: 10px; padding-bottom: 10px">
                                 <div class="align-middle text-center">
                                     {{-- <i class="fas fa-location-arrow text-dark" style="font-size: 50px;"></i> --}}
                                     {{-- <i class="ri-star-fill" style="font-size: 24px;"></i> --}}
-                                    <img src="{{ asset('build/images/dashboard/checked.png') }}"
-                                                    width="50px" class="icon-info">
+                                    <img src="{{ asset('build/images/dashboard/checked_black.png') }}"
+                                                    width="80px" class="icon-info">
                                 </div>
                             </div>
                         </div>
