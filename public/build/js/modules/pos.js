@@ -58,6 +58,7 @@ $(document).ready(function() {
                     }
                 }
             ],
+            dom: 'frtp',
             // pageLength: 50,
             // order: [[0, "asc"]],
             // buttons: {
@@ -91,9 +92,22 @@ $(document).ready(function() {
             },
             searching: true,
             lengthChange: false,
-            // scrollCollapse: true,
-            // scrollX: 'auto',
-            // responsive: true,
+            // scrollX: true,
+            // initComplete: function(settings, json) {
+            //     $('.dt-scroll-body thead').css('visibility', 'visible');
+            //     $('.dt-scroll-head thead').css('visibility', 'collapse');
+
+            //     $(window).resize(function() {
+            //         var screenWidth = $(window).width();
+            //         if (screenWidth < 768) {
+            //             $('.dt-scroll-body thead').css('visibility', 'visible');
+            //             $('.dt-scroll-head thead').css('visibility', 'collapse');
+            //         } else {
+            //             $('.dt-scroll-body thead').css('visibility', 'visible');
+            //             $('.dt-scroll-head thead').css('visibility', 'collapse');
+            //         }
+            //     }).trigger('resize');
+            // }
         });
     }
 
@@ -315,6 +329,7 @@ $(document).ready(function() {
                     visible: false,
                 },
             ],
+            dom: 'frtp',
             // pageLength: 50,
             // order: [[0, "asc"]],
             // buttons: {
@@ -348,6 +363,23 @@ $(document).ready(function() {
             },
             searching: false,
             lengthChange: false,
+            // scrollX: true,
+            // initComplete: function(settings, json) {
+            //     $('.dt-scroll-body thead').css('visibility', 'visible');
+            //     $('.dt-scroll-head thead').css('visibility', 'collapse');
+
+            //     $(window).resize(function() {
+            //         var screenWidth = $(window).width();
+            //         if (screenWidth < 768) {
+            //             $('.dt-scroll-body thead').css('visibility', 'visible');
+            //             $('.dt-scroll-head thead').css('visibility', 'collapse');
+            //         } else {
+            //             $('.dt-scroll-body thead').css('visibility', 'visible');
+            //             $('.dt-scroll-head thead').css('visibility', 'collapse');
+            //         }
+            //     }).trigger('resize');
+            // },
+            
         });
     }
 
@@ -457,6 +489,7 @@ $(document).ready(function() {
                 }
 
             ],
+            dom: 'frtp',
             // pageLength: 50,
             // order: [[0, "asc"]],
             // buttons: {
@@ -490,6 +523,22 @@ $(document).ready(function() {
             },
             searching: false,
             lengthChange: false,
+            // scrollX: true,
+            // initComplete: function(settings, json) {
+            //     $('.dt-scroll-body thead').css('visibility', 'visible');
+            //     $('.dt-scroll-head thead').css('visibility', 'collapse');
+
+            //     $(window).resize(function() {
+            //         var screenWidth = $(window).width();
+            //         if (screenWidth < 768) {
+            //             $('.dt-scroll-body thead').css('visibility', 'visible');
+            //             $('.dt-scroll-head thead').css('visibility', 'collapse');
+            //         } else {
+            //             $('.dt-scroll-body thead').css('visibility', 'visible');
+            //             $('.dt-scroll-head thead').css('visibility', 'collapse');
+            //         }
+            //     }).trigger('resize');
+            // },
         });
     }
 
