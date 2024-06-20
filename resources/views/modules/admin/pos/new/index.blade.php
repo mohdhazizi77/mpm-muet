@@ -16,7 +16,7 @@
         @endslot
     @endcomponent
 
-    <div class="row mx-1">
+    <div class="row px-1">
         <div class="card rounded-0 bg-white border-top px-2">
             <div class="p-4">
                 <div class="row mb-3">
@@ -41,7 +41,7 @@
         </div>
     </div>
 
-    <div class="row py-4">
+    <div class="row py-4 px-3">
         <div class="col-lg-12">
             <div class="card rounded-0 bg-white mx-n4 mt-n4 border-top">
                 <div class="px-4">
@@ -61,7 +61,7 @@
                         <div class="col-xxl-12 align-self-center">
 
                             <div class="py-1">
-                                <table id="posNewTable" data-type="NEW" class="table w-100 table-striped text-center nowrap dataTable"
+                                <table id="posNewTable" data-type="NEW" class="table w-100 table-striped text-center dt-responsive nowrap dataTable"
                                     style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                                     <thead>
                                     <tr class="text-center bg-dark-subtle ">

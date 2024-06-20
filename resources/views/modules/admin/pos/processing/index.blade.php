@@ -117,7 +117,7 @@
 
                             <div class="py-1">
 
-                                <table id="posProcessTable" data-type="PROCESSING" class="table w-100 table-striped text-center nowrap dataTable"
+                                <table id="posProcessTable" data-type="PROCESSING" class="table w-100 table-striped text-center dt-responsive nowrap dataTable"
                                 style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                                     <thead>
                                     <tr class="text-center bg-dark-subtle">
