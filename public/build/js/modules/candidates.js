@@ -105,6 +105,7 @@ $(document).ready(function() {
                     // className: ,
                 }
             ],
+            dom: 'frtp',
             // pageLength: 50,
             // order: [[0, "asc"]],
             buttons: {

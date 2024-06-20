@@ -60,8 +60,8 @@
         @endslot
     @endcomponent
 
-    <div class="row mx-1">
-        <div class="card rounded-0 bg-white border-top px-2">
+    <div class="row px-1">
+        <div class="card rounded-0 bg-white border-top px-3">
             <div class="p-4">
                 <div class="row mb-3">
                     <div class="col-md-8">
@@ -96,7 +96,7 @@
         </div>
     </div>
 
-    <div class="row py-4">
+    <div class="row py-4 px-3">
         <div class="col-lg-12">
             <div class="card rounded-0 bg-white mx-n4 mt-n4 border-top">
                 <div class="px-4">
@@ -117,22 +117,21 @@
 
                             <div class="py-1">
 
-                                <div class="table-processing" style="overflow-x: auto">
-                                    <table id="posProcessTable" data-type="PROCESSING" class="table w-100 table-striped text-center">
-                                        <thead>
-                                        <tr class="text-center bg-dark-subtle">
-                                            <th scope="col"><input type="checkbox" class="form-check-input row-checkbox check-all"></th>
-                                            {{-- <th scope="col">#</th> --}}
-                                            <th scope="col">DATE</th>
-                                            <th scope="col">REFERENCE ID</th>
-                                            <th scope="col">DETAILS</th>
-                                            <th scope="col">ACTION</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        </tbody>
-                                    </table>
-                                </div>
+                                <table id="posProcessTable" data-type="PROCESSING" class="table w-100 table-striped text-center dt-responsive nowrap dataTable"
+                                style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                                    <thead>
+                                    <tr class="text-center bg-dark-subtle">
+                                        <th scope="col"><input type="checkbox" class="form-check-input row-checkbox check-all"></th>
+                                        {{-- <th scope="col">#</th> --}}
+                                        <th scope="col">DATE</th>
+                                        <th scope="col">REFERENCE ID</th>
+                                        <th scope="col">DETAILS</th>
+                                        <th scope="col">ACTION</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
 
                             </div>
                         </div>

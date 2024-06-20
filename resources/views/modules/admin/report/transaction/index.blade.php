@@ -57,7 +57,8 @@
 
                             <div class="">
 
-                                <table id="transactionTable" class="table table-sm w-100 table-striped text-center">
+                                <table id="transactionTable" class="table w-100 table-striped text-center dt-responsive nowrap dataTable"
+                                    style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                                     <thead>
                                     <tr class="text-center bg-dark-subtle">
                                         <th scope="col">DATE</th>

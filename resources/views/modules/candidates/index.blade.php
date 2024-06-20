@@ -5,33 +5,6 @@
 
 @section('css')
     <style>
-       .table-responsive {
-            overflow-x: auto;
-        }
-
-        #candidatesTable {
-            width: 100% !important;
-            table-layout: auto;
-        }
-
-        /* Media queries for mobile screens */
-        @media (max-width: 767px) {
-            .table-responsive {
-                overflow-x: auto;
-            }
-
-            #candidatesTable {
-                width: auto;
-                table-layout: fixed;
-            }
-        }
-
-        /* Media queries for larger screens */
-        @media (min-width: 768px) {
-            .table-responsive {
-                overflow-x: hidden; /* Adjust overflow behavior */
-            }
-        }
     </style>
 @endsection
 
@@ -88,20 +61,19 @@
                         <div class="row">
                             <div class="col-xxl-12 align-self-center">
                                 <div class="py-4">
-                                    <div class="table-responsive">
-                                        <table id="candidatesTable" class="table table-striped text-center">
-                                            <thead>
-                                                <tr class="text-center bg-dark-subtle">
-                                                    <th scope="col">NO.</th>
-                                                    <th scope="col">SESSION AND YEAR</th>
-                                                    <th scope="col">RESULT</th>
-                                                    <th scope="col">ACTION</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                            </tbody>
-                                        </table>
-                                    </div>
+                                    <table id="candidatesTable" class="table w-100 table-striped text-center dt-responsive nowrap dataTable"
+                                        style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                                        <thead>
+                                            <tr class="text-center bg-dark-subtle">
+                                                <th scope="col">NO.</th>
+                                                <th scope="col">SESSION AND YEAR</th>
+                                                <th scope="col">RESULT</th>
+                                                <th scope="col">ACTION</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                    </table>
         
                                     <!-- MODAL VERIFY MPM -->
                                     <div id="modalVerifyMPM" class="modal fade" tabindex="-1" aria-hidden="true" style="display: none;">

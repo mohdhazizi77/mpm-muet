@@ -131,6 +131,7 @@ $(document).ready(function() {
                     }
                 },
             ],
+            dom: 'frtp',
             pageLength: 100,
             // order: [[0, "asc"]],
             // buttons: {
@@ -347,6 +348,7 @@ $(document).ready(function() {
                     }
                 },
             ],
+            dom: 'frtp',
             pageLength: 100,
             // order: [[0, "asc"]],
             // buttons: {
