@@ -24,7 +24,7 @@
     @endcomponent
 
     @if (session('success'))
-        <div class="alert alert-success">
+        <div id="successMessage" class="alert alert-success">
             {{ session('success') }}
         </div>
     @endif
@@ -87,6 +87,19 @@
     </div>
     @endsection
     @section('script')
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                // Check if the success message exists
+                const successMessage = document.getElementById('successMessage');
+                if (successMessage) {
+                    // Hide the success message after 5 seconds
+                    setTimeout(function() {
+                        successMessage.style.display = 'none';
+                    }, 5000); // 5000 milliseconds = 5 seconds
+                }
+            });
+        </script>
+    
         {{-- <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
             <script>

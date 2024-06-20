@@ -48,7 +48,10 @@
                     </button>
                     <div class="dropdown-menu dropdown-menu-end">
                         <!-- item-->
-                        <a class="dropdown-item" href="pages-profile"><i class="mdi mdi-account-circle text-muted fs-16 align-middle me-1"></i> <span class="align-middle">Profile</span></a>
+                        <a class="dropdown-item" href="{{ route('users.edit', auth()->user()->id) }}">
+                            <i class="mdi mdi-account-circle text-muted fs-16 align-middle me-1"></i> 
+                            <span class="align-middle">Profile</span>
+                        </a>
                         <a class="dropdown-item " href="javascript:void();" onclick="event.preventDefault(); document.getElementById('logout-form').submit();"><i class="bx bx-power-off font-size-16 align-middle me-1"></i> <span
                                 key="t-logout">@lang('translation.logout')</span></a>
                         <form id="logout-form" action="{{ route('admin.logout') }}" method="POST" style="display: none;">

@@ -85,13 +85,13 @@ class UserController extends Controller
 
     public function edit($id){
 
-        try {
-            $id = Crypt::decrypt($id);
-        } catch (Exception $e) {
+        // try {
+        //     $id = Crypt::decrypt($id);
+        // } catch (Exception $e) {
             
-        }
+        // }
 
-        $user = User::find($id);
+        $user = User::findOrFail($id);
         $role = Role::where('name', '!=', 'CALON')->get();
 
         return view('modules.admin.administration.users.edit',

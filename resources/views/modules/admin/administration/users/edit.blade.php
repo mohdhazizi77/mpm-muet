@@ -37,7 +37,7 @@
                 <div class="px-4">
                     <form action={{ route('users.update', ['user' => $user->id]) }} method="POST">
                         @csrf
-                        @method('PUT')
+                        @method('POST')
                         <div class="row py-4">
                             <div class="col-12">
                                 <div class="mb-3">
@@ -88,6 +88,7 @@
                                     {{--                                <button id="button-export-xlsx" type="button" class="btn btn-soft-secondary waves-effect float-end mx-1">EXPORT XLSX</button>--}}
                                 </div>
                                 <div class="float-end my-3">
+                                    <button onclick="history.back()" type="button" class="btn btn-soft-dark waves-effect" style="margin-right: 5px">Back</button>
                                     <button class="btn btn-soft-success waves-effect float-end" type="submit">Update</button>
                                 </div>
                             </div>
