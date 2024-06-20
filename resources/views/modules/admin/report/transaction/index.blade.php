@@ -36,6 +36,36 @@
                         <input type="text" id="text-search-trx" class="form-control" placeholder="Enter text">
                     </div>
                 </div>
+
+                <div class="row gy-1 mt-2">
+                    <div class="col-md-3">
+                        <label for="start-date" class="form-label">Exam type</label>
+                        <select name="exam_type" id="exam_type" class="form-control">
+                            <option value="">Please Select</option>
+                            <option value="MUET">MUET</option>
+                            <option value="MOD">MOD</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="end-date" class="form-label">Payment For</label>
+                        <select name="payment_for" id="payment_for" class="form-control">
+                            <option value="">Please Select</option>
+                            <option value="MPM_PRINT">MPM PRINT</option>
+                            <option value="SELF_PRINT">SELF PRINT</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="row gy-1 mt-2">
+                    <div class="col-md-3">
+                        <label for="start-date" class="form-label">Status</label>
+                        <select name="status_trx" id="status_trx" class="form-control">
+                            <option value="">Please Select</option>
+                            <option value="SUCCESS">SUCCESS</option>
+                            <option value="FAIL">FAIL</option>
+                        </select>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

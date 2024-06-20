@@ -35,6 +35,9 @@ $(document).ready(function() {
                     d.startDateTrx = $('#start-date-trx').val();
                     d.endDateTrx = $('#end-date-trx').val();
                     d.textSearchTrx = $('#text-search-trx').val();
+                    d.exam_type = $('#exam_type').val();
+                    d.payment_for = $('#payment_for').val();
+                    d.status = $('#status_trx').val();
                 }
             },
             columns: [
@@ -163,6 +166,9 @@ $(document).ready(function() {
         $('#start-date-trx').val('');
         $('#end-date-trx').val('');
         $('#text-search-trx').val('');
+        $('#exam_type').val('');
+        $('#payment_for').val('');
+        $('#status_trx').val('');
 
         tableTrx.ajax.reload();
     })
@@ -219,8 +225,16 @@ $(document).ready(function() {
         const textSearch = $('#text-search-trx').val();
         const startDate = $('#start-date-trx').val();
         const endDate = $('#end-date-trx').val();
+        const exam_type = $('#exam_type').val();
+        const payment_for = $('#payment_for').val();
+        const status_trx = $('#status_trx').val();
 
-        const url = `./transaction/excel?textSearch=${encodeURIComponent(textSearch)}&startDate=${encodeURIComponent(startDate)}&endDate=${encodeURIComponent(endDate)}`;
+        const url = `./transaction/excel?textSearch=${encodeURIComponent(textSearch)}
+        &startDate=${encodeURIComponent(startDate)}
+        &exam_type=${encodeURIComponent(exam_type)}
+        &payment_for=${encodeURIComponent(payment_for)}
+        &status_trx=${encodeURIComponent(status_trx)}
+        &endDate=${encodeURIComponent(endDate)}`;
 
         window.location.href = url;
     });
@@ -229,8 +243,16 @@ $(document).ready(function() {
         const textSearch = $('#text-search-trx').val();
         const startDate = $('#start-date-trx').val();
         const endDate = $('#end-date-trx').val();
+        const exam_type = $('#exam_type').val();
+        const payment_for = $('#payment_for').val();
+        const status_trx = $('#status_trx').val();
 
-        const url = `./transaction/pdf?textSearch=${encodeURIComponent(textSearch)}&startDate=${encodeURIComponent(startDate)}&endDate=${encodeURIComponent(endDate)}`;
+        const url = `./transaction/pdf?textSearch=${encodeURIComponent(textSearch)}
+        &startDate=${encodeURIComponent(startDate)}
+        &exam_type=${encodeURIComponent(exam_type)}
+        &payment_for=${encodeURIComponent(payment_for)}
+        &status_trx=${encodeURIComponent(status_trx)}
+        &endDate=${encodeURIComponent(endDate)}`;
 
         // Open the URL in a new tab
         window.open(url, '_blank');
