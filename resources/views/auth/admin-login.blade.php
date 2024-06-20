@@ -2,6 +2,44 @@
 @section('title')
     @lang('translation.signin')
 @endsection
+@section('css')
+    <style>
+        /* Responsive Adjustments */
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 10px;
+            }
+
+            .card {
+                padding: 15px;
+            }
+
+            .text-center img {
+                width: 80%;
+                margin: 0 auto;
+            }
+
+            .btn {
+                width: 100%; /* Make buttons full width */
+            }
+        }
+
+        /* Smaller Screens */
+        @media (max-width: 480px) {
+            .container {
+                padding: 0 5px;
+            }
+
+            .text-center img {
+                width: 100%;
+            }
+
+            .btn {
+                width: 100%; /* Make buttons full width */
+            }
+        }
+    </style>
+@endsection
 @section('content')
     <div class="auth-page-wrapper pt-5">
         <!-- auth page bg -->
@@ -100,7 +138,7 @@
     </div>
 @endsection
 @section('script')
-
+    
     <script src="{{ URL::asset('build/libs/particles.js/particles.js') }}"></script>
     <script src="{{ URL::asset('build/js/pages/particles.app.js') }}"></script>
     <script src="{{ URL::asset('build/js/pages/password-addon.init.js') }}"></script>

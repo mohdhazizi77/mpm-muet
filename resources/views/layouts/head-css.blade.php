@@ -9,3 +9,5 @@
 <link href="{{ asset('build/css/app.min.css') }}" id="app-style" rel="stylesheet" type="text/css"/>
 <!-- custom Css-->
 <link href="{{ asset('build/css/custom.min.css') }}" id="app-style" rel="stylesheet" type="text/css"/>
+
+<link href="{{ asset('build/libs/sweetalert2/sweetalert2.css') }}" id="app-style" rel="stylesheet" type="text/css"/>

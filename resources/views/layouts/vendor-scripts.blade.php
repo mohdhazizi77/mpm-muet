@@ -5,8 +5,9 @@
 <script src="{{ URL::asset('build/libs/feather-icons/feather.min.js') }}"></script>
 <script src="{{ URL::asset('build/js/pages/plugins/lord-icon-2.1.0.js') }}"></script>
 <script src="{{ URL::asset('build/js/plugins.js') }}"></script>
+<script src="https://code.jquery.com/jquery-3.6.3.min.js"></script>
 
 <script src="{{ URL::asset('build/libs/apexcharts/apexcharts.min.js') }}"></script>
-
+<script src="{{ URL::asset('build/libs/sweetalert2/sweetalert2.js') }}"></script>
 @yield('script')
 @yield('script-bottom')

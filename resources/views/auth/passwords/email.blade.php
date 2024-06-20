@@ -2,8 +2,45 @@
 @section('title')
     @lang('translation.password-reset')
 @endsection
-@section('content')
+@section('css')
+    <style>
+        /* Responsive Adjustments */
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 10px;
+            }
 
+            .card {
+                padding: 15px;
+            }
+
+            .text-center img {
+                width: 80%;
+                margin: 0 auto;
+            }
+
+            .btn {
+                width: 100%; /* Make buttons full width */
+            }
+        }
+
+        /* Smaller Screens */
+        @media (max-width: 480px) {
+            .container {
+                padding: 0 5px;
+            }
+
+            .text-center img {
+                width: 100%;
+            }
+
+            .btn {
+                width: 100%; /* Make buttons full width */
+            }
+        }
+    </style>
+@endsection
+@section('content')
     <div class="auth-page-wrapper pt-5">
         <!-- auth page bg -->
         <div class="auth-one-bg-position auth-one-bg" id="auth-particles">
@@ -22,14 +59,16 @@
             <div class="container">
                 <div class="row">
                     <div class="col-lg-12">
-                        <div class="text-center mt-sm-5 mb-4 text-white-50">
+                        <div class="text-center mt-sm-3 mb-4 text-white-50">
                             <div>
                                 <a href="index" class="d-inline-block auth-logo">
-                                    <img src="{{ URL::asset('build/images/logo-light.png') }}" alt=""
-                                        height="20">
+                                    <img src="{{ URL::asset('build/images/mpm-logo.png') }}" alt="" height="100">
                                 </a>
                             </div>
-                            <p class="mt-3 fs-15 fw-medium">Premium Admin & Dashboard Template</p>
+                            <a href="index" class="d-inline-block auth-logo">
+                                <img src="{{ URL::asset('build/images/muet-text-long-black.png') }}" alt=""
+                                    height="60">
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -54,29 +93,30 @@
                                     Enter your email and instructions will be sent to you!
                                 </div>
                                 <div class="p-2">
-                                    @if (session('status'))
+                                    {{-- @if (session('status'))
                                         <div class="alert alert-success text-center mb-4" role="alert">
                                             {{ session('status') }}
                                         </div>
-                                    @endif
-                                    <form class="form-horizontal" method="POST" action="{{ route('password.email') }}">
+                                    @endif --}}
+                                    <form class="form-horizontal" id="form_check_email" method="POST"
+                                        enctype="multipart/form-data">
                                         @csrf
                                         <div class="mb-3">
                                             <label for="useremail" class="form-label">Email</label>
-                                            <input type="email"
-                                                class="form-control @error('email') is-invalid @enderror" id="useremail"
-                                                name="email" placeholder="Enter email" value="{{ old('email') }}"
-                                                id="email">
-                                            @error('email')
+                                            <input type="email" class="form-control @error('email') is-invalid @enderror"
+                                                id="useremail" name="email" placeholder="Enter email"
+                                                value="{{ old('email') }}" id="email" required>
+                                            <span id="email_text" class="text-danger"></span>
+                                            {{-- @error('email')
                                                 <span class="invalid-feedback" role="alert">
                                                     <strong>{{ $message }}</strong>
                                                 </span>
-                                            @enderror
+                                            @enderror --}}
                                         </div>
 
                                         <div class="text-end">
-                                            <button class="btn btn-primary w-md waves-effect waves-light"
-                                                type="button">Reset</button>
+                                            <button class="btn btn-primary w-md waves-effect waves-light" type="button"
+                                                id="submit">Reset</button>
                                         </div>
 
                                     </form>
@@ -100,7 +140,7 @@
         <!-- end auth page content -->
 
         <!-- footer -->
-        <footer class="footer">
+        {{-- <footer class="footer">
             <div class="container">
                 <div class="row">
                     <div class="col-lg-12">
@@ -113,11 +153,89 @@
                     </div>
                 </div>
             </div>
-        </footer>
+        </footer> --}}
         <!-- end Footer -->
     </div>
     <!-- end auth-page-wrapper -->
 @endsection
 @section('script')
+    <script>
+        $(document).ready(function() {
+            $(document).on('click', '#submit', function(e) {
+                var csrfToken = $('meta[name="csrf-token"]').attr('content');
+                var formData = new FormData($('#form_check_email')[0]);
+
+                $.ajax({
+                    url: '{{ route('users.verify_email') }}',
+                    method: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    headers: {
+                        'X-CSRF-TOKEN': csrfToken
+                    },
+                    beforeSend: function() {
+                        Swal.fire({
+                            title: 'Loading...', // Optional title for the alert
+                            allowEscapeKey: false, // Disables escape key closing the alert
+                            allowOutsideClick: false, // Disables outside click closing the alert
+                            showConfirmButton: false, // Hides the "Confirm" button
+                            didOpen: () => {
+                                Swal.showLoading(Swal.getDenyButton());
+                            }
+                        });
+                    },
+                    success: function(response) {
+                        $('#form_check_email').removeClass('was-validated');
+                        Swal.fire({
+                            type: 'success',
+                            title: 'Success',
+                            text: 'Your email exists!',
+                            customClass: {
+                                popup: 'my-swal-popup',
+                                confirmButton: 'my-swal-confirm',
+                                cancelButton: 'my-swal-cancel',
+                            }
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location.href = '{{ route('users.verify_index', '') }}/' + response.id;
+                            }
+                        });
+                    },
+                    error: function(xhr, status, errors) {
+                        $('#form_check_email').addClass('was-validated');
+                        if (xhr.responseJSON && xhr.responseJSON.errors) {
+                            Swal.fire({
+                                icon: "error",
+                                title: 'Fail',
+                                text: xhr.responseJSON.message,
+                                customClass: {
+                                    popup: 'my-swal-popup',
+                                    confirmButton: 'my-swal-confirm',
+                                    cancelButton: 'my-swal-cancel',
+                                }
+                            });
+                        }else{
+                            $('#useremail').addClass('is-invalid');
+                            $('#email_text').text(xhr.responseText);
+                            Swal.fire({
+                                icon: "error",
+                                title: 'Fail',
+                                text: xhr.responseText,
+                                customClass: {
+                                    popup: 'my-swal-popup',
+                                    confirmButton: 'my-swal-confirm',
+                                    cancelButton: 'my-swal-cancel',
+                                }
+                            });
+                        }
+                    }
+                });
+            });
+        });
+    </script>
     <script src="{{ URL::asset('build/js/pages/eva-icon.init.js') }}"></script>
+    <script src="{{ URL::asset('build/libs/particles.js/particles.js') }}"></script>
+    <script src="{{ URL::asset('build/js/pages/particles.app.js') }}"></script>
+    <script src="{{ URL::asset('build/js/pages/password-addon.init.js') }}"></script>
 @endsection

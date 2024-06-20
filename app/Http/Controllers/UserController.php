@@ -41,7 +41,7 @@ class UserController extends Controller
     public function updatePassword(Request $request, $id)
     {
         $request->validate([
-            'password' => 'required|string',
+            'password' => 'required|string|min:11',
         ]);
 
         $user = User::findOrFail($id);
@@ -85,13 +85,13 @@ class UserController extends Controller
 
     public function edit($id){
 
-        try {
-            $id = Crypt::decrypt($id);
-        } catch (Exception $e) {
+        // try {
+        //     $id = Crypt::decrypt($id);
+        // } catch (Exception $e) {
             
-        }
+        // }
 
-        $user = User::find($id);
+        $user = User::findOrFail($id);
         $role = Role::where('name', '!=', 'CALON')->get();
 
         return view('modules.admin.administration.users.edit',
@@ -254,5 +254,17 @@ class UserController extends Controller
         }
 
         AuditLogService::log($user, 'Inactive', $old, $new);
+    }
+
+    public function verifyEmail(Request $request)
+    {
+        $user = User::where('email', $request->email)->first();
+
+        if($user){
+            // return redirect()->route('users.verify_index', ['id' => $user->id]);
+            return response()->json(['success' => true, 'id' => $user->id]);
+        }else{
+            return response('Email is not on record!', 422);
+        }
     }
 }
