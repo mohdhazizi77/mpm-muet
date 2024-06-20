@@ -5,7 +5,7 @@ $(document).ready(function() {
         var table = $('#posNewTable').DataTable({
             // dom: '<"top"rt><"bottom"lp><"clear">', // Hides the built-in search bar
             processing: true,
-            serverSide: true,
+            serverSide: true,           
 
             ajax: {
                 "url": "/pos/new/ajax",
@@ -36,7 +36,7 @@ $(document).ready(function() {
                 // },
                 {
                     data: "order_date",
-                    orderable: true,
+                    orderable: false,
                 },
                 {
                     data: "order_id",
@@ -91,6 +91,22 @@ $(document).ready(function() {
             },
             searching: true,
             lengthChange: false,
+            scrollX: true,
+            initComplete: function(settings, json) {
+                $('.dt-scroll-body thead').css('visibility', 'visible');
+                $('.dt-scroll-head thead').css('visibility', 'collapse');
+
+                $(window).resize(function() {
+                    var screenWidth = $(window).width();
+                    if (screenWidth < 768) {
+                        $('.dt-scroll-body thead').css('visibility', 'visible');
+                        $('.dt-scroll-head thead').css('visibility', 'collapse');
+                    } else {
+                        $('.dt-scroll-body thead').css('visibility', 'visible');
+                        $('.dt-scroll-head thead').css('visibility', 'collapse');
+                    }
+                }).trigger('resize');
+            }
         });
     }
 
@@ -345,6 +361,23 @@ $(document).ready(function() {
             },
             searching: false,
             lengthChange: false,
+            scrollX: true,
+            initComplete: function(settings, json) {
+                $('.dt-scroll-body thead').css('visibility', 'visible');
+                $('.dt-scroll-head thead').css('visibility', 'collapse');
+
+                $(window).resize(function() {
+                    var screenWidth = $(window).width();
+                    if (screenWidth < 768) {
+                        $('.dt-scroll-body thead').css('visibility', 'visible');
+                        $('.dt-scroll-head thead').css('visibility', 'collapse');
+                    } else {
+                        $('.dt-scroll-body thead').css('visibility', 'visible');
+                        $('.dt-scroll-head thead').css('visibility', 'collapse');
+                    }
+                }).trigger('resize');
+            },
+            
         });
     }
 
@@ -487,6 +520,22 @@ $(document).ready(function() {
             },
             searching: false,
             lengthChange: false,
+            scrollX: true,
+            initComplete: function(settings, json) {
+                $('.dt-scroll-body thead').css('visibility', 'visible');
+                $('.dt-scroll-head thead').css('visibility', 'collapse');
+
+                $(window).resize(function() {
+                    var screenWidth = $(window).width();
+                    if (screenWidth < 768) {
+                        $('.dt-scroll-body thead').css('visibility', 'visible');
+                        $('.dt-scroll-head thead').css('visibility', 'collapse');
+                    } else {
+                        $('.dt-scroll-body thead').css('visibility', 'visible');
+                        $('.dt-scroll-head thead').css('visibility', 'collapse');
+                    }
+                }).trigger('resize');
+            },
         });
     }
 

@@ -61,9 +61,10 @@
                         <div class="col-xxl-12 align-self-center">
 
                             <div class="py-1">
-                                <table id="posNewTable" data-type="NEW" class="table w-100 table-striped text-center">
+                                <table id="posNewTable" data-type="NEW" class="table w-100 table-striped text-center nowrap dataTable"
+                                    style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                                     <thead>
-                                    <tr class="text-center bg-dark-subtle">
+                                    <tr class="text-center bg-dark-subtle ">
                                         <th width=5% scope="col"><input type="checkbox" class="form-check-input row-checkbox check-all"></th>
                                         {{-- <th scope="col">#</th> --}}
                                         <th scope="col">DATE</th>

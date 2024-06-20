@@ -199,10 +199,10 @@ $(document).ready(function() {
                     Swal.fire("Saved!", response.message, "success");
 
                     // Refresh data table
-                    $('#posNewTable').DataTable().ajax.reload(); // This line refreshes the DataTable
+                    $('#transactionTable').DataTable().ajax.reload(); // This line refreshes the DataTable
 
                     // Optionally, you can also redraw the DataTable to update the UI
-                    $('#posNewTable').DataTable().draw(); // This line redraws the DataTable
+                    $('#transactionTable').DataTable().draw(); // This line redraws the DataTable
                 } else {
                     Swal.fire("Error!", response.message, "error");
                 }
