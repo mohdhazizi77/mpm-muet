@@ -54,6 +54,18 @@ class PaymentController extends Controller
             $transaction->whereBetween('payment_date', [$startDate, $endDate]);
         }
 
+        if ($request->has('exam_type') && !empty($request->exam_type)) {
+            $transaction->where('type', $request->exam_type);
+        }
+
+        if ($request->has('payment_for') && !empty($request->payment_for)) {
+            $transaction->where('payment_for', $request->payment_for);
+        }
+        
+        if ($request->has('status') && !empty($request->status)) {
+            $transaction->where('status', $request->status);
+        }
+
         // Apply filtering based on name search if provided
         if ($request->has('textSearchTrx') && !empty($request->textSearchTrx)) {
             $textSearch = $request->textSearchTrx;
@@ -67,10 +79,20 @@ class PaymentController extends Controller
         // list by transaction by role
         switch (Auth::User()->getRoleNames()[0]) {
             case 'PSM':
-                $transaction->where('type', 'MUET');
+                // $transaction->where('type', 'MUET');
+                $transaction->when($request->filled('exam_type'), function ($query) use ($request) {
+                        return $query->where('type', $request->input('exam_type'));
+                    }, function ($query) {
+                        return $query->where('type', 'MUET');
+                    });
                 break;
             case 'BPKOM':
-                $transaction->where('type', 'MOD');
+                // $transaction->where('type', 'MOD');
+                $transaction->when($request->filled('exam_type'), function ($query) use ($request) {
+                        return $query->where('type', $request->input('exam_type'));
+                    }, function ($query) {
+                        return $query->where('type', 'MOD');
+                    });
                 break;
         }
 
@@ -405,17 +427,27 @@ class PaymentController extends Controller
         return response()->json($arr);
     }
 
-    public function generateExcel(){
+    public function generateExcel(Request $request){
 
         $currentDate = Carbon::now()->format('Y-m-d H:i:s');
         $transactions = Payment::latest();
         // list by transaction by role
         switch (Auth::User()->getRoleNames()[0]) {
             case 'PSM':
-                $transactions->where('type', 'MUET');
+                // $transactions->where('type', 'MUET');
+                $transactions->when($request->filled('exam_type'), function ($query) use ($request) {
+                        return $query->where('type', $request->input('exam_type'));
+                    }, function ($query) {
+                        return $query->where('type', 'MUET');
+                    });
                 break;
             case 'BPKOM':
-                $transactions->where('type', 'MOD');
+                // $transactions->where('type', 'MOD');
+                $transactions->when($request->filled('exam_type'), function ($query) use ($request) {
+                        return $query->where('type', $request->input('exam_type'));
+                    }, function ($query) {
+                        return $query->where('type', 'MOD');
+                    });
                 break;
         }
 
@@ -427,6 +459,18 @@ class PaymentController extends Controller
 
             // Filter based on the date range
             $transactions->whereBetween('created_at', [$startDate, $endDate]);
+        }
+
+        if ($request->has('exam_type') && !empty($request->exam_type)) {
+            $transactions->where('type', $request->exam_type);
+        }
+
+        if ($request->has('payment_for') && !empty($request->payment_for)) {
+            $transactions->where('payment_for', $request->payment_for);
+        }
+        
+        if ($request->has('status_trx') && !empty($request->status_trx)) {
+            $transactions->where('status', $request->status_trx);
         }
 
         if(filled($request->textSearch)){
@@ -443,8 +487,7 @@ class PaymentController extends Controller
         return Excel::download(new TransactionExport($transactions), 'transaction_' . now() . '.xlsx');
     }
 
-    public function generatePdf(){
-
+    public function generatePdf(Request $request){
 
         $currentDate = Carbon::now()->format('Y-m-d H:i:s');
 
@@ -453,10 +496,20 @@ class PaymentController extends Controller
         // list by transaction by role
         switch (Auth::User()->getRoleNames()[0]) {
             case 'PSM':
-                $transactions->where('type', 'MUET');
+                // $transactions->where('type', 'MUET');
+                $transactions->when($request->filled('exam_type'), function ($query) use ($request) {
+                        return $query->where('type', $request->input('exam_type'));
+                    }, function ($query) {
+                        return $query->where('type', 'MUET');
+                    });
                 break;
             case 'BPKOM':
-                $transactions->where('type', 'MOD');
+                // $transactions->where('type', 'MOD');
+                $transactions->when($request->filled('exam_type'), function ($query) use ($request) {
+                        return $query->where('type', $request->input('exam_type'));
+                    }, function ($query) {
+                        return $query->where('type', 'MOD');
+                    });
                 break;
         }
         if(filled($request->startDate) || filled($request->endDate)){
@@ -467,6 +520,18 @@ class PaymentController extends Controller
 
             // Filter based on the date range
             $transactions->whereBetween('created_at', [$startDate, $endDate]);
+        }
+
+        if ($request->has('exam_type') && !empty($request->exam_type)) {
+            $transactions->where('type', $request->exam_type);
+        }
+
+        if ($request->has('payment_for') && !empty($request->payment_for)) {
+            $transactions->where('payment_for', $request->payment_for);
+        }
+        
+        if ($request->has('status_trx') && !empty($request->status_trx)) {
+            $transactions->where('status', $request->status_trx);
         }
 
         if(filled($request->textSearch)){
