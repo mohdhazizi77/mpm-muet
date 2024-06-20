@@ -154,7 +154,7 @@ class PaymentController extends Controller
         // Create new order
         $order = new Order();
         // $order->unique_order_id = Uuid::uuid4()->toString();
-        $order->unique_order_id = self::generateShortId(8);
+        $order->unique_order_id = self::generateOrderId($exam_type);
         $order->payment_ref_no = $output->ref_no;
         $order->candidate_id = Auth::User()->id;
         $order->name = $request->name;
@@ -251,7 +251,9 @@ class PaymentController extends Controller
         if($request->status == "SUCCESS"){
 
             $order->payment_status = 'SUCCESS';
-
+            // $order->current_status = 'SUCCESS';
+            // SELF_PRINT
+            // MPM_PRINT
             $data = json_decode($request->extra_data,1);
 
             try {
@@ -405,7 +407,7 @@ class PaymentController extends Controller
         return response()->json($arr);
     }
 
-    public function generateExcel(){
+    public function generateExcel(Request $request){
 
         $currentDate = Carbon::now()->format('Y-m-d H:i:s');
         $transactions = Payment::latest();
@@ -443,7 +445,7 @@ class PaymentController extends Controller
         return Excel::download(new TransactionExport($transactions), 'transaction_' . now() . '.xlsx');
     }
 
-    public function generatePdf(){
+    public function generatePdf(Request $request){
 
 
         $currentDate = Carbon::now()->format('Y-m-d H:i:s');
@@ -528,20 +530,16 @@ class PaymentController extends Controller
         }
     }
 
-    function generateShortId() {
-        // $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-        // $charactersLength = strlen($characters);
-        // $shortId = '';
+    function generateOrderId($type) {
 
-        // for ($i = 0; $i < $length; $i++) {
-        //     $shortId .= $characters[rand(0, $charactersLength - 1)];
-        // }
+        if ($type == "MUET") {
+            $prefix = "MUET";
+        } else {
+            $prefix = "MOD";
+        }
 
-        // return $shortId;
+        $suffix = substr(md5(uniqid()), 0, 8); // Generate a unique prefix
 
-        $prefix = substr(md5(uniqid()), 0, 8); // Generate a unique prefix
-        $suffix = substr(md5(uniqid()), -4); // Generate a unique suffix
-
-        return '-' . $prefix . '-' . $suffix . '-';
+        return $prefix . '-' . $suffix;
     }
 }
