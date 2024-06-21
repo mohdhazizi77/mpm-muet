@@ -17,13 +17,13 @@ class AdminController extends Controller
         $order = Order::get();
         $payment = Payment::get();
         // dd($payment->where('amount','=', 60.0));
-        $orderNewMUET = $order->where('current_status','NEW')->where('type', 'MUET')->count();
-        $orderProcessingMUET = $order->where('current_status','PROCESSING')->where('type', 'MUET')->count();
-        $orderCompleteMUET = $order->where('current_status','COMPLETED')->where('type', 'MUET')->count();
+        $orderNewMUET = $order->where('current_status','NEW')->where('type', 'MUET')->where('payment_for', 'MPM_PRINT')->count();
+        $orderProcessingMUET = $order->where('current_status','PROCESSING')->where('type', 'MUET')->where('payment_for', 'MPM_PRINT')->count();
+        $orderCompleteMUET = $order->where('current_status','COMPLETED')->where('type', 'MUET')->where('payment_for', 'MPM_PRINT')->count();
 
-        $orderNewMOD = $order->where('current_status','NEW')->where('type', 'MOD')->count();
-        $orderProcessingMOD = $order->where('current_status','PROCESSING')->where('type', 'MOD')->count();
-        $orderCompleteMOD = $order->where('current_status','COMPLETED')->where('type', 'MOD')->count();
+        $orderNewMOD = $order->where('current_status','NEW')->where('type', 'MOD')->where('payment_for', 'MPM_PRINT')->count();
+        $orderProcessingMOD = $order->where('current_status','PROCESSING')->where('type', 'MOD')->where('payment_for', 'MPM_PRINT')->count();
+        $orderCompleteMOD = $order->where('current_status','COMPLETED')->where('type', 'MOD')->where('payment_for', 'MPM_PRINT')->count();
 
         $totalMUET60 = $payment->where('amount','=', 60.0)->where('type', 'MUET')->sum('amount');
         $totalMUET20 = $payment->where('amount','=', 20.0)->where('type', 'MUET')->sum('amount');
@@ -59,9 +59,9 @@ class AdminController extends Controller
             'RM 20' => 20.0,
             'RM 60' => 60.0
         ];
-    
+
         $data = [];
-    
+
         foreach ($muetLabels as $label => $value) {
             $muetData = $this->getMuetCountByLabel($value, 'MUET');
             $data[] = [
@@ -69,10 +69,10 @@ class AdminController extends Controller
                 'value' => $muetData
             ];
         }
-    
+
         return response()->json($data);
     }
-    
+
     private function getMuetCountByLabel($value, $type)
     {
         return Payment::where('type', $type)->where('amount', $value)->count();
@@ -83,9 +83,9 @@ class AdminController extends Controller
             'RM 20' => 20.0,
             'RM 60' => 60.0
         ];
-    
+
         $data = [];
-    
+
         foreach ($muetLabels as $label => $value) {
             $muetData = $this->getMuetCountByLabel($value, 'MOD');
             $data[] = [
@@ -93,7 +93,7 @@ class AdminController extends Controller
                 'value' => $muetData
             ];
         }
-    
+
         return response()->json($data);
     }
 
