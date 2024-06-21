@@ -95,29 +95,27 @@
                     </div>
                 </li>
 
-                @role('PENTADBIR')
                 <li class="nav-item">
                     <a class="nav-link menu-link" href="#Administration" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarApps">
                         <i class="ri-apps-2-line"></i><span>Administration</span>
                     </a>
                     <div class="collapse menu-dropdown show" id="Administration">
                         <ul class="nav nav-sm flex-column">
-                            <li class="nav-item">
-                                <a href="{{ route('general_setting.index') }}" class="nav-link">General Settings</a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="{{ route('users.index') }}" class="nav-link">Users and Access</a>
-                            </li>
-                            {{--                            <li class="nav-item">--}}
-                            {{--                                <a href="#" class="nav-link">General Configuration</a>--}}
-                            {{--                            </li>--}}
+                            @role('PENTADBIR')
+                                <li class="nav-item">
+                                    <a href="{{ route('general_setting.index') }}" class="nav-link">General Settings</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ route('users.index') }}" class="nav-link">Users and Access</a>
+                                </li>
+                            @endrole
+
                             <li class="nav-item">
                                 <a href="{{ route('audit-logs.index') }}" class="nav-link">Audit Logs</a>
                             </li>
                         </ul>
                     </div>
                 </li>
-                @endrole
 
             </ul>
         </div>
