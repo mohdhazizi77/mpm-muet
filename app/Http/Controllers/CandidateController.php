@@ -249,13 +249,31 @@ class CandidateController extends Controller
 
         $cert = '';
         $user = Auth::user();
-        $scheme = [
-            "listening" => 90,
-            "speaking" => 90,
-            "reading" => 90,
-            "writing" => 90,
-            "agg_score" => 360,
-        ];
+        if ($result['year'] > 2021) {
+            $scheme = [
+                "listening" => 90,
+                "speaking" => 90,
+                "reading" => 90,
+                "writing" => 90,
+                "agg_score" => 360,
+            ];
+        } else if($result['year'] > 2008 && $result['year'] < 2021){
+            $scheme = [
+                "listening" => 45,
+                "speaking" => 45,
+                "reading" => 120,
+                "writing" => 90,
+                "agg_score" => 360,
+            ];
+        } else { // lees than 2008
+            $scheme = [
+                "listening" => 45,
+                "speaking" => 45,
+                "reading" => 135,
+                "writing" => 75,
+                "agg_score" => 360,
+            ];
+        }
 
         return view('modules.candidates.print-pdf', compact(['user','scheme','result','cryptId']));
 
@@ -288,13 +306,32 @@ class CandidateController extends Controller
             $pusat = $candidate->getPusat->first();
             $tarikh = $candidate->getTarikh->first();
             $result = $candidate->getResult($candidate);
-            $scheme = [
-                "listening" => 90,
-                "speaking" => 90,
-                "reading" => 90,
-                "writing" => 90,
-                "agg_score" => 360,
-            ];
+            if ($result['year'] > 2021) {
+                $scheme = [
+                    "listening" => 90,
+                    "speaking" => 90,
+                    "reading" => 90,
+                    "writing" => 90,
+                    "agg_score" => 360,
+                ];
+            } else if($result['year'] > 2008 && $result['year'] < 2021){
+                $scheme = [
+                    "listening" => 45,
+                    "speaking" => 45,
+                    "reading" => 120,
+                    "writing" => 90,
+                    "agg_score" => 360,
+                ];
+            } else { // lees than 2008
+                $scheme = [
+                    "listening" => 45,
+                    "speaking" => 45,
+                    "reading" => 135,
+                    "writing" => 75,
+                    "agg_score" => 360,
+                ];
+            }
+
             $url = 'http://localhost:8000/qrscan'; // Replace with your URL or data
             $url = env('APP_URL').'/verify/result/'.$cryptId; // Replace with your URL or data /verify/result/{id}
             $url = 'https://muet-dev.ddns.net/verify/result/'.$cryptId; // Replace with your URL or data /verify/result/{id}
@@ -334,15 +371,35 @@ class CandidateController extends Controller
             $pusat = $candidate->getPusat->first();
             $tarikh = $candidate->getTarikh->first();
             $result = $candidate->getResult($candidate);
-            $scheme = [
-                "listening" => 90,
-                "speaking" => 90,
-                "reading" => 90,
-                "writing" => 90,
-                "agg_score" => 360,
-            ];
+            if ($result['year'] > 2021) {
+                $scheme = [
+                    "listening" => 90,
+                    "speaking" => 90,
+                    "reading" => 90,
+                    "writing" => 90,
+                    "agg_score" => 360,
+                ];
+            } else if($result['year'] > 2008 && $result['year'] < 2021){
+                $scheme = [
+                    "listening" => 45,
+                    "speaking" => 45,
+                    "reading" => 120,
+                    "writing" => 90,
+                    "agg_score" => 360,
+                ];
+            } else { // lees than 2008
+                $scheme = [
+                    "listening" => 45,
+                    "speaking" => 45,
+                    "reading" => 135,
+                    "writing" => 75,
+                    "agg_score" => 360,
+                ];
+            }
             $url = 'http://localhost:8000/qrscan'; // Replace with your URL or data
             $url = env('APP_URL').'/verify/result/'.$cryptId; // Replace with your URL or data /verify/result/{id}
+            $url = 'https://muet-dev.ddns.net/verify/result/'.$cryptId; // Replace with your URL or data /verify/result/{id}
+
             $qr = QrCode::size(50)->style('round')->generate($url);
 
             $pdf = PDF::loadView('modules.candidates.download-pdf', [
@@ -405,13 +462,31 @@ class CandidateController extends Controller
         $couriers = Courier::get();
 
         $result = $candidate->getResult($candidate);
-        $scheme = [
-            "listening" => 90,
-            "speaking" => 90,
-            "reading" => 90,
-            "writing" => 90,
-            "agg_score" => 360,
-        ];
+        if ($result['year'] > 2021) {
+            $scheme = [
+                "listening" => 90,
+                "speaking" => 90,
+                "reading" => 90,
+                "writing" => 90,
+                "agg_score" => 360,
+            ];
+        } else if($result['year'] > 2008 && $result['year'] < 2021){
+            $scheme = [
+                "listening" => 45,
+                "speaking" => 45,
+                "reading" => 120,
+                "writing" => 90,
+                "agg_score" => 360,
+            ];
+        } else { // lees than 2008
+            $scheme = [
+                "listening" => 45,
+                "speaking" => 45,
+                "reading" => 135,
+                "writing" => 75,
+                "agg_score" => 360,
+            ];
+        }
 
         // $muet = $candidate->muetCalon;
         // dd($candidate);
@@ -526,13 +601,31 @@ class CandidateController extends Controller
         $result = $candidate->getResult($candidate);
         $cert = '';
         $user = Auth::user();
-        $scheme = [
-            "listening" => 90,
-            "speaking" => 90,
-            "reading" => 90,
-            "writing" => 90,
-            "agg_score" => 360,
-        ];
+        if ($result['year'] > 2021) {
+            $scheme = [
+                "listening" => 90,
+                "speaking" => 90,
+                "reading" => 90,
+                "writing" => 90,
+                "agg_score" => 360,
+            ];
+        } else if($result['year'] > 2008 && $result['year'] < 2021){
+            $scheme = [
+                "listening" => 45,
+                "speaking" => 45,
+                "reading" => 120,
+                "writing" => 90,
+                "agg_score" => 360,
+            ];
+        } else { // lees than 2008
+            $scheme = [
+                "listening" => 45,
+                "speaking" => 45,
+                "reading" => 135,
+                "writing" => 75,
+                "agg_score" => 360,
+            ];
+        }
 
         // dd($candidate->getResult($candidate));
         return view('modules.candidates.verify-result', compact(['candidate','scheme','result','cryptId']));
@@ -552,14 +645,36 @@ class CandidateController extends Controller
         $pusat = $candidate->getPusat->first();
         $tarikh = $candidate->getTarikh->first();
         $result = $candidate->getResult($candidate);
-        $scheme = [
-            "listening" => 90,
-            "speaking" => 90,
-            "reading" => 90,
-            "writing" => 90,
-            "agg_score" => 360,
-        ];
+        if ($result['year'] > 2021) {
+            $scheme = [
+                "listening" => 90,
+                "speaking" => 90,
+                "reading" => 90,
+                "writing" => 90,
+                "agg_score" => 360,
+            ];
+        } else if($result['year'] > 2008 && $result['year'] < 2021){
+            $scheme = [
+                "listening" => 45,
+                "speaking" => 45,
+                "reading" => 120,
+                "writing" => 90,
+                "agg_score" => 360,
+            ];
+        } else { // lees than 2008
+            $scheme = [
+                "listening" => 45,
+                "speaking" => 45,
+                "reading" => 135,
+                "writing" => 75,
+                "agg_score" => 360,
+            ];
+        }
+
+        $cryptId = Crypt::encrypt($certID);
         $url = env('APP_URL').'/verify/result/'.$id;
+        $url = 'https://muet-dev.ddns.net/verify/result/'.$cryptId; // Replace with your URL or data /verify/result/{id}
+
         $qr = QrCode::size(50)->style('round')->generate($url);
 
         $pdf = PDF::loadView('modules.candidates.download-pdf', [
