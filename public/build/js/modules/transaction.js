@@ -48,35 +48,43 @@ $(document).ready(function() {
                 //     className: ,
                 // },
                 {
-                    data: "payment_date",
+                    data: "created_at",
                     orderable: false,
                     // render: function(data, type, row, meta) {
                     //     return meta.row + 1;
                     // }
                 },
                 {
-                    data: "txn_id",
-                    orderable: true,
-                    // render(data, type, row) {
-                    //     let html = '';
-                    //     html = '<p>'+row.user_name+'</p> <p>ID : '+data+'</p>';
-                    //     return html;
-                    // }
+                    data: "reference_id",
+                    orderable: false,
                 },
                 {
-                    data: "ref_no",
-                    orderable: true,
-                },
-                {
-                    data: "status",
+                    data: "order_id",
                     orderable: true,
                     render(data, type, row) {
                         let html = '';
-                        // html = '<p> Receipt No : <a href="'+row.receipt+'">'+row.receipt_number+'</a></p> <p> Amount : RM'+row.amount+'</p>';
-                        html = '<p> Amount : RM'+row.amount+'</p>';
+                        html = '<p>'+row.candidate_name+'</p> <p>NRIC : '+row.candidate_nric+'</p>';
                         return html;
                     }
                 },
+                {
+                    data: "cert_type",
+                    orderable: true,
+                },
+                {
+                    data: "txn_type",
+                    orderable: true,
+                },
+                // {
+                //     data: "status",
+                //     orderable: true,
+                //     render(data, type, row) {
+                //         let html = '';
+                //         // html = '<p> Receipt No : <a href="'+row.receipt+'">'+row.receipt_number+'</a></p> <p> Amount : RM'+row.amount+'</p>';
+                //         html = '<p> Amount : RM'+row.amount+'</p>';
+                //         return html;
+                //     }
+                // },
                 {
                     data: "status",
                     orderable: true,
@@ -102,15 +110,15 @@ $(document).ready(function() {
                         return html;
                     }
                 },
-                {
-                    data: "ref_no",
-                    orderable: true,
-                    render(data, type, row) {
-                        let html = '';
-                        html = '<a class="btn btn-sm btn-warning btnCheckTrx" data-id="'+data+'"><i class="bx bx-refresh"></i> Refetch </a>';
-                        return html;
-                    }
-                },
+                // {
+                //     data: "ref_no",
+                //     orderable: true,
+                //     render(data, type, row) {
+                //         let html = '';
+                //         html = '<a class="btn btn-sm btn-warning btnCheckTrx" data-id="'+data+'"><i class="bx bx-refresh"></i> Refetch </a>';
+                //         return html;
+                //     }
+                // },
             ],
             pageLength: 100,
             dom: 'frtp',
@@ -156,7 +164,7 @@ $(document).ready(function() {
     $(document).on('click', '#filterBtnTrx', function (){
         tableTrx.ajax.reload();
     })
-    
+
     $('#text-search-trx').on('keyup change', function() {
         tableTrx.search(this.value).draw();
     });
@@ -238,7 +246,7 @@ $(document).ready(function() {
 
         window.location.href = url;
     });
-    
+
     $(document).on('click', '#button-export-pdf-trans', function (){
         const textSearch = $('#text-search-trx').val();
         const startDate = $('#start-date-trx').val();
