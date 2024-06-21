@@ -297,6 +297,7 @@ class CandidateController extends Controller
             ];
             $url = 'http://localhost:8000/qrscan'; // Replace with your URL or data
             $url = env('APP_URL').'/verify/result/'.$cryptId; // Replace with your URL or data /verify/result/{id}
+            $url = 'https://muet-dev.ddns.net/verify/result/'.$cryptId; // Replace with your URL or data /verify/result/{id}
             $qr = QrCode::size(50)->style('round')->generate($url);
 
             $pdf = PDF::loadView('modules.candidates.download-pdf', [
