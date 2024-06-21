@@ -102,14 +102,14 @@ class PaymentController extends Controller
         $data = [];
         foreach ($transaction as $key => $value) {
             $data[] = [
-                "created_at" => $value->order->created_at->format('d/m/y H:i:s'),
+                "created_at" => $value->order?->created_at->format('d/m/y H:i:s'),
                 "order_id" => $value->order_id,
-                "reference_id" => $value->order->unique_order_id,
-                "candidate_name" => $value->order->candidate->name,
-                "candidate_nric" => $value->order->candidate->identity_card_number,
+                "reference_id" => $value->order?->unique_order_id,
+                "candidate_name" => $value->order?->candidate?->name,
+                "candidate_nric" => $value->order?->candidate?->identity_card_number,
                 "cert_type" => $value->type,
-                "txn_type" => $value->payment_for,
-                "status" => $value->order->payment_status,
+                "txn_type" => $value->payment_for, 
+                "status" => $value->order?->payment_status,
 
                 "payment_date" => $value->payment_date,
                 "txn_id" => $value->txn_id,
