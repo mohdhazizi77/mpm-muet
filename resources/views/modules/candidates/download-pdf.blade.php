@@ -168,7 +168,7 @@
             <span style="font-size: 12pt; font-weight: bold">MALAYSIAN EXAMINATION COUNCIL</span>
             <p style="font-size: 10pt">This is to certify that the below candidate has sat for the</p>
             <span style="font-size: 12pt; font-weight: bolder">MALAYSIAN UNIVERSITY ENGLISH TEST <br>
-                SESSION {{ Str::upper($tarikh->sesi) }} {{ $tarikh->tahun }}</span>
+                {{ Str::upper($tarikh->sesi) }} {{ $tarikh->tahun }}</span>
             <p style="font-size: 10pt">and obtained the following score.</p>
         </div>
         {{-- <div id="session">

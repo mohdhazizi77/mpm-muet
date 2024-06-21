@@ -20,11 +20,11 @@ $(document).ready(function() {
                     orderable: false,
                 },
                 {
-                    data: "uniqueOrderId",
+                    data: "orderDate",
                     orderable: false,
                 },
                 {
-                    data: "orderDate",
+                    data: "uniqueOrderId",
                     orderable: false,
                 },
                 {
