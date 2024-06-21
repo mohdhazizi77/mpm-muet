@@ -355,6 +355,7 @@ class PaymentController extends Controller
                     'ref_no',
                     'txn_id',
                     'show_result',
+                    'order'
                 ]));
             } elseif ($request->status == 'FAILED') {
                 $show_result = false;
@@ -364,6 +365,7 @@ class PaymentController extends Controller
                     'ref_no',
                     'txn_id',
                     'show_result',
+                    'order'
                 ]));
             }
         }
