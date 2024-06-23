@@ -104,7 +104,7 @@ class CandidateController extends Controller
                 "id"                => Crypt::encrypt($muet->id . "-MUET"), // xxx-MUET or xxx-MOD
                 // "id"                => $muet->id . "-MUET", // xxx-MUET or xxx-MOD
                 "year"              => $muet->tahun,
-                "session"           => $muet->getTarikh->sesi . " " . $muet->tahun,
+                "session"           => $muet->getTarikh->sesi,
                 "band"              => "Band ".$muet->band,
                 "is_more2year"      => $is_more2year,
                 "is_selfPrintPaid"  => $is_selfPrintPaid,

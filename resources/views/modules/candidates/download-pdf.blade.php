@@ -156,7 +156,7 @@
     <div id="page-1" style="padding-left: 10%; padding-right: 10%;page-break-after: always;">
         <div class="row logo-container" style="text-align: center; padding-top: 90px">
             <span style="padding-right: 10px">
-                <img style="width: 100px" src="{{ asset('build/images/jatanegara/jataNegara.jpg') }}" alt="Logo">
+                <img style="width: 100px" src="{{ asset('build/images/jataNegara.jpg') }}" alt="Logo">
             </span>
             <span>
                 <img style="width: 80px;height: auto;" src="{{ asset('build/images/logo-mpm-kuningpinang.jpg') }}"
@@ -168,7 +168,7 @@
             <span style="font-size: 12pt; font-weight: bold">MALAYSIAN EXAMINATION COUNCIL</span>
             <p style="font-size: 10pt">This is to certify that the below candidate has sat for the</p>
             <span style="font-size: 12pt; font-weight: bolder">MALAYSIAN UNIVERSITY ENGLISH TEST <br>
-                {{ Str::upper($tarikh->sesi) }} {{ $tarikh->tahun }}</span>
+                {{ Str::upper($tarikh->sesi) }}</span>
             <p style="font-size: 10pt">and obtained the following score.</p>
         </div>
         {{-- <div id="session">
@@ -287,9 +287,9 @@
                         <span style="font-size: 10pt">Malaysian Examinations Council</span>
                     </td>
                     <td style="text-align: right">
-                        <span style="font-size: 14px;">Date of issue: {{ date($result['issue_date']) }}</span><br>
+                        <span style="font-size: 14px;">Date of issue: {{ $result['issue_date'] }}</span><br>
                         <span style="font-size: 14px; font-weight: bold">Date of expiry:
-                            {{ date($result['exp_date']) }}</span>
+                            {{ $result['exp_date'] }}</span>
                     </td>
                 </tr>
             </table>

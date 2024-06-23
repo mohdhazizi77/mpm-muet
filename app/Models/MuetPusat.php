@@ -10,4 +10,11 @@ class MuetPusat extends Model
     use HasFactory;
     protected $table = 'muet_pusat';
 
+    protected $fillable = [
+        'tahun',
+        'sidang',
+        'kodnegeri',
+        'kodpusat',
+        'namapusat'
+    ];
 }
