@@ -9,5 +9,11 @@ class ModTarikh extends Model
 {
     use HasFactory;
     protected $table = 'mod_tarikh';
-
+    protected $fillable = [
+        'tahun',
+        'sidang',
+        'tarikh_isu',
+        'tarikh_exp',
+        'sesi'
+    ];
 }

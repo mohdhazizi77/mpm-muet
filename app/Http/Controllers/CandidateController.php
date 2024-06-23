@@ -113,6 +113,46 @@ class CandidateController extends Controller
 
         }
 
+        foreach ($mods as $key => $mod) {
+
+            $is_more2year = self::checkYear($mod->getTarikh->tahun); //check cert if already 2 years
+            $is_selfPrintPaid = false;
+            $is_mpmPrintPaid = false;
+            if ($is_more2year) {
+                // $res = $muet->getOrder->where('payment_status','SUCCESS')->where('payment_for', 'SELF_PRINT')->toArray();
+
+                $res = $mod->getOrder()
+                        ->where('payment_status', 'SUCCESS')
+                        ->where('payment_for', 'SELF_PRINT')
+                        ->where('created_at', '>=', $cutoffTime)
+                        ->get()
+                        ->toArray();
+                $is_selfPrintPaid = count($res)>0 ? true : false;
+
+                $res = $mod->getOrder->where('payment_status','SUCCESS')->where('payment_for', 'MPM_PRINT')->toArray();
+                $is_mpmPrintPaid = count($res)>0 ? true : false;
+            } else {
+                $res = $mod->getOrder->where('payment_status','SUCCESS')->where('payment_for', 'SELF_PRINT')->toArray();
+                $is_selfPrintPaid = count($res)>0 ? true : false;
+
+                $res = $mod->getOrder->where('payment_status','SUCCESS')->where('payment_for', 'MPM_PRINT')->toArray();
+                $is_mpmPrintPaid = count($res)>0 ? true : false;
+            }
+
+            $cert_datas[] = [
+                "no"                => ++$key,
+                "id"                => Crypt::encrypt($mod->id . "-MOD"), // xxx-MUET or xxx-MOD
+                // "id"                => $muet->id . "-MUET", // xxx-MUET or xxx-MOD
+                "year"              => $mod->tahun,
+                "session"           => $mod->getTarikh->sesi,
+                "band"              => "Band ".$mod->band,
+                "is_more2year"      => $is_more2year,
+                "is_selfPrintPaid"  => $is_selfPrintPaid,
+                "is_mpmPrintPaid"   => $is_mpmPrintPaid,
+            ];
+
+        }
+
         return datatables($cert_datas)->toJson();
     }
 
