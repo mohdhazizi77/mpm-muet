@@ -300,13 +300,14 @@
                                                         <div class="form-check card-radio">
                                                             <input id="shippingMethod{{ $key }}" name="courier" value="{{ $key+1 }}" type="radio" class="form-check-input" checked>
                                                             <label class="form-check-label" for="shippingMethod{{ $key }}">
-                                                                <span class="fs-20 float-end mt-2 text-wrap d-block fw-semibold">RM{{ $value->rate }}</span>
-                                                                <span class="fs-20 mt-2 text-wrap d-block">MUET Certificate</span>
+                                                                {{-- <span class="fs-20 float-end mt-2 text-wrap d-block fw-semibold">RM {{ $value->rate }}</span> --}}
+                                                                <span class="fs-20 float-end mt-2 text-wrap d-block fw-semibold">RM {{ $value->rate }}</span>
+                                                                <span class="fs-20 mt-2 text-wrap d-block">{{ $value->name }}</span>
                                                                 <table>
                                                                     <tr>
-                                                                        <td><span class="text-muted fw-normal text-wrap d-block">Courier</span></td>
+                                                                        <td><span class="text-muted fw-normal text-wrap d-block">Estimated delivery period</span></td>
                                                                         <td><span class="text-muted fw-normal text-wrap d-block px-2">:</span></td>
-                                                                        <td><span class="text-muted fw-normal text-wrap d-block">{{ $value->name }}</span></td>
+                                                                        <td><span class="text-muted fw-normal text-wrap d-block">{{ $value->duration }}</span></td>
                                                                     </tr>
                                                                 </table>
                                                             </label>
