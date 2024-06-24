@@ -67,7 +67,7 @@
                                             <tr class="text-center bg-dark-subtle">
                                                 <th scope="col">NO.</th>
                                                 <th scope="col">SESSION AND YEAR</th>
-                                                <th scope="col">RESULT</th>
+                                                <th scope="col">BAND OBTAINED</th>
                                                 <th scope="col">ACTION</th>
                                             </tr>
                                         </thead>
@@ -87,7 +87,8 @@
                                                     <form>
                                                         <div class="mb-5">
                                                             <label for="indexNumber" class="form-label">Index Number</label>
-                                                            <input type="text" class="form-control mb-2" id="indexNumber">
+                                                            {{-- <label for="indexNumber" class="form-label">Index Number</label> --}}
+                                                            <input type="text" class="form-control mb-2" id="indexNumber" placeholder="Enter your Index Number">
                                                             <a class="text-decoration-none text-black-50 btnForgotIndexNumber">Forgot Index Number?</a>
                                                         </div>
                                                         <div class="clearfix">
