@@ -106,16 +106,44 @@
                                         <div class="modal-dialog modal-dialog-centered">
                                             <div class="modal-content border-0 overflow-hidden">
                                                 <div class="modal-header p-3 bg-dark-subtle">
-                                                    <h4 class="card-title mb-0">Payment</h4>
+                                                    <h4 class="card-title mb-0">Payment required!</h4>
                                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                 </div>
                                                 <div class="modal-body">
                                                     <form>
                                                         <div class="mb-3">
-                                                            <label class="form-label">Candidate must pay RM20 to print MUET certificate</label>
+                                                            <label class="" style="font-weight: 400">In order to view and print this certificate, you must pay <b>RM20</b> to unlock this certificate.</label>
+                                                        </div>
+                                                        <div class="mb-3">
+                                                            <label class="" style="font-weight: 400">All certificates can be viewed and print within <b>24 hours</b> upon unlocked.</label>
                                                         </div>
                                                         <div class="text-end">
-                                                            <a href="#" class="btn btn-success btn-animation waves-effect waves-light" data-text="Agree"><span>Agree</span></a>
+                                                            <a href="#" class="btn btn-success btn-animation waves-effect waves-light" data-text="Agree and Proceed to Payment"><span>Agree and Proceed to Payment</span></a>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- MODAL PAYMENT MPM -->
+                                    <div id="modalPaymentMpm" class="modal fade" tabindex="-1" aria-hidden="true" style="display: none;">
+                                        <div class="modal-dialog modal-dialog-centered">
+                                            <div class="modal-content border-0 overflow-hidden">
+                                                <div class="modal-header p-3 bg-dark-subtle">
+                                                    <h4 class="card-title mb-0">Printing by MPM</h4>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <form>
+                                                        <div class="mb-3">
+                                                            <label class="" style="font-weight: 400">For every certificate printed by MPM, you will be charged <b>RM60</b> excludes delivery charges.</label>
+                                                        </div>
+                                                        <div class="mb-3">
+                                                            <label class="" style="font-weight: 400">All certificate will be processed within 3 working days and will be shipped within <b>7 working days</b>.</label>
+                                                        </div>
+                                                        <div class="text-end">
+                                                            <a href="#" class="btn btn-success btn-animation waves-effect waves-light" data-text="Agree and Order"><span>Agree and Order</span></a>
                                                         </div>
                                                     </form>
                                                 </div>

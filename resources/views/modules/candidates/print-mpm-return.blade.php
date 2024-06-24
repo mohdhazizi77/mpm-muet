@@ -61,7 +61,7 @@
                                             <thead>
                                             <tr class="text-center bg-dark-subtle">
                                                 <th scope="col">NO.</th>
-                                                <th scope="col">DATE AND TIME</th>
+                                                <th scope="col">DATE RECEIVED</th>
                                                 <th scope="col">DESCRIPTION</th>
                                                 <th scope="col">STATUS</th>
                                             </tr>
@@ -90,7 +90,9 @@
 
             <div>
 
-                <x-button.back></x-button.back>
+                {{-- <x-button.back></x-button.back> --}}
+                <a href="{{ route('candidate.index') }}" class="btn btn-soft-dark btn-label btn-border btn-outline-dark waves-effect waves-light w-lg float-start"><i class="ri-reply-fill label-icon align-middle fs-16 me-2"></i>BACK TO HOME</a>
+
                 {{--                <a id="button-download" href="{{ route('candidate.downloadpdf') }}" class="btn btn-soft-success btn-label btn-border waves-effect waves-light w-lg float-end">--}}
                 {{--                    <i class="ri-file-download-line label-icon align-middle fs-16 me-2"></i>DOWNLOAD--}}
                 {{--                </a>--}}

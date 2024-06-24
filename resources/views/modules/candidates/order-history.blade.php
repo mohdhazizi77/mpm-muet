@@ -23,11 +23,11 @@
                                         style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                                     <thead>
                                         <tr class="text-center bg-dark-subtle">
-                                            <th scope="col">NO.</th>
-                                            <th scope="col">DATE TIME</th>
-                                            <th scope="col">ORDER ID</th>
-                                            <th scope="col">DETAIL</th>
-                                            <th scope="col">PAYMENT STATUS</th>
+                                            <th scope="col">#</th>
+                                            <th scope="col">DATE CREATED</th>
+                                            <th scope="col">TRANSACTION REFERENCE ID</th>
+                                            <th scope="col">TRANSACTION TYPE</th>
+                                            <th scope="col">TRANSACTION STATUS</th>
                                             <th scope="col">ACTION</th>
                                         </tr>
                                     </thead>
@@ -61,7 +61,8 @@
 
             <div class="row mt-4">
                 <div class="col-lg-12">
-                    <x-button.back></x-button.back>
+                    {{-- <x-button.back></x-button.back> --}}
+                    <a href="{{ route('candidate.index') }}" class="btn btn-soft-dark btn-label btn-border btn-outline-dark waves-effect waves-light w-lg float-start"><i class="ri-reply-fill label-icon align-middle fs-16 me-2"></i>BACK TO MAIN PAGE</a>
                 </div>
             </div>
         </div>
