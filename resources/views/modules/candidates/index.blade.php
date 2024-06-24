@@ -65,7 +65,7 @@
                                         style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                                         <thead>
                                             <tr class="text-center bg-dark-subtle">
-                                                <th scope="col">NO.</th>
+                                                <th scope="col">#</th>
                                                 <th scope="col">SESSION AND YEAR</th>
                                                 <th scope="col">BAND OBTAINED</th>
                                                 <th scope="col">ACTION</th>
