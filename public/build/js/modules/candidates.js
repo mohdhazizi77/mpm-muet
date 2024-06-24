@@ -107,7 +107,7 @@ $(document).ready(function() {
                     // className: ,
                 }
             ],
-            dom: 'frtp',
+            // dom: 'frtp',
             pageLength: 50,
             order: [[0, "asc"]],
             buttons: {
@@ -131,13 +131,13 @@ $(document).ready(function() {
                 ],
             },
             language: {
-                // "zeroRecords": "Tiada rekod untuk dipaparkan.",
+                // "zeroRecords": "There are no records to display.",
                 // "paginate": {
-                // "info": "Paparan _START_ / _END_ dari _TOTAL_ rekod",
-                // "infoEmpty": "Paparan 0 / 0 dari 0 rekod",
-                // "infoFiltered": "(tapisan dari _MAX_ rekod)",
+                // "info": "Display _START_ / _END_ of _TOTAL_ records",
+                // "infoEmpty": "Showing 0 to 0 of 0 entries",
+                // "infoFiltered": "(filter of _MAX_ record)",
                 // "processing": "Processing...",
-                // "search": "Carian:"
+                // "search": "Search:"
             },
             searching: false,
             lengthChange: false,
