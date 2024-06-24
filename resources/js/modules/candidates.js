@@ -43,6 +43,7 @@ $(document).ready(function() {
                         var modalSelf = 'modalVerifyPDF';
                         var modalMPM = 'modalVerifyMPM';
                         var modalPayment = 'modalPayment';
+                        var modalPaymentMpm = 'modalPaymentMpm';
 
                         // if (row.is_more2year && !row.is_selfPrintPaid) { //lebih 2 tahun and tak bayar lagi
                         if (row.is_more2year) { //lebih 2 tahun and tak bayar lagi
@@ -62,7 +63,8 @@ $(document).ready(function() {
                             }
 
                             buttonPrintMPM =
-                            '<a href="/candidate/pos-result/'+data+'" class="btn btn-soft-info waves-effect text-black mx-2 ">' +
+                            // href="/candidate/pos-result/'+data+'"
+                            '<a data-id='+data+' class="btn btn-soft-info waves-effect text-black mx-2 '+modalPaymentMpm+'" data-bs-toggle="modal" data-bs-target="#'+modalPaymentMpm+'">' +
                                 '<i class="ri-printer-line label-icon align-middle fs-16 me-2"></i> ' +
                                 'PRINTING BY MPM' +
                             '</a> '
@@ -148,12 +150,20 @@ $(document).ready(function() {
 
     $(document).on('click', '.modalPayment', function() {
         var certID = $(this).data('id');
-        console.log(certID);
         // Construct the dynamic URL based on the data-id
         var dynamicUrl = '/candidate/selfprint/' + certID;
 
         // Update the href attribute of the "Continue" button
         $('#modalPayment a.btn-success').attr('href', dynamicUrl);
+    });
+    
+    $(document).on('click', '.modalPaymentMpm', function() {
+        var certID = $(this).data('id');
+        // Construct the dynamic URL based on the data-id
+        var dynamicUrl = '/candidate/pos-result/' + certID;
+
+        // Update the href attribute of the "Continue" button
+        $('#modalPaymentMpm a.btn-success').attr('href', dynamicUrl);
     });
 
     $(document).on('click', '.modalVerify', function() {

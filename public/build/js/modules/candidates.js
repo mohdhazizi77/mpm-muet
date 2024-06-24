@@ -1,6 +1,6 @@
 $(document).ready(function() {
 
-    if ($("#candidatesTable").length) {
+    if ($("#candidatesTable").length > 0) {
 
         $('#candidatesTable').DataTable({
             processing: true,
@@ -43,6 +43,7 @@ $(document).ready(function() {
                         var modalSelf = 'modalVerifyPDF';
                         var modalMPM = 'modalVerifyMPM';
                         var modalPayment = 'modalPayment';
+                        var modalPaymentMpm = 'modalPaymentMpm';
 
                         // if (row.is_more2year && !row.is_selfPrintPaid) { //lebih 2 tahun and tak bayar lagi
                         if (row.is_more2year) { //lebih 2 tahun and tak bayar lagi
@@ -50,19 +51,20 @@ $(document).ready(function() {
                                 buttonPrintPDF =
                                 '<a href="/candidate/view-result/'+data+'" data-id='+data+' class="btn btn-soft-info waves-effect text-black mx-2 printPdfButton modalVerify">' +
                                     '<i class="ri-printer-line label-icon align-middle fs-16 me-2"></i>' +
-                                    'PRINT PDF' +
+                                    'PDF SELF PRINT' +
                                 '</a>'
 
                             } else {
                                 buttonPrintPDF =
                                 '<a data-id='+data+' class="btn btn-soft-info waves-effect text-black mx-2 '+modalPayment+'" data-bs-toggle="modal" data-bs-target="#'+modalPayment+'">' +
                                     '<i class="ri-printer-line label-icon align-middle fs-16 me-2"></i>' +
-                                    'PRINT PDF' +
+                                    'PDF SELF PRINT' +
                                 '</a>'
                             }
 
                             buttonPrintMPM =
-                            '<a href="/candidate/pos-result/'+data+'" class="btn btn-soft-info waves-effect text-black mx-2 ">' +
+                            // href="/candidate/pos-result/'+data+'"
+                            '<a data-id='+data+' class="btn btn-soft-info waves-effect text-black mx-2 '+modalPaymentMpm+'" data-bs-toggle="modal" data-bs-target="#'+modalPaymentMpm+'">' +
                                 '<i class="ri-printer-line label-icon align-middle fs-16 me-2"></i> ' +
                                 'PRINTING BY MPM' +
                             '</a> '
@@ -76,7 +78,7 @@ $(document).ready(function() {
                             // '<a href="/candidate/'+data+'/printpdf" data-id='+data+' class="btn btn-soft-info waves-effect text-black mx-2 modalVerify">' +
                             '<button data-type="SELF_PRINT" type="button" data-id='+data+' class="btn btn-soft-info waves-effect text-black mx-2 modalVerify" data-bs-toggle="modal" data-bs-target="#'+modalMPM+'">' +
                                 '<i class="ri-printer-line label-icon align-middle fs-16 me-2"></i>' +
-                                'PRINT PDF' +
+                                'PDF SELF PRINT' +
                             '</button>'
 
                             buttonPrintMPM =
@@ -106,8 +108,8 @@ $(document).ready(function() {
                 }
             ],
             dom: 'frtp',
-            // pageLength: 50,
-            // order: [[0, "asc"]],
+            pageLength: 50,
+            order: [[0, "asc"]],
             buttons: {
                 dom: {
                     button: {
@@ -134,7 +136,7 @@ $(document).ready(function() {
                 // "info": "Paparan _START_ / _END_ dari _TOTAL_ rekod",
                 // "infoEmpty": "Paparan 0 / 0 dari 0 rekod",
                 // "infoFiltered": "(tapisan dari _MAX_ rekod)",
-                // "processing": "Sila tunggu...",
+                // "processing": "Processing...",
                 // "search": "Carian:"
             },
             searching: false,
@@ -148,12 +150,20 @@ $(document).ready(function() {
 
     $(document).on('click', '.modalPayment', function() {
         var certID = $(this).data('id');
-        console.log(certID);
         // Construct the dynamic URL based on the data-id
         var dynamicUrl = '/candidate/selfprint/' + certID;
 
         // Update the href attribute of the "Continue" button
         $('#modalPayment a.btn-success').attr('href', dynamicUrl);
+    });
+    
+    $(document).on('click', '.modalPaymentMpm', function() {
+        var certID = $(this).data('id');
+        // Construct the dynamic URL based on the data-id
+        var dynamicUrl = '/candidate/pos-result/' + certID;
+
+        // Update the href attribute of the "Continue" button
+        $('#modalPaymentMpm a.btn-success').attr('href', dynamicUrl);
     });
 
     $(document).on('click', '.modalVerify', function() {
@@ -209,8 +219,8 @@ $(document).ready(function() {
     $(document).on('click', '.btnForgotIndexNumber', function(){
         Swal.fire({
             icon: "info",
-            text: "To obtain your MUET registration number, please email the MPM at the email address provided.",
-            footer: '<a href="mailto:mpm@yopmail.com">mpm@yopmail.com</a>'
+            text: "Kindly search your MUET index number from this portal:",
+            // footer: '<a href="mailto:mpm@yopmail.com">mpm@yopmail.com</a>'
           });
     })
 
