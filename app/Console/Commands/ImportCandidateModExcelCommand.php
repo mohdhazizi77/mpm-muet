@@ -31,7 +31,7 @@ class ImportCandidateModExcelCommand extends Command
     public function handle()
     {
         $this->info('Script starting ['.date('Y-m-d H:i:s').']');
-        Excel::import(new ImportMuetCandidate, resource_path('excel/importExcelFiles/MOD.xlsx'));
+        Excel::import(new ImportModCandidate, resource_path('excel/importExcelFiles/MOD.xlsx'));
 
         $this->info('Script completed successfully. everything looks good. ['.date('Y-m-d H:i:s').']');
     }

@@ -108,7 +108,7 @@ class PaymentController extends Controller
                 "candidate_name" => $value->order?->candidate?->name,
                 "candidate_nric" => $value->order?->candidate?->identity_card_number,
                 "cert_type" => $value->type,
-                "txn_type" => $value->payment_for, 
+                "txn_type" => $value->payment_for,
                 "status" => $value->order?->payment_status,
 
                 "payment_date" => $value->payment_date,
@@ -155,8 +155,9 @@ class PaymentController extends Controller
             "extra_data" => json_encode($extra_data),
         ];
 
+        $amount = Courier::find($request->courier)->rate + 60.00;
         //kalau MPM_PRINT amount courier atau SELF_PRINT get .env value SELFPRINT_AMOUNT
-        $data['amount'] = empty($request->courier) ? env('SELFPRINT_AMOUNT', 20.00) : Courier::find($request->courier)->rate;
+        $data['amount'] = empty($request->courier) ? env('SELFPRINT_AMOUNT', 20.00) : $amount;
         $hash = hash_hmac('SHA256', urlencode($secret_key) . urlencode($data['full_name']) . urlencode($data['phone_number']) . urlencode($data['email_address']) . urlencode($data['amount']), $secret_key);
         $data['hash'] = $hash;
 

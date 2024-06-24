@@ -41,6 +41,7 @@ class MuetCalon extends Model
         $result = [];
         $result['year'] = $candidate->getTarikh->tahun;
         $result['session'] = $candidate->getTarikh->sesi . " " . $candidate->getTarikh->tahun;
+        $result['session'] = $candidate->getTarikh->sesi;
         $result['index_number'] = $candidate->kodnegeri . $candidate->kodpusat ."/". $candidate->jcalon . $candidate->nocalon;
         foreach ($candidate->getSkor as $key => $value) {
             $result[$value->getKodKertasName($value->kodkts)] = $value->mkhbaru;

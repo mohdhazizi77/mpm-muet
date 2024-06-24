@@ -329,7 +329,7 @@
             </div>
             <!--end col-->
         </div>
-        
+
         <div class="row pt-3">
             <div class="col-lg-12">
                 <div class="card rounded-0 bg-white mx-n4 mt-n4 border-top">
@@ -354,7 +354,7 @@
                                             MUET Certificate ({{ $result['session'] }})
                                         </div>
                                         <div class="col" style="text-align: right">
-                                            RM 100
+                                            RM 60.00
                                         </div>
                                     </div>
                                     <div class="row mt-3" style="padding: 10px">
@@ -362,7 +362,7 @@
                                             Delivery charges
                                         </div>
                                         <div class="col" style="text-align: right">
-                                            RM 100
+                                            RM 7.90
                                         </div>
                                     </div>
                                     <div class="row mt-3" style="background-color: rgb(227, 227, 227);padding: 10px;font-weight: bolder">
@@ -370,7 +370,7 @@
                                             Total
                                         </div>
                                         <div class="col" style="text-align: right">
-                                            RM 100
+                                            RM 67.90
                                         </div>
                                     </div>
                                 </div>
