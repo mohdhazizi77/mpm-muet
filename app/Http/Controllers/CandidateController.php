@@ -103,6 +103,7 @@ class CandidateController extends Controller
                 "no"                => ++$key,
                 "id"                => Crypt::encrypt($muet->id . "-MUET"), // xxx-MUET or xxx-MOD
                 // "id"                => $muet->id . "-MUET", // xxx-MUET or xxx-MOD
+                "type"              => 'MUET',
                 "year"              => $muet->tahun,
                 "session"           => $muet->getTarikh->sesi,
                 "band"              => "Band ".$muet->band,
@@ -143,6 +144,7 @@ class CandidateController extends Controller
                 "no"                => ++$key,
                 "id"                => Crypt::encrypt($mod->id . "-MOD"), // xxx-MUET or xxx-MOD
                 // "id"                => $muet->id . "-MUET", // xxx-MUET or xxx-MOD
+                "type"              => 'MOD',
                 "year"              => $mod->tahun,
                 "session"           => $mod->getTarikh->sesi,
                 "band"              => "Band ".$mod->band,
