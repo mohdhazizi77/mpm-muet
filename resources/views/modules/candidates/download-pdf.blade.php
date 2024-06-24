@@ -929,7 +929,7 @@
                 </table>
             </div>
 
-            <div id="table-content" style="padding-top: 10px">
+            <div id="table-content" style="padding-top: 5px">
                 <div id="proficient-user">
                     <table
                         style="text-align: center; width: 100%; margin-left: -15px; margin-right: -15px; border-collapse: collapse">
@@ -1175,6 +1175,12 @@
             </div>
         </div>
     @endif
+
+    <div class="footer" style="padding-top: 10px;text-align: center; font-size: 10pt">
+        The QR code will redirect you to MPM MUET Online
+        Certificate System. Make sure that it redirects you to
+        <a href="https://sijil.mpm.edu.my" target="_blank">sijil.mpm.edu.my</a> for authenticity <span class="pagenum"></span>
+    </div>
 
 </body>
 

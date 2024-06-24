@@ -66,6 +66,7 @@
                                         <thead>
                                             <tr class="text-center bg-dark-subtle">
                                                 <th scope="col">#</th>
+                                                <th scope="col">Type</th>
                                                 <th scope="col">SESSION AND YEAR</th>
                                                 <th scope="col">BAND OBTAINED</th>
                                                 <th scope="col">ACTION</th>

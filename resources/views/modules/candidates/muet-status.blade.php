@@ -29,7 +29,8 @@
                                         <h3 class="fw-bold">PAYMENT {{ $order->payment_status }}!</h3>
                                         <table class="table w-100 table-borderless fs-16 mt-3">
                                             <tr>
-                                                <td class="fw-bold"> TRANSACTION REFERENCE ID : {{ empty($payment->txn_id) ? '' : $payment->txn_id }} </td>
+                                                {{-- <td class="fw-bold"> TRANSACTION REFERENCE ID : {{ empty($payment->txn_id) ? '' : $payment->txn_id }} </td> --}}
+                                                <td class="fw-bold"> TRANSACTION REFERENCE ID : {{ empty($order->unique_order_id) ? '' : $order->unique_order_id }} </td>
                                                 <td class="fw-bold" style="text-align: end"> PAYMENT REFERENCE ID  : {{ empty($payment->ref_no) ? $order->payment_ref_no : $payment->ref_no }}</td>
                                             </tr>
                                            {{-- <tr>

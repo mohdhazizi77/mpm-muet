@@ -24,6 +24,10 @@ $(document).ready(function() {
                     orderable: false,
                 },
                 {
+                    data: "type",
+                    orderable: false,
+                },
+                {
                     data: "session",
                     orderable: false,
                 },
