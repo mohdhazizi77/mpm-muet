@@ -47,8 +47,8 @@
                                     <form action="{{ route('candidate.login') }}" method="POST">
                                         @csrf
                                         <div class="mb-3">
-                                            <label for="username" class="form-label">Identification Card Number / Passport <span class="text-danger"></span></label>
-                                            <input onkeyup="populatePassword()" id="username" name="username" type="text" value="{{ old('username') }}" placeholder="Enter identification card number or passport"
+                                            <label for="username" class="form-label">Enter your NRIC Number / Passport Number<span class="text-danger"></span></label>
+                                            <input onkeyup="populatePassword()" id="username" name="username" type="text" value="{{ old('username') }}" placeholder="NRIC Number / Passport Number"
                                                    class="form-control @error('username') is-invalid @enderror">
                                             @error('username')
                                             <span class="invalid-feedback" role="alert">
