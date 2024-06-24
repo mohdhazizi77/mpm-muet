@@ -29,8 +29,8 @@
                                         <h3 class="fw-bold">PAYMENT {{ $order->payment_status }}!</h3>
                                         <table class="table w-100 table-borderless fs-16 mt-3">
                                             <tr>
-                                                <td class="fw-bold"> TRANSACTION ID : {{ empty($payment->txn_id) ? '' : $payment->txn_id }} </td>
-                                                <td class="fw-bold" style="text-align: end"> REFERENCE NUMBER  : {{ empty($payment->ref_no) ? $order->payment_ref_no : $payment->ref_no }}</td>
+                                                <td class="fw-bold"> TRANSACTION REFERENCE ID : {{ empty($payment->txn_id) ? '' : $payment->txn_id }} </td>
+                                                <td class="fw-bold" style="text-align: end"> PAYMENT REFERENCE ID  : {{ empty($payment->ref_no) ? $order->payment_ref_no : $payment->ref_no }}</td>
                                             </tr>
                                            {{-- <tr>
                                                 <td></td>
@@ -64,12 +64,12 @@
         <div class="row">
             <div class="col-lg-6">
                 <div class="card rounded-0 bg-white border-top p-4">
-                    <h4 class="">CERTIFICATE STATUS</h4>
+                    <h4 class="">CERTIFICATE ORDER HISTORY</h4>
                     <table id="trackOrderTable" data-id="{{ $cryptId }}" class="table table-striped text-center">
                         <thead>
                         <tr class="text-center bg-dark-subtle">
-                            <th scope="col">NO.</th>
-                            <th scope="col">DATE AND TIME</th>
+                            <th scope="col">#</th>
+                            <th scope="col">DATE UPDATED</th>
                             <th scope="col">DESCRIPTION</th>
                             <th scope="col">STATUS</th>
                         </tr>
@@ -91,14 +91,15 @@
             </div>
             <div class="col-lg-6">
                 <div class="card rounded-0 bg-white border-top p-4">
-                    <h4 class="">TRACKING ORDER</h4>
+                    <h4 class="">TRACK ORDER</h4>
+                    <label for="" class="my-3">TRACKING NUMBER : </label>
                     <table id="trackOrderTable" data-id="{{ $cryptId }}" class="table table-striped text-center">
                         <thead>
                         <tr class="text-center bg-dark-subtle">
-                            <th scope="col">NO.</th>
+                            <th scope="col">#</th>
                             <th scope="col">DATE AND TIME</th>
                             <th scope="col">DESCRIPTION</th>
-                            <th scope="col">STATUS</th>
+                            {{-- <th scope="col">STATUS</th> --}}
                         </tr>
                         <tr>
                             <td colspan=4>No data available</td>
@@ -116,11 +117,11 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="card rounded-0 bg-white border-top p-4">
-                    <h4 class="">CERTIFICATE STATUS</h4>
+                    <h4 class="">CERTIFICATE ORDER HISTORY</h4>
                     <table id="trackOrderTable" data-id="{{ $cryptId }}" class="table table-striped text-center">
                         <thead>
                         <tr class="text-center bg-dark-subtle">
-                            <th scope="col">NO.</th>
+                            <th scope="col">#</th>
                             <th scope="col">DATE AND TIME</th>
                             <th scope="col">DESCRIPTION</th>
                             <th scope="col">STATUS</th>
@@ -146,7 +147,7 @@
 
         <div>
             <a href="javascript:history.go(-1)" class="btn btn-soft-dark btn-label btn-border btn-outline-dark waves-effect waves-light w-lg float-start">
-                <i class="ri-reply-fill label-icon align-middle fs-16 me-2"></i>BACK
+                <i class="ri-reply-fill label-icon align-middle fs-16 me-2"></i>BACK TO ORDER HISTORY   
             </a>
         </div>
 

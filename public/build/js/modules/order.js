@@ -134,15 +134,15 @@ $(document).ready(function() {
                     data: "detail",
                     orderable: false,
                 },
-                {
-                    data: "status",
-                    orderable: false,
-                    render: function (data, type, row, meta) {
-                        var html = '<span class="badge rounded-pill bg-'+row.color+'">'+data+'</span>';
-                        return html;
-                    },
+                // {
+                //     data: "status",
+                //     orderable: false,
+                //     render: function (data, type, row, meta) {
+                //         var html = '<span class="badge rounded-pill bg-'+row.color+'">'+data+'</span>';
+                //         return html;
+                //     },
 
-                },
+                // },
             ],
             // pageLength: 50,
             // order: [[0, "asc"]],
