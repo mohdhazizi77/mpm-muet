@@ -17,9 +17,16 @@ public_html/hot
 
 storage/*.key
 storage/framework/views/*.php
+\
 .env
 Homestead.yaml
 Homestead.json
 /.vagrant
 .phpunit.result.cache
 framework
+
+# Ignore storage except importExcelFiles
+/storage/*
+!/storage/app/public/importExcelFiles
+/storage/app/public/importExcelFiles/*
+!/storage/app/public/importExcelFiles/*
