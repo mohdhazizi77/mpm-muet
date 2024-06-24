@@ -198,7 +198,7 @@
                         <div class="row">
                             <div class="col-6">
                                 <h5 class="card-title mb-0 fs-20 fw-bolder">Shipping Information</h5>
-                                <p class="text-muted mb-0">Please fill all information below</p>
+                                <p class="text-muted mb-0">All fields are mandatory</p>
                             </div>
                         </div>
                     </div><!-- end card header -->
@@ -319,6 +319,60 @@
                                         <input name="pay_for" value="MPM_PRINT" type="text" style="display: none">
                                         <input name="crypt_id" value="{{ $cryptId }}" type="text" style="display: none">
                                     </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end card body -->
+                </div>
+                <!-- end card -->
+            </div>
+            <!--end col-->
+        </div>
+        
+        <div class="row pt-3">
+            <div class="col-lg-12">
+                <div class="card rounded-0 bg-white mx-n4 mt-n4 border-top">
+
+                    <div class="card-header bg-dark-subtle">
+                        <div class="row">
+                            <div class="col-6">
+                                <h5 class="card-title mb-0 fs-20 fw-bolder">Order Information</h5>
+                                <p class="text-muted mb-0">Kindly verify your order information</p>
+                            </div>
+                        </div>
+                    </div><!-- end card header -->
+
+                    <div class="px-4">
+                        <div class="row">
+                            <div class="col-xl-12">
+
+
+                                <div class="py-4">
+                                    <div class="row" style="padding: 10px">
+                                        <div class="col" style="text-align: left">
+                                            MUET Certificate ({{ $result['session'] }})
+                                        </div>
+                                        <div class="col" style="text-align: right">
+                                            RM 100
+                                        </div>
+                                    </div>
+                                    <div class="row mt-3" style="padding: 10px">
+                                        <div class="col" style="text-align: left">
+                                            Delivery charges
+                                        </div>
+                                        <div class="col" style="text-align: right">
+                                            RM 100
+                                        </div>
+                                    </div>
+                                    <div class="row mt-3" style="background-color: rgb(227, 227, 227);padding: 10px;font-weight: bolder">
+                                        <div class="col" style="text-align: left">
+                                            Total
+                                        </div>
+                                        <div class="col" style="text-align: right">
+                                            RM 100
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>

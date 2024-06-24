@@ -63,8 +63,9 @@
                             <img class="rounded-circle header-profile-user" src="@if (Auth::user()->avatar != ''){{ URL::asset('build/images/users/user-dummy-img.jpg') }}@else{{ URL::asset('build/images/users/user-dummy-img.jpg') }}@endif"
                                  alt="Header Avatar">
                             <span class="text-start ms-xl-2">
-                                <span class="d-none d-xl-inline-block ms-1 fw-semibold user-name-text">{{Auth::user()->name}}</span>
-                                <span class="d-none d-xl-block ms-1 fs-13 user-name-sub-text">Candidate</span>
+                                <span class="d-none d-xl-inline-block ms-1 fw-semibold user-name-text">{{Auth::user()->name}}</span><br>
+                                <span class="d-none d-xl-inline-block ms-1 fw-semibold user-name-text">{{Auth::user()->identity_card_number}}</span>
+                                {{-- <span class="d-none d-xl-block ms-1 fs-13 user-name-sub-text">Candidate</span> --}}
                             </span>
                         </span>
                     </button>

@@ -17,18 +17,27 @@
                         <div class="row">
                             <div class="col-xxl-6 align-self-center">
                                 <div class="py-3">
-                                    <h3 class="fw-bold">PAYMENT {{ $status }}!</h3>
+                                    <h3 class="fw-bold">We have received your payment!</h3>
+                                    {{-- <h3 class="fw-bold">PAYMENT {{ $status }}!</h3> --}}
                                     <table class="table-borderless fs-16 mt-3">
                                         <tr>
                                             <td class="fw-bold">
-                                                REFERENCE ID: {{ $order->unique_order_id }}
+                                                TRANSACTION REFERENCE: {{ $order->unique_order_id }}
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td>Your MUET certificate will be processed and sent according to the address given.</td>
+                                            <td>Your certificate will be processed and will be shipped
+                                                according to the shipping information given. An
+                                                automated payment receipt will be sent to your
+                                                email.
+                                                </td>
                                         </tr>
                                         <tr>
-                                            <td>An automated payment receipt will be sent to your email.</td>
+                                            <td>
+                                                If you have not received your order after seven (7) working days, kindly email us at 
+                                                <a href="mailto:sijil@mpm.edu.my?subject=Order%20Inquiry&body=Please%20attach%20your%20transaction%20reference%20and%20payment%20receipt.">sijil@mpm.edu.my</a> and attach your transaction reference and payment receipt.
+                                            </td>
+                                            
                                         </tr>
                                     </table>
                                 </div>
