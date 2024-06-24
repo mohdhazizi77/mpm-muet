@@ -31,7 +31,7 @@ class ImportCandidateExcelCommand extends Command
     public function handle()
     {
         $this->info('Script starting ['.date('Y-m-d H:i:s').']');
-        Excel::import(new ImportCandidate, Storage::path('importExcelFiles/SenaraiCalon.xlsx'));
+        Excel::import(new ImportMuetCandidate, storage_path('app/public/importExcelFiles/SenaraiCalon.xlsx'));
         $this->info('Script completed successfully. everything looks good. ['.date('Y-m-d H:i:s').']');
     }
 }
