@@ -17,17 +17,9 @@ class CourierSeeder extends Seeder
         $courier = new Courier();
         $courier->name = "POSLAJU MY";
         $courier->disp_name = "POSLAJU MY";
-        $courier->rate = "60.00";
+        $courier->rate = "7.90";
         $courier->currency = "MYR";
         $courier->duration = "3-5 Days";
         $courier->save();
-
-        // $courier = new Courier();
-        // $courier->name = "JNT";
-        // $courier->disp_name = "JNT";
-        // $courier->rate = "50.00";
-        // $courier->currency = "MYR";
-        // $courier->duration = "3-5 Days";
-        // $courier->save();
     }
 }
