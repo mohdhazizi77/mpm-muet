@@ -87,6 +87,7 @@ Route::group(['middleware' => ['auth:candidate','role:CALON']], function () {
         Route::get('/order/{id}', [OrderController::class, 'index'])->name('order.index');
         Route::post('/order/ajax', [OrderController::class, 'getAjax'])->name('order.getAjax');
         Route::post('/track-order/ajax', [OrderController::class, 'getAjaxTrackOrder'])->name('order.getAjaxTrackOrder');
+        Route::post('/track-shipping/ajax', [OrderController::class, 'getAjaxTrackShipping'])->name('order.getAjaxTrackShipping');
         Route::get('/muet-status/{id}', [CandidateController::class, 'muetstatus'])->name('candidate.muet-status');
     });
 
@@ -129,6 +130,8 @@ Route::group(['middleware' => ['role:PENTADBIR|BPKOM|PSM|FINANCE']], function ()
         // Route::post('finance/mod/ajax', [FinanceModController::class, 'getAjax'])->name('finance-mod.ajax');
 
         Route::get('/general-setting', [GeneralSettingController::class, 'index'])->name('general_setting.index');
+        Route::post('/general-setting/store', [GeneralSettingController::class, 'store'])->name('general_setting.store');
+
 
         Route::post('/courier/ajax', [CourierController::class, 'getAjax'])->name('courier.ajax');
         Route::post('/courier/store', [CourierController::class, 'store'])->name('courier.store');
