@@ -252,16 +252,6 @@ class CandidateController extends Controller
         return response()->json($data);
     }
 
-    public function create()
-    {
-        //
-    }
-
-    public function store(Request $request)
-    {
-        //
-    }
-
     public function show(Candidate $candidate)
     {
         $user = Auth::User() ? Auth::User() : abort(403);
@@ -346,7 +336,7 @@ class CandidateController extends Controller
                 $candidate = ModCalon::find($certID);
             }
             $pusat = $candidate->getPusat->first();
-            $tarikh = $candidate->getTarikh->first();
+            $tarikh = $candidate->getTarikh;
             $result = $candidate->getResult($candidate);
             if ($result['year'] > 2021) {
                 $scheme = [
