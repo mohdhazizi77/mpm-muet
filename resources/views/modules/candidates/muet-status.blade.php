@@ -62,93 +62,90 @@
         </div>
 
         @if ($order->payment_for == "MPM_PRINT")
-        <div class="row">
-            <div class="col-lg-6">
-                <div class="card rounded-0 bg-white border-top p-4">
-                    <h4 class="">CERTIFICATE ORDER HISTORY</h4>
-                    <table id="trackOrderTable" data-id="{{ $cryptId }}" class="table table-striped text-center">
-                        <thead>
-                        <tr class="text-center bg-dark-subtle">
-                            <th scope="col">#</th>
-                            <th scope="col">DATE UPDATED</th>
-                            <th scope="col">DESCRIPTION</th>
-                            <th scope="col">STATUS</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        </tbody>
-                    </table>
-                    {{-- <div class="px-4">
-                        <div class="row">
-                            <div class="col-xxl-12 align-self-center">
-                                <div class="py-4">
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="card rounded-0 bg-white border-top p-4">
+                        <h4 class="">CERTIFICATE ORDER HISTORY</h4>
+                        <table id="trackOrderTable" data-id="{{ $cryptId }}" class="table table-striped text-center">
+                            <thead>
+                            <tr class="text-center bg-dark-subtle">
+                                <th scope="col">#</th>
+                                <th scope="col">DATE UPDATED</th>
+                                <th scope="col">DESCRIPTION</th>
+                                <th scope="col">STATUS</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                        {{-- <div class="px-4">
+                            <div class="row">
+                                <div class="col-xxl-12 align-self-center">
+                                    <div class="py-4">
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </div> --}}
-                    <!-- end card body -->
+                        </div> --}}
+                        <!-- end card body -->
+                    </div>
+                    <!-- end card -->
                 </div>
-                <!-- end card -->
-            </div>
-            <div class="col-lg-6">
-                <div class="card rounded-0 bg-white border-top p-4">
-                    <h4 class="">TRACK ORDER</h4>
-                    <label for="" class="my-3">TRACKING NUMBER : </label>
-                    <table id="trackOrderTable" data-id="{{ $cryptId }}" class="table table-striped text-center">
-                        <thead>
-                        <tr class="text-center bg-dark-subtle">
-                            <th scope="col">#</th>
-                            <th scope="col">DATE AND TIME</th>
-                            <th scope="col">DESCRIPTION</th>
-                            {{-- <th scope="col">STATUS</th> --}}
-                        </tr>
-                        <tr>
-                            <td colspan=4>No data available</td>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        </tbody>
-                    </table>
-                    <!-- end card body -->
+                <div class="col-lg-6">
+                    <div class="card rounded-0 bg-white border-top p-4">
+                        <h4 class="">TRACK ORDER</h4>
+                        <label for="" class="my-3">TRACKING NUMBER : </label>
+                        <table id="trackShippingTable" data-id="{{ $cryptId }}" class="table table-striped text-center">
+                            <thead>
+                                <tr class="text-center bg-dark-subtle">
+                                    <th scope="col">#</th>
+                                    <th scope="col">DATE AND TIME</th>
+                                    <th scope="col">DESCRIPTION</th>
+                                    <th scope="col">STATUS</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                        <!-- end card body -->
+                    </div>
+                    <!-- end card -->
                 </div>
-                <!-- end card -->
             </div>
-        </div>
-        @else
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="card rounded-0 bg-white border-top p-4">
-                    <h4 class="">CERTIFICATE ORDER HISTORY</h4>
-                    <table id="trackOrderTable" data-id="{{ $cryptId }}" class="table table-striped text-center">
-                        <thead>
-                        <tr class="text-center bg-dark-subtle">
-                            <th scope="col">#</th>
-                            <th scope="col">DATE AND TIME</th>
-                            <th scope="col">DESCRIPTION</th>
-                            <th scope="col">STATUS</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        </tbody>
-                    </table>
-                    {{-- <div class="px-4">
-                        <div class="row">
-                            <div class="col-xxl-12 align-self-center">
-                                <div class="py-4">
+        @else {{-- SELF_PRINT --}}
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card rounded-0 bg-white border-top p-4">
+                        <h4 class="">CERTIFICATE ORDER HISTORY</h4>
+                        <table id="trackOrderTable" data-id="{{ $cryptId }}" class="table table-striped text-center">
+                            <thead>
+                            <tr class="text-center bg-dark-subtle">
+                                <th scope="col">#</th>
+                                <th scope="col">DATE AND TIME</th>
+                                <th scope="col">DESCRIPTION</th>
+                                <th scope="col">STATUS</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                        {{-- <div class="px-4">
+                            <div class="row">
+                                <div class="col-xxl-12 align-self-center">
+                                    <div class="py-4">
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </div> --}}
-                    <!-- end card body -->
+                        </div> --}}
+                        <!-- end card body -->
+                    </div>
+                    <!-- end card -->
                 </div>
-                <!-- end card -->
             </div>
-        </div>
         @endif
 
         <div>
             <a href="javascript:history.go(-1)" class="btn btn-soft-dark btn-label btn-border btn-outline-dark waves-effect waves-light w-lg float-start">
-                <i class="ri-reply-fill label-icon align-middle fs-16 me-2"></i>BACK TO ORDER HISTORY   
+                <i class="ri-reply-fill label-icon align-middle fs-16 me-2"></i>BACK TO ORDER HISTORY
             </a>
         </div>
 

@@ -58,7 +58,7 @@ class OrderController extends Controller
 
         };
 
-        $order = 
+        $order =
         $tracks = TrackingOrder::where('order_id',$orderId)->latest()->get();
 
         $datas = [];
@@ -72,7 +72,17 @@ class OrderController extends Controller
                 'tracking_number' => !empty($value->tracking_number) ? $value->tracking_number : ''
             ];
         }
-        
+
+        return datatables($datas)->toJson();
+
+    }
+
+    public function getAjaxTrackShipping(Request $request){
+
+        //$track_no = $request->trackNo
+        // Call POS API DO tracking
+
+        $datas = [];
         return datatables($datas)->toJson();
 
     }
