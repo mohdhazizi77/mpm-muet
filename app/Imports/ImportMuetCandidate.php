@@ -102,24 +102,47 @@ class ImportMuetCandidate implements ToCollection
             $jcalon = substr($part2, 0, 1); // "3"
             $nocalon = substr($part2, 1, 3); // "001"
 
-            $calon = new MuetCalon();
-            $calon->tahun           = $tahun;
-            $calon->sidang          = $sidang;
-            $calon->nama            = $nama;
-            $calon->kp              = $kp;
-            $calon->kodnegeri       = $kodnegeri;
-            $calon->kodpusat        = $kodpusat;
-            $calon->jcalon          = $jcalon;
-            $calon->nocalon         = $nocalon;
-            $calon->alamat1         = '-';
-            $calon->alamat2         = '-';
-            $calon->poskod          = '-';
-            $calon->bandar          = '-';
-            $calon->negeri          = '-';
-            $calon->skor_agregat    = $skor_agregat;
-            $calon->band            = $band;
-            $calon->angka_giliran   = $angka_giliran;
-            $calon->save();
+            // $calon = new MuetCalon();
+            // $calon->tahun           = $tahun;
+            // $calon->sidang          = $sidang;
+            // $calon->nama            = $nama;
+            // $calon->kp              = $kp;
+            // $calon->kodnegeri       = $kodnegeri;
+            // $calon->kodpusat        = $kodpusat;
+            // $calon->jcalon          = $jcalon;
+            // $calon->nocalon         = $nocalon;
+            // $calon->alamat1         = '-';
+            // $calon->alamat2         = '-';
+            // $calon->poskod          = '-';
+            // $calon->bandar          = '-';
+            // $calon->negeri          = '-';
+            // $calon->skor_agregat    = $skor_agregat;
+            // $calon->band            = $band;
+            // $calon->angka_giliran   = $angka_giliran;
+            // $calon->save();
+
+            $calon = MuetCalon::updateOrCreate(
+                [
+                    'angka_giliran' => $angka_giliran,
+                ],
+                [
+                    'tahun'           => $tahun,
+                    'sidang'          => $sidang,
+                    'nama'            => $nama,
+                    'kp'              => $kp,
+                    'kodnegeri'       => $kodnegeri,
+                    'kodpusat'        => $kodpusat,
+                    'jcalon'          => $jcalon,
+                    'nocalon'         => $nocalon,
+                    'alamat1'         => '-',
+                    'alamat2'         => '-',
+                    'poskod'          => '-',
+                    'bandar'          => '-',
+                    'negeri'          => '-',
+                    'skor_agregat'    => $skor_agregat,
+                    'band'            => $band,
+                ]
+            );
 
             $skor = new MuetSkor();
 
