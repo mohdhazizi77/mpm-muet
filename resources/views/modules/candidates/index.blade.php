@@ -75,7 +75,7 @@
                                         <tbody>
                                         </tbody>
                                     </table>
-        
+
                                     <!-- MODAL VERIFY MPM -->
                                     <div id="modalVerifyMPM" class="modal fade" tabindex="-1" aria-hidden="true" style="display: none;">
                                         <div class="modal-dialog modal-dialog-centered">
@@ -101,7 +101,7 @@
                                             </div>
                                         </div>
                                     </div>
-        
+
                                     <!-- MODAL PAYMENT -->
                                     <div id="modalPayment" class="modal fade" tabindex="-1" aria-hidden="true" style="display: none;">
                                         <div class="modal-dialog modal-dialog-centered">
@@ -113,7 +113,7 @@
                                                 <div class="modal-body">
                                                     <form>
                                                         <div class="mb-3">
-                                                            <label class="" style="font-weight: 400">In order to view and print this certificate, you must pay <b>RM20</b> to unlock this certificate.</label>
+                                                            <label class="" style="font-weight: 400">In order to view and print this certificate, you must pay <b>RM{{ number_format($config->rate_selfprint, 2) }}</b> to unlock this certificate.</label>
                                                         </div>
                                                         <div class="mb-3">
                                                             <label class="" style="font-weight: 400">All certificates can be viewed and print within <b>24 hours</b> upon unlocked.</label>
@@ -126,7 +126,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    
+
                                     <!-- MODAL PAYMENT MPM -->
                                     <div id="modalPaymentMpm" class="modal fade" tabindex="-1" aria-hidden="true" style="display: none;">
                                         <div class="modal-dialog modal-dialog-centered">
@@ -151,7 +151,7 @@
                                             </div>
                                         </div>
                                     </div>
-        
+
                                 </div>
                             </div>
                         </div>
