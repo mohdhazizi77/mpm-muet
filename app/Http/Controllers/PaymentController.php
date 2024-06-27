@@ -14,6 +14,7 @@ use App\Models\Courier;
 use App\Models\Order;
 use App\Models\Payment;
 use App\Models\TrackingOrder;
+use App\Models\ConfigGeneral;
 
 use Maatwebsite\Excel\Facades\Excel;
 use Ramsey\Uuid\Uuid;
@@ -155,9 +156,10 @@ class PaymentController extends Controller
             "extra_data" => json_encode($extra_data),
         ];
 
-        $amount = Courier::find($request->courier)->rate + 60.00;
+        $config = ConfigGeneral::get()->first();
+
         //kalau MPM_PRINT amount courier atau SELF_PRINT get .env value SELFPRINT_AMOUNT
-        $data['amount'] = empty($request->courier) ? env('SELFPRINT_AMOUNT', 20.00) : $amount;
+        $data['amount'] = empty($request->courier) ? $config->rate_selfprint : Courier::find($request->courier)->rate + $config->rate_mpmprint;
         $hash = hash_hmac('SHA256', urlencode($secret_key) . urlencode($data['full_name']) . urlencode($data['phone_number']) . urlencode($data['email_address']) . urlencode($data['amount']), $secret_key);
         $data['hash'] = $hash;
 
