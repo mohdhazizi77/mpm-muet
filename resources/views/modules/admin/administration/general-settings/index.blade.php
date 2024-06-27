@@ -16,20 +16,62 @@
 
     <div class="row py-4 px-3">
         <div class="col-lg-12">
-            <div class="card rounded-0 bg-white mx-n4 mt-n4 border-top card-custom">
-                <div class="card-header">
-                    <div class="card-title">
-                        <div class="card-label">
-                            <div class="row">
-                                <div class="col" style="text-align: left">
-                                    List Courier
-                                </div>
-                                <div class="col" style="text-align: right">
-                                    <button class="btn btn-soft-success waves-effect float-end" id="show_create_modal">New
-                                        Courier</button>
+            <div class="card rounded-0 bg-white mx-n4  border-top card-custom mb-2">
+                <div class="card-body">
+                    <h5 class="card-title">Rate</h5>
+                    <form action="{{ route('general_setting.store') }}" method="POST">
+                        @csrf <!-- Include CSRF token for security -->
+                        <div class="row mb-3">
+                            <div class="col-6">
+                                <label for="mpmRate" class="form-label">Printing by MPM</label>
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text" id="basic-addon1">RM</span>
+                                    <input type="number" step="any" class="form-control" id="mpmRate" name="rate_mpmprint" value="{{ isset($config['rate_mpmprint']) ? $config['rate_mpmprint'] : '' }}" placeholder="Enter rate">
                                 </div>
                             </div>
-                            
+
+                            <div class="col-6">
+                                <label for="selfPrintRate" class="form-label">Self print PDF</label>
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text" id="basic-addon1">RM</span>
+                                    <input type="number" step="any" class="form-control" id="selfPrintRate" name="rate_selfprint" value="{{ isset($config['rate_selfprint']) ? $config['rate_selfprint'] : '' }}" placeholder="Enter rate">
+                                </div>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary float-end">Save</button>
+                    </form>
+                </div>
+            </div>
+            {{-- <div class="card rounded-0 bg-white mx-n4  border-top card-custom mb-2">
+                <div class="card-body">
+                    <h5 class="card-title">Integration : MPM Bayar</h5>
+                    <form>
+                        <div class="row mb-3">
+                            <div class="col-4">
+                                <label for="mpmRate" class="form-label">URL</label>
+                                <input type="number" step="any" class="form-control" id="mpmRate" placeholder="Enter URL (https://mpmbayar.com)">
+                            </div>
+                            <div class="col-4">
+                                <label for="selfPrintRate" class="form-label">Token</label>
+                                <input type="number" step="any" class="form-control" id="selfPrintRate" placeholder="Enter token">
+                            </div>
+                            <div class="col-4">
+                                <label for="selfPrintRate" class="form-label">Secret Key</label>
+                                <input type="number" step="any" class="form-control" id="selfPrintRate" placeholder="Enter secret key">
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </form>
+                </div>
+            </div> --}}
+            <div class="card rounded-0 bg-white mx-n4  border-top card-custom mt-1">
+                <div class="card-header">
+                    <div class="row">
+                        <div class="col" style="text-align: left">
+                            List Courier
+                        </div>
+                        <div class="col" style="text-align: right">
+                            <button class="btn btn-soft-success waves-effect float-end" id="show_create_modal">New Courier</button>
                         </div>
                     </div>
                 </div>
@@ -46,7 +88,7 @@
                                             <th>NO.</th>
                                             <th>NAME</th>
                                             <th>RATE</th>
-                                            <th>JENIS</th>
+                                            <th>CURRENCY</th>
                                             <th>DURATION</th>
                                             <th>ACTION</th>
                                         </tr>
@@ -64,7 +106,7 @@
                 <!-- end card -->
 
             </div>
-            <!--end col-->
+
             @include('modules.admin.administration.courier.modal.create')
             @include('modules.admin.administration.courier.modal.edit')
         </div>
@@ -218,7 +260,7 @@
                                             cancelButton: 'my-swal-cancel',
                                         }
                                     });
-                                } 
+                                }
                             }
                         });
                     }
@@ -297,18 +339,18 @@
                                             cancelButton: 'my-swal-cancel',
                                         }
                                     });
-                                } 
+                                }
                             }
                         });
                     }
                 });
             });
-            
+
             $(document).on('click', '#delete', function(e) {
                 e.preventDefault();
                 var csrfToken = $('meta[name="csrf-token"]').attr('content');
                 var formData = new FormData($('#form_courier_edit')[0]);
-                
+
                 var id = $(this).val();
 
                 Swal.fire({
@@ -377,7 +419,7 @@
                                             cancelButton: 'my-swal-cancel',
                                         }
                                     });
-                                } 
+                                }
                             }
                         });
                     }
