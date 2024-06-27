@@ -301,7 +301,7 @@
                                                             <input id="shippingMethod{{ $key }}" name="courier" value="{{ $key+1 }}" type="radio" class="form-check-input" checked>
                                                             <label class="form-check-label" for="shippingMethod{{ $key }}">
                                                                 {{-- <span class="fs-20 float-end mt-2 text-wrap d-block fw-semibold">RM {{ $value->rate }}</span> --}}
-                                                                <span class="fs-20 float-end mt-2 text-wrap d-block fw-semibold">RM {{ $value->rate }}</span>
+                                                                <span class="fs-20 float-end mt-2 text-wrap d-block fw-semibold">RM {{ number_format($value->rate, 2) }}</span>
                                                                 <span class="fs-20 mt-2 text-wrap d-block">{{ $value->name }}</span>
                                                                 <table>
                                                                     <tr>
@@ -355,7 +355,7 @@
                                             MUET Certificate ({{ $result['session'] }})
                                         </div>
                                         <div class="col" style="text-align: right">
-                                            RM 60.00
+                                            RM {{ number_format($config->rate_mpmprint, 2) }}
                                         </div>
                                     </div>
                                     <div class="row mt-3" style="padding: 10px">
@@ -363,7 +363,7 @@
                                             Delivery charges
                                         </div>
                                         <div class="col" style="text-align: right">
-                                            RM 7.90
+                                            RM {{ number_format($value->rate, 2) }}
                                         </div>
                                     </div>
                                     <div class="row mt-3" style="background-color: rgb(227, 227, 227);padding: 10px;font-weight: bolder">
@@ -371,7 +371,7 @@
                                             Total
                                         </div>
                                         <div class="col" style="text-align: right">
-                                            RM 67.90
+                                            RM {{ number_format(($config->rate_mpmprint + $value->rate), 2) }}
                                         </div>
                                     </div>
                                 </div>
