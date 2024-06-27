@@ -24,6 +24,7 @@ use App\Models\Courier;
 use App\Models\Order;
 use App\Models\TrackingOrder;
 use App\Models\Payment;
+use App\Models\ConfigGeneral;
 use Carbon\Carbon;
 use setasign\Fpdi\Fpdi;
 use setasign\Fpdf\Fpdf;
@@ -482,6 +483,7 @@ class CandidateController extends Controller
 
     public function printmpm($cryptId)
     {
+
         try {
             $string = Crypt::decrypt($cryptId);
             $data = explode('-', $string);
@@ -490,6 +492,8 @@ class CandidateController extends Controller
         } catch (Illuminate\Contracts\Encryption\DecryptException $e) {
 
         };
+
+        $config = ConfigGeneral::get()->first();
         $user = Auth::User();
         $candidate = MuetCalon::find($id);
         $status = 0;
@@ -551,6 +555,7 @@ class CandidateController extends Controller
             'user',
             'cryptId',
             'couriers',
+            'config'
         ]));
     }
 
