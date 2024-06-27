@@ -6,10 +6,30 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use DateTime;
 
+use App\Models\MuetTarikh;
+
 class MuetCalon extends Model
 {
     use HasFactory;
     protected $table = 'muet_calon';
+    protected $fillable = [
+        'tahun',
+        'sidang',
+        'nama',
+        'kp',
+        'kodnegeri',
+        'kodpusat',
+        'jcalon',
+        'nocalon',
+        'alamat1',
+        'alamat2',
+        'poskod',
+        'bandar',
+        'negeri',
+        'skor_agregat',
+        'band',
+    ];
+
 
     public function getSkor(){
 
@@ -44,10 +64,10 @@ class MuetCalon extends Model
         $result['session'] = $candidate->getTarikh->sesi;
         $result['index_number'] = $candidate->kodnegeri . $candidate->kodpusat ."/". $candidate->jcalon . $candidate->nocalon;
         foreach ($candidate->getSkor as $key => $value) {
-            $result[$value->getKodKertasName($value->kodkts)] = $value->mkhbaru;
+            $result[$value->getKodKertasName($value->kodkts)] = self::checkingMarkah($value->mkhbaru);
         }
-        $result['agg_score'] = (float)$candidate->skor_agregat;
-        $result['band'] = $candidate->band;
+        $result['agg_score'] = self::checkingAggSkor($candidate->skor_agregat);
+        $result['band'] = self::checkingBand($candidate->band);
         $result['issue_date'] = $candidate->getTarikh->tarikh_isu; //$candidate->getTarikh->tarikh_isu;
         $result['exp_date'] = $candidate->getTarikh->tarikh_exp; //$candidate->getTarikh->tarikh_exp;
 
@@ -58,5 +78,44 @@ class MuetCalon extends Model
 
         $value = $candidate->kodnegeri.$candidate->kodpusat."/".$candidate->jcalon.$candidate->nocalon;
         return $value;
+    }
+
+    static function checkingMarkah($id){
+
+        $checkingArr = [
+            '-1' => 'ABSENT',
+            'X'  => '',
+            '-3' => 'EXEMPTED',
+            '-4' => 'WITHHELD',
+            '-5' => 'NULLIFIED',
+        ];
+
+        return array_key_exists($id, $checkingArr) ? $checkingArr[ $id ] : $id;
+    }
+
+    static function checkingAggSkor($id){
+
+        $checkingArr = [
+            '-1' => '',
+            'X'  => 'NIL',
+            '-3' => '',
+            '-4' => 'WITHHELD',
+            '-5' => 'NULLIFIED',
+        ];
+
+        return array_key_exists($id, $checkingArr) ? $checkingArr[ $id ] : $id;
+    }
+
+    static function checkingBand($id){
+
+        $checkingArr = [
+            '-1' => '',
+            'X'  => 'NIL',
+            '-3' => '',
+            '-4' => 'WITHHELD',
+            '-5' => 'NULLIFIED',
+        ];
+
+        return array_key_exists($id, $checkingArr) ? $checkingArr[ $id ] : $id;
     }
 }
