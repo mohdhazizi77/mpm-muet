@@ -21,10 +21,10 @@ class AdminAuthController extends Controller
         ]);
 
         $user = User::where('email', $request->email)->first();
-        if($user->is_deleted == 1){
-            // return response('Your Account in Inactive, Please contact system admin', 422);
-            return redirect()->back()->with('fail', 'Your Account is Inactive, Please contact system admin');
-        }
+        // if($user->is_deleted == 1){
+        //     // return response('Your Account in Inactive, Please contact system admin', 422);
+        //     return redirect()->back()->with('fail', 'Your Account is Inactive, Please contact system admin');
+        // }
 
         if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
             return redirect(route('admin.index'));
