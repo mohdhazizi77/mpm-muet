@@ -40,6 +40,7 @@ class CandidateController extends Controller
         $user = Auth::User() ? Auth::User() : abort(403);
         $muets = $user->muetCalon;
         $mods = $user->modCalon;
+        $config = ConfigGeneral::get()->first();
         // dd($user->muetCalon);
 
 
@@ -51,7 +52,7 @@ class CandidateController extends Controller
         return view('modules.candidates.index',
             compact([
                 'user',
-                // 'certificates',
+                'config',
             ]));
     }
 
