@@ -19,7 +19,7 @@ class OrderSeeder extends Seeder
         $order = new Order();
 
         $order->unique_order_id = Uuid::uuid4()->toString();
-        $order->candidate_id = 1;
+        $order->candidate_id = 52;
         $order->name = 'luqman';
         $order->email = 'luqman@gmail.com';
         $order->phone_num = '0123456789';
@@ -30,17 +30,20 @@ class OrderSeeder extends Seeder
         $order->current_status = 'PENDING';
         $order->courier_id = 1;
         // $order->certificate_id = 42;
-        $order->muet_calon_id = 1;
-        $order->mod_calon_id = 1;
+        $order->muet_calon_id = 109;
+        $order->mod_calon_id = '';
 
         $order->save();
 
-        for ($i=1; $i < 40; $i++) {
+        for ($i=108; $i < 117; $i++) {
             $faker = Faker::create();
 
             $type = ['MUET', 'MOD'];
+            $type = ['MUET'];
             $payment_for = ['SELF_PRINT', 'MPM_PRINT'];
+            $payment_for = ['SELF_PRINT'];
             $payment_status = ['PENDING', 'SUCCESS', 'FAILED'];
+            $payment_status = ['SUCCESS'];
             // $current_status = ['PAID', 'NEW', 'PROCESSING', 'COMPLETE' , 'CANCELED', 'FAILED'];
 
             $order = new Order();
