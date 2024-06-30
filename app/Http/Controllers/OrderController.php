@@ -45,7 +45,8 @@ class OrderController extends Controller
                 'uniqueOrderId' => $value->unique_order_id,
                 'orderDate' => $value->created_at->format('d-m-Y H:i:s'),
                 'orderFor' => $value->payment_for,
-                'status' =>  $value->current_status,
+                'status' =>  $value->status,
+                'color'  =>  $value->statusColor($value->status),
                 'id' => Crypt::encrypt($value->id),
             ];
         }
@@ -61,7 +62,6 @@ class OrderController extends Controller
 
         };
 
-        $order =
         $tracks = TrackingOrder::where('order_id',$orderId)->latest()->get();
 
         $datas = [];
