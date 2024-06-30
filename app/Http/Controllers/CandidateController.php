@@ -496,9 +496,9 @@ class CandidateController extends Controller
         $config = ConfigGeneral::get()->first();
         $user = Auth::User();
         if ($exam_type == "MUET") {
-            $candidate = MuetCalon::find($certID);
+            $candidate = MuetCalon::find($id);
         } else {
-            $candidate = ModCalon::find($certID);
+            $candidate = ModCalon::find($id);
         }
         $status = 0;
         $couriers = Courier::get();
