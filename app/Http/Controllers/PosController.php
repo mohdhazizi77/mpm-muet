@@ -280,7 +280,6 @@ class PosController extends Controller
         $data['success'] = false;
 
         if ($type == 'new') {
-            $order->tracking_number = "ER".$order->unique_order_id."MY";
             $order->current_status = "CANCEL";
 
             $track = new TrackingOrder();
