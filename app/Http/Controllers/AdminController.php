@@ -68,9 +68,13 @@ class AdminController extends Controller
     }
 
     public function muetPieChart(){
+        $config = ConfigGeneral::first();
+        $rateMpmPrint = $config->rate_mpmprint;
+        $rateSelfPrint = $config->rate_selfprint;
+
         $muetLabels = [
-            'RM 20' => 20.0,
-            'RM 60' => 60.0
+            'RM '.$rateMpmPrint => $rateMpmPrint,
+            'RM '.$rateSelfPrint => $rateSelfPrint
         ];
 
         $data = [];
@@ -92,9 +96,13 @@ class AdminController extends Controller
     }
 
     public function modPieChart(){
+        $config = ConfigGeneral::first();
+        $rateMpmPrint = $config->rate_mpmprint;
+        $rateSelfPrint = $config->rate_selfprint;
+
         $muetLabels = [
-            'RM 20' => 20.0,
-            'RM 60' => 60.0
+            'RM '.$rateMpmPrint => $rateMpmPrint,
+            'RM '.$rateSelfPrint => $rateSelfPrint
         ];
 
         $data = [];
