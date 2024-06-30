@@ -49,4 +49,16 @@ class Order extends Model
         return $this->belongsTo('App\Models\ModCalon', 'mod_calon_id', 'id');
 
     }
+
+    public static function statusColor($id = ''){
+        $arr = [
+            'PAID' => 'secondary',
+            'NEW' => 'info',
+            'PROCESSING'=> 'warning',
+            'CANCEL' => 'danger',
+            'COMPLETED' => 'success',
+        ];
+
+        return empty($id) ? $arr : $arr[$id];
+    }
 }

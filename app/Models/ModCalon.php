@@ -9,6 +9,24 @@ class ModCalon extends Model
 {
     use HasFactory;
     protected $table = 'mod_calon';
+    protected $fillable = [
+        'tahun',
+        'sidang',
+        'nama',
+        'kp',
+        'kodnegeri',
+        'kodpusat',
+        'reg_id',
+        'nocalon',
+        'alamat1',
+        'alamat2',
+        'poskod',
+        'bandar',
+        'negeri',
+        'skor_agregat',
+        'band',
+    ];
+
 
     public function index_number($candidate){
 
@@ -49,7 +67,7 @@ class ModCalon extends Model
         $result['session'] = $candidate->getTarikh->sesi;
         $result['index_number'] = $candidate->kodnegeri . $candidate->kodpusat ."/". $candidate->jcalon . $candidate->nocalon;
         foreach ($candidate->getSkor as $key => $value) {
-            $result[$value->getKodKertasName($value->kodkts)] = $value->mkhbaru;
+            $result[$value->getKodKertasName($value->kodkts)] = $value->skorbaru;
         }
         $result['agg_score'] = (float)$candidate->skor_agregat;
         $result['band'] = $candidate->band;

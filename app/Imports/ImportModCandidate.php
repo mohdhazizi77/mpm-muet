@@ -100,25 +100,31 @@ class ImportModCandidate implements ToCollection
             $reg_id = $parts[1];
             $nocalon = $parts[1];
 
+            $sesi = str_replace("MUET", "MOD", $row[3]);
 
-            $calon = new ModCalon();
-            $calon->tahun           = $tahun;
-            $calon->sidang          = $sidang;
-            $calon->nama            = $nama;
-            $calon->kp              = $kp;
-            $calon->kodnegeri       = $kodnegeri;
-            $calon->kodpusat        = $kodpusat;
-            $calon->reg_id          = $reg_id;
-            $calon->nocalon         = $nocalon;
-            $calon->alamat1         = '-';
-            $calon->alamat2         = '-';
-            $calon->poskod          = '-';
-            $calon->bandar          = '-';
-            $calon->negeri          = '-';
-            $calon->skor_agregat    = $skor_agregat;
-            $calon->band            = $band;
-            $calon->angka_giliran   = $angka_giliran;
-            $calon->save();
+            $calon = ModCalon::updateOrCreate(
+                [
+                    'angka_giliran' => $angka_giliran,
+                ],
+                [
+                    'tahun' => $tahun,
+                    'sidang' => $sidang,
+                    'nama' => $nama,
+                    'kp' => $kp,
+                    'kodnegeri' => $kodnegeri,
+                    'kodpusat' => $kodpusat,
+                    'reg_id' => $reg_id,
+                    'nocalon' => $nocalon,
+                    'alamat1' => '-',
+                    'alamat2' => '-',
+                    'poskod' => '-',
+                    'bandar' => '-',
+                    'negeri' => '-',
+                    'skor_agregat' => $skor_agregat,
+                    'band' => $band,
+                ]
+            );
+
 
             $skor = new ModSkor();
 

@@ -35,19 +35,48 @@ $(document).ready(function() {
                     data: "status",
                     orderable: false,
                     render: function (data, type, row, meta) {
-                        var html = '';
-                        console.log(data);
-                        if (data == "SUCCESS") {
-                            html = '<span class="badge rounded-pill bg-success">SUCCESS</span>';
-                        } else if (data == "PENDING") {
-                            html = '<span class="badge rounded-pill bg-warning">PENDING</span>';
-                        } else if (data == "FAILED") {
-                            html = '<span class="badge rounded-pill bg-danger">FAILED</span>';
-                        } else {
-                            html = '<span class="badge rounded-pill bg-danger">'+data+'</span>';
-                        }
+                        var html = '<span class="badge rounded-pill bg-'+row.color+'">'+data+'</span>';
                         return html;
                     },
+                    // render: function (data, type, row, meta) {
+                    //     var html = '';
+                    //      //'PAID', 'NEW', 'PROCESSING', 'COMPLETE' , 'CANCEL', 'FAIL'
+                    //     // if (data == "SUCCESS") {
+                    //     //     html = '<span class="badge rounded-pill bg-success">SUCCESS</span>';
+                    //     // } else if (data == "PENDING") {
+                    //     //     html = '<span class="badge rounded-pill bg-warning">PENDING</span>';
+                    //     // } else if (data == "FAILED") {
+                    //     //     html = '<span class="badge rounded-pill bg-danger">FAILED</span>';
+                    //     // } else {
+                    //     //     html = '<span class="badge rounded-pill bg-danger">'+data+'</span>';
+                    //     // }
+                    //     // return html;
+
+                    //     switch(data) {
+                    //         case "PAID":
+                    //             html = '<span class="badge rounded-pill bg-success">PAID</span>';
+                    //             break;
+                    //         case "NEW":
+                    //             html = '<span class="badge rounded-pill bg-primary">NEW</span>';
+                    //             break;
+                    //         case "PROCESSING":
+                    //             html = '<span class="badge rounded-pill bg-warning">PROCESSING</span>';
+                    //             break;
+                    //         case "COMPLETE":
+                    //             html = '<span class="badge rounded-pill bg-success">COMPLETE</span>';
+                    //             break;
+                    //         case "CANCEL":
+                    //             html = '<span class="badge rounded-pill bg-secondary">CANCEL</span>';
+                    //             break;
+                    //         case "FAIL":
+                    //             html = '<span class="badge rounded-pill bg-danger">FAIL</span>';
+                    //             break;
+                    //         default:
+                    //             html = '<span class="badge rounded-pill bg-danger">'+data+'</span>';
+                    //     }
+                    //     return html;
+
+                    // },
 
                 },
                 {
