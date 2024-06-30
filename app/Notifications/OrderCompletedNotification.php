@@ -48,7 +48,7 @@ class OrderCompletedNotification extends Notification
                     ->line('Dear '.$this->order->name)
                     ->line('We have received your order with reference ID '.$this->order->unique_order_id.' has been completed and shipped. You will receive your certificate within 7 working days.')
                     ->line('You may check your order via web portal > Check Order History. Alternatively, you may key in this tracking number '.$this->order->tracking_number.' via Poslaju Portal')
-                    ->action('View Order', env('APP_URL'))
+                    ->action('View Order', config('app.url'))
                     ->line('For any enquiries, kindly email us at sijil@mpm.edu.my.')
                     ->line('Thank you.');
     }
