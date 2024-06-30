@@ -45,12 +45,11 @@ class OrderController extends Controller
                 'uniqueOrderId' => $value->unique_order_id,
                 'orderDate' => $value->created_at->format('d-m-Y H:i:s'),
                 'orderFor' => $value->payment_for,
-                'status' =>  $value->status,
-                'color'  =>  $value->statusColor($value->status),
+                'status' =>  $value->current_status,
+                'color'  =>  $value->statusColor($value->current_status),
                 'id' => Crypt::encrypt($value->id),
             ];
         }
-        dd($datas);
         return datatables($datas)->toJson();
 
     }
