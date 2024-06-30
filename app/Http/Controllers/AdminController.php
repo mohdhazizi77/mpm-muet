@@ -68,6 +68,9 @@ class AdminController extends Controller
     }
 
     public function muetPieChart(){
+        $courier = Courier::first();
+        $rateCourier = $courier->rate;
+
         $config = ConfigGeneral::first();
         $rateMpmPrint = $config->rate_mpmprint;
         $rateSelfPrint = $config->rate_selfprint;
@@ -80,7 +83,13 @@ class AdminController extends Controller
         $data = [];
 
         foreach ($muetLabels as $label => $value) {
-            $muetData = $this->getMuetCountByLabel($value, 'MUET');
+
+            if ($label == 'RM '.$rateSelfPrint) {
+                $muetData = $this->getMuetCountByLabel($value, 'MUET');
+            } else {
+                $muetData = $this->getMuetCountByLabel($value+$rateCourier, 'MUET');
+            }
+            
             $data[] = [
                 'label' => $label,
                 'value' => $muetData
