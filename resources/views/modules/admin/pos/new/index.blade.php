@@ -144,32 +144,31 @@
                                                                                             </div>
                                                                                         </div> --}}
 
-                                                                                        <div class="row">
+                                                                                        {{-- <div class="row">
 
                                                                                             <div class="col-12">
                                                                                                 <div class="mb-3">
                                                                                                     <label for="address" class="form-label">Address</label>
                                                                                                     <input readonly type="text" class="form-control" placeholder="Enter your address" disabled id="address" value="">
                                                                                                 </div>
-                                                                                            </div><!--end col-->
+                                                                                            </div>
 
-                                                                                        </div>
+                                                                                        </div> --}}
 
-                                                                                        <div class="row">
-
+                                                                                        {{-- <div class="row">
                                                                                             <div class="col-4">
                                                                                                 <div class="mb-3">
                                                                                                     <label for="postcode" class="form-label">Postcode</label>
                                                                                                     <input readonly  type="text" class="form-control" placeholder="Enter your postcode" disabled id="postcode" value="">
                                                                                                 </div>
-                                                                                            </div><!--end col-->
+                                                                                            </div>
 
                                                                                             <div class="col-4">
                                                                                                 <div class="mb-3">
                                                                                                     <label for="city" class="form-label">City</label>
                                                                                                     <input readonly  type="text" class="form-control" placeholder="Enter your city" disabled id="city" value="">
                                                                                                 </div>
-                                                                                            </div><!--end col-->
+                                                                                            </div>
 
                                                                                             <div class="col-4">
                                                                                                 <div class="mb-3">
@@ -182,8 +181,7 @@
                                                                                                     </select>
                                                                                                 </div>
                                                                                             </div>
-
-                                                                                        </div>
+                                                                                        </div> --}}
 
                                                                                         <input type="text" id="order_id" name="order_id" value="" style="display: none">
                                                                                     </form>

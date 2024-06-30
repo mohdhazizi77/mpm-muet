@@ -172,32 +172,32 @@
                                                                 </div><!--end col-->
                                                             </div><!--end row--> --}}
 
-                                                            <div class="row">
+                                                            {{-- <div class="row">
 
                                                                 <div class="col-12">
                                                                     <div class="mb-3">
                                                                         <label for="address" class="form-label">Address</label>
                                                                         <input disabled  type="text" class="form-control" placeholder="Enter your address" id="address" name="address" value="">
                                                                     </div>
-                                                                </div><!--end col-->
+                                                                </div>
 
-                                                            </div>
+                                                            </div> --}}
 
-                                                            <div class="row">
+                                                            {{-- <div class="row">
 
                                                                 <div class="col-4">
                                                                     <div class="mb-3">
                                                                         <label for="postcode" class="form-label">Postcode</label>
                                                                         <input disabled  type="text" class="form-control" placeholder="Enter your postcode" id="postcode" name="postcode" value="">
                                                                     </div>
-                                                                </div><!--end col-->
+                                                                </div>
 
                                                                 <div class="col-4">
                                                                     <div class="mb-3">
                                                                         <label for="city" class="form-label">City</label>
                                                                         <input disabled  type="text" class="form-control" placeholder="Enter your city" id="city" name="city" value="">
                                                                     </div>
-                                                                </div><!--end col-->
+                                                                </div>
 
                                                                 <div class="col-4">
                                                                     <div class="mb-3">
@@ -211,7 +211,7 @@
                                                                     </div>
                                                                 </div>
 
-                                                            </div>
+                                                            </div> --}}
 
                                                         </form>
 

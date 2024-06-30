@@ -146,9 +146,13 @@ class PosController extends Controller
         $order->order_id = Crypt::encrypt($order->id);
         $order->state_name = User::getStates($order->state);
 
-        $candidate = $order->muetCalon;
-        dd($order->muetCalon, $order->modCalon);
-        $candidate->candidate_cryptId = Crypt::encrypt($candidate->id . "-MUET");
+        if(!empty($order->muetCalon)){
+            $candidate = $order->muetCalon;
+            $candidate->candidate_cryptId = Crypt::encrypt($candidate->id . "-MUET");
+        } else {
+            $candidate = $order->modCalon;
+            $candidate->candidate_cryptId = Crypt::encrypt($candidate->id . "-MOD");
+        }
         $candidate->negeri_id = User::getKeyStates(strtoupper($candidate->negeri));
 
         $data = [
