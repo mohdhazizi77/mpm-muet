@@ -318,6 +318,9 @@ class PaymentController extends Controller
                     $track->detail = 'Admin received order';
                     $track->status = 'NEW';
                     $track->save();
+
+                    $order->current_status = 'NEW';
+
                 } elseif($order->payment_for == 'SELF_PRINT'){
 
                     $track = new TrackingOrder();
@@ -325,6 +328,8 @@ class PaymentController extends Controller
                     $track->detail = 'Payment made';
                     $track->status = 'PAID';
                     $track->save();
+
+                    $order->current_status = 'PAID';
                 }
             } catch (\Illuminate\Database\QueryException $e) {
                 // Check if the error is a duplicate entry error
