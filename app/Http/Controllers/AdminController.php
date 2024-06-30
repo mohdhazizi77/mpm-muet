@@ -7,11 +7,18 @@ use Illuminate\Support\Facades\Auth;
 
 use App\Models\Order;
 use App\Models\Payment;
+use App\Models\ConfigGeneral;
+use App\Models\Courier;
 
 class AdminController extends Controller
 {
     public function index()
     {
+        $config = ConfigGeneral::first();
+        $courier = Courier::first();
+        $rateCourier = $courier->rate;
+        $rateMpmPrint = $config->rate_mpmprint;
+        $rateSelfPrint = $config->rate_selfprint;
         $user = Auth::User() ? Auth::User() : abort(403);
 
         $order = Order::get();
@@ -25,13 +32,19 @@ class AdminController extends Controller
         $orderProcessingMOD = $order->where('current_status','PROCESSING')->where('type', 'MOD')->where('payment_for', 'MPM_PRINT')->count();
         $orderCompleteMOD = $order->where('current_status','COMPLETED')->where('type', 'MOD')->where('payment_for', 'MPM_PRINT')->count();
 
-        $totalMUET60 = $payment->where('amount','=', 60.0)->where('type', 'MUET')->sum('amount');
-        $totalMUET20 = $payment->where('amount','=', 20.0)->where('type', 'MUET')->sum('amount');
-        $totalMUET   = $totalMUET60 + $totalMUET20;
+        // $totalMUET_mpmprint = $payment->where('amount','=', ($rateMpmPrint+$rateCourier))->where('type', 'MUET')->sum('amount');
+        $records = $payment->where('amount','=', ($rateMpmPrint+$rateCourier))->where('type', 'MUET')->pluck('amount');
+        // dd($totalMUET_mpmprint);
+        $totalMUET_mpmprint = 0;
+        foreach ($records as $key => $value) {
+            $totalMUET_mpmprint += $value - $rateCourier;
+        }
+        $totalMUET_selfprint = $payment->where('amount','=', $rateSelfPrint)->where('type', 'MUET')->sum('amount');
+        $totalMUET   = $totalMUET_mpmprint + $totalMUET_selfprint;
 
-        $totalMOD60 = $payment->where('amount','=', 60.0)->where('type', 'MOD')->sum('amount');
-        $totalMOD20 = $payment->where('amount','=', 20.0)->where('type', 'MOD')->sum('amount');
-        $totalMOD   = $totalMOD60 + $totalMOD20;
+        $totalMOD_mpmprint = $payment->where('amount','=', ($rateMpmPrint+$rateCourier))->where('type', 'MOD')->sum('amount');
+        $totalMOD_selfprint = $payment->where('amount','=', $rateSelfPrint)->where('type', 'MOD')->sum('amount');
+        $totalMOD   = $totalMOD_mpmprint + $totalMOD_selfprint;
 
         $count = [
             "orderNewMUET" => $orderNewMUET,
@@ -40,17 +53,17 @@ class AdminController extends Controller
             "orderNewMOD" => $orderNewMOD,
             "orderProcessingMOD" => $orderProcessingMOD,
             "orderCompleteMOD" => $orderCompleteMOD,
-            "totalMUET60" => $totalMUET60,
-            "totalMUET20" => $totalMUET20,
+            "totalMUET_mpmprint" => $totalMUET_mpmprint,
+            "totalMUET_selfprint" => $totalMUET_selfprint,
             "totalMUET" => $totalMUET,
-            "totalMOD60" => $totalMOD60,
-            "totalMOD20" => $totalMOD20,
+            "totalMOD_mpmprint" => $totalMOD_mpmprint,
+            "totalMOD_selfprint" => $totalMOD_selfprint,
             "totalMOD" => $totalMOD,
         ];
 
         return view('modules.admin.dashboard',
             compact([
-                'user','count'
+                'user','count','rateMpmPrint', 'rateSelfPrint'
             ]));
     }
 

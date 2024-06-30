@@ -271,13 +271,13 @@
                     <div class="card-body">
                         <div class="d-flex align-items-center">
                             <div class="flex-grow-1">
-                                <p class="text-uppercase fw-semibold mb-0">MUET (RM60)</p>
+                                <p class="text-uppercase fw-semibold mb-0">MUET (RM{{ $rateMpmPrint }})</p>
                             </div>
                         </div>
                         <div class="d-flex align-items-end justify-content-between mt-4">
                             <div>
                                 <h4 class="fs-22 fw-semibold ff-secondary mb-2">
-                                    <span class="counter-value" data-target="6000">RM {{ $count['totalMUET60'] }}</span>
+                                    <span class="counter-value" data-target="6000">RM {{ $count['totalMUET_mpmprint'] }}</span>
                                 </h4>
                             </div>
                         </div>
@@ -291,13 +291,13 @@
                     <div class="card-body">
                         <div class="d-flex align-items-center">
                             <div class="flex-grow-1">
-                                <p class="text-uppercase fw-semibold mb-0">MUET (RM20)</p>
+                                <p class="text-uppercase fw-semibold mb-0">MUET (RM{{ $rateSelfPrint }})</p>
                             </div>
                         </div>
                         <div class="d-flex align-items-end justify-content-between mt-4">
                             <div>
                                 <h4 class="fs-22 fw-semibold ff-secondary mb-2">
-                                    <span class="counter-value" data-target="6000">RM {{ $count['totalMUET20'] }}</span>
+                                    <span class="counter-value" data-target="6000">RM {{ $count['totalMUET_selfprint'] }}</span>
                                 </h4>
                             </div>
                         </div>
@@ -337,13 +337,13 @@
                     <div class="card-body">
                         <div class="d-flex align-items-center">
                             <div class="flex-grow-1">
-                                <p class="text-uppercase fw-semibold mb-0">MOD (RM60)</p>
+                                <p class="text-uppercase fw-semibold mb-0">MOD (RM{{ $rateMpmPrint }})</p>
                             </div>
                         </div>
                         <div class="d-flex align-items-end justify-content-between mt-4">
                             <div>
                                 <h4 class="fs-22 fw-semibold ff-secondary mb-2">
-                                    <span class="counter-value" data-target="6000">RM {{ $count['totalMOD60'] }}</span>
+                                    <span class="counter-value" data-target="6000">RM {{ $count['totalMOD_mpmprint'] }}</span>
                                 </h4>
                             </div>
                         </div>
@@ -357,13 +357,13 @@
                     <div class="card-body">
                         <div class="d-flex align-items-center">
                             <div class="flex-grow-1">
-                                <p class="text-uppercase fw-semibold mb-0">MOD (RM20)</p>
+                                <p class="text-uppercase fw-semibold mb-0">MOD (RM{{ $rateSelfPrint }})</p>
                             </div>
                         </div>
                         <div class="d-flex align-items-end justify-content-between mt-4">
                             <div>
                                 <h4 class="fs-22 fw-semibold ff-secondary mb-2">
-                                    <span class="counter-value" data-target="6000">RM {{ $count['totalMOD20'] }}</span>
+                                    <span class="counter-value" data-target="6000">RM {{ $count['totalMOD_selfprint'] }}</span>
                                 </h4>
                             </div>
                         </div>
