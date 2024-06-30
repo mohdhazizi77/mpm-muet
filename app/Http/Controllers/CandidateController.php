@@ -404,7 +404,7 @@ class CandidateController extends Controller
                 $candidate = ModCalon::find($certID);
             }
             $pusat = $candidate->getPusat->first();
-            $tarikh = $candidate->getTarikh->first();
+            $tarikh = $candidate->getTarikh;
             $result = $candidate->getResult($candidate);
             if ($result['year'] > 2021) {
                 $scheme = [
@@ -686,7 +686,7 @@ class CandidateController extends Controller
             $candidate = ModCalon::find($certID);
         }
         $pusat = $candidate->getPusat->first();
-        $tarikh = $candidate->getTarikh->first();
+        $tarikh = $candidate->getTarikh;
         $result = $candidate->getResult($candidate);
         if ($result['year'] > 2021) {
             $scheme = [
