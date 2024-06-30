@@ -67,14 +67,14 @@ $(document).ready(function() {
                     // className: ,
                 },
                 {
-                    data: "reference_id",
+                    data: "receipt_no",
                     orderable: false,
                     // render: function(data, type, row, meta) {
                     //     return meta.row + 1;
                     // }
                 },
                 {
-                    data: "ref_no",
+                    data: "trx_date",
                     orderable: true,
                     // render(data, type, row) {
                     //     let html = '';
@@ -82,10 +82,10 @@ $(document).ready(function() {
                     //     return html;
                     // }
                 },
-                // {
-                //     data: "candidate_name",
-                //     orderable: true,
-                // },
+                {
+                    data: "candidate_name",
+                    orderable: true,
+                },
                 {
                     data: "amount",
                     orderable: true,
@@ -130,15 +130,15 @@ $(document).ready(function() {
                         return html;
                     }
                 },
-                {
-                    data: "ref_no",
-                    orderable: true,
-                    render(data, type, row) {
-                        let html = '';
-                        html = '<a class="btn btn-sm btn-warning btnCheckTrxStatus" data-id="'+data+'"><i class="bx bx-refresh"></i> Refetch </a>';
-                        return html;
-                    }
-                },
+                // {
+                //     data: "ref_no",
+                //     orderable: true,
+                //     render(data, type, row) {
+                //         let html = '';
+                //         html = '<a class="btn btn-sm btn-warning btnCheckTrxStatus" data-id="'+data+'"><i class="bx bx-refresh"></i> Refetch </a>';
+                //         return html;
+                //     }
+                // },
             ],
             dom: 'frtp',
             pageLength: 100,
@@ -290,7 +290,8 @@ $(document).ready(function() {
             },
             columns: [
                 {
-                    data: "txn_id",
+                    // data: "txn_id",
+                    data: "date_created",
                     orderable: false,
                     // render: ,
                     // className: ,
