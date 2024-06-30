@@ -187,13 +187,14 @@
                                         style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                                     <thead>
                                     <tr class="text-center bg-dark-subtle">
-                                        <th scope="col">DATE CREATED</th>
-                                        <th scope="col">REFERENCE ID</th>
-                                        <th scope="col">PAYMENT REFERENCE</th>
+                                        {{-- Transaction ID | Receipt No. | Date | Candidate Name | Amount | Status | Receipt --}}
+                                        <th scope="col">TRANSACTION ID</th>
+                                        <th scope="col">RECEIPT NO.</th>
+                                        <th scope="col">DATE</th>
+                                        <th scope="col">CANDIDATE NAME</th>
                                         <th scope="col">AMOUNT</th>
                                         <th scope="col">STATUS</th>
                                         <th scope="col">RECEIPT</th>
-                                        <th scope="col">ACTION</th>
                                     </tr>
                                     </thead>
                                     <tbody>
