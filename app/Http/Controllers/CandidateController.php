@@ -493,10 +493,13 @@ class CandidateController extends Controller
         } catch (Illuminate\Contracts\Encryption\DecryptException $e) {
 
         };
-
         $config = ConfigGeneral::get()->first();
         $user = Auth::User();
-        $candidate = MuetCalon::find($id);
+        if ($type == "MUET") {
+            $candidate = MuetCalon::find($certID);
+        } else {
+            $candidate = ModCalon::find($certID);
+        }
         $status = 0;
         $couriers = Courier::get();
 
