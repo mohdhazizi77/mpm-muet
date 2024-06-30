@@ -125,7 +125,6 @@ class PosController extends Controller
     }
 
     public function getPosDetail(Request $request, $type){
-        dd($request->toArray(),$type);
 
         $user = Auth::User() ? Auth::User() : abort(403);
 
@@ -148,6 +147,7 @@ class PosController extends Controller
         $order->state_name = User::getStates($order->state);
 
         $candidate = $order->muetCalon;
+        dd($order->muetCalon, $order->modCalon);
         $candidate->candidate_cryptId = Crypt::encrypt($candidate->id . "-MUET");
         $candidate->negeri_id = User::getKeyStates(strtoupper($candidate->negeri));
 
