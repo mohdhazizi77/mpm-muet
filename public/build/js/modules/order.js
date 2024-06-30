@@ -1,7 +1,7 @@
 $(document).ready(function() {
 
     if ($("#orderTable").length) {
-        console.log($('#orderTable').data('id'));
+        // console.log($('#orderTable').data('id'));
         $('#orderTable').DataTable({
             processing: true,
             serverSide: true,
@@ -43,6 +43,8 @@ $(document).ready(function() {
                             html = '<span class="badge rounded-pill bg-warning">PENDING</span>';
                         } else if (data == "FAILED") {
                             html = '<span class="badge rounded-pill bg-danger">FAILED</span>';
+                        } else {
+                            html = '<span class="badge rounded-pill bg-danger">'+data+'</span>';
                         }
                         return html;
                     },
