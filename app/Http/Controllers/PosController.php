@@ -125,7 +125,7 @@ class PosController extends Controller
     }
 
     public function getPosDetail(Request $request, $type){
-        // sleep(5);
+        dd($type);
 
         $user = Auth::User() ? Auth::User() : abort(403);
 
