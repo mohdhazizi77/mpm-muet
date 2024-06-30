@@ -186,6 +186,7 @@
                                         <th scope="col">AMOUNT</th>
                                         <th scope="col">STATUS</th>
                                         <th scope="col">RECEIPT</th>
+                                        <th scope="col">ACTION</th>
                                     </tr>
                                     </thead>
                                     <tbody>

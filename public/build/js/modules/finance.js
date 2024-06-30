@@ -61,7 +61,8 @@ $(document).ready(function() {
             },
             columns: [
                 {
-                    data: "date_created",
+                    // data: "date_created",
+                    data: "reference_id",
                     orderable: false,
                     // render: ,
                     // className: ,
@@ -92,7 +93,7 @@ $(document).ready(function() {
                     render(data, type, row) {
                         let html = '';
                         // html = '<p> Receipt No : <a href="'+row.receipt+'">'+row.receipt_number+'</a></p> <p> Amount : RM'+row.amount+'</p>';
-                        html = '<p> Amount : RM '+data+'</p>';
+                        html = '<p>RM '+data+'</p>';
                         return html;
                     }
                 },
@@ -130,19 +131,19 @@ $(document).ready(function() {
                         return html;
                     }
                 },
-                // {
-                //     data: "ref_no",
-                //     orderable: true,
-                //     render(data, type, row) {
-                //         let html = '';
-                //         html = '<a class="btn btn-sm btn-warning btnCheckTrxStatus" data-id="'+data+'"><i class="bx bx-refresh"></i> Refetch </a>';
-                //         return html;
-                //     }
-                // },
+                {
+                    data: "ref_no",
+                    orderable: true,
+                    render(data, type, row) {
+                        let html = '';
+                        html = '<a class="btn btn-sm btn-warning btnCheckTrxStatus" data-id="'+data+'"><i class="bx bx-refresh"></i> Refetch </a>';
+                        return html;
+                    }
+                },
             ],
-            dom: 'frtp',
+            // dom: 'frtp',
             pageLength: 100,
-            // order: [[0, "asc"]],
+            order: [[0, "asc"]],
             // buttons: {
             //     dom: {
             //         button: {
@@ -291,7 +292,7 @@ $(document).ready(function() {
             columns: [
                 {
                     // data: "txn_id",
-                    data: "date_created",
+                    data: "reference_id",
                     orderable: false,
                     // render: ,
                     // className: ,
@@ -322,7 +323,7 @@ $(document).ready(function() {
                     render(data, type, row) {
                         let html = '';
                         // html = '<p> Receipt No : <a href="'+row.receipt+'">'+row.receipt_number+'</a></p> <p> Amount : RM'+row.amount+'</p>';
-                        html = '<p> Amount : RM'+data+'</p>';
+                        html = '<p>RM'+data+'</p>';
                         return html;
                     }
                 },
@@ -360,10 +361,19 @@ $(document).ready(function() {
                         return html;
                     }
                 },
+                {
+                    data: "ref_no",
+                    orderable: true,
+                    render(data, type, row) {
+                        let html = '';
+                        html = '<a class="btn btn-sm btn-warning btnCheckTrxStatus" data-id="'+data+'"><i class="bx bx-refresh"></i> Refetch </a>';
+                        return html;
+                    }
+                },
             ],
-            dom: 'frtp',
+            // dom: 'frtp',
             pageLength: 100,
-            // order: [[0, "asc"]],
+            order: [[0, "asc"]],
             // buttons: {
             //     dom: {
             //         button: {
