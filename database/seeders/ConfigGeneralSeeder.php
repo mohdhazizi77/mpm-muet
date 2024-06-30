@@ -16,6 +16,7 @@ class ConfigGeneralSeeder extends Seeder
         $config = new ConfigGeneral();
         $config->rate_mpmprint = "60.00";
         $config->rate_selfprint = "20.00";
+        $config->email_alert_order = "notification@mpm.com";
         $config->save();
     }
 }

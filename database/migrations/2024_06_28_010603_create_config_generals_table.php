@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->float('rate_mpmprint');
             $table->float('rate_selfprint');
+            $table->string('email_alert_order');
             $table->timestamps();
         });
     }

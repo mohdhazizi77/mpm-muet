@@ -38,6 +38,15 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="row mb-3">
+                            <div class="col-6">
+                                <label for="mpmRate" class="form-label">Email Alert</label>
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text" id="basic-addon1">@</span>
+                                    <input type="number" step="any" class="form-control" id="email_alert_order" name="email_alert_order" value="{{ isset($config['email_alert_order']) ? $config['email_alert_order'] : '' }}" placeholder="Enter rate">
+                                </div>
+                            </div>
+                        </div>
                         <button type="submit" class="btn btn-primary float-end">Save</button>
                     </form>
                 </div>
