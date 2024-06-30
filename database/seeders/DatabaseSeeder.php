@@ -21,7 +21,7 @@ class DatabaseSeeder extends Seeder
         $this->call(KodktsSeeder::class);
         $this->call(ConfigGeneralSeeder::class);
 
-        //MUET Seeder
+        // MUET Seeder
         $this->call(MuetCalonSeeder::class);
         $this->call(MuetPusatSeeder::class);
         $this->call(MuetSkorSeeder::class);
