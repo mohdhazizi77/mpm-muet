@@ -50,7 +50,7 @@ class OrderController extends Controller
                 'id' => Crypt::encrypt($value->id),
             ];
         }
-
+        dd($datas);
         return datatables($datas)->toJson();
 
     }
