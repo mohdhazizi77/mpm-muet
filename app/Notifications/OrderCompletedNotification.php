@@ -7,7 +7,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class OrderConfirmedNotification extends Notification
+class OrderCompletedNotification extends Notification
 {
     use Queueable;
 
@@ -27,10 +27,9 @@ class OrderConfirmedNotification extends Notification
     /**
      * Get the notification's delivery channels.
      *
-     * @param  mixed  $notifiable
-     * @return array
+     * @return array<int, string>
      */
-    public function via($notifiable)
+    public function via(object $notifiable): array
     {
         return ['mail'];
     }
@@ -45,11 +44,24 @@ class OrderConfirmedNotification extends Notification
     {
         return (new MailMessage)
                     ->greeting('')  // Setting an empty greeting
-                    ->subject('Transaction Confirmed - MPM MUET Certificate Online System')
+                    ->subject('Transaction Completed - MPM MUET Certificate Online System')
                     ->line('Dear '.$this->order->name)
-                    ->line('We have received your order with reference ID '.$this->order->unique_order_id.'. Your certificate will be processed in 3 working days and you will receive your certificate within 7 working days.')
+                    ->line('We have received your order with reference ID '.$this->order->unique_order_id.' has been completed and shipped. You will receive your certificate within 7 working days.')
+                    ->line('You may check your order via web portal > Check Order History. Alternatively, you may key in this tracking number '.$this->order->tracking_number.' via Poslaju Portal')
                     ->action('View Order', env('APP_URL'))
                     ->line('For any enquiries, kindly email us at sijil@mpm.edu.my.')
                     ->line('Thank you.');
+    }
+
+    /**
+     * Get the array representation of the notification.
+     *
+     * @return array<string, mixed>
+     */
+    public function toArray(object $notifiable): array
+    {
+        return [
+            //
+        ];
     }
 }

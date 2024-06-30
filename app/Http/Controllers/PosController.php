@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Notifications\OrderCompletedNotification;
+use Illuminate\Support\Facades\Notification;
+
 use App\Exports\OrdersPosExport;
 use App\Imports\OrderPosImport;
 use Illuminate\Http\Request;
@@ -241,6 +244,14 @@ class PosController extends Controller
             $tracking->detail = "Tracking number : ";
             $tracking->status = "COMPLETED";
             $tracking->save();
+
+            try {
+                Notification::route('mail', $order->email)
+                    ->notify(new OrderCompletedNotification($order));
+            } catch (\Exception $e) {
+                \Log::error('Error sending email notification: ' . $e->getMessage());
+            }
+
         } else {
             $order->name = $request->ship_name;
             $order->phone_num = $request->ship_phoneNum;
