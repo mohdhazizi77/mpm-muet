@@ -59,15 +59,6 @@ $(document).ready(function() {
                     orderable: false,
                 },
                 {
-                    data: "order_id",
-                    orderable: true,
-                    render(data, type, row) {
-                        let html = '';
-                        html = '<p>'+row.candidate_name+'</p> <p>NRIC : '+row.candidate_nric+'</p>';
-                        return html;
-                    }
-                },
-                {
                     data: "cert_type",
                     orderable: true,
                 },
@@ -75,6 +66,16 @@ $(document).ready(function() {
                     data: "txn_type",
                     orderable: true,
                 },
+                {
+                    data: "order_id",
+                    orderable: true,
+                    render(data, type, row) {
+                        let html = '';
+                        html = '<p>'+row.candidate_name+'</p> <p>NRIC : '+row.candidate_nric+'</p>' + '<p>'+row.session+'</p>';
+                        return html;
+                    }
+                },
+                
                 // {
                 //     data: "status",
                 //     orderable: true,

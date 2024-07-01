@@ -233,9 +233,9 @@ class FinanceController extends Controller
 
         return [
             'totalSuccess' => $totalSuccess,
-            'totalPayMpm' => $totalPayMpm,
-            'totalPaySelf' => $totalPaySelf,
-            'totalColection' => $totalColection,
+            'totalPayMpm' => round($totalPayMpm, 1),
+            'totalPaySelf' => round($totalPaySelf, 1),
+            'totalColection' => round($totalColection, 1),
         ];
     }
 

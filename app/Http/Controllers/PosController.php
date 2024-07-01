@@ -113,7 +113,8 @@ class PosController extends Controller
                 'order_time' => $order->created_at->format('H:i:s'),
                 'consignment_note' => $order->consignment_note,
                 // 'details'    => $order->type . " | " . $calon->getTarikh->sesi . " | Angka Giliran : " . $calon->index_number($calon)
-                'details'    => $calon->getTarikh->sesi . " | Angka Giliran : " . $calon->index_number($calon)
+                // 'details'    => $calon->getTarikh->sesi . " | Angka Giliran : " . $calon->index_number($calon)
+                'details'    => $order->type . " | Session " . $calon->sidang . " Year " . $calon->tahun . " | Angka Giliran : " . $calon->index_number($calon)
             ];
 
             if ($request->type == "PROCESSING") {

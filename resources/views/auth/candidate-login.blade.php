@@ -41,7 +41,7 @@
 
                             <div class="card-body p-4">
                                 <div class="text-center mt-2">
-                                    <h3 class="text-primary">MUET Certificate Online System</h3>
+                                    <h3 class="text-primary">MUET Online Certificate System</h3>
                                 </div>
                                 <div class="p-2 mt-4">
                                     <form action="{{ route('candidate.login') }}" method="POST">

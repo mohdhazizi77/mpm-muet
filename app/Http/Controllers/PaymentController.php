@@ -105,6 +105,7 @@ class PaymentController extends Controller
 
         $data = [];
         foreach ($transaction as $key => $value) {
+            $calon = $value->order?->muet_calon_id != null ? $value->order?->muetCalon : $value->order?->modCalon;
             $data[] = [
                 "created_at" => $value->order?->created_at->format('d/m/y H:i:s'),
                 "order_id" => $value->order_id,
@@ -114,6 +115,8 @@ class PaymentController extends Controller
                 "cert_type" => $value->type,
                 "txn_type" => $value->payment_for,
                 "status" => $value->order?->payment_status,
+                // "session" => $calon->getTarikh->sesi,
+                "session" => "SESSION " . $calon->sidang . " YEAR " . $calon->tahun,
 
                 "payment_date" => $value->payment_date,
                 "txn_id" => $value->txn_id,
