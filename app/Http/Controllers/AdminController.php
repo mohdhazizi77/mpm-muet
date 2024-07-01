@@ -24,13 +24,13 @@ class AdminController extends Controller
         $order = Order::get();
         $payment = Payment::get();
         // dd($payment->where('amount','=', 60.0));
-        $orderNewMUET = $order->where('current_status','NEW')->where('type', 'MUET')->where('payment_for', 'MPM_PRINT')->count();
-        $orderProcessingMUET = $order->where('current_status','PROCESSING')->where('type', 'MUET')->where('payment_for', 'MPM_PRINT')->count();
-        $orderCompleteMUET = $order->where('current_status','COMPLETED')->where('type', 'MUET')->where('payment_for', 'MPM_PRINT')->count();
+        $orderNewMUET = $order->where('current_status','NEW')->where('type', 'MUET')->where('payment_for', 'MPM_PRINT')->where('payment_status', 'SUCCESS')->count();
+        $orderProcessingMUET = $order->where('current_status','PROCESSING')->where('type', 'MUET')->where('payment_for', 'MPM_PRINT')->where('payment_status', 'SUCCESS')->count();
+        $orderCompleteMUET = $order->where('current_status','COMPLETED')->where('type', 'MUET')->where('payment_for', 'MPM_PRINT')->where('payment_status', 'SUCCESS')->count();
 
-        $orderNewMOD = $order->where('current_status','NEW')->where('type', 'MOD')->where('payment_for', 'MPM_PRINT')->count();
-        $orderProcessingMOD = $order->where('current_status','PROCESSING')->where('type', 'MOD')->where('payment_for', 'MPM_PRINT')->count();
-        $orderCompleteMOD = $order->where('current_status','COMPLETED')->where('type', 'MOD')->where('payment_for', 'MPM_PRINT')->count();
+        $orderNewMOD = $order->where('current_status','NEW')->where('type', 'MOD')->where('payment_for', 'MPM_PRINT')->where('payment_status', 'SUCCESS')->count();
+        $orderProcessingMOD = $order->where('current_status','PROCESSING')->where('type', 'MOD')->where('payment_for', 'MPM_PRINT')->where('payment_status', 'SUCCESS')->count();
+        $orderCompleteMOD = $order->where('current_status','COMPLETED')->where('type', 'MOD')->where('payment_for', 'MPM_PRINT')->where('payment_status', 'SUCCESS')->count();
 
         // $totalMUET_mpmprint = $payment->where('amount','=', ($rateMpmPrint+$rateCourier))->where('type', 'MUET')->sum('amount');
         $records = $payment->where('amount','=', ($rateMpmPrint+$rateCourier))->where('type', 'MUET')->pluck('amount');
