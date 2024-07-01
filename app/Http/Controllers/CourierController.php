@@ -49,12 +49,20 @@ class CourierController extends Controller
 
     public function store(Request $request)
     {
+        
+        $validatedData = $request->validate([
+            'name' => 'required|string|max:255',
+            'rate' => 'required',
+            'currency' => 'required|string|size:3',
+            'duration' => 'required',
+        ]);
+    
         $courier = new Courier();
-        $courier->name = $request->name;
-        $courier->disp_name = $request->name;
-        $courier->rate = $request->rate;
-        $courier->currency = $request->currency;
-        $courier->duration = $request->duration;
+        $courier->name = $validatedData['name'];
+        $courier->disp_name = $validatedData['name'];
+        $courier->rate = $validatedData['rate'];
+        $courier->currency = $validatedData['currency'];
+        $courier->duration = $validatedData['duration'];
         $courier->save();
 
         $old = [
@@ -81,6 +89,13 @@ class CourierController extends Controller
     
     public function update(Request $request, $id)
     {
+        $validatedData = $request->validate([
+            'name' => 'required|string|max:255',
+            'rate' => 'required',
+            'currency' => 'required|string|size:3',
+            'duration' => 'required',
+        ]);
+
         $courier = Courier::findOrFail($id);
         $old = [
             "name" => $courier->name,
@@ -90,11 +105,11 @@ class CourierController extends Controller
             "duration" => $courier->duration,
         ];
 
-        $courier->name = $request->name;
-        $courier->disp_name = $request->name;
-        $courier->rate = $request->rate;
-        $courier->currency = $request->currency;
-        $courier->duration = $request->duration;
+        $courier->name = $validatedData['name'];
+        $courier->disp_name = $validatedData['name'];
+        $courier->rate = $validatedData['rate'];
+        $courier->currency = $validatedData['currency'];
+        $courier->duration = $validatedData['duration'];
         $courier->save();
 
         $new = [
