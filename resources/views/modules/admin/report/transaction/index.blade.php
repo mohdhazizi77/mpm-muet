@@ -93,9 +93,9 @@
                                     <tr class="text-center bg-dark-subtle">
                                         <th scope="col">DATE CREATED</th>
                                         <th scope="col">REFERENCE ID</th>
-                                        <th scope="col">CANDIDATE DETAIL</th>
-                                        <th scope="col">CERT TYPE</th>
+                                        <th scope="col">CERTIFICATE TYPE</th>
                                         <th scope="col">TRANSACTION TYPE</th>
+                                        <th scope="col">TRANSACTION DETAIL</th>
                                         <th scope="col">STATUS</th>
                                     </tr>
                                     </thead>
