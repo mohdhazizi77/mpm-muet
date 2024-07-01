@@ -188,6 +188,8 @@
             $(document).on('click', '#show_edit_modal', function(e) {
                 e.preventDefault();
                 var id = $(this).val();
+                $('#form_courier_edit').removeClass('was-validated');
+                $('#form_courier_edit')[0].reset();
 
                 var rowData = table.row($(this).parents('tr')).data();
                 $('#form_courier_edit [name="id"]').val(id);
@@ -199,14 +201,14 @@
                 $('#modal_edit').modal('show');
             })
 
-            $(document).on('click', '#submit_add', function(e) {
+            $(document).on('click', '#submit_store', function(e) {
                 var csrfToken = $('meta[name="csrf-token"]').attr('content');
                 var formData = new FormData($('#form_courier_add')[0]);
 
                 Swal.fire({
                     icon: 'warning',
-                    title: 'Adakah Anda Pasti?',
-                    text: 'Kurier akan Ditambah!',
+                    title: 'Are you sure?',
+                    text: 'Courier will be added!',
                     customClass: {
                         popup: 'my-swal-popup',
                         confirmButton: 'my-swal-confirm',
@@ -242,8 +244,8 @@
                                 $('#form_courier_add').removeClass('was-validated');
                                 Swal.fire({
                                     type: 'success',
-                                    title: 'Berjaya',
-                                    text: 'Kurier berjaya ditambah!',
+                                    title: 'Succeeded',
+                                    text: 'Courier successfully added!',
                                     customClass: {
                                         popup: 'my-swal-popup',
                                         confirmButton: 'my-swal-confirm',
@@ -259,6 +261,26 @@
                             error: function(xhr, status, errors) {
                                 $('#form_courier_add').addClass('was-validated');
                                 if (xhr.responseJSON && xhr.responseJSON.errors) {
+                                    $.each(xhr.responseJSON.errors, function(key,
+                                    value) {
+                                        if (key == "is_active") {
+                                            $('#form_courier_add [name="' +
+                                                key +
+                                                '"]').closest(
+                                                '.form-check').find(
+                                                '.invalid-feedback').html(
+                                                value[
+                                                    0]);
+                                        } else {
+                                            $('#form_courier_add [name="' +
+                                                    key +
+                                                    '"]').removeAttr(
+                                                    'readonly').next(
+                                                    '.invalid-feedback').show()
+                                                .html(
+                                                    value[0]);
+                                        }
+                                    });
                                     Swal.fire({
                                         icon: "error",
                                         title: 'Gagal',
@@ -276,7 +298,7 @@
                 });
             });
 
-            $(document).on('click', '#submit', function(e) {
+            $(document).on('click', '#submit_edit', function(e) {
                 var csrfToken = $('meta[name="csrf-token"]').attr('content');
                 var formData = new FormData($('#form_courier_edit')[0]);
 
@@ -284,8 +306,8 @@
 
                 Swal.fire({
                     icon: 'warning',
-                    title: 'Adakah Anda Pasti?',
-                    text: 'Kurier akan Dikemaskini!',
+                    title: 'Are you sure?',
+                    text: 'Courier will be updated!',
                     customClass: {
                         popup: 'my-swal-popup',
                         confirmButton: 'my-swal-confirm',
@@ -321,8 +343,8 @@
                                 $('#form_courier_edit').removeClass('was-validated');
                                 Swal.fire({
                                     type: 'success',
-                                    title: 'Berjaya',
-                                    text: 'Kurier berjaya dikemaskini!',
+                                    title: 'Succeeded',
+                                    text: 'Courier successfully updated!',
                                     customClass: {
                                         popup: 'my-swal-popup',
                                         confirmButton: 'my-swal-confirm',
@@ -338,6 +360,26 @@
                             error: function(xhr, status, errors) {
                                 $('#form_courier_edit').addClass('was-validated');
                                 if (xhr.responseJSON && xhr.responseJSON.errors) {
+                                    $.each(xhr.responseJSON.errors, function(key,
+                                    value) {
+                                        if (key == "is_active") {
+                                            $('#form_courier_edit [name="' +
+                                                key +
+                                                '"]').closest(
+                                                '.form-check').find(
+                                                '.invalid-feedback').html(
+                                                value[
+                                                    0]);
+                                        } else {
+                                            $('#form_courier_edit [name="' +
+                                                    key +
+                                                    '"]').removeAttr(
+                                                    'readonly').next(
+                                                    '.invalid-feedback').show()
+                                                .html(
+                                                    value[0]);
+                                        }
+                                    });
                                     Swal.fire({
                                         icon: "error",
                                         title: 'Gagal',
@@ -436,6 +478,8 @@
             });
 
             $('#show_create_modal').on('click', function() {
+                $('#form_courier_add').removeClass('was-validated');
+                $('#form_courier_add')[0].reset();
                 $('#modal_create').modal('show');
             });
         });
