@@ -112,7 +112,7 @@ $(document).ready(function() {
                 }
             ],
             // dom: 'frtp',
-            pageLength: 50,
+            pageLength: 10,
             order: [[0, "asc"]],
             buttons: {
                 dom: {

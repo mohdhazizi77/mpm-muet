@@ -121,8 +121,9 @@ $(document).ready(function() {
                 //     }
                 // },
             ],
-            pageLength: 100,
-            dom: 'frtp',
+            pageLength: 10,
+            dom: '<"top"f>rt<"bottom d-flex justify-content-start"<"dataTables_paginate"p><"dataTables_length"l>><"clear">',
+            lengthMenu: [ [10, 25, 50, 100, -1], [10, 25, 50, 100, "All"] ],
             // order: [[0, "asc"]],
             // buttons: {
             //     dom: {
@@ -151,10 +152,17 @@ $(document).ready(function() {
                 // "infoEmpty": "Paparan 0 / 0 dari 0 rekod",
                 // "infoFiltered": "(tapisan dari _MAX_ rekod)",
                 "processing": "Processing...",
-                // "search": "Carian:"
+                // "search": "Carian:",
+                lengthMenu: '<select class="form-select form-select-md" style="margin-left: 10px">'+
+                    '<option value="10">10</option>'+
+                    '<option value="25">25</option>'+
+                    '<option value="50">50</option>'+
+                    '<option value="100">100</option>'+
+                    '<option value="-1">All</option>'+
+                    '</select>'
             },
             searching: false,
-            lengthChange: false,
+            lengthChange: true,
         });
     }
 

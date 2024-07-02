@@ -161,7 +161,7 @@ $(document).ready(function() {
                 //     // className: ,
                 // }
             ],
-            pageLength: 50,
+            pageLength: 10,
             order: [[0, "asc"]],
             responsive: true, // Enable responsive mode
             autoWidth: false,

@@ -3,7 +3,7 @@ $(document).ready(function() {
     if ($("#financeMuetTable").length>0) {
 
         var tableMuet = $('#financeMuetTable').DataTable({
-            dom: 'Bfrtip',
+            dom: '<"top"f>rt<"bottom d-flex justify-content-start"<"dataTables_paginate"p><"dataTables_length"l>><"clear">',
             buttons: [
                 'excel',
                 'print'
@@ -142,8 +142,9 @@ $(document).ready(function() {
                 },
             ],
             // dom: 'frtp',
-            pageLength: 100,
+            pageLength: 10,
             order: [[0, "asc"]],
+            lengthMenu: [ [10, 25, 50, 100, -1], [10, 25, 50, 100, "All"] ],
             // buttons: {
             //     dom: {
             //         button: {
@@ -171,10 +172,17 @@ $(document).ready(function() {
                 // "infoEmpty": "Paparan 0 / 0 dari 0 rekod",
                 // "infoFiltered": "(tapisan dari _MAX_ rekod)",
                 "processing": "Processing...",
-                // "search": "Carian:"
+                // "search": "Carian:",
+                lengthMenu: '<select class="form-select form-select-md" style="margin-left: 10px">'+
+                    '<option value="10">10</option>'+
+                    '<option value="25">25</option>'+
+                    '<option value="50">50</option>'+
+                    '<option value="100">100</option>'+
+                    '<option value="-1">All</option>'+
+                    '</select>'
             },
             searching: true,
-            lengthChange: false,
+            lengthChange: true,
         });
 
     fetchDataMuet();
@@ -233,7 +241,7 @@ $(document).ready(function() {
     if ($("#financeModTable").length>0) {
 
         var tableMod = $('#financeModTable').DataTable({
-            dom: 'Bfrtip',
+           
             buttons: [
                 'excel',
                 'print'
@@ -372,8 +380,10 @@ $(document).ready(function() {
                 },
             ],
             // dom: 'frtp',
-            pageLength: 100,
+            dom: '<"top"f>rt<"bottom d-flex justify-content-start"<"dataTables_paginate"p><"dataTables_length"l>><"clear">',
+            pageLength: 10,
             order: [[0, "asc"]],
+            lengthMenu: [ [10, 25, 50, 100, -1], [10, 25, 50, 100, "All"] ],
             // buttons: {
             //     dom: {
             //         button: {
@@ -402,9 +412,16 @@ $(document).ready(function() {
                 // "infoFiltered": "(tapisan dari _MAX_ rekod)",
                 "processing": "Processing...",
                 // "search": "Carian:"
+                lengthMenu: '<select class="form-select form-select-md" style="margin-left: 10px">'+
+                    '<option value="10">10</option>'+
+                    '<option value="25">25</option>'+
+                    '<option value="50">50</option>'+
+                    '<option value="100">100</option>'+
+                    '<option value="-1">All</option>'+
+                    '</select>'
             },
             searching: true,
-            lengthChange: false,
+            lengthChange: true,
         });
 
         fetchDataMod();

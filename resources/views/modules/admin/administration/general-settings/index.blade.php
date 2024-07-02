@@ -170,7 +170,7 @@
                         },
                     ],
                     dom: 'frtp',
-                    pageLength: 100,
+                    pageLength: 10,
                     language: {
                         // "zeroRecords": "Tiada rekod untuk dipaparkan.",
                         // "paginate": {
