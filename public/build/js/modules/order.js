@@ -102,7 +102,7 @@ $(document).ready(function() {
                     // className: ,
                 }
             ],
-            // pageLength: 50,
+            pageLength: 10,
             // order: [[0, "asc"]],
             buttons: {
                 dom: {
@@ -175,7 +175,7 @@ $(document).ready(function() {
 
                 },
             ],
-            // pageLength: 50,
+            pageLength: 10,
             // order: [[0, "asc"]],
             buttons: {
                 dom: {
@@ -248,7 +248,7 @@ $(document).ready(function() {
 
                 },
             ],
-            // pageLength: 50,
+            pageLength: 10,
             // order: [[0, "asc"]],
             buttons: {
                 dom: {

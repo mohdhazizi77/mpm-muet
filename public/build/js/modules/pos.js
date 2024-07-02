@@ -59,7 +59,7 @@ $(document).ready(function() {
                 }
             ],
             dom: 'frtp',
-            // pageLength: 50,
+            pageLength: 10,
             order: [[0, "asc"]],
             // buttons: {
             //     dom: {
@@ -330,7 +330,7 @@ $(document).ready(function() {
                 },
             ],
             dom: 'frtp',
-            pageLength: 50,
+            pageLength: 10,
             // order: [[0, "asc"]],
             // buttons: {
             //     dom: {
@@ -561,7 +561,7 @@ $(document).ready(function() {
 
             ],
             dom: 'frtp',
-            // pageLength: 50,
+            pageLength: 10,
             // order: [[0, "asc"]],
             // buttons: {
             //     dom: {
@@ -612,6 +612,14 @@ $(document).ready(function() {
             // },
         });
     }
+        // // Handle change event on custom dropdown
+        // $('#entries').on('change', function() {
+        //     var length = $(this).val();
+        //     table.page.len(length).draw();  // Update the DataTable page length
+        // });
+
+        // // Optional: Set the initial value of the dropdown based on the DataTable's page length
+        // $('#entries').val(table.page.len());
 
     var today = new Date().toISOString().split('T')[0];
     $('#start-date').attr('max', today);
