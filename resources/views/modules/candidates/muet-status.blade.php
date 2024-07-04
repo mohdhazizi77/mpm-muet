@@ -94,13 +94,13 @@
                     <div class="card rounded-0 bg-white border-top p-4">
                         <h4 class="">TRACK ORDER</h4>
                         <label for="" class="my-3">TRACKING NUMBER : {{ $order->tracking_number }}</label>
-                        <table id="trackShippingTable" data-id="{{ $cryptId }}" class="table table-striped text-center">
+                        <table id="trackShippingTable" data-id="{{ $cryptId }}" data-trackno="{{ $order->tracking_number }}" class="table table-striped text-center">
                             <thead>
                                 <tr class="text-center bg-dark-subtle">
                                     <th scope="col">#</th>
                                     <th scope="col">DATE AND TIME</th>
-                                    <th scope="col">DESCRIPTION</th>
-                                    <th scope="col">STATUS</th>
+                                    <th scope="col">DETAIL</th>
+                                    {{-- <th scope="col">STATUS</th> --}}
                                 </tr>
                             </thead>
                             <tbody>
