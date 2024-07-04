@@ -13,7 +13,21 @@
             General Setting
         @endslot
     @endcomponent
+    @if(session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+    @endif
 
+    @if($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
     <div class="row py-4 px-3">
         <div class="col-lg-12">
             <div class="card rounded-0 bg-white mx-n4  border-top card-custom mb-2">
@@ -43,7 +57,7 @@
                                 <label for="mpmRate" class="form-label">Email Alert</label>
                                 <div class="input-group mb-3">
                                     <span class="input-group-text" id="basic-addon1">@</span>
-                                    <input type="number" step="any" class="form-control" id="email_alert_order" name="email_alert_order" value="{{ isset($config['email_alert_order']) ? $config['email_alert_order'] : '' }}" placeholder="Enter email">
+                                    <input type="email" step="any" class="form-control" id="email_alert_order" name="email_alert_order" value="{{ isset($config['email_alert_order']) ? $config['email_alert_order'] : '' }}" placeholder="Enter email">
                                 </div>
                             </div>
                         </div>

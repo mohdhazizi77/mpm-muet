@@ -15,6 +15,7 @@ class ConfigGeneral extends Model
         'id',
         'rate_mpmprint',
         'rate_selfprint',
+        'email_alert_order',
     ];
 
 }
