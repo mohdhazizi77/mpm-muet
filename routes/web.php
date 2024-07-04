@@ -93,7 +93,10 @@ Route::group(['middleware' => ['auth:candidate','role:CALON']], function () {
         Route::post('/track-order/ajax', [OrderController::class, 'getAjaxTrackOrder'])->name('order.getAjaxTrackOrder');
         Route::post('/track-shipping/ajax', [OrderController::class, 'getAjaxTrackShipping'])->name('order.getAjaxTrackShipping');
         Route::get('/muet-status/{id}', [CandidateController::class, 'muetstatus'])->name('candidate.muet-status');
+
     });
+    Route::get('/payment/getdata', [PaymentController::class, 'getpayment'])->name('candidate.getpayment');
+    Route::post('/payment/getdata', [PaymentController::class, 'callbackpayment'])->name('candidate.callback');
 });
 
 Route::group(['middleware' => ['role:PENTADBIR|BPKOM|PSM|FINANCE']], function () {
@@ -183,9 +186,6 @@ Route::group(['middleware' => ['role:PENTADBIR|BPKOM|PSM|FINANCE']], function ()
     Route::post('audit-logs/ajax', [AuditLogsController::class, 'getAjax'])->name('audit-logs.ajax');
 
 });
-
-Route::get('/payment/getdata', [PaymentController::class, 'getpayment'])->name('candidate.getpayment');
-Route::post('/payment/getdata', [PaymentController::class, 'callbackpayment'])->name('candidate.callback');
 
 Route::get('users/verify-password/{id}', [UserController::class, 'verifyIndex'])->name('users.verify_index');
 Route::post('users/verify-password/{id}/update', [UserController::class, 'updatePassword'])->name('users.verify_index_update');
