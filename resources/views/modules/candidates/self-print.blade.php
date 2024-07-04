@@ -12,8 +12,12 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-12">
-
                 <div class="card rounded-0 bg-success-subtle mx-n4 mt-n4 border-top">
+                    @if(Session::has('error'))
+                        <div class="alert alert-danger mb-3">
+                            {{ Session::get('error') }}
+                        </div>
+                    @endif
                     <div class="px-4">
                         <div class="row">
                             <div class="col-xxl-6 align-self-center">
