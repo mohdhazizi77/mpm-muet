@@ -58,6 +58,7 @@ class PosProcessingController extends Controller
             $url = 'http://localhost:8000/qrscan'; // Replace with your URL or data
 
             $qr = QrCode::size(50)->style('round')->generate(config('app.url'));
+            
 
             $pdf = PDF::loadView('candidates.download-pdf', ['qr' => $qr])->setPaper('a4', 'portrait');
 
