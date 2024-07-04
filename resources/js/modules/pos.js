@@ -129,7 +129,19 @@ $(document).ready(function() {
                     url: '/pos/new/cancel',
                     type: 'POST',
                     data: $('form').serialize(),
+                    beforeSend:function(){
+                        Swal.fire({
+                            title: 'Loading...', // Optional title for the alert
+                            allowEscapeKey: false,  // Disables escape key closing the alert
+                            allowOutsideClick: false, // Disables outside click closing the alert
+                            showConfirmButton: false, // Hides the "Confirm" button
+                            didOpen: () => {
+                                Swal.showLoading(Swal.getDenyButton()); // Show loading indicator on the Deny button
+                            }
+                        });
+                    },
                     success: function(response){
+                        Swal.close()
                         if (response.success) {
                             // Close modal
                             $('#modalUpdatePos').modal('hide');
@@ -174,7 +186,19 @@ $(document).ready(function() {
                     url: '/pos/new/update',
                     type: 'POST',
                     data: $('form').serialize(),
+                    beforeSend:function(){
+                        Swal.fire({
+                            title: 'Loading...', // Optional title for the alert
+                            allowEscapeKey: false,  // Disables escape key closing the alert
+                            allowOutsideClick: false, // Disables outside click closing the alert
+                            showConfirmButton: false, // Hides the "Confirm" button
+                            didOpen: () => {
+                                Swal.showLoading(Swal.getDenyButton()); // Show loading indicator on the Deny button
+                            }
+                        });
+                    },
                     success: function(response){
+                        Swal.close()
                         if (response.success) {
                             // Close modal
                             $('#modalUpdatePos').modal('hide');
@@ -411,7 +435,19 @@ $(document).ready(function() {
                     url: '/pos/processing/update',
                     type: 'POST',
                     data: $('form').serialize(),
+                    beforeSend:function(){
+                        Swal.fire({
+                            title: 'Loading...', // Optional title for the alert
+                            allowEscapeKey: false,  // Disables escape key closing the alert
+                            allowOutsideClick: false, // Disables outside click closing the alert
+                            showConfirmButton: false, // Hides the "Confirm" button
+                            didOpen: () => {
+                                Swal.showLoading(Swal.getDenyButton()); // Show loading indicator on the Deny button
+                            }
+                        });
+                    },
                     success: function(response){
+                        Swal.close()
                         if (response.success) {
                             // Close modal
                             $('#modalUpdatePos').modal('hide');
@@ -472,7 +508,19 @@ $(document).ready(function() {
                         url: '/pos/save/update',
                         type: 'POST',
                         data: $('form').serialize(),
+                        beforeSend:function(){
+                            Swal.fire({
+                                title: 'Loading...', // Optional title for the alert
+                                allowEscapeKey: false,  // Disables escape key closing the alert
+                                allowOutsideClick: false, // Disables outside click closing the alert
+                                showConfirmButton: false, // Hides the "Confirm" button
+                                didOpen: () => {
+                                    Swal.showLoading(Swal.getDenyButton()); // Show loading indicator on the Deny button
+                                }
+                            });
+                        },
                         success: function(response){
+                            Swal.close()
                             if (response.success) {
                                 // Close modal
                                 $('#modalUpdatePos').modal('hide');
@@ -945,6 +993,7 @@ $(document).ready(function() {
                             });
                         },
                         success: function(data) {
+                            Swal.close()
                             var a = document.createElement('a');
                             var url = window.URL.createObjectURL(data);
                             a.href = url;
@@ -1027,6 +1076,7 @@ $(document).ready(function() {
                             });
                         },
                         success: function(data) {
+                            Swal.close()
                             var a = document.createElement('a');
                             var url = window.URL.createObjectURL(data);
                             a.href = url;
@@ -1110,6 +1160,8 @@ $(document).ready(function() {
                             });
                         },
                         success: function(data) {
+                            Swal.close()
+
                             var a = document.createElement('a');
                             var url = window.URL.createObjectURL(data);
                             a.href = url;
