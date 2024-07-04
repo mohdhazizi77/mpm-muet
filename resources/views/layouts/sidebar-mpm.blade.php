@@ -109,6 +109,9 @@
                                     <a href="{{ route('config_poslaju.index') }}" class="nav-link {{ request()->is('admin/config-poslaju') ? 'active' : '' }}">PosLaju Integration</a>
                                 </li>
                                 <li class="nav-item">
+                                    <a href="{{ route('config.mpmbayar.index') }}" class="nav-link {{ request()->is('admin/config-mpmbayar') ? 'active' : '' }}">MPMBayar Integration</a>
+                                </li>
+                                <li class="nav-item">
                                     <a href="{{ route('users.index') }}" class="nav-link">Users and Access</a>
                                 </li>
                             @endrole

@@ -11,11 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('config_generals', function (Blueprint $table) {
+        Schema::create('config_mpmbayars', function (Blueprint $table) {
             $table->id();
-            $table->float('rate_mpmprint');
-            $table->float('rate_selfprint');
-            $table->string('email_alert_order');
+            $table->string('url');
+            $table->string('token');
+            $table->string('secret_key');
             $table->timestamps();
         });
     }
@@ -25,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('config_generals');
+        Schema::dropIfExists('config_mpmbayars');
     }
 };

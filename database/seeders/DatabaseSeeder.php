@@ -23,6 +23,7 @@ class DatabaseSeeder extends Seeder
 
         // Config Seeder
         $this->call(ConfigPoslajuSeeder::class);
+        $this->call(ConfigMpmBayarSeeder::class);
 
         // MUET Seeder
         $this->call(MuetCalonSeeder::class);

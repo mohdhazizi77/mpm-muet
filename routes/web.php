@@ -25,6 +25,8 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ConfigPoslajuController;
+use App\Http\Controllers\ConfigMpmBayarController;
+
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
@@ -148,6 +150,9 @@ Route::group(['middleware' => ['role:PENTADBIR|BPKOM|PSM|FINANCE']], function ()
 
         Route::get('/config-poslaju', [ConfigPoslajuController::class, 'index'])->name('config_poslaju.index');
         Route::post('/config-poslaju/update-or-create', [ConfigPoslajuController::class, 'updateOrCreate'])->name('config_poslaju.update');
+
+        Route::get('/config-mpmbayar', [ConfigMpmBayarController::class, 'index'])->name('config.mpmbayar.index');
+        Route::post('/config-mpmbayar', [ConfigMpmBayarController::class, 'updateOrCreate'])->name('config.mpmbayar.update');
     });
 
     Route::get('/pos/token', [PosController::class, 'getBearerToken']);
