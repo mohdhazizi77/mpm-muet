@@ -17,13 +17,13 @@ class ConfigPoslajuSeeder extends Seeder
         ConfigPoslaju::updateOrCreate(
             ['username' => 'test_user'], // Unique identifier for the record
             [
-                'url' => 'https://api.poslaju.com',
-                'client_id' => 'your_client_id',
-                'client_secret' => 'your_client_secret',
+                'url' => 'https://gateway-usc.pos.com.my/staging',
+                'client_id' => '66712e0af304bd000e908bb5',
+                'client_secret' => '1tG5mGMAvAzu5qyM59iqWE4lSQFmDohRhN/HuPusnoM=',
                 'grant_type' => 'client_credentials',
-                'scope' => 'read write',
+                'scope' => 'as01.gen-connote.all as2corporate.preacceptancessingle.all as01.routing-code.all as2corporate.v2trackntracewebapijson.all as01.generate-pl9-with-connote.all',
 
-                'Prefix' => 'ERC',
+                'Prefix' => 'ER',
                 'ApplicationCode' => 'StagingPos',
                 'Secretid' => 'StagingPos@1234',
                 'username' => 'StagingPos',
