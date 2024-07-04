@@ -67,14 +67,53 @@ class ModCalon extends Model
         $result['session'] = $candidate->getTarikh->sesi;
         $result['index_number'] = $candidate->kodnegeri . $candidate->kodpusat ."/". $candidate->jcalon . $candidate->nocalon;
         foreach ($candidate->getSkor as $key => $value) {
-            $result[$value->getKodKertasName($value->kodkts)] = $value->skorbaru;
+            $result[$value->getKodKertasName($value->kodkts)] = self::checkingMarkah($value->skorbaru);
         }
-        $result['agg_score'] = (float)$candidate->skor_agregat;
-        $result['band'] = $candidate->band;
+        $result['agg_score'] = self::checkingAggSkor($candidate->skor_agregat);
+        $result['band'] = self::checkingBand($candidate->band);
         $result['issue_date'] = $candidate->getTarikh->tarikh_isu; //$candidate->getTarikh->tarikh_isu;
         $result['exp_date'] = $candidate->getTarikh->tarikh_exp; //$candidate->getTarikh->tarikh_exp;
         // dd($result);
         return $result;
+    }
+
+    static function checkingMarkah($id){
+
+        $checkingArr = [
+            '-1' => 'ABSENT',
+            'X'  => '',
+            '-3' => 'EXEMPTED',
+            '-4' => 'WITHHELD',
+            '-5' => 'NULLIFIED',
+        ];
+
+        return array_key_exists($id, $checkingArr) ? $checkingArr[ $id ] : $id;
+    }
+
+    static function checkingAggSkor($id){
+
+        $checkingArr = [
+            '-1' => '',
+            'X'  => 'NIL',
+            '-3' => '',
+            '-4' => 'WITHHELD',
+            '-5' => 'NULLIFIED',
+        ];
+
+        return array_key_exists($id, $checkingArr) ? $checkingArr[ $id ] : $id;
+    }
+
+    static function checkingBand($id){
+
+        $checkingArr = [
+            '-1' => '',
+            'X'  => 'NIL',
+            '-3' => '',
+            '-4' => 'WITHHELD',
+            '-5' => 'NULLIFIED',
+        ];
+
+        return array_key_exists($id, $checkingArr) ? $checkingArr[ $id ] : $id;
     }
 
 }
