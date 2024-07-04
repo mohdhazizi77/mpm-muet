@@ -80,6 +80,8 @@ class DefaultUserRoleSeeder extends Seeder
             'BPKOM',
             'PSM',
             'PSM',
+            'FINANCE',
+            'FINANCE',
         ];
 
         foreach ($arr as $key => $value) {
