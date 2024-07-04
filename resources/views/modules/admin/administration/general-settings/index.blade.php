@@ -73,7 +73,7 @@
                     </form>
                 </div>
             </div> --}}
-            <div class="card rounded-0 bg-white mx-n4  border-top card-custom mt-1">
+            {{-- <div class="card rounded-0 bg-white mx-n4  border-top card-custom mt-1">
                 <div class="card-header">
                     <div class="row">
                         <div class="col" style="text-align: left">
@@ -114,7 +114,7 @@
                 </div>
                 <!-- end card -->
 
-            </div>
+            </div> --}}
 
             @include('modules.admin.administration.courier.modal.create')
             @include('modules.admin.administration.courier.modal.edit')

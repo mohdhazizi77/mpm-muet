@@ -24,6 +24,8 @@ use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\ConfigPoslajuController;
+
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
@@ -109,11 +111,17 @@ Route::group(['middleware' => ['role:PENTADBIR|BPKOM|PSM|FINANCE']], function ()
         Route::post('/pos-management/{type}/generateExcelPos', [PosController::class, 'generateExcelPos']);
         Route::post('/pos-management/{type}/generateImportExcelPos', [PosController::class, 'generateImportExcelPos']);
 
-        Route::get('/transaction', [PaymentController::class, 'index'])->name('transaction.index');
-        Route::post('/transaction/ajax', [PaymentController::class, 'getAjax'])->name('transaction.ajax');
-        Route::post('/transaction/check', [PaymentController::class, 'checkpayment'])->name('transaction.check');
-        Route::get('/transaction/excel', [PaymentController::class, 'generateExcel'])->name('transaction.excel');
-        Route::get('/transaction/pdf', [PaymentController::class, 'generatePdf'])->name('transaction.pdf');
+        // Route::get('/transaction', [PaymentController::class, 'index'])->name('transaction.index');
+        // Route::post('/transaction/ajax', [PaymentController::class, 'getAjax'])->name('transaction.ajax');
+        // Route::post('/transaction/check', [PaymentController::class, 'checkpayment'])->name('transaction.check');
+        // Route::get('/transaction/excel', [PaymentController::class, 'generateExcel'])->name('transaction.excel');
+        // Route::get('/transaction/pdf', [PaymentController::class, 'generatePdf'])->name('transaction.pdf');
+
+        Route::get('/transaction', [OrderController::class, 'indexAdmin'])->name('transaction.index');
+        Route::post('/transaction/ajax', [OrderController::class, 'getAjaxAdmin'])->name('transaction.ajax');
+        Route::post('/transaction/check', [OrderController::class, 'checkpaymentAdmin'])->name('transaction.check');
+        Route::get('/transaction/excel', [OrderController::class, 'generateExcelAdmin'])->name('transaction.excel');
+        Route::get('/transaction/pdf', [OrderController::class, 'generatePdfAdmin'])->name('transaction.pdf');
 
         Route::get('/finance/{exam_type}', [FinanceController::class, 'index'])->name('finance.index');
         Route::post('/finance/{exam_type}/ajax', [FinanceController::class, 'getAjax'])->name('finance.ajax');
@@ -137,6 +145,9 @@ Route::group(['middleware' => ['role:PENTADBIR|BPKOM|PSM|FINANCE']], function ()
         Route::post('/courier/store', [CourierController::class, 'store'])->name('courier.store');
         Route::post('/courier/update/{id}', [CourierController::class, 'update'])->name('courier.update');
         Route::delete('/courier/destroy/{id}', [CourierController::class, 'destroy'])->name('courier.destroy');
+
+        Route::get('/config-poslaju', [ConfigPoslajuController::class, 'index'])->name('config_poslaju.index');
+        Route::post('/config-poslaju/update-or-create', [ConfigPoslajuController::class, 'updateOrCreate'])->name('config_poslaju.update');
     });
 
     Route::get('/pos/token', [PosController::class, 'getBearerToken']);

@@ -16,6 +16,9 @@ return new class extends Migration
             $table->float('rate_mpmprint');
             $table->float('rate_selfprint');
             $table->string('email_alert_order');
+            $table->string('mpmbayar_url');
+            $table->string('mpmbayar_token');
+            $table->string('mpmbayar_secret_key');
             $table->timestamps();
         });
     }

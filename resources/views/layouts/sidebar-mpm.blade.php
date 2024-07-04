@@ -106,6 +106,9 @@
                                     <a href="{{ route('general_setting.index') }}" class="nav-link">General Settings</a>
                                 </li>
                                 <li class="nav-item">
+                                    <a href="{{ route('config_poslaju.index') }}" class="nav-link {{ request()->is('admin/config-poslaju') ? 'active' : '' }}">PosLaju Integration</a>
+                                </li>
+                                <li class="nav-item">
                                     <a href="{{ route('users.index') }}" class="nav-link">Users and Access</a>
                                 </li>
                             @endrole
