@@ -222,6 +222,7 @@ $(document).ready(function() {
                 "data": function (d) {
                     d._token = $('meta[name="csrf-token"]').attr('content')
                     d.track_id = $('#trackShippingTable').data('id')
+                    d.trackNo = $('#trackShippingTable').data('trackno')
                 }
             },
             columns: [
@@ -238,15 +239,15 @@ $(document).ready(function() {
                     data: "detail",
                     orderable: false,
                 },
-                {
-                    data: "status",
-                    orderable: false,
-                    // render: function (data, type, row, meta) {
-                    //     var html = '<span class="badge rounded-pill bg-'+row.color+'">'+data+'</span>';
-                    //     return html;
-                    // },
+                // {
+                //     data: "status",
+                //     orderable: false,
+                //     // render: function (data, type, row, meta) {
+                //     //     var html = '<span class="badge rounded-pill bg-'+row.color+'">'+data+'</span>';
+                //     //     return html;
+                //     // },
 
-                },
+                // },
             ],
             pageLength: 10,
             // order: [[0, "asc"]],

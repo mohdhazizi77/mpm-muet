@@ -644,63 +644,6 @@ $(document).ready(function() {
     $(document).on('click', '#filterBtn', function (){
 
         table.ajax.reload();
-
-        // // Redraw the DataTable
-        // // $('#posNewTable').DataTable().ajax.reload();
-        // var startDate = $('#start-date').val();
-        // var endDate = $('#end-date').val();
-        // var textSearch = $('#text-search').val();
-
-        // function parseDate(dateString) {
-        //     var parts = dateString.split('/');
-        //     // Note: months are 0-based in JavaScript's Date object
-        //     return new Date(parts[2], parts[1] - 1, parts[0]);
-        // }
-
-        // console.log(startDate, endDate, textSearch);
-
-        // // // Convert dates to the desired format
-        // startDate = startDate ? new Date(startDate).toISOString().split('T')[0] : '';
-        // endDate = endDate ? new Date(endDate).toISOString().split('T')[0] : new Date().toISOString().split('T')[0];
-        // // console.log(startDate, endDate);
-
-        // // table.rows().every(function() {
-        // //     var data = this.data();
-        // //     // console.log(data.order_date)
-
-        // //     var orderDate = parseDate(data.order_date).toISOString().split('T')[0];
-
-        // //     var matchesDateRange = (!startDate || orderDate >= startDate) && (!endDate || orderDate <= endDate);
-        // //     var matchesTextSearch = !textSearch ||
-        // //         data.details.toLowerCase().includes(textSearch.toLowerCase()) ||
-        // //         data.order_id.toLowerCase().includes(textSearch.toLowerCase());
-        // //     // console.log(orderDate)
-        // //     // console.log(data.details, data.order_id)
-        // //     console.log(matchesDateRange,matchesTextSearch)
-        // //     if (matchesDateRange && matchesTextSearch) {
-        // //         this.node().style.display = '';
-        // //     } else {
-        // //         this.node().style.display = 'none';
-        // //     }
-        // // });
-
-        // // table.draw();
-
-
-        // // Custom search logic
-        // $.fn.dataTable.ext.search.push(function(settings, data, dataIndex) {
-        //     // var orderDate = parseDate(data.order_date).toISOString().split('T')[0]; // Assuming date is in the first column
-        //     var orderDate = data[0].split('/').reverse().join('-');
-        //     var matchesDateRange = (!startDate || orderDate >= startDate) && (!endDate || orderDate <= endDate);
-        //     var matchesTextSearch = !textSearch ||
-        //         data.details.toLowerCase().includes(textSearch.toLowerCase()) || // Assuming details is in the third column
-        //         data.order_id.toLowerCase().includes(textSearch.toLowerCase()); // Assuming order_id is in the second column
-
-        //     return matchesDateRange && matchesTextSearch;
-        // });
-
-        // table.draw(); // Redraw the table
-        // $.fn.dataTable.ext.search.pop(); // Remove the custom search function
     })
 
     //clear filter
@@ -1471,7 +1414,4 @@ $(document).ready(function() {
         }
 
     });
-
-
-
 });
