@@ -239,10 +239,9 @@ class PosController extends Controller
             $order->current_status = "COMPLETED";
             $order->consignment_note = $preAcceptance->pdf;
 
-
             $tracking = new TrackingOrder();
             $tracking->order_id = $order->id;
-            $tracking->detail = "Tracking number : ";
+            $tracking->detail = "Transaction completed and Certificate out for shipment";
             $tracking->status = "COMPLETED";
             $tracking->save();
 

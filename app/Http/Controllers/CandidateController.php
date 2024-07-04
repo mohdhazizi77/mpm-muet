@@ -7,6 +7,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Config;
 
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -368,9 +369,8 @@ class CandidateController extends Controller
 
             $url = 'http://localhost:8000/qrscan'; // Replace with your URL or data
             $url = env('APP_URL').'/verify/result/'.$cryptId; // Replace with your URL or data /verify/result/{id}
-            // $url = 'https://muet-dev.ddns.net/verify/result/'.$cryptId; // Replace with your URL or data /verify/result/{id}
-            $url = 'https://sijil.mpm.edu.my/'; // Replace with your URL or data /verify/result/{id}
-            $qr = QrCode::size(50)->style('round')->generate($url);
+            
+            $qr = QrCode::size(50)->style('round')->generate(config('app.url'));
 
             $pdf = PDF::loadView('modules.candidates.download-pdf', [
                     'tarikh' => $tarikh,'qr' => $qr, 'type' => $type, 'result' => $result, 'candidate' => $candidate, 'scheme' => $scheme, 'pusat' => $pusat])->setPaper('a4', 'portrait');
@@ -433,10 +433,9 @@ class CandidateController extends Controller
             }
             $url = 'http://localhost:8000/qrscan'; // Replace with your URL or data
             $url = env('APP_URL').'/verify/result/'.$cryptId; // Replace with your URL or data /verify/result/{id}
-            // $url = 'https://muet-dev.ddns.net/verify/result/'.$cryptId; // Replace with your URL or data /verify/result/{id}
-            $url = 'https://sijil.mpm.edu.my/'; // Replace with your URL or data /verify/result/{id}
 
-            $qr = QrCode::size(50)->style('round')->generate($url);
+            $qr = QrCode::size(50)->style('round')->generate(config('app.url'));
+
 
             $pdf = PDF::loadView('modules.candidates.download-pdf', [
                     'tarikh' => $tarikh, 'qr' => $qr, 'type' => $type, 'result' => $result, 'candidate' => $candidate, 'scheme' => $scheme, 'pusat' => $pusat])->setPaper('a4', 'portrait');
@@ -716,10 +715,8 @@ class CandidateController extends Controller
 
         $cryptId = Crypt::encrypt($certID);
         $url = env('APP_URL').'/verify/result/'.$id;
-        // $url = 'https://muet-dev.ddns.net/verify/result/'.$cryptId; // Replace with your URL or data /verify/result/{id}
-        $url = 'https://sijil.mpm.edu.my/'; // Replace with your URL or data /verify/result/{id}
+        $qr = QrCode::size(50)->style('round')->generate(config('app.url'));
 
-        $qr = QrCode::size(50)->style('round')->generate($url);
 
         $pdf = PDF::loadView('modules.candidates.download-pdf', [
             'qr' => $qr,

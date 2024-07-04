@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Exports\PosNewExport;
 use App\Exports\PosProcessingPosXlsxExport;
 use App\Exports\PosProcessingXlsxExport;
+use Illuminate\Support\Facades\Config;
 use App\Models\Pos;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
@@ -55,9 +56,8 @@ class PosProcessingController extends Controller
         try {
 
             $url = 'http://localhost:8000/qrscan'; // Replace with your URL or data
-            $qr = QrCode::size(50)->style('round')->generate($url);
 
-//            dd($qr);
+            $qr = QrCode::size(50)->style('round')->generate(config('app.url'));
 
             $pdf = PDF::loadView('candidates.download-pdf', ['qr' => $qr])->setPaper('a4', 'portrait');
 
