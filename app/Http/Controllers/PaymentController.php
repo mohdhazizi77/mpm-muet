@@ -166,7 +166,7 @@ class PaymentController extends Controller
         $config = ConfigGeneral::get()->first();
 
         //kalau MPM_PRINT amount courier atau SELF_PRINT get .env value SELFPRINT_AMOUNT
-        $data['amount'] = empty($request->courier) ? $config->rate_selfprint : Courier::find($request->courier)->rate + $config->rate_mpmprint;
+        $data['amount'] = empty($request->courier) ? $config->rate_selfprint : $config->rate_mpmprint;
         $hash = hash_hmac('SHA256', urlencode($secret_key) . urlencode($data['full_name']) . urlencode($data['phone_number']) . urlencode($data['email_address']) . urlencode($data['amount']), $secret_key);
         $data['hash'] = $hash;
 

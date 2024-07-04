@@ -6,6 +6,11 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Auth;
 
+use Barryvdh\DomPDF\Facade\Pdf;
+use Maatwebsite\Excel\Facades\Excel;
+
+use App\Exports\TransactionExport;
+
 use App\Models\Order;
 use App\Models\TrackingOrder;
 use Carbon\Carbon;
@@ -160,18 +165,19 @@ class OrderController extends Controller
 
         // Retrieve the filtered results
         $transaction = $transaction->get();
-        // dd($transaction);
         $data = [];
         foreach ($transaction as $key => $value) {
             $data[] = [
-                "created_at" => $value->order?->created_at->format('d/m/y H:i:s'),
+                "created_at" => $value->created_at->format('d/m/y H:i:s'),
                 "order_id" => $value->order_id,
-                "reference_id" => $value->order?->unique_order_id,
-                "candidate_name" => $value->order?->candidate?->name,
-                "candidate_nric" => $value->order?->candidate?->identity_card_number,
+                "reference_id" => $value->unique_order_id,
+                "candidate_name" => $value->candidate->name,
+                "candidate_nric" => $value->candidate->identity_card_number,
+                "session" => $value->muet_calon_id != null ? $value->muetCalon->getTarikh->sesi : $value->modCalon->getTarikh->sesi,
                 "cert_type" => $value->type,
                 "txn_type" => $value->payment_for,
                 "status" => $value->order?->payment_status,
+                "status" => $value->current_status,
 
                 "payment_date" => $value->payment_date,
                 "txn_id" => $value->txn_id,
@@ -181,8 +187,139 @@ class OrderController extends Controller
                 "receipt_number" =>  $value->receipt_number,
                 "ref_no" =>  $value->ref_no
             ];
+
+            // if ($value->muet_calon_id != null) {
+            //     $data[]['session'] = $value->muetCalon->getTarikh->sesi;
+            // } else {
+            //     $data[]['session'] = $value->modCalon->getTarikh->sesi;
+            // }
         }
+        // dd($data);
+        // dd($transaction);
 
         return datatables($data)->toJson();
+    }
+
+    public function generateExcelAdmin(Request $request){
+
+        $currentDate = Carbon::now()->format('Y-m-d H:i:s');
+        $transactions = Order::latest();
+        // list by transaction by role
+        switch (Auth::User()->getRoleNames()[0]) {
+            case 'PSM':
+                // $transactions->where('type', 'MUET');
+                $transactions->when($request->filled('exam_type'), function ($query) use ($request) {
+                        return $query->where('type', $request->input('exam_type'));
+                    }, function ($query) {
+                        return $query->where('type', 'MUET');
+                    });
+                break;
+            case 'BPKOM':
+                // $transactions->where('type', 'MOD');
+                $transactions->when($request->filled('exam_type'), function ($query) use ($request) {
+                        return $query->where('type', $request->input('exam_type'));
+                    }, function ($query) {
+                        return $query->where('type', 'MOD');
+                    });
+                break;
+        }
+
+        if(filled($request->startDate) || filled($request->endDate)){
+            $startDate = Carbon::parse($request->startDate)->startOfDay()->format('Y-m-d H:i:s');
+            $endDate = $request->has('endDateTrx') && !empty($request->endDate)
+                        ? Carbon::parse($request->endDate)->endOfDay()->format('Y-m-d H:i:s')
+                        : $currentDate;
+
+            // Filter based on the date range
+            $transactions->whereBetween('created_at', [$startDate, $endDate]);
+        }
+
+        if ($request->has('exam_type') && !empty($request->exam_type)) {
+            $transactions->where('type', $request->exam_type);
+        }
+
+        if ($request->has('payment_for') && !empty($request->payment_for)) {
+            $transactions->where('payment_for', $request->payment_for);
+        }
+
+        if ($request->has('status_trx') && !empty($request->status_trx)) {
+            $transactions->where('current_status', $request->status_trx);
+        }
+
+        if(filled($request->textSearch)){
+            $textSearch = $request->textSearch;
+            $transactions->where(function ($query) use ($textSearch) {
+                $query->where('txn_id', 'LIKE', '%' . $textSearch . '%')
+                    // Add more columns to search in if necessary
+                    ->orWhere('ref_no', 'LIKE', '%' . $textSearch . '%');
+            });
+        }
+
+        $transactions = $transactions->get();
+
+        return Excel::download(new TransactionExport($transactions), 'transaction_' . now() . '.xlsx');
+    }
+
+    public function generatePdfAdmin(Request $request){
+
+        $currentDate = Carbon::now()->format('Y-m-d H:i:s');
+
+        $transactions = Order::latest();
+
+        // list by transaction by role
+        switch (Auth::User()->getRoleNames()[0]) {
+            case 'PSM':
+                // $transactions->where('type', 'MUET');
+                $transactions->when($request->filled('exam_type'), function ($query) use ($request) {
+                        return $query->where('type', $request->input('exam_type'));
+                    }, function ($query) {
+                        return $query->where('type', 'MUET');
+                    });
+                break;
+            case 'BPKOM':
+                // $transactions->where('type', 'MOD');
+                $transactions->when($request->filled('exam_type'), function ($query) use ($request) {
+                        return $query->where('type', $request->input('exam_type'));
+                    }, function ($query) {
+                        return $query->where('type', 'MOD');
+                    });
+                break;
+        }
+        if(filled($request->startDate) || filled($request->endDate)){
+            $startDate = Carbon::parse($request->startDate)->startOfDay()->format('Y-m-d H:i:s');
+            $endDate = $request->has('endDateTrx') && !empty($request->endDate)
+                        ? Carbon::parse($request->endDate)->endOfDay()->format('Y-m-d H:i:s')
+                        : $currentDate;
+
+            // Filter based on the date range
+            $transactions->whereBetween('created_at', [$startDate, $endDate]);
+        }
+
+        if ($request->has('exam_type') && !empty($request->exam_type)) {
+            $transactions->where('type', $request->exam_type);
+        }
+
+        if ($request->has('payment_for') && !empty($request->payment_for)) {
+            $transactions->where('payment_for', $request->payment_for);
+        }
+
+        if ($request->has('status_trx') && !empty($request->status_trx)) {
+            $transactions->where('current_status', $request->status_trx);
+        }
+
+        if(filled($request->textSearch)){
+            $textSearch = $request->textSearch;
+            $transactions->where(function ($query) use ($textSearch) {
+                $query->where('txn_id', 'LIKE', '%' . $textSearch . '%')
+                    // Add more columns to search in if necessary
+                    ->orWhere('ref_no', 'LIKE', '%' . $textSearch . '%');
+            });
+        }
+
+        $transactions = $transactions->get();
+
+        $pdf = PDF::loadView('modules.admin.report.transaction.pdf.transaction', ['transactions' => $transactions]);
+
+        return $pdf->stream('ListTransaction.pdf');
     }
 }

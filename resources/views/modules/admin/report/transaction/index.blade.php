@@ -61,8 +61,12 @@
                         <label for="start-date" class="form-label">Status</label>
                         <select name="status_trx" id="status_trx" class="form-control">
                             <option value="">Please Select</option>
-                            <option value="SUCCESS">SUCCESS</option>
-                            <option value="FAIL">FAIL</option>
+                            <option value="PAID">PAID</option>
+                            <option value="NEW">NEW</option>
+                            <option value="PROCESSING">PROCESSING</option>
+                            <option value="COMPLETED">COMPLETED</option>
+                            {{-- <option value="SUCCESS">SUCCESS</option> --}}
+                            {{-- <option value="FAIL">FAIL</option> --}}
                         </select>
                     </div>
                 </div>

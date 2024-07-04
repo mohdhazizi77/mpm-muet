@@ -103,7 +103,7 @@
                         <ul class="nav nav-sm flex-column">
                             @role('PENTADBIR')
                                 <li class="nav-item">
-                                    <a href="{{ route('general_setting.index') }}" class="nav-link">General Settings</a>
+                                    <a href="{{ route('general_setting.index') }}" class="nav-link {{ request()->is('admin/general-setting') ? 'active' : '' }}">General Settings</a>
                                 </li>
                                 <li class="nav-item">
                                     <a href="{{ route('config_poslaju.index') }}" class="nav-link {{ request()->is('admin/config-poslaju') ? 'active' : '' }}">PosLaju Integration</a>
