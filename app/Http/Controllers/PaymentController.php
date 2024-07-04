@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\Exports\TransactionExport;
-use App\Notifications\OrderConfirmedNotification;
+use App\Notifications\OrderReceivedNotification;
 
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Session;
@@ -18,6 +18,7 @@ use App\Models\Order;
 use App\Models\Payment;
 use App\Models\TrackingOrder;
 use App\Models\ConfigGeneral;
+
 
 use Maatwebsite\Excel\Facades\Excel;
 use Ramsey\Uuid\Uuid;
@@ -275,6 +276,8 @@ class PaymentController extends Controller
 
     public function getpayment(Request $request){
 
+        $configGeneral = ConfigGeneral::get()->first();
+
         // dd($request->toArray());
         // update order
         $order = Order::where('payment_ref_no',$request->ref_no)->first();
@@ -338,12 +341,12 @@ class PaymentController extends Controller
                     $order->current_status = 'PAID';
                 }
 
-                try {
-                    Notification::route('mail', $order->email)
-                        ->notify(new OrderConfirmedNotification($order));
-                } catch (\Exception $e) {
-                    \Log::error('Error sending email notification: ' . $e->getMessage());
-                }
+                // try {
+                //     Notification::route('mail', $order->email)
+                //         ->notify(new OrderConfirmedNotification($order));
+                // } catch (\Exception $e) {
+                //     \Log::error('Error sending email notification: ' . $e->getMessage());
+                // }
 
             } catch (\Illuminate\Database\QueryException $e) {
                 // Check if the error is a duplicate entry error
@@ -351,6 +354,14 @@ class PaymentController extends Controller
                     throw $e;
                 }
             }
+
+            //order received once payment success
+            // try {
+            //     Notification::route('mail', $configGeneral->email_alert_order)
+            //         ->notify(new OrderReceivedNotification($order));
+            // } catch (\Exception $e) {
+            //     \Log::error('Error sending email notification: ' . $e->getMessage());
+            // }
 
         } else {
             // Payment failed
