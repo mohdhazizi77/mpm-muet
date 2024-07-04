@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 use App\Models\Order;
 use App\Models\Payment;
+use App\Models\ConfigMpmBayar;
 
 class ProcessPendingOrdersCommand extends Command
 {
@@ -18,10 +19,10 @@ class ProcessPendingOrdersCommand extends Command
             ->where('created_at', '<=', now()->subMinutes(5))
             ->get();
 
-        $url = 'https://ebayar-lab.mpm.edu.my/api/payment/status';
-        $token = 'a2aWmIGjPSVZ8F3OvS2BtppKM2j6TKvKXE7u8W7MwbkVyZjwZfSYdNP5ACem';
-        $secret_key = '1eafc1e9-df86-4c8c-a3de-291ada259ab0';
-        
+        $url = ConfigMpmBayar::first()->url.'/api/payment/status';
+        $token = ConfigMpmBayar::first()->token;
+        $secret_key = ConfigMpmBayar::first()->secret_key;
+
         foreach ($ordersToUpdate as $order) {
             // $order->update(['payment_status' => 'FAILED']);
 

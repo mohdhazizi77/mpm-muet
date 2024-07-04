@@ -18,6 +18,8 @@ use App\Models\Order;
 use App\Models\Payment;
 use App\Models\TrackingOrder;
 use App\Models\ConfigGeneral;
+use App\Models\ConfigMpmBayar;
+use App\Models\ConfigPoslaju;
 
 
 use Maatwebsite\Excel\Facades\Excel;
@@ -144,10 +146,13 @@ class PaymentController extends Controller
             dd($e);
         };
 
+        // $url = 'https://ebayar-lab.mpm.edu.my/api/payment/create';
+        // $token = 'a2aWmIGjPSVZ8F3OvS2BtppKM2j6TKvKXE7u8W7MwbkVyZjwZfSYdNP5ACem';
+        // $secret_key = '1eafc1e9-df86-4c8c-a3de-291ada259ab0';
 
-        $url = 'https://ebayar-lab.mpm.edu.my/api/payment/create';
-        $token = 'a2aWmIGjPSVZ8F3OvS2BtppKM2j6TKvKXE7u8W7MwbkVyZjwZfSYdNP5ACem';
-        $secret_key = '1eafc1e9-df86-4c8c-a3de-291ada259ab0';
+        $url = ConfigMpmBayar::first()->url.'/api/payment/create';
+        $token = ConfigMpmBayar::first()->token;
+        $secret_key = ConfigMpmBayar::first()->secret_key;
 
         $extra_data = [
             'pay_for' => $request->pay_for, // SELF_PRINT or MPM_PRINT
@@ -189,6 +194,11 @@ class PaymentController extends Controller
         // }
 
         $output = $this->createPayment($url, $data, $token);
+
+        if (isset($output->ref_no) !== true) {
+            Session::flash('error', $output);
+            return redirect()->back();
+        }
 
         // Create new order
         $order = new Order();
@@ -252,7 +262,8 @@ class PaymentController extends Controller
             $hash = $_POST['hash'];
         }
 
-        $secret_key = '1eafc1e9-df86-4c8c-a3de-291ada259ab0';
+        // $secret_key = '1eafc1e9-df86-4c8c-a3de-291ada259ab0';
+        $secret_key = ConfigMpmBayar::first()->secret_key;
         $hashed = hash_hmac('SHA256', urlencode($secret_key) . urlencode($full_name) . urlencode($phone) . urlencode($email) . urlencode($amount), $secret_key);
 
         if ($hash != $hashed) {
@@ -374,7 +385,8 @@ class PaymentController extends Controller
         $status = $request->status;
         $ref_no = $request->ref_no;
         $txn_id = $request->txn_id;
-        $secret_key = '1eafc1e9-df86-4c8c-a3de-291ada259ab0';
+        // $secret_key = '1eafc1e9-df86-4c8c-a3de-291ada259ab0';
+        $secret_key = ConfigMpmBayar::first()->secret_key;
         $hashed = hash_hmac('SHA256', urlencode($secret_key) . urlencode($request->full_name) . urlencode($request->phone) . urlencode($request->email) . urlencode($request->amount), $secret_key);
         $show_result = true;
 
@@ -410,9 +422,13 @@ class PaymentController extends Controller
         $order = Order::where('payment_ref_no', $request->ref_no)->first();
         $payment = Payment::where('ref_no', $request->ref_no)->first();
 
-        $url = 'https://ebayar-lab.mpm.edu.my/api/payment/status';
-        $token = 'a2aWmIGjPSVZ8F3OvS2BtppKM2j6TKvKXE7u8W7MwbkVyZjwZfSYdNP5ACem';
-        $secret_key = '1eafc1e9-df86-4c8c-a3de-291ada259ab0';
+        // $url = 'https://ebayar-lab.mpm.edu.my/api/payment/status';
+        // $token = 'a2aWmIGjPSVZ8F3OvS2BtppKM2j6TKvKXE7u8W7MwbkVyZjwZfSYdNP5ACem';
+        // $secret_key = '1eafc1e9-df86-4c8c-a3de-291ada259ab0';
+
+        $url = ConfigMpmBayar::first()->url.'/api/payment/status';
+        $token = ConfigMpmBayar::first()->token;
+        $secret_key = ConfigMpmBayar::first()->secret_key;
 
         $data = [
             "ref_no" => $request->ref_no,
