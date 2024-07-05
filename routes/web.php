@@ -95,9 +95,9 @@ Route::group(['middleware' => ['auth:candidate','role:CALON']], function () {
         Route::get('/muet-status/{id}', [CandidateController::class, 'muetstatus'])->name('candidate.muet-status');
 
     });
+    Route::get('/payment/getdata', [PaymentController::class, 'getpayment'])->name('candidate.getpayment');
+    Route::post('/payment/getdata', [PaymentController::class, 'callbackpayment'])->name('candidate.callback');
 });
-Route::get('/payment/getdata', [PaymentController::class, 'getpayment'])->name('candidate.getpayment');
-Route::post('/payment/getdata', [PaymentController::class, 'callbackpayment'])->name('candidate.callback');
 
 Route::group(['middleware' => ['role:PENTADBIR|BPKOM|PSM|FINANCE']], function () {
 
