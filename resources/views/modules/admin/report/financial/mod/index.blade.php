@@ -134,11 +134,17 @@
 
                         <div class="row gy-1 mt-2">
                             <div class="col-md-3">
-                                <label for="start-date" class="form-label">Exam type</label>
+                                {{-- <label for="start-date" class="form-label">Exam type</label>
                                 <select name="exam_type_mod" id="exam_type_mod" class="form-control">
                                     <option value="">Please Select</option>
                                     <option value="MUET">MUET</option>
                                     <option value="MOD">MOD</option>
+                                </select> --}}
+                                <label for="start-date" class="form-label">Status</label>
+                                <select name="status_mod" id="status_mod" class="form-control">
+                                    <option value="">Please Select</option>
+                                    <option value="SUCCESS">SUCCESS</option>
+                                    <option value="FAIL">FAIL</option>
                                 </select>
                             </div>
                             <div class="col-md-3">
@@ -150,18 +156,6 @@
                                 </select>
                             </div>
                         </div>
-
-                        <div class="row gy-1 mt-2">
-                            <div class="col-md-3">
-                                <label for="start-date" class="form-label">Status</label>
-                                <select name="status_mod" id="status_mod" class="form-control">
-                                    <option value="">Please Select</option>
-                                    <option value="SUCCESS">SUCCESS</option>
-                                    <option value="FAIL">FAIL</option>
-                                </select>
-                            </div>
-                        </div>
-
                     </div>
                 </div>
             </div>

@@ -141,11 +141,17 @@
 
                         <div class="row gy-1 mt-2">
                             <div class="col-md-3">
-                                <label for="start-date" class="form-label">Exam type</label>
+                                {{-- <label for="start-date" class="form-label">Exam type</label>
                                 <select name="exam_type" id="exam_type" class="form-control">
                                     <option value="">Please Select</option>
                                     <option value="MUET">MUET</option>
                                     <option value="MOD">MOD</option>
+                                </select> --}}
+                                <label for="start-date" class="form-label">Status</label>
+                                <select name="status_muet" id="status_muet" class="form-control">
+                                    <option value="">Please Select</option>
+                                    <option value="SUCCESS">SUCCESS</option>
+                                    <option value="FAIL">FAIL</option>
                                 </select>
                             </div>
                             <div class="col-md-3">
@@ -154,17 +160,6 @@
                                     <option value="">Please Select</option>
                                     <option value="MPM_PRINT">MPM PRINT</option>
                                     <option value="SELF_PRINT">SELF PRINT</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="row gy-1 mt-2">
-                            <div class="col-md-3">
-                                <label for="start-date" class="form-label">Status</label>
-                                <select name="status_muet" id="status_muet" class="form-control">
-                                    <option value="">Please Select</option>
-                                    <option value="SUCCESS">SUCCESS</option>
-                                    <option value="FAIL">FAIL</option>
                                 </select>
                             </div>
                         </div>

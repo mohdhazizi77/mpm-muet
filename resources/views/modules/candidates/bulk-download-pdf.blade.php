@@ -290,14 +290,27 @@
                     </tr>
                     <tr>
                         <td style="text-align: left">
-                            <span style="font-weight: bold; font-size: 12pt">ADNAN BIN HUSIN</span><br>
-                            <span style="font-size: 10pt">Chief Executive</span><br>
-                            <span style="font-size: 10pt">Malaysian Examinations Council</span>
+                            <div style="line-height: 1.0;">
+                                <span style="font-weight: bold; font-size: 12pt;">ADNAN BIN HUSIN</span><br>
+                                <span style="font-size: 10pt;">Chief Executive</span><br>
+                                <span style="font-size: 10pt;">Malaysian Examinations Council</span>
+                            </div> 
                         </td>
                         <td style="text-align: right">
-                            <span style="font-size: 14px;">Date of issue: {{ date($result['issue_date']) }}</span><br>
-                            <span style="font-size: 14px; font-weight: bold">Date of expiry:
-                                {{ date($result['exp_date']) }}</span>
+                            <div style="float: right;">
+                                <table>
+                                    <tr>
+                                        <td style="font-size: 14px;">Date of issue</td>
+                                        <td style="font-size: 14px;">:</td>
+                                        <td style="font-size: 14px;">{{ date($result['issue_date']) }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-size: 14px;">Date of expiry</td>
+                                        <td style="font-size: 14px;">:</td>
+                                        <td style="font-size: 14px;">{{ date($result['exp_date']) }}</td>
+                                    </tr>
+                                </table>
+                            </div>
                         </td>
                     </tr>
                 </table>
