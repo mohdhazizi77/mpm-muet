@@ -393,25 +393,48 @@ class PaymentController extends Controller
         if ($request->hash != $hashed) {
             die("Hash tidak sah.");
         } else {
-            if ($request->status == 'SUCCESS') {
-                return view('modules.candidates.print-mpm-return', compact([
-                    'user',
-                    'status',
-                    'ref_no',
-                    'txn_id',
-                    'show_result',
-                    'order'
-                ]));
-            } elseif ($request->status == 'FAILED') {
-                $show_result = false;
-                return view('modules.candidates.print-mpm-return', compact([
-                    'user',
-                    'status',
-                    'ref_no',
-                    'txn_id',
-                    'show_result',
-                    'order'
-                ]));
+            if($order->payment_for == 'MPM_PRINT'){
+                if ($request->status == 'SUCCESS') {
+                    return view('modules.candidates.print-mpm-return', compact([
+                        'user',
+                        'status',
+                        'ref_no',
+                        'txn_id',
+                        'show_result',
+                        'order'
+                    ]));
+                } elseif ($request->status == 'FAILED') {
+                    $show_result = false;
+                    return view('modules.candidates.print-mpm-return', compact([
+                        'user',
+                        'status',
+                        'ref_no',
+                        'txn_id',
+                        'show_result',
+                        'order'
+                    ]));
+                }
+            }else{
+                if ($request->status == 'SUCCESS') {
+                    return view('modules.candidates.print-mpm-return', compact([
+                        'user',
+                        'status',
+                        'ref_no',
+                        'txn_id',
+                        'show_result',
+                        'order'
+                    ]));
+                } elseif ($request->status == 'FAILED') {
+                    $show_result = false;
+                    return view('modules.candidates.self-print-return', compact([
+                        'user',
+                        'status',
+                        'ref_no',
+                        'txn_id',
+                        'show_result',
+                        'order'
+                    ]));
+                }
             }
         }
 

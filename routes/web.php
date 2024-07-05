@@ -85,6 +85,7 @@ Route::group(['middleware' => ['auth:candidate','role:CALON']], function () {
         Route::post('/verifyIndexNumber', [CandidateController::class, 'verifyIndexNumber'])->name('candidate.verifyIndexNumber');
         Route::get('/view-result/{id}', [CandidateController::class, 'printpdf'])->name('candidate.printpdf');
         Route::get('/download-result/{id}', [CandidateController::class, 'downloadpdf'])->name('candidate.downloadpdf');
+        Route::get('/download-result-candidate/{id}/{type}', [CandidateController::class, 'downloadpdfCandidate'])->name('candidate.downloadpdfCandidate');
         Route::get('/pos-result/{id}', [CandidateController::class, 'printmpm'])->name('candidate.printmpm');
         Route::get('/selfprint/{id}', [CandidateController::class, 'selfprint'])->name('candidate.selfprint');
         Route::post('/payment', [PaymentController::class, 'makepayment'])->name('candidate.makepayment');
