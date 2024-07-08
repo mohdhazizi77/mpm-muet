@@ -84,17 +84,17 @@ class DefaultUserRoleSeeder extends Seeder
             'FINANCE',
         ];
 
-        // foreach ($arr as $key => $value) {
-        //     $user = new User();
-        //     $user->name = 'User'.($key+1);
-        //     $user->email = 'user'.($key+1).'@mail.com';
-        //     $user->password = Hash::make('123456');
-        //     $user->email_verified_at = '2023-01-01 00:00:00';
-        //     $user->avatar = 'avatar-1.jpg';
-        //     $user->created_at = now();
-        //     $user->save();
-        //     $user->assignRole($value);
-        // }
+        foreach ($arr as $key => $value) {
+            $user = new User();
+            $user->name = 'User'.($key+1);
+            $user->email = 'user'.($key+1).'@mail.com';
+            $user->password = Hash::make('123456');
+            $user->email_verified_at = '2023-01-01 00:00:00';
+            $user->avatar = 'avatar-1.jpg';
+            $user->created_at = now();
+            $user->save();
+            $user->assignRole($value);
+        }
 
     }
 }
