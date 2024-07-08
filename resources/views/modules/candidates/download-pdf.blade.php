@@ -25,7 +25,7 @@
         padding-top: 20px;
         font-weight: bold;
         line-height: 1;
-        font-size: 14px;
+        /* font-size: 14px; */
     }
 
     #student-details-2 {
@@ -176,7 +176,7 @@
         <p style="font-size: 17px">and obtained the following score</p>
         </div> --}}
         <div id="student-details">
-            <table style="width: 105%; margin-left: -15px; margin-right: -15px;">
+            <table style="width: 105%; margin-left: -15px; margin-right: -15px; font-size:16pt">
                 <tr>
                     <td>{{ strtoupper($candidate->nama) }}</td>
                 </tr>
@@ -196,36 +196,24 @@
                     <td width="33%" style="border: 1px solid black;">Obtained Score</td>
                 </tr>
                 <tr>
-                    <td
-                        style="border: 1px solid black; border-top: 0; border-bottom: 0;text-align: left;padding-left: 5px">
-                        LISTENING</td>
+                    <td style="border: 1px solid black; border-top: 0; border-bottom: 0;text-align: left;padding-left: 5px"> LISTENING</td>
                     <td style="border: 1px solid black; border-top: 0; border-bottom: 0">{{ $scheme['listening'] }}</td>
-                    <td width="33%" style="border: 1px solid black; border-top: 0; border-bottom: 0">
-                        {{ $result['listening'] }}</td>
+                    <td width="33%" style="border: 1px solid black; border-top: 0; border-bottom: 0"> {{ $result['listening'] }}</td>
                 </tr>
                 <tr>
-                    <td
-                        style="border: 1px solid black; border-top: 0; border-bottom: 0;text-align: left;padding-left: 5px">
-                        SPEAKING</td>
+                    <td style="border: 1px solid black; border-top: 0; border-bottom: 0;text-align: left;padding-left: 5px"> SPEAKING</td>
                     <td style="border: 1px solid black; border-top: 0; border-bottom: 0">{{ $scheme['speaking'] }}</td>
-                    <td width="33%" style="border: 1px solid black; border-top: 0; border-bottom: 0">
-                        {{ $result['speaking'] }}</td>
+                    <td width="33%" style="border: 1px solid black; border-top: 0; border-bottom: 0"> {{ $result['speaking'] }}</td>
                 </tr>
                 <tr>
-                    <td
-                        style="border: 1px solid black; border-top: 0; border-bottom: 0;text-align: left;padding-left: 5px">
-                        READING</td>
+                    <td style="border: 1px solid black; border-top: 0; border-bottom: 0;text-align: left;padding-left: 5px"> READING</td>
                     <td style="border: 1px solid black; border-top: 0; border-bottom: 0">{{ $scheme['reading'] }}</td>
-                    <td width="33%" style="border: 1px solid black; border-top: 0; border-bottom: 0">
-                        {{ $result['reading'] }}</td>
+                    <td width="33%" style="border: 1px solid black; border-top: 0; border-bottom: 0"> {{ $result['reading'] }}</td>
                 </tr>
                 <tr>
-                    <td
-                        style="border: 1px solid black; border-top: 0; border-bottom: 0;text-align: left;padding-left: 5px">
-                        WRITING</td>
+                    <td style="border: 1px solid black; border-top: 0; border-bottom: 0;text-align: left;padding-left: 5px"> WRITING</td>
                     <td style="border: 1px solid black; border-top: 0; border-bottom: 0">{{ $scheme['writing'] }}</td>
-                    <td width="33%" style="border: 1px solid black; border-top: 0; border-bottom: 0">
-                        {{ $result['writing'] }}</td>
+                    <td width="33%" style="border: 1px solid black; border-top: 0; border-bottom: 0"> {{ $result['writing'] }}</td>
                 </tr>
                 <tr>
                     <th style="border: 1px solid black;text-align: left;padding-left: 5px">AGGREGATED SCORE</th>
@@ -286,7 +274,7 @@
                             <span style="font-weight: bold; font-size: 12pt;">ADNAN BIN HUSIN</span><br>
                             <span style="font-size: 10pt;">Chief Executive</span><br>
                             <span style="font-size: 10pt;">Malaysian Examinations Council</span>
-                        </div>                        
+                        </div>
                     </td>
                     <td style="text-align: right;">
                         <div style="float: right;">
@@ -297,14 +285,14 @@
                                     <td style="font-size: 14px;">{{ $result['issue_date'] }}</td>
                                 </tr>
                                 <tr>
-                                    <td style="font-size: 14px;">Date of expiry</td>
-                                    <td style="font-size: 14px;">:</td>
-                                    <td style="font-size: 14px;">{{ $result['exp_date'] }}</td>
+                                    <td style="font-size: 14px; font-weight: bold;">Date of expiry</td>
+                                    <td style="font-size: 14px; font-weight: bold;">:</td>
+                                    <td style="font-size: 14px; font-weight: bold;">{{ $result['exp_date'] }}</td>
                                 </tr>
                             </table>
                         </div>
                     </td>
-                    
+
                 </tr>
             </table>
         </div>
