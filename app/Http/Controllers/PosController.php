@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Notification;
 
 use App\Exports\OrdersPosExport;
 use App\Imports\OrderPosImport;
+use App\Models\ConfigPoslaju;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
@@ -178,7 +180,6 @@ class PosController extends Controller
             return response()->json($data);
         }
 
-        // dd($request->toArray());
         try {
             $id = Crypt::decrypt($request->order_id);
         } catch (DecryptException $e) {
@@ -239,10 +240,9 @@ class PosController extends Controller
             $order->current_status = "COMPLETED";
             $order->consignment_note = $preAcceptance->pdf;
 
-
             $tracking = new TrackingOrder();
             $tracking->order_id = $order->id;
-            $tracking->detail = "Tracking number : ";
+            $tracking->detail = "Transaction completed and Certificate out for shipment";
             $tracking->status = "COMPLETED";
             $tracking->save();
 
@@ -311,6 +311,8 @@ class PosController extends Controller
     }
 
     public function updateBulk(Request $request, $type){
+        // dd($request->toArray());
+
         foreach ($request->orderID as $key => $value) {
 
             if (empty($value))
@@ -341,7 +343,7 @@ class PosController extends Controller
 
             $order = Order::find($id);
             $stringOrderID = $order->unique_order_id;
-
+            // dd($stringOrderID);
             $data['success'] = false;
 
             if ($type == 'new') {
@@ -375,23 +377,20 @@ class PosController extends Controller
                 if(empty($order->tracking_number))
                     continue;
 
-                if ($order->tracking_number !== $request->ship_trackNum) {
-                    $order->tracking_number = $request->ship_trackNum;
-                }
+                // if ($order->tracking_number !== $request->ship_trackNum) {
+                //     $order->tracking_number = $request->ship_trackNum;
+                // }
 
                 $preAcceptance = self::sendPreAcceptanceSingle($order); // return output or error
-
                 if (!$preAcceptance)
                     return response()->json($data);
-
 
                 $order->consignment_note = $preAcceptance->pdf;
                 $order->current_status = "COMPLETED";
 
-
                 $tracking = new TrackingOrder();
                 $tracking->order_id = $order->id;
-                $tracking->detail = "Tracking number : ";
+                $tracking->detail = "Transaction completed and Certificate out for shipment";
                 $tracking->status = "COMPLETED";
                 $tracking->save();
             } else {
@@ -449,56 +448,6 @@ class PosController extends Controller
         return response()->json($data);
     }
 
-    public function getBearerToken(){
-        // $url = "https://gateway-usc.pos.com.my/security/connect/token";
-        // $data = [
-        //     'client_id' => "6652e0d504a9d7000e8a878a",
-        //     'client_secret' => "pOJY4eHX6fvKjBcpyP1jQtqCwi3ImC2qiDPPKJlodc8=",
-        //     'grant_type' => "client_credentials",
-        //     'scope' => "as01.gen-connote.all"
-        // ];
-
-        // $output = '';
-        // $curl = curl_init();
-        // curl_setopt($curl, CURLOPT_URL, $url);
-        // curl_setopt($curl, CURLOPT_POST, 1);
-        // curl_setopt($curl, CURLOPT_HTTPHEADER, array(
-        //     'Accept: application/json',
-        // ));
-        // curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-        // curl_setopt($curl, CURLOPT_POSTFIELDS, http_build_query($data));
-        // curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, 0);
-        // curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 0);
-        // $output = curl_exec($curl);
-        // $output = json_decode($output);
-        // // dd($output);
-
-        // if (curl_errno($curl)) {
-        //     $error_msg = curl_error($curl);
-        //     error_log("cURL error: " . $error_msg); // Log the error
-        //     curl_close($curl);
-        //     return "An error occurred while connecting to the courier API. Please try again later.";
-        // }
-
-        // $http_status = curl_getinfo($curl, CURLINFO_HTTP_CODE);
-        // if ($http_status != 200) {
-        //     $error_msg = "HTTP Status Code: " . $http_status;
-        //     error_log("cURL error: " . $error_msg); // Log the error
-        //     curl_close($curl);
-        //     return "An error occurred with the courier API. Please try again later.";
-        // }
-
-        // if (!empty($output)) {
-        //     curl_close($curl);
-        //     return $output;
-        // } else {
-        //     $error_msg = "Failed to connect to the payment gateway. URL or TOKEN may be incorrect.";
-        //     error_log("Connection error: " . $error_msg); // Log the error
-        //     curl_close($curl);
-        //     return "An error occurred while processing your request. Please try again later.";
-        // }
-    }
-
     function getConNote($orders){
 
         // Ensure you have a valid session token
@@ -509,17 +458,17 @@ class PosController extends Controller
 
         // Create a new Guzzle HTTP client
         $client = new Client();
-
+        $ConfigPoslaju = ConfigPoslaju::first();
         try {
             // Send a GET request
-            $response = $client->request('GET', 'https://gateway-usc.pos.com.my/staging/as01/gen-connote/v1/api/GConnote', [
+            $response = $client->request('GET', $ConfigPoslaju->url.'/as01/gen-connote/v1/api/GConnote', [
                 'query' => [
                     'numberOfItem' => count($orders),
-                    'Prefix' => 'ER',
-                    'ApplicationCode' => 'StagingPos',
-                    'Secretid' => 'StagingPos@1234',
+                    'Prefix' => $ConfigPoslaju->Prefix,
+                    'ApplicationCode' => $ConfigPoslaju->ApplicationCode,
+                    'Secretid' => $ConfigPoslaju->Secretid,
                     'Orderid' => implode(', ', $orders),
-                    'username' => 'StagingPos'
+                    'username' => $ConfigPoslaju->username
                 ],
                 'headers' => [
                     'Authorization' => 'Bearer ' . $bearerToken,
@@ -600,8 +549,10 @@ class PosController extends Controller
             die('Bearer token is not available in the session.');
         }
 
+        $ConfigPoslaju = ConfigPoslaju::first();
+
         $client = new Client();
-        $url = 'https://gateway-usc.pos.com.my/staging/as2corporate/preacceptancessingle/v1/Tracking.PreAcceptance.WebApi/api/PreAcceptancesSingle';
+        $url = $ConfigPoslaju->url . '/as2corporate/preacceptancessingle/v1/Tracking.PreAcceptance.WebApi/api/PreAcceptancesSingle';
 
         $headers = [
             'Content-Type' => 'application/json',

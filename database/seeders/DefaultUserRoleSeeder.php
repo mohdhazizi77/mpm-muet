@@ -73,14 +73,16 @@ class DefaultUserRoleSeeder extends Seeder
         $user->save();
         $user->assignRole('FINANCE');
 
-        // $arr = [
-        //     'PENTADBIR',
-        //     'PENTADBIR',
-        //     'BPKOM',
-        //     'BPKOM',
-        //     'PSM',
-        //     'PSM',
-        // ];
+        $arr = [
+            'PENTADBIR',
+            'PENTADBIR',
+            'BPKOM',
+            'BPKOM',
+            'PSM',
+            'PSM',
+            'FINANCE',
+            'FINANCE',
+        ];
 
         // foreach ($arr as $key => $value) {
         //     $user = new User();

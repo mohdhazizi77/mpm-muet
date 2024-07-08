@@ -70,8 +70,8 @@ $(document).ready(function() {
                     render(data, type, row) {
                         let isChecked = data === 0 ? 'checked' : '';
 
-                        let html = '<div class="form-check form-switch form-switch-md d-flex justify-content-center align-items-center">' + 
-                                        '<input class="form-check-input" type="checkbox" role="switch" ' + isChecked + ' value="'+ data +'" id="toggleStatus">' + 
+                        let html = '<div class="form-check form-switch form-switch-md d-flex justify-content-center align-items-center">' +
+                                        '<input class="form-check-input" type="checkbox" role="switch" ' + isChecked + ' value="'+ data +'" id="toggleStatus">' +
                                     '</div>';
 
                         return html;
@@ -250,6 +250,7 @@ $(document).ready(function() {
                         });
                     },
                     success: function(response) {
+                        Swal.close()
                         $('#form_users_add').removeClass('was-validated');
                         Swal.fire({
                             type: 'success',
@@ -286,7 +287,7 @@ $(document).ready(function() {
                                     cancelButton: 'my-swal-cancel',
                                 }
                             });
-                        } 
+                        }
                     }
                 });
             }
@@ -356,6 +357,7 @@ $(document).ready(function() {
                         });
                     },
                     success: function(response) {
+                        Swal.close()
                         $('#form_users_edit').removeClass('was-validated');
                         Swal.fire({
                             type: 'success',
@@ -381,7 +383,7 @@ $(document).ready(function() {
                             $('#phone_text_edit').text(xhr.responseJSON.errors && xhr.responseJSON.errors.phonenumber ? xhr.responseJSON.errors.phonenumber[0] : '');
                             $('#role_text_edit').text(xhr.responseJSON.errors && xhr.responseJSON.errors.role ? xhr.responseJSON.errors.role[0] : '');
                             $('#status_text_edit').text(xhr.responseJSON.errors && xhr.responseJSON.errors.status ? xhr.responseJSON.errors.status[0] : '');
-                            
+
                             Swal.fire({
                                 icon: "error",
                                 title: 'Gagal',
@@ -392,7 +394,7 @@ $(document).ready(function() {
                                     cancelButton: 'my-swal-cancel',
                                 }
                             });
-                        } 
+                        }
                     }
                 });
             }
@@ -449,6 +451,7 @@ function active(id){
                     });
                 },
                 success: function(response) {
+                    Swal.close()
                     $('#form_users_edit').removeClass('was-validated');
                     Swal.fire({
                         type: 'success',
@@ -466,7 +469,7 @@ function active(id){
                     });
                 },
                 error: function(xhr, status, errors) {
-                    if (xhr.responseJSON && xhr.responseJSON.errors) {                        
+                    if (xhr.responseJSON && xhr.responseJSON.errors) {
                         Swal.fire({
                             icon: "error",
                             title: 'Gagal',
@@ -477,7 +480,7 @@ function active(id){
                                 cancelButton: 'my-swal-cancel',
                             }
                         });
-                    } 
+                    }
                 }
             });
         }
@@ -522,6 +525,8 @@ function deactive(id){
                     });
                 },
                 success: function(response) {
+                    Swal.close()
+
                     $('#form_users_edit').removeClass('was-validated');
                     Swal.fire({
                         type: 'success',
@@ -539,7 +544,7 @@ function deactive(id){
                     });
                 },
                 error: function(xhr, status, errors) {
-                    if (xhr.responseJSON && xhr.responseJSON.errors) {                        
+                    if (xhr.responseJSON && xhr.responseJSON.errors) {
                         Swal.fire({
                             icon: "error",
                             title: 'Gagal',
@@ -550,7 +555,7 @@ function deactive(id){
                                 cancelButton: 'my-swal-cancel',
                             }
                         });
-                    } 
+                    }
                 }
             });
         }

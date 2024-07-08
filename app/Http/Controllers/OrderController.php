@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Session;
+
 
 use Barryvdh\DomPDF\Facade\Pdf;
 use Maatwebsite\Excel\Facades\Excel;
@@ -73,7 +76,7 @@ class OrderController extends Controller
             $datas[] = [
                 'no' => $key+1,
                 'date' => $value->created_at->format('d-m-Y H:i:s'),
-                'detail' =>  $value->status == "COMPLETED" ? "" : $value->detail,
+                'detail' =>  $value->detail,
                 'status' =>  $value->status,
                 'color'  =>  $value->statusColor($value->status),
                 'tracking_number' => !empty($value->tracking_number) ? $value->tracking_number : ''
@@ -86,12 +89,36 @@ class OrderController extends Controller
 
     public function getAjaxTrackShipping(Request $request){
 
-        //$track_no = $request->trackNo
-        // Call POS API DO tracking
+        $track_no = $request->trackNo;
 
-        $datas = [];
-        return datatables($datas)->toJson();
+        // Replace these with actual values or retrieve from config/environment
+        $culture = 'EN';
+        $bearerToken = Session::get('bearer_token');;
 
+        try {
+            $response = Http::withToken($bearerToken)
+                            ->get('https://gateway-usc.pos.com.my/staging/as2corporate/v2trackntracewebapijson/v1/api/Details', [
+                                'id' => $track_no,
+                                'Culture' => $culture,
+                            ]);
+            if ($response->successful()) {
+                $data = [];
+                $response = json_decode($response->getBody()->getContents());
+                foreach ($response as $key => $value) {
+                    $data[] = [
+                        'no' => $key+1,
+                        'date' => $value->date,
+                        'detail' => $value->process
+                    ];
+                }
+                return datatables($data)->toJson();
+
+            } else {
+                return response()->json(['error' => 'Failed to fetch data'], $response->status());
+            }
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
     }
 
     public function indexAdmin(){

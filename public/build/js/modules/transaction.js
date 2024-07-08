@@ -71,7 +71,12 @@ $(document).ready(function() {
                     orderable: true,
                     render(data, type, row) {
                         let html = '';
-                        html = '<p>'+row.candidate_name+'</p> <p>NRIC : '+row.candidate_nric+'</p>' + '<p>'+row.session+'</p>';
+                        html = '<div style="line-height: 1.0;">' +
+                            '<span style="display: block; margin-bottom: 5px;">' + row.candidate_name + '</span>' +
+                            '<span style="display: block; margin-bottom: 5px;">NRIC: ' + row.candidate_nric + '</span>' +
+                            '<span style="display: block;">' + row.session + '</span>' +
+                        '</div>';
+                        
                         return html;
                     }
                 },

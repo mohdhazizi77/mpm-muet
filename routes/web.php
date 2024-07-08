@@ -85,13 +85,14 @@ Route::group(['middleware' => ['auth:candidate','role:CALON']], function () {
         Route::post('/verifyIndexNumber', [CandidateController::class, 'verifyIndexNumber'])->name('candidate.verifyIndexNumber');
         Route::get('/view-result/{id}', [CandidateController::class, 'printpdf'])->name('candidate.printpdf');
         Route::get('/download-result/{id}', [CandidateController::class, 'downloadpdf'])->name('candidate.downloadpdf');
+        Route::get('/download-result-candidate/{id}/{type}', [CandidateController::class, 'downloadpdfCandidate'])->name('candidate.downloadpdfCandidate');
         Route::get('/pos-result/{id}', [CandidateController::class, 'printmpm'])->name('candidate.printmpm');
         Route::get('/selfprint/{id}', [CandidateController::class, 'selfprint'])->name('candidate.selfprint');
         Route::post('/payment', [PaymentController::class, 'makepayment'])->name('candidate.makepayment');
         Route::get('/order/{id}', [OrderController::class, 'index'])->name('order.index');
         Route::post('/order/ajax', [OrderController::class, 'getAjax'])->name('order.getAjax');
         Route::post('/track-order/ajax', [OrderController::class, 'getAjaxTrackOrder'])->name('order.getAjaxTrackOrder');
-        Route::post('/track-shipping/ajax', [OrderController::class, 'getAjaxTrackShipping'])->name('order.getAjaxTrackShipping');
+        Route::post('/track-shipping/ajax', [OrderController::class, 'getAjaxTrackShipping'])->name('order.getAjaxTrackShipping')->middleware('poslaju.token');
         Route::get('/muet-status/{id}', [CandidateController::class, 'muetstatus'])->name('candidate.muet-status');
 
     });
@@ -153,6 +154,18 @@ Route::group(['middleware' => ['role:PENTADBIR|BPKOM|PSM|FINANCE']], function ()
 
         Route::get('/config-mpmbayar', [ConfigMpmBayarController::class, 'index'])->name('config.mpmbayar.index');
         Route::post('/config-mpmbayar', [ConfigMpmBayarController::class, 'updateOrCreate'])->name('config.mpmbayar.update');
+
+        Route::get('/users', [UserController::class, 'index'])->name('users.index');
+        Route::post('/users/ajax', [UserController::class, 'getAjax'])->name('users.ajax');
+        Route::get('/users/create', [UserController::class, 'create'])->name('users.create');
+        Route::post('/users/store', [UserController::class, 'store'])->name('users.store');
+        Route::get('/users/edit/{id}', [UserController::class, 'edit'])->name('users.edit');
+        Route::post('/users/update/{user}', [UserController::class, 'update'])->name('users.update');
+        Route::post('/users/actived/{user}', [UserController::class, 'activated'])->name('users.activated');
+        Route::post('/users/deactived/{user}', [UserController::class, 'deactived'])->name('users.deactived');
+
+        Route::resource('/audit-logs', AuditLogsController::class);
+        Route::post('/audit-logs/ajax', [AuditLogsController::class, 'getAjax'])->name('audit-logs.ajax');
     });
 
     Route::get('/pos/token', [PosController::class, 'getBearerToken']);
@@ -164,27 +177,10 @@ Route::group(['middleware' => ['role:PENTADBIR|BPKOM|PSM|FINANCE']], function ()
     Route::post('/pos/{type}/bulk/print', [PosController::class, 'printBulk']);
     Route::get('/pos/{type}/export-xlsx', [PosController::class, 'exportXlsx']);
 
-    Route::get('/your-route', function () {
-        // Your route logic here
-    })->middleware('poslaju.token');
-
     // download pdf
     Route::get('/pos/downloadpdf/{id}', [CandidateController::class, 'singleDownloadPdf'])->name('mpm.singledownloadpdf');
     Route::post('/pos/bulkdownloadpdf', [CandidateController::class, 'bulkDownloadPdf'])->name('mpm.bulkdownloadpdf');
     Route::post('/pos/bulkdownloadconnote', [PosController::class, 'bulkDownloadConnote'])->name('mpm.bulkdownloadconnote');
-
-    Route::get('users', [UserController::class, 'index'])->name('users.index');
-    Route::post('users/ajax', [UserController::class, 'getAjax'])->name('users.ajax');
-    Route::get('users/create', [UserController::class, 'create'])->name('users.create');
-    Route::post('users/store', [UserController::class, 'store'])->name('users.store');
-    Route::get('users/edit/{id}', [UserController::class, 'edit'])->name('users.edit');
-    Route::post('users/update/{user}', [UserController::class, 'update'])->name('users.update');
-    Route::post('users/actived/{user}', [UserController::class, 'activated'])->name('users.activated');
-    Route::post('users/deactived/{user}', [UserController::class, 'deactived'])->name('users.deactived');
-
-    Route::resource('audit-logs', AuditLogsController::class);
-    Route::post('audit-logs/ajax', [AuditLogsController::class, 'getAjax'])->name('audit-logs.ajax');
-
 });
 
 Route::get('users/verify-password/{id}', [UserController::class, 'verifyIndex'])->name('users.verify_index');
