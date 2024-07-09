@@ -12,6 +12,7 @@ class Order extends Model
     protected $fillable = [
         "unique_order_id",
         "candidate_id",
+        "payment_ref_no",
         "name",
         "email",
         "phone_num",
@@ -60,5 +61,10 @@ class Order extends Model
         ];
 
         return empty($id) ? $arr : $arr[$id];
+    }
+
+    public function payment()
+    {
+        return $this->hasOne(Payment::class, 'ref_no', 'payment_ref_no');
     }
 }
