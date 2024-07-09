@@ -294,7 +294,6 @@ class OrderController extends Controller
         $currentDate = Carbon::now()->format('Y-m-d H:i:s');
 
         $transactions = Order::latest();
-        dd($transactions);
         // list by transaction by role
         switch (Auth::User()->getRoleNames()[0]) {
             case 'PSM':
@@ -346,6 +345,8 @@ class OrderController extends Controller
         }
 
         $transactions = $transactions->get();
+        dd($transactions);
+
         $pdf = PDF::loadView('modules.admin.report.transaction.pdf.transaction', ['transactions' => $transactions]);
 
         return $pdf->stream('ListTransaction.pdf');
