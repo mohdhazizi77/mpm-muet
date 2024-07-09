@@ -138,7 +138,7 @@
                                                 <div class="modal-body">
                                                     <form>
                                                         <div class="mb-3">
-                                                            <label class="" style="font-weight: 400">For every certificate printed by MPM, you will be charged <b>RM60</b> excludes delivery charges.</label>
+                                                            <label class="" style="font-weight: 400">For every certificate printed by MPM, you will be charged <b>RM60</b> includes delivery charges.</label>
                                                         </div>
                                                         <div class="mb-3">
                                                             <label class="" style="font-weight: 400">All certificate will be processed within 3 working days and will be shipped within <b>7 working days</b>.</label>
