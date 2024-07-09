@@ -100,7 +100,7 @@ class ImportModCandidate implements ToCollection
             $reg_id = $parts[1];
             $nocalon = $parts[1];
 
-            $sesi = str_replace("MUET", "MOD", $row[3]);
+            // $sesi = str_replace("MUET", "MOD", $row[3]);
 
             $calon = ModCalon::updateOrCreate(
                 [
