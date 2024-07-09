@@ -19,7 +19,7 @@ class OrdersPosExport implements FromView, ShouldAutoSize
 
     public function view(): view
     {
-        return view('modules.admin.pos.' . $this->type . '.processing-xlsx', [
+        return view('modules.admin.pos.' . strtolower($this->type) . '.processing-xlsx', [
             'orders' => $this->orders,
         ]);
     }

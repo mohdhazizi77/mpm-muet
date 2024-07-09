@@ -42,8 +42,13 @@
                         <label for="start-date" class="form-label">Exam type</label>
                         <select name="exam_type" id="exam_type" class="form-control">
                             <option value="">Please Select</option>
+                            @role('PENTADBIR|PSM')
                             <option value="MUET">MUET</option>
+                            @endrole
+                            @role('PENTADBIR|BPKOM')
                             <option value="MOD">MOD</option>
+                            @endrole
+
                         </select>
                     </div>
                     <div class="col-md-3">
