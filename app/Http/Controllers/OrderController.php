@@ -278,9 +278,9 @@ class OrderController extends Controller
         if(filled($request->textSearch)){
             $textSearch = $request->textSearch;
             $transactions->where(function ($query) use ($textSearch) {
-                $query->where('txn_id', 'LIKE', '%' . $textSearch . '%')
+                $query->where('unique_order_id', 'LIKE', '%' . $textSearch . '%');
                     // Add more columns to search in if necessary
-                    ->orWhere('ref_no', 'LIKE', '%' . $textSearch . '%');
+                    // ->orWhere('ref_no', 'LIKE', '%' . $textSearch . '%');
             });
         }
 
@@ -299,16 +299,16 @@ class OrderController extends Controller
         switch (Auth::User()->getRoleNames()[0]) {
             case 'PSM':
                 // $transactions->where('type', 'MUET');
-                $transactions->when($request->filled('exam_type'), function ($query) use ($request) {
-                        return $query->where('type', $request->input('exam_type'));
+                $transactions->when($request->filled('type'), function ($query) use ($request) {
+                        return $query->where('type', $request->input('type'));
                     }, function ($query) {
                         return $query->where('type', 'MUET');
                     });
                 break;
             case 'BPKOM':
                 // $transactions->where('type', 'MOD');
-                $transactions->when($request->filled('exam_type'), function ($query) use ($request) {
-                        return $query->where('type', $request->input('exam_type'));
+                $transactions->when($request->filled('type'), function ($query) use ($request) {
+                        return $query->where('type', $request->input('type'));
                     }, function ($query) {
                         return $query->where('type', 'MOD');
                     });
@@ -339,14 +339,13 @@ class OrderController extends Controller
         if(filled($request->textSearch)){
             $textSearch = $request->textSearch;
             $transactions->where(function ($query) use ($textSearch) {
-                $query->where('txn_id', 'LIKE', '%' . $textSearch . '%')
+                $query->where('unique_order_id', 'LIKE', '%' . $textSearch . '%');
                     // Add more columns to search in if necessary
-                    ->orWhere('ref_no', 'LIKE', '%' . $textSearch . '%');
+                    // ->orWhere('ref_no', 'LIKE', '%' . $textSearch . '%');
             });
         }
 
         $transactions = $transactions->get();
-
         $pdf = PDF::loadView('modules.admin.report.transaction.pdf.transaction', ['transactions' => $transactions]);
 
         return $pdf->stream('ListTransaction.pdf');

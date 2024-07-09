@@ -29,49 +29,49 @@ class DefaultUserRoleSeeder extends Seeder
         $role = Role::create(['name' => 'FINANCE']);
 
 
-        // $user = new User();
-        // $user->name = 'Mohd Hazizi';
-        // $user->email = 'pentadbirmuet@gmail.com';
-        // $user->password = Hash::make('123456');
+        $user = new User();
+        $user->name = 'Mohd Hazizi';
+        $user->email = 'pentadbirmuet@gmail.com';
+        $user->password = Hash::make('123456');
 
-        // $user->email_verified_at = '2023-01-01 00:00:00';
-        // $user->avatar = 'avatar-1.jpg';
-        // $user->created_at = now();
-        // $user->save();
-        // $user->assignRole('PENTADBIR');
+        $user->email_verified_at = '2023-01-01 00:00:00';
+        $user->avatar = 'avatar-1.jpg';
+        $user->created_at = now();
+        $user->save();
+        $user->assignRole('PENTADBIR');
 
-        // $user = new User();
-        // $user->name = 'MOD-ADMIN';
-        // $user->email = 'modadmin@gmail.com';
-        // $user->password = Hash::make('123456');
+        $user = new User();
+        $user->name = 'MOD-ADMIN';
+        $user->email = 'modadmin@gmail.com';
+        $user->password = Hash::make('123456');
 
-        // $user->email_verified_at = '2023-01-01 00:00:00';
-        // $user->avatar = 'avatar-1.jpg';
-        // $user->created_at = now();
-        // $user->save();
-        // $user->assignRole('BPKOM');
+        $user->email_verified_at = '2023-01-01 00:00:00';
+        $user->avatar = 'avatar-1.jpg';
+        $user->created_at = now();
+        $user->save();
+        $user->assignRole('BPKOM');
 
-        // $user = new User();
-        // $user->name = 'MUET-ADMIN';
-        // $user->email = 'muetadmin@gmail.com';
-        // $user->password = Hash::make('123456');
+        $user = new User();
+        $user->name = 'MUET-ADMIN';
+        $user->email = 'muetadmin@gmail.com';
+        $user->password = Hash::make('123456');
 
-        // $user->email_verified_at = '2023-01-01 00:00:00';
-        // $user->avatar = 'avatar-1.jpg';
-        // $user->created_at = now();
-        // $user->save();
-        // $user->assignRole('PSM');
+        $user->email_verified_at = '2023-01-01 00:00:00';
+        $user->avatar = 'avatar-1.jpg';
+        $user->created_at = now();
+        $user->save();
+        $user->assignRole('PSM');
 
-        // $user = new User();
-        // $user->name = 'FINANCE';
-        // $user->email = 'finance@gmail.com';
-        // $user->password = Hash::make('123456');
+        $user = new User();
+        $user->name = 'FINANCE';
+        $user->email = 'finance@gmail.com';
+        $user->password = Hash::make('123456');
 
-        // $user->email_verified_at = '2023-01-01 00:00:00';
-        // $user->avatar = 'avatar-1.jpg';
-        // $user->created_at = now();
-        // $user->save();
-        // $user->assignRole('FINANCE');
+        $user->email_verified_at = '2023-01-01 00:00:00';
+        $user->avatar = 'avatar-1.jpg';
+        $user->created_at = now();
+        $user->save();
+        $user->assignRole('FINANCE');
 
         $arr = [
             'PENTADBIR',
