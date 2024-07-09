@@ -26,9 +26,9 @@
                     @foreach ($payments as $payment)
                         <tr style="border: 1px solid black; padding: 5px">
                             <td style="border: 1px solid black; padding: 5px">{{ $loop->iteration }}</td>
-                            <td style="border: 1px solid black; padding: 5px">{{ $payment->txn_id }}</td>
+                            <td style="border: 1px solid black; padding: 5px">{{ $payment->order->unique_order_id }}</td>
                             <td style="border: 1px solid black; padding: 5px">{{ date('d/m/Y' , strtotime($payment->payment_date)) }}</td>
-                            <td style="border: 1px solid black; padding: 5px">{{ $payment->receipt_number ?? 'No Record' }}</td>
+                            <td style="border: 1px solid black; padding: 5px">{{ $payment->ref_no ?? 'No Record' }}</td>
                             <td style="border: 1px solid black; padding: 5px">RM {{ $payment->amount }}</td>
                         </tr>
                     @endforeach
