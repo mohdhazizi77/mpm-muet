@@ -160,7 +160,7 @@ $(document).ready(function() {
         // Update the href attribute of the "Continue" button
         $('#modalPayment a.btn-success').attr('href', dynamicUrl);
     });
-    
+
     $(document).on('click', '.modalPaymentMpm', function() {
         var certID = $(this).data('id');
         // Construct the dynamic URL based on the data-id
@@ -223,9 +223,9 @@ $(document).ready(function() {
     $(document).on('click', '.btnForgotIndexNumber', function(){
         Swal.fire({
             icon: "info",
-            text: "Kindly search your MUET index number from this portal:",
-            // footer: '<a href="mailto:mpm@yopmail.com">mpm@yopmail.com</a>'
-          });
-    })
+            html: 'Kindly search your MUET index number from this portal:<br><a href="http://webmpm1.mpm.edu.my/muetresults/" target="_blank">http://webmpm1.mpm.edu.my/muetresults/</a>',
+            showConfirmButton: false,
+        });
+    });
 
 });
