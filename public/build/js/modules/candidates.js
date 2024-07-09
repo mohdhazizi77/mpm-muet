@@ -68,7 +68,7 @@ $(document).ready(function() {
 
                             buttonPrintMPM =
                             // href="/candidate/pos-result/'+data+'"
-                            '<a data-id='+data+' class="btn btn-soft-info waves-effect text-black mx-2 '+modalPaymentMpm+'" data-bs-toggle="modal" data-bs-target="#'+modalPaymentMpm+'">' +
+                            '<a data-id='+data+' class="btn btn-soft-info waves-effect text-black mx-2 modalUpcoming modalPaymentMpm1" data-bs-toggle="modal" data-bs-target="#modalPaymentMpm1">' +
                                 '<i class="ri-printer-line label-icon align-middle fs-16 me-2"></i> ' +
                                 'PRINTING BY MPM' +
                             '</a> '
@@ -86,7 +86,7 @@ $(document).ready(function() {
                             '</button>'
 
                             buttonPrintMPM =
-                            '<button data-type="MPM_PRINT" type="button" data-id='+data+' class="btn btn-soft-info waves-effect text-black mx-2 modalVerify" data-bs-toggle="modal" data-bs-target="#'+modalMPM+'">' +
+                            '<button data-type="MPM_PRINT" type="button" data-id='+data+' class="btn btn-soft-info waves-effect text-black mx-2 modalUpcoming modalVerify1" data-bs-toggle="modal" data-bs-target="#'+modalMPM+'1">' +
                                 '<i class="ri-printer-line label-icon align-middle fs-16 me-2"></i> ' +
                                 'PRINTING BY MPM' +
                             '</button> '
@@ -220,10 +220,10 @@ $(document).ready(function() {
         });
     });
 
-    $(document).on('click', '.btnForgotIndexNumber', function(){
+    $(document).on('click', '.modalUpcoming', function(){
         Swal.fire({
             icon: "info",
-            html: 'Kindly search your MUET index number from this portal:<br><a href="http://webmpm1.mpm.edu.my/muetresults/" target="_blank">http://webmpm1.mpm.edu.my/muetresults/</a>',
+            html: 'This feature will be enabled in future. Thank you.',
             showConfirmButton: false,
         });
     });
