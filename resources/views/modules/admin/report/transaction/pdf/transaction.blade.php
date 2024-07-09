@@ -27,11 +27,11 @@
                     @foreach ($transactions as $transaction)
                         <tr style="border: 1px solid black; padding: 5px">
                             <td style="border: 1px solid black; padding: 5px">{{ $loop->iteration }}</td>
-                            <td style="border: 1px solid black; padding: 5px">{{ date('d/m/Y' , strtotime($transaction->payment_date)) }}</td>
-                            <td style="border: 1px solid black; padding: 5px">{{ $transaction->txn_id ?? 'no record' }}</td>
-                            <td style="border: 1px solid black; padding: 5px">{{ $transaction->ref_no ?? 'no record' }}</td>
-                            <td style="border: 1px solid black; padding: 5px">Amount : RM {{ $transaction->amount ?? 'no record' }}</td>
-                            <td style="border: 1px solid black; padding: 5px">{{ $transaction->status ?? 'no record' }}</td>
+                            <td style="border: 1px solid black; padding: 5px">{{ date('d/m/Y' , strtotime($transaction->created_at)) }}</td>
+                            <td style="border: 1px solid black; padding: 5px">{{ $transaction->unique_order_id ?? 'no record' }}</td>
+                            <td style="border: 1px solid black; padding: 5px">{{ $transaction->payment_ref_no ?? 'no record' }}</td>
+                            <td style="border: 1px solid black; padding: 5px">Amount : RM {{ $transaction->payment->amount ?? 'no record' }}</td>
+                            <td style="border: 1px solid black; padding: 5px">{{ $transaction->current_status ?? 'no record' }}</td>
                         </tr>
                     @endforeach
                 @else
