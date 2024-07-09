@@ -241,7 +241,7 @@ $(document).ready(function() {
     if ($("#financeModTable").length>0) {
 
         var tableMod = $('#financeModTable').DataTable({
-           
+
             buttons: [
                 'excel',
                 'print'
@@ -508,11 +508,30 @@ $(document).ready(function() {
 
                     Swal.fire("Saved!", response.message, "success");
 
-                    // Refresh data table
-                    $('#transactionTable').DataTable().ajax.reload(); // This line refreshes the DataTable
 
-                    // Optionally, you can also redraw the DataTable to update the UI
-                    $('#transactionTable').DataTable().draw(); // This line redraws the DataTable
+                    if ($('#transactionTable').length > 0) {
+                        // Refresh data table
+                        $('#transactionTable').DataTable().ajax.reload(); // This line refreshes the DataTable
+
+                        // Optionally, you can also redraw the DataTable to update the UI
+                        $('#transactionTable').DataTable().draw(); // This line redraws the DataTable
+                    }
+
+                    if ($('#financeMuetTable').length > 0) {
+                        // Refresh data table
+                        $('#financeMuetTable').DataTable().ajax.reload(); // This line refreshes the DataTable
+
+                        // Optionally, you can also redraw the DataTable to update the UI
+                        $('#financeMuetTable').DataTable().draw(); // This line redraws the DataTable
+                    }
+
+                    if ($('#financeModTable').length > 0) {
+                        // Refresh data table
+                        $('#financeModTable').DataTable().ajax.reload(); // This line refreshes the DataTable
+
+                        // Optionally, you can also redraw the DataTable to update the UI
+                        $('#financeModTable').DataTable().draw(); // This line redraws the DataTable
+                    }
                 } else {
                     Swal.fire("Error!", response.message, "error");
                 }

@@ -13,8 +13,10 @@ use Barryvdh\DomPDF\Facade\Pdf;
 use Maatwebsite\Excel\Facades\Excel;
 
 use App\Exports\TransactionExport;
-
 use App\Models\Order;
+use App\Models\Payment;
+use App\Models\ConfigMpmBayar;
+
 use App\Models\TrackingOrder;
 use Carbon\Carbon;
 use DataTables;
@@ -348,5 +350,75 @@ class OrderController extends Controller
         $pdf = PDF::loadView('modules.admin.report.transaction.pdf.transaction', ['transactions' => $transactions]);
 
         return $pdf->stream('ListTransaction.pdf');
+    }
+
+    public function checkpaymentAdmin(Request $request){
+
+        $order = Order::where('payment_ref_no', $request->ref_no)->first();
+        $payment = Payment::where('ref_no', $request->ref_no)->first();
+
+        // $url = 'https://ebayar-lab.mpm.edu.my/api/payment/status';
+        // $token = 'a2aWmIGjPSVZ8F3OvS2BtppKM2j6TKvKXE7u8W7MwbkVyZjwZfSYdNP5ACem';
+        // $secret_key = '1eafc1e9-df86-4c8c-a3de-291ada259ab0';
+
+        $url = ConfigMpmBayar::first()->url.'/api/payment/status';
+        $token = ConfigMpmBayar::first()->token;
+        $secret_key = ConfigMpmBayar::first()->secret_key;
+
+        $data = [
+            "ref_no" => $request->ref_no,
+        ];
+
+        $output = '';
+        $curl = curl_init();
+        curl_setopt($curl, CURLOPT_URL, $url);
+        curl_setopt($curl, CURLOPT_POST, 1);
+        curl_setopt($curl, CURLOPT_HTTPHEADER, array(
+            'Accept: application/json',
+            'MPMToken: ' . $token
+        ));
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($curl, CURLOPT_POSTFIELDS, http_build_query($data));
+        curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, 0);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 0);
+        $output = curl_exec($curl);
+        $output = json_decode($output);
+
+        if (curl_errno($curl)) {
+            $error_msg = curl_error($curl);
+            // var_dump($error_msg);
+            // exit();
+            curl_close($curl);
+
+            $arr = [
+                'success' => false,
+                'message' => $error_msg->message
+            ];
+
+            return response()->json($arr);
+        }
+
+        if (!empty($output->data)) {
+            curl_close($curl);
+            $order->update(['payment_status' => $output->data->txn_status]);
+            $payment->update(['status' => $output->data->txn_status]);
+        } else {
+            // echo "Payment Gateway tidak dapat disambung. Pastikan URL dan TOKEN adalah betul.";
+            curl_close($curl);
+
+            $arr = [
+                'success' => false,
+                'message' => "Payment Gateway tidak dapat disambung. Pastikan URL dan TOKEN adalah betul."
+            ];
+
+            return response()->json($arr);
+        }
+
+        $arr = [
+            'success' => true,
+            'message' => "Payment status updated"
+        ];
+
+        return response()->json($arr);
     }
 }
