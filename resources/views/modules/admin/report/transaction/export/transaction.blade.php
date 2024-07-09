@@ -16,7 +16,7 @@
                 <td>{{ date('d/m/Y' , strtotime($transaction->created_at)) }}</td>
                 <td>{{ $transaction->unique_order_id ?? 'no record' }}</td>
                 <td>{{ $transaction->payment_ref_no ?? 'no record' }}</td>
-                <td>Amount : RM {{ $transaction->amount ?? 'no record' }}</td>
+                <td>Amount : RM {{ $transaction->payment->amount ?? 'no record' }}</td>
                 <td>{{ $transaction->current_status ?? 'no record' }}</td>
             </tr>
         @endforeach

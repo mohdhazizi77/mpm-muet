@@ -345,7 +345,6 @@ class OrderController extends Controller
         }
 
         $transactions = $transactions->get();
-        dd($transactions);
 
         $pdf = PDF::loadView('modules.admin.report.transaction.pdf.transaction', ['transactions' => $transactions]);
 
