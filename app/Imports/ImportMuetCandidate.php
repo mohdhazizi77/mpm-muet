@@ -24,7 +24,8 @@ class ImportMuetCandidate implements ToCollection, WithChunkReading
         $processedCount = 0;
 
         foreach ($rows as $key => $row) {
-            if ($key == 0 || $key == 1)
+            if ($key == 0)
+            // if ($key == 0 || $key == 1)
                 continue;
 
             if (empty($row[0])) {
