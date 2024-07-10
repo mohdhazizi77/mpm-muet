@@ -27,9 +27,15 @@ class ImportCandidateExcelCommand extends Command
      */
     public function handle()
     {
-        $this->info('Script starting [' . date('Y-m-d H:i:s') . ']');
-        ProcessImport::dispatch(resource_path('excel/importExcelFiles/MUET 2022-2023.csv'));
-        // ProcessImport::dispatch(resource_path('excel/importExcelFiles/MUET 2022-2023.xlsx'));
-        $this->info('Import job dispatched. [' . date('Y-m-d H:i:s') . ']');
+        $this->info('Script starting ['.date('Y-m-d H:i:s').']');
+        for ($i=1; $i < 33; $i++) {
+            Excel::import(new ImportMuetCandidate, resource_path('excel/importExcelFiles/MUET_2022-2023_chunks/MUET 2022-2023('.$i.').csv'));
+        }
+        // Excel::import(new ImportMuetCandidate, resource_path('excel/importExcelFiles/First_10000.csv'));
+        // Excel::import(new ImportMuetCandidate, resource_path('excel/importExcelFiles/MUET 2022-2023.xlsx'));
+        // Excel::import(new ImportMuetCandidate, resource_path('excel/importExcelFiles/MUET.xlsx'));
+        // Excel::import(new ImportModCandidate, resource_path('excel/importExcelFiles/MOD.xlsx'));
+
+        $this->info('Script completed successfully. everything looks good. ['.date('Y-m-d H:i:s').']');
     }
 }
