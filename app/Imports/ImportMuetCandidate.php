@@ -5,45 +5,28 @@ namespace App\Imports;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Hash;
-
 use Maatwebsite\Excel\Concerns\ToCollection;
-use Maatwebsite\Excel\Concerns\ToModel;
-use Maatwebsite\Excel\Concerns\WithStartRow;
-use Maatwebsite\Excel\Concerns\WithHeadingRow;
-
-use App\Models\User;
+use Maatwebsite\Excel\Concerns\WithChunkReading;
 use App\Models\Candidate;
-use App\Models\Certificate;
-use App\Models\ExamSession;
-
 use App\Models\MuetCalon;
 use App\Models\MuetSkor;
 use App\Models\MuetTarikh;
 use App\Models\MuetPusat;
-use App\Models\ModCalon;
-use App\Models\ModSkor;
 
-use App\Models\Kodkts;
-
-class ImportMuetCandidate implements ToCollection
+class ImportMuetCandidate implements ToCollection, WithChunkReading
 {
     /**
     * @param Collection $collection
     */
     public function collection(Collection $rows)
     {
-
         $totalCount = count($rows);
         $processedCount = 0;
-
-        // TAHUN	SIDANG	CID	NAMA_SESI	NAMA	KP	SEKOLAH/INSTITUSI	ANGKA_GILIRAN	TARIKH_ISU	TARIKH_EXPIRED	LISTENING	SPEAKING	READING	WRITING SKOR_AGREGAT BAND
 
         foreach ($rows as $key => $row) {
             if ($key == 0 || $key == 1)
                 continue;
-            // if (empty($row[0]))
 
-            // Break the loop if the first column is empty
             if (empty($row[0])) {
                 break;
             }
@@ -65,7 +48,7 @@ class ImportMuetCandidate implements ToCollection
             $band           = $row[15];
 
             if (strpos($kp, '-') !== false) {
-                $kp = str_replace('-', '', $kp); // buang '-' dekat ic
+                $kp = str_replace('-', '', $kp);
             }
 
             $user = Candidate::updateOrCreate(
@@ -80,27 +63,13 @@ class ImportMuetCandidate implements ToCollection
 
             $user->assignRole('CALON');
 
-            // // year and session
-            // $seperator = " ";
-            // $year_session = explode(" ", $row[1]);
-
-            // $sesi = $year_session[1];
-            // $year = $year_session[2];
-
-            // Split the string by "/"
             $parts = explode("/", $angka_giliran);
-            echo(print_r($parts, 1));
-            Log::info(print_r($parts, 1));
-
-            // Process the first part
             $part1 = $parts[0];
-            $kodnegeri = substr($part1, 0, 2); // "MW"
-            $kodpusat = substr($part1, 2, 4); // "3101"
-
-            // Process the second part
+            $kodnegeri = substr($part1, 0, 2);
+            $kodpusat = substr($part1, 2, 4);
             $part2 = $parts[1];
-            $jcalon = substr($part2, 0, 1); // "3"
-            $nocalon = substr($part2, 1, 3); // "001"
+            $jcalon = substr($part2, 0, 1);
+            $nocalon = substr($part2, 1, 3);
 
             $calon = MuetCalon::updateOrCreate(
                 [
@@ -125,13 +94,11 @@ class ImportMuetCandidate implements ToCollection
                 ]
             );
 
-            $skor = new MuetSkor();
-
             $result = [
-                1 => $listening, //listening
-                2 => $speaking, //speaking
-                3 => $reading, //reading
-                4 => $writing, //writing
+                1 => $listening,
+                2 => $speaking,
+                3 => $reading,
+                4 => $writing,
             ];
 
             foreach ($result as $key => $value) {
@@ -177,5 +144,14 @@ class ImportMuetCandidate implements ToCollection
         Log::info('Processed '.$processedCount.' out of '.$totalCount.' rows');
         Log::info('Script completed successfully. Everything looks good ['.date('Y-m-d H:i:s').']');
     }
-}
 
+    /**
+    * Specify the chunk size for reading.
+    *
+    * @return int
+    */
+    public function chunkSize(): int
+    {
+        return 1000; // Process 1000 rows at a time
+    }
+}
