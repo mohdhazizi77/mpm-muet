@@ -96,7 +96,7 @@ class MuetCalon extends Model
     static function checkingAggSkor($id){
 
         $checkingArr = [
-            '-1' => '',
+            '-1' => 'NIL',
             'X'  => 'NIL',
             '-3' => '',
             '-4' => 'WITHHELD',
