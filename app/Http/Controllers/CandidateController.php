@@ -396,10 +396,11 @@ class CandidateController extends Controller
                 'image2Data' => $image2Data,
                 'image3Data' => $image3Data,
             ])
-            ->setPaper('a4', 'portrait')
-            ->setOptions(['isRemoteEnabled' => true]);
+            ->setPaper('a4', 'portrait');
+            // ->setOptions(['isRemoteEnabled' => true]);
             // return $pdf->download($type.' RESULT.pdf');
-            return $pdf->stream($result['index_number'].' '.$type.' RESULT.pdf');
+            // return $pdf->stream($result['index_number'].' '.$type.' RESULT.pdf');
+            return $pdf->download($result['index_number'].' '.$type.' RESULT.pdf');
 
         } catch
         (Exception $e) {
