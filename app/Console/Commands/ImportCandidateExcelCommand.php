@@ -28,7 +28,8 @@ class ImportCandidateExcelCommand extends Command
     public function handle()
     {
         $this->info('Script starting [' . date('Y-m-d H:i:s') . ']');
-        ProcessImport::dispatch(resource_path('excel/importExcelFiles/MUET 2022-2023.xlsx'));
+        ProcessImport::dispatch(resource_path('excel/importExcelFiles/MUET 2022-2023.csv'));
+        // ProcessImport::dispatch(resource_path('excel/importExcelFiles/MUET 2022-2023.xlsx'));
         $this->info('Import job dispatched. [' . date('Y-m-d H:i:s') . ']');
     }
 }

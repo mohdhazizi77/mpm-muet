@@ -16,21 +16,11 @@ class ProcessImport implements ShouldQueue
 
     protected $filePath;
 
-    /**
-     * Create a new job instance.
-     *
-     * @return void
-     */
     public function __construct($filePath)
     {
         $this->filePath = $filePath;
     }
 
-    /**
-     * Execute the job.
-     *
-     * @return void
-     */
     public function handle()
     {
         Excel::import(new ImportMuetCandidate, $this->filePath);

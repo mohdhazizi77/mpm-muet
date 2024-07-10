@@ -8,18 +8,15 @@ use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
 use Maatwebsite\Excel\Concerns\WithBatchInserts;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
+use Maatwebsite\Excel\Concerns\ShouldQueue;
 use App\Models\Candidate;
 use App\Models\MuetCalon;
 use App\Models\MuetSkor;
 use App\Models\MuetTarikh;
 use App\Models\MuetPusat;
 
-class ImportMuetCandidate implements ToModel, WithChunkReading, WithBatchInserts, WithHeadingRow
+class ImportMuetCandidate implements ToModel, WithChunkReading, WithBatchInserts, WithHeadingRow, ShouldQueue
 {
-    /**
-     * @param array $row
-     * @return \Illuminate\Database\Eloquent\Model|null
-     */
     public function model(array $row)
     {
         if (empty($row[0])) {
@@ -136,23 +133,13 @@ class ImportMuetCandidate implements ToModel, WithChunkReading, WithBatchInserts
         return $calon;
     }
 
-    /**
-     * Specify the chunk size for reading.
-     *
-     * @return int
-     */
     public function chunkSize(): int
     {
-        return 1000; // Process 1000 rows at a time
+        return 1000;
     }
 
-    /**
-     * Specify the batch size for inserts.
-     *
-     * @return int
-     */
     public function batchSize(): int
     {
-        return 1000; // Insert 1000 rows at a time
+        return 1000;
     }
 }
