@@ -88,7 +88,7 @@ class ImportModCandidate implements ToCollection
 
             // Split the string by "/"
             $parts = explode("/", $angka_giliran);
-            echo(print_r($parts, 1));
+            // echo(print_r($parts, 1));
             Log::info(print_r($parts, 1));
 
             // Process the first part
