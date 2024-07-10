@@ -1,9 +1,7 @@
 @php use SimpleSoftwareIO\QrCode\Facades\QrCode; @endphp
 <!doctype html>
 <html lang="en">
-@php
-    include(config_path('base64_images.php'));
-@endphp
+
 <head>
 
     <meta charset="UTF-8">
