@@ -9,16 +9,18 @@ use Maatwebsite\Excel\Concerns\WithChunkReading;
 use Maatwebsite\Excel\Concerns\WithBatchInserts;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\ShouldQueue;
+use Maatwebsite\Excel\Concerns\SkipsEmptyRows;
 use App\Models\Candidate;
 use App\Models\MuetCalon;
 use App\Models\MuetSkor;
 use App\Models\MuetTarikh;
 use App\Models\MuetPusat;
 
-class ImportMuetCandidate implements ToModel, WithChunkReading, WithBatchInserts, WithHeadingRow, ShouldQueue
+class ImportMuetCandidate implements ToModel, WithChunkReading, WithBatchInserts, WithHeadingRow, SkipsEmptyRows, ShouldQueue
 {
     public function model(array $row)
     {
+        Log::info('Row contents: ' . json_encode($row));
         if (empty($row[0])) {
             return null;
         }
@@ -32,10 +34,10 @@ class ImportMuetCandidate implements ToModel, WithChunkReading, WithBatchInserts
         $angka_giliran = $row[7];
         $tarikh_isu = $row[8];
         $tarikh_exp = $row[9];
-        $listening = $row[10];
-        $speaking = $row[11];
-        $reading = $row[12];
-        $writing = $row[13];
+        $listening = isset($row[10]) ? $row[10] : null;
+        $speaking = isset($row[11]) ? $row[11] : null;
+        $reading = isset($row[12]) ? $row[12] : null;
+        $writing = isset($row[13]) ? $row[13] : null;
         $skor_agregat = $row[14];
         $band = $row[15];
 
@@ -141,5 +143,10 @@ class ImportMuetCandidate implements ToModel, WithChunkReading, WithBatchInserts
     public function batchSize(): int
     {
         return 1000;
+    }
+
+    public function startRow(): int
+    {
+        return 3;
     }
 }
