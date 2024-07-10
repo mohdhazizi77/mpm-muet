@@ -32,6 +32,10 @@ class ImportCandidateExcelCommand extends Command
     public function handle()
     {
         $this->info('Script starting ['.date('Y-m-d H:i:s').']');
+
+        Excel::import(new ImportMuetCandidate, resource_path('excel/importExcelFiles/MUET.xlsx'));
+        Excel::import(new ImportModCandidate, resource_path('excel/importExcelFiles/MOD.xlsx'));
+
         for ($i=1; $i < 10; $i++) {
         // for ($i=10; $i < 20; $i++) {
         // for ($i=20; $i < 33; $i++) {
@@ -39,8 +43,6 @@ class ImportCandidateExcelCommand extends Command
         }
         // Excel::import(new ImportMuetCandidate, resource_path('excel/importExcelFiles/First_10000.csv'));
         // Excel::import(new ImportMuetCandidate, resource_path('excel/importExcelFiles/MUET 2022-2023.xlsx'));
-        // Excel::import(new ImportMuetCandidate, resource_path('excel/importExcelFiles/MUET.xlsx'));
-        // Excel::import(new ImportModCandidate, resource_path('excel/importExcelFiles/MOD.xlsx'));
 
         $this->info('Script completed successfully. everything looks good. ['.date('Y-m-d H:i:s').']');
     }
