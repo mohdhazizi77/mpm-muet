@@ -155,15 +155,31 @@
 
     <div id="page-1" style="padding-left: 10%; padding-right: 10%;page-break-after: always;">
         <div class="row logo-container" style="text-align: center; padding-top: 90px">
+            @php
+                $image1Path = "https://sijil.mpm.edu.my/build/images/jatanegara/JataNegara.png";
+                try {
+                    $image1Data = base64_encode(file_get_contents($image1Path));
+                } catch (Exception $e) {
+                    $image1Data = '';
+                }
+            @endphp
             <span style="padding-right: 10px">
                 {{-- <img style="width: 100px" src="{{ URL::asset('build/images/jatanegara/JataNegara.png') }}" alt="Logo1"> --}}
                 {{-- <img style="width: 100px" src="https://sijil.mpm.edu.my/build/images/jatanegara/JataNegara.png" alt="Logo1"> --}}
-                <img style="width: 100px" src="data:image/png;base64,{{ base64_encode(file_get_contents( "https://sijil.mpm.edu.my/build/images/jatanegara/JataNegara.png" )) }}" alt="Logo1">
+                <img style="width: 100px" src="data:image/png;base64,{{ $image1Data }}" alt="Logo1">
             </span>
+            @php
+                $image2Path = "https://sijil.mpm.edu.my/build/images/logo-mpm-kuningpinang.jpg";
+                try {
+                    $image2Data = base64_encode(file_get_contents($image2Path));
+                } catch (Exception $e) {
+                    $image2Data = '';
+                }
+            @endphp
             <span>
                 {{-- <img style="width: 80px;height: auto;" src="{{ URL::asset('build/images/logo-mpm-kuningpinang.jpg') alt="Logo"> }}" --}}
                 {{-- <img style="width: 80px;height: auto;" src="https://sijil.mpm.edu.my/build/images/logo-mpm-kuningpinang.jpg" alt="Logo"> --}}
-                <img style="width: 80px" src="data:image/png;base64,{{ base64_encode(file_get_contents( "https://sijil.mpm.edu.my/build/images/logo-mpm-kuningpinang.jpg" )) }}" alt="Logo">
+                <img style="width: 80px" src="data:image/png;base64,{{ $image2Data }}" alt="Logo">
             </span>
         </div>
         <div id="title_session" style="text-align: center; padding-top: 25px">
