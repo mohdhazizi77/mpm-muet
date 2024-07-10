@@ -1,7 +1,9 @@
 @php use SimpleSoftwareIO\QrCode\Facades\QrCode; @endphp
 <!doctype html>
 <html lang="en">
-
+@php
+    include(config_path('base64_images.php'));
+@endphp
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
@@ -164,11 +166,12 @@
         <div id="page-1" style="padding-left: 10%; padding-right: 10%;page-break-after: always;">
             <div class="row logo-container" style="text-align: center; padding-top: 90px">
                 <span style="padding-right: 10px">
-                    <img style="width: 100px" src="{{ URL::asset('build/images/jatanegara/jataNegara.jpg') }}" alt="Logo">
+                    {{-- <img style="width: 100px" src="{{ URL::asset('build/images/jatanegara/jataNegara.jpg') }}" alt="Logo"> --}}
+                    <img style="width: 100px" src="{{ $jataNegaraBase64 }}" alt="Logo1">
                 </span>
                 <span>
-                    <img style="width: 80px;height: auto;" src="{{ URL::asset('build/images/logo-mpm-kuningpinang.jpg') }}"
-                        alt="Logo">
+                    {{-- <img style="width: 80px;height: auto;" src="{{ URL::asset('build/images/logo-mpm-kuningpinang.jpg') }}" alt="Logo"> --}}
+                    <img style="width: 80px" src="{{ $mpmLogoBase64 }}" alt="Logo">
                 </span>
             </div>
             <div id="title_session" style="text-align: center; padding-top: 25px">
@@ -285,7 +288,8 @@
                 <table style="width: 105%; margin-left: -15px; margin-right: -15px;">
                     <tr>
                         <td>
-                            <img style="width: 100px" src="{{ URL::asset('build/images/sign/sign_new.png') }}" alt="Logo">
+                            {{-- <img style="width: 100px" src="{{ URL::asset('build/images/sign/sign_new.png') }}" alt="Logo"> --}}
+                            <img style="width: 100px" src="{{ $signBase64 }}" alt="Logo">
                         </td>
                     </tr>
                     <tr>
