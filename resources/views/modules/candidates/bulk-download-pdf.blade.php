@@ -173,7 +173,7 @@
             </div>
             <div id="title_session" style="text-align: center; padding-top: 25px">
                 <span style="font-size: 15pt; font-weight: bolder">MAJLIS PEPERIKSAAN MALYSIA</span><br>
-                <span style="font-size: 12pt; font-weight: bold">MALAYSIAN EXAMINATION COUNCIL</span>
+                <span style="font-size: 12pt; font-weight: bold">MALAYSIAN EXAMINATIONS COUNCIL</span>
                 <p style="font-size: 10pt">This is to certify that the below candidate has sat for the</p>
                 <span style="font-size: 12pt; font-weight: bolder">MALAYSIAN UNIVERSITY ENGLISH TEST <br>
                     SESSION NOVEMBER 2013</span>
@@ -294,7 +294,7 @@
                                 <span style="font-weight: bold; font-size: 12pt;">ADNAN BIN HUSIN</span><br>
                                 <span style="font-size: 10pt;">Chief Executive</span><br>
                                 <span style="font-size: 10pt;">Malaysian Examinations Council</span>
-                            </div> 
+                            </div>
                         </td>
                         <td style="text-align: right">
                             <div style="float: right;">

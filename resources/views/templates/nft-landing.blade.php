@@ -845,7 +845,7 @@
                                 <img src="{{URL::asset('build/images/logo-light.png')}}" alt="logo light" height="17">
                             </div>
                             <div class="mt-4">
-                                <p>Premium Multipurpose Admin & Dashboard Template</p>
+                                <p>Sistem Sijil MUET Online MPM | Portal Paparan Sijil Keputusan MUET dan Pembelian Sijil Keputusan MUET daripada MPM</p>
                                 <p>You can build any type of web application like eCommerce, CRM, CMS, Project management apps, Admin Panels, etc using Velzon.</p>
                             </div>
                         </div>
