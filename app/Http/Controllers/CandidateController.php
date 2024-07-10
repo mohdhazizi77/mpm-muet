@@ -381,7 +381,8 @@ class CandidateController extends Controller
                 'pusat' => $pusat
             ])
             ->setPaper('a4', 'portrait')
-            ->setOptions(['isRemoteEnabled' => true]);
+            ->setOptions(['isRemoteEnabled' => true,'enable_remote' => true,]);
+
             // return $pdf->download($type.' RESULT.pdf');
             return $pdf->stream($result['index_number'].' '.$type.' RESULT.pdf');
 
@@ -443,7 +444,7 @@ class CandidateController extends Controller
                 'pusat' => $pusat
             ])
             ->setPaper('a4', 'portrait')
-            ->setOptions(['isRemoteEnabled' => true]);
+            ->setOptions(['isRemoteEnabled' => true,'enable_remote' => true,]);
             // return $pdf->download($type.' RESULT.pdf');
             return $pdf->stream($result['index_number'].' '.$type.' RESULT.pdf');
 
@@ -516,7 +517,7 @@ class CandidateController extends Controller
                 'pusat' => $pusat
             ])
             ->setPaper('a4', 'portrait')
-            ->setOptions(['isRemoteEnabled' => true]);
+            ->setOptions(['isRemoteEnabled' => true,'enable_remote' => true,]);
             return $pdf->download($result['index_number'].' '.$type.' RESULT.pdf');
 
         } catch
@@ -804,7 +805,7 @@ class CandidateController extends Controller
             'pusat' => $pusat
         ])
         ->setPaper('a4', 'portrait')
-        ->setOptions(['isRemoteEnabled' => true]);
+        ->setOptions(['isRemoteEnabled' => true,'enable_remote' => true,]);
 
         $pdfPath = storage_path('app/temp/'.$id.'.pdf');
         $pdf->save($pdfPath);
