@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\URL;
 
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -370,6 +371,18 @@ class CandidateController extends Controller
             $url = 'http://localhost:8000/qrscan'; // Replace with your URL or data
             $url = config('app.url').'/verify/result/'.$cryptId; // Replace with your URL or data /verify/result/{id}
             $qr = QrCode::size(50)->style('round')->generate($url);
+            // $image1Path = "https://sijil.mpm.edu.my/build/images/jatanegara/JataNegara.png";
+            $image1Path = URL::asset("build/images/jatanegara/JataNegara.png");
+            $image1Data = file_get_contents($image1Path);
+
+            // $image2Path = "https://sijil.mpm.edu.my/build/images/logo-mpm-kuningpinang.jpg";
+            $image2Path = URL::asset("build/images/logo-mpm-kuningpinang.jpg");
+            $image2Data = file_get_contents($image2Path);
+
+            // $image3Path = "https://sijil.mpm.edu.my/build/images/sign/sign_new.png";
+            $image3Path = URL::asset("build/images/sign/sign_new.png");
+            $image3Data = file_get_contents($image3Path);
+
 
             $pdf = PDF::loadView('modules.candidates.download-pdf', [
                 'tarikh' => $tarikh,
@@ -378,11 +391,13 @@ class CandidateController extends Controller
                 'result' => $result,
                 'candidate' => $candidate,
                 'scheme' => $scheme,
-                'pusat' => $pusat
+                'pusat' => $pusat,
+                'image1Data' => $image1Data,
+                'image2Data' => $image2Data,
+                'image3Data' => $image3Data,
             ])
             ->setPaper('a4', 'portrait')
-            ->setOptions(['isRemoteEnabled' => true,'enable_remote' => true,]);
-
+            ->setOptions(['isRemoteEnabled' => true]);
             // return $pdf->download($type.' RESULT.pdf');
             return $pdf->stream($result['index_number'].' '.$type.' RESULT.pdf');
 
@@ -444,7 +459,7 @@ class CandidateController extends Controller
                 'pusat' => $pusat
             ])
             ->setPaper('a4', 'portrait')
-            ->setOptions(['isRemoteEnabled' => true,'enable_remote' => true,]);
+            ->setOptions(['isRemoteEnabled' => true]);
             // return $pdf->download($type.' RESULT.pdf');
             return $pdf->stream($result['index_number'].' '.$type.' RESULT.pdf');
 
@@ -517,7 +532,7 @@ class CandidateController extends Controller
                 'pusat' => $pusat
             ])
             ->setPaper('a4', 'portrait')
-            ->setOptions(['isRemoteEnabled' => true,'enable_remote' => true,]);
+            ->setOptions(['isRemoteEnabled' => true]);
             return $pdf->download($result['index_number'].' '.$type.' RESULT.pdf');
 
         } catch
@@ -805,7 +820,7 @@ class CandidateController extends Controller
             'pusat' => $pusat
         ])
         ->setPaper('a4', 'portrait')
-        ->setOptions(['isRemoteEnabled' => true,'enable_remote' => true,]);
+        ->setOptions(['isRemoteEnabled' => true]);
 
         $pdfPath = storage_path('app/temp/'.$id.'.pdf');
         $pdf->save($pdfPath);

@@ -156,11 +156,12 @@
     <div id="page-1" style="padding-left: 10%; padding-right: 10%;page-break-after: always;">
         <div class="row logo-container" style="text-align: center; padding-top: 90px">
             <span style="padding-right: 10px">
-                <img style="width: 100px" src="{{ asset('build/images/jatanegara/JataNegara.png') }}" alt="Logo1">
+                {{-- <img style="width: 100px" src="{{ asset('build/images/jatanegara/JataNegara.png') }}" alt="Logo1"> --}}
+                <img style="width: 100px" src="data:image/jpg;base64,{{ base64_encode($image1Data) }}" alt="Logo1">
             </span>
             <span>
-                <img style="width: 80px;height: auto;" src="{{ asset('build/images/logo-mpm-kuningpinang.jpg') }}"
-                    alt="Logo">
+                {{-- <img style="width: 80px;height: auto;" src="{{ asset('build/images/logo-mpm-kuningpinang.jpg') }}"alt="Logo"> --}}
+                <img style="width: 80px;height: auto;" src="data:image/jpg;base64,{{ base64_encode($image2Data) }}" alt="Logo">
             </span>
         </div>
         <div id="title_session" style="text-align: center; padding-top: 25px">
@@ -265,7 +266,8 @@
             <table style="width: 105%; margin-left: -15px; margin-right: -15px;">
                 <tr>
                     <td>
-                        <img style="width: 100px" src="{{ URL::asset('build/images/sign/sign_new.png') }}" alt="Logo">
+                        {{-- <img style="width: 100px" src="{{ URL::asset('build/images/sign/sign_new.png') }}" alt="Logo"> --}}
+                        <img style="width: 100px" src="data:image/jpg;base64,{{ base64_encode($image3Data) }}" alt="Logo">
                     </td>
                 </tr>
                 <tr>
@@ -300,8 +302,7 @@
 
             <table style="width: 105%; margin-left: -15px; margin-right: -15px">
                 <tr>
-                    <td style="text-align: right"><img src="data:image/jpg;base64,{{ base64_encode($qr) }}"
-                            alt="QR Code"></td>
+                    <td style="text-align: right"><img src="data:image/jpg;base64,{{ base64_encode($qr) }}" alt="QR Code"></td>
                 </tr>
             </table>
 
