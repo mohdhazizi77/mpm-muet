@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\URL;
 
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -371,10 +372,15 @@ class CandidateController extends Controller
             $url = config('app.url').'/verify/result/'.$cryptId; // Replace with your URL or data /verify/result/{id}
             $qr = QrCode::size(50)->style('round')->generate($url);
             $image1Path = "https://sijil.mpm.edu.my/build/images/jatanegara/JataNegara.png";
+            $image1Path = URL::asset("build/images/jatanegara/JataNegara.png");
             $image1Data = base64_encode(file_get_contents($image1Path));
+
             $image2Path = "https://sijil.mpm.edu.my/build/images/logo-mpm-kuningpinang.jpg";
+            $image2Path = URL::asset("build/images/logo-mpm-kuningpinang.jpg");
             $image2Data = base64_encode(file_get_contents($image2Path));
+
             $image3Path = "https://sijil.mpm.edu.my/build/images/sign/sign_new.png";
+            $image3Path = URL::asset("build/images/sign/sign_new.png");
             $image3Data = base64_encode(file_get_contents($image3Path));
 
             // dd($image1Data, $image1Data,$image3Data);
