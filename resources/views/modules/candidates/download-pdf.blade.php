@@ -156,10 +156,12 @@
     <div id="page-1" style="padding-left: 10%; padding-right: 10%;page-break-after: always;">
         <div class="row logo-container" style="text-align: center; padding-top: 90px">
             <span style="padding-right: 10px">
-                <img style="width: 100px" src="{{ URL::asset('build/images/jatanegara/JataNegara.png') }}" alt="Logo1">
+                {{-- <img style="width: 100px" src="{{ URL::asset('build/images/jatanegara/JataNegara.png') }}" alt="Logo1"> --}}
+                <img style="width: 100px" src="https://sijil.mpm.edu.my/build/images/jatanegara/JataNegara.png" alt="Logo1">
             </span>
             <span>
-                <img style="width: 80px;height: auto;" src="{{ URL::asset('build/images/logo-mpm-kuningpinang.jpg') }}"
+                {{-- <img style="width: 80px;height: auto;" src="{{ URL::asset('build/images/logo-mpm-kuningpinang.jpg') }}" --}}
+                <img style="width: 80px;height: auto;" src="https://sijil.mpm.edu.my/build/images/logo-mpm-kuningpinang.jpg"
                     alt="Logo">
             </span>
         </div>
