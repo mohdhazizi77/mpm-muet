@@ -156,14 +156,11 @@
     <div id="page-1" style="padding-left: 10%; padding-right: 10%;page-break-after: always;">
         <div class="row logo-container" style="text-align: center; padding-top: 90px">
             <span style="padding-right: 10px">
-                <img style="width: 100px" src="{{ URL::asset('build/images/jatanegara/JataNegara.png') }}" alt="Logo1">
-                {{-- <img style="width: 100px" src="https://sijil.mpm.edu.my/build/images/jatanegara/JataNegara.png" alt="Logo1"> --}}
-                {{-- <img style="width: 100px" src="{{ $jataNegaraBase64 }}" alt="Logo1"> --}}
+                <img style="width: 100px" src="{{ asset('build/images/jatanegara/JataNegara.png') }}" alt="Logo1">
             </span>
             <span>
-                <img style="width: 80px;height: auto;" src="{{ URL::asset('build/images/logo-mpm-kuningpinang.jpg') }}" alt="Logo">
-                {{-- <img style="width: 80px;height: auto;" src="https://sijil.mpm.edu.my/build/images/logo-mpm-kuningpinang.jpg" alt="Logo"> --}}
-                {{-- <img style="width: 80px" src="{{ $mpmLogoBase64 }}" alt="Logo"> --}}
+                <img style="width: 80px;height: auto;" src="{{ asset('build/images/logo-mpm-kuningpinang.jpg') }}"
+                    alt="Logo">
             </span>
         </div>
         <div id="title_session" style="text-align: center; padding-top: 25px">
