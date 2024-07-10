@@ -9,4 +9,3 @@ $jataNegaraBase64 = 'data:image/png;base64,' . base64_encode(file_get_contents(p
 $mpmLogoBase64 = 'data:image/png;base64,' . base64_encode(file_get_contents(public_path('build/images/logo-mpm-kuningpinang.jpg')));
 $signBase64 = 'data:image/png;base64,' . base64_encode(file_get_contents(public_path('build/images/sign/sign_new.png')));
 
-
