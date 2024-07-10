@@ -372,8 +372,16 @@ class CandidateController extends Controller
             $qr = QrCode::size(50)->style('round')->generate($url);
 
             $pdf = PDF::loadView('modules.candidates.download-pdf', [
-                    'tarikh' => $tarikh,'qr' => $qr, 'type' => $type, 'result' => $result, 'candidate' => $candidate, 'scheme' => $scheme, 'pusat' => $pusat])->setPaper('a4', 'portrait');
-
+                'tarikh' => $tarikh,
+                'qr' => $qr,
+                'type' => $type,
+                'result' => $result,
+                'candidate' => $candidate,
+                'scheme' => $scheme,
+                'pusat' => $pusat
+            ])
+            ->setPaper('a4', 'portrait')
+            ->setOptions(['isRemoteEnabled' => true]);
             // return $pdf->download($type.' RESULT.pdf');
             return $pdf->stream($result['index_number'].' '.$type.' RESULT.pdf');
 
@@ -426,8 +434,16 @@ class CandidateController extends Controller
             $qr = QrCode::size(50)->style('round')->generate($url);
 
             $pdf = PDF::loadView('modules.candidates.download-pdf', [
-                    'tarikh' => $tarikh,'qr' => $qr, 'type' => $type, 'result' => $result, 'candidate' => $candidate, 'scheme' => $scheme, 'pusat' => $pusat])->setPaper('a4', 'portrait');
-
+                'tarikh' => $tarikh,
+                'qr' => $qr,
+                'type' => $type,
+                'result' => $result,
+                'candidate' => $candidate,
+                'scheme' => $scheme,
+                'pusat' => $pusat
+            ])
+            ->setPaper('a4', 'portrait')
+            ->setOptions(['isRemoteEnabled' => true]);
             // return $pdf->download($type.' RESULT.pdf');
             return $pdf->stream($result['index_number'].' '.$type.' RESULT.pdf');
 
@@ -491,8 +507,16 @@ class CandidateController extends Controller
 
 
             $pdf = PDF::loadView('modules.candidates.download-pdf', [
-                    'tarikh' => $tarikh, 'qr' => $qr, 'type' => $type, 'result' => $result, 'candidate' => $candidate, 'scheme' => $scheme, 'pusat' => $pusat])->setPaper('a4', 'portrait');
-
+                'tarikh' => $tarikh,
+                'qr' => $qr,
+                'type' => $type,
+                'result' => $result,
+                'candidate' => $candidate,
+                'scheme' => $scheme,
+                'pusat' => $pusat
+            ])
+            ->setPaper('a4', 'portrait')
+            ->setOptions(['isRemoteEnabled' => true]);
             return $pdf->download($result['index_number'].' '.$type.' RESULT.pdf');
 
         } catch
@@ -770,16 +794,17 @@ class CandidateController extends Controller
         $url = config('app.url').'/verify/result/'.$id;
         $qr = QrCode::size(50)->style('round')->generate($url);
 
-
         $pdf = PDF::loadView('modules.candidates.download-pdf', [
+            'tarikh' => $tarikh,
             'qr' => $qr,
             'type' => $type,
             'result' => $result,
             'candidate' => $candidate,
             'scheme' => $scheme,
-            'pusat' => $pusat,
-            'tarikh' => $tarikh,
-        ])->setPaper('a4', 'portrait');
+            'pusat' => $pusat
+        ])
+        ->setPaper('a4', 'portrait')
+        ->setOptions(['isRemoteEnabled' => true]);
 
         $pdfPath = storage_path('app/temp/'.$id.'.pdf');
         $pdf->save($pdfPath);
