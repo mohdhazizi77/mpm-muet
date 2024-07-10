@@ -32,7 +32,9 @@ class ImportCandidateExcelCommand extends Command
     public function handle()
     {
         $this->info('Script starting ['.date('Y-m-d H:i:s').']');
-        for ($i=1; $i < 33; $i++) {
+        for ($i=1; $i < 10; $i++) {
+        // for ($i=10; $i < 20; $i++) {
+        // for ($i=20; $i < 33; $i++) {
             Excel::import(new ImportMuetCandidate, resource_path('excel/importExcelFiles/MUET_2022-2023_chunks/MUET 2022-2023('.$i.').csv'));
         }
         // Excel::import(new ImportMuetCandidate, resource_path('excel/importExcelFiles/First_10000.csv'));
