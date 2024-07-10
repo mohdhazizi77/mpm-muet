@@ -371,20 +371,6 @@ class CandidateController extends Controller
             $url = 'http://localhost:8000/qrscan'; // Replace with your URL or data
             $url = config('app.url').'/verify/result/'.$cryptId; // Replace with your URL or data /verify/result/{id}
             $qr = QrCode::size(50)->style('round')->generate($url);
-            // $image1Path = "https://sijil.mpm.edu.my/build/images/jatanegara/JataNegara.png";
-            // // $image1Path = URL::asset("build/images/jatanegara/JataNegara.png");
-            // $image1Data = base64_encode(file_get_contents($image1Path));
-
-            // $image2Path = "https://sijil.mpm.edu.my/build/images/logo-mpm-kuningpinang.jpg";
-            // // $image2Path = URL::asset("build/images/logo-mpm-kuningpinang.jpg");
-            // $image2Data = base64_encode(file_get_contents($image2Path));
-
-            // $image3Path = "https://sijil.mpm.edu.my/build/images/sign/sign_new.png";
-            // // $image3Path = URL::asset("build/images/sign/sign_new.png");
-            // $image3Data = base64_encode(file_get_contents($image3Path));
-
-            // // dd($image1Data, $image2Data,$image3Data);
-            // dd(config('base64_images'));
 
             $pdf = PDF::loadView('modules.candidates.download-pdf', [
                 'tarikh' => $tarikh,
@@ -405,7 +391,6 @@ class CandidateController extends Controller
 
         } catch
         (Exception $e) {
-            dd($e);
             return back()->withError($e->getMessage());
         }
     }
@@ -459,7 +444,10 @@ class CandidateController extends Controller
                 'result' => $result,
                 'candidate' => $candidate,
                 'scheme' => $scheme,
-                'pusat' => $pusat
+                'pusat' => $pusat,
+                'image1Data' => config('base64_images.jataNegara'),
+                'image2Data' => config('base64_images.logoMPM'),
+                'image3Data' => config('base64_images.sign'),
             ])
             ->setPaper('a4', 'portrait')
             ->setOptions(['isRemoteEnabled' => true]);
@@ -532,7 +520,10 @@ class CandidateController extends Controller
                 'result' => $result,
                 'candidate' => $candidate,
                 'scheme' => $scheme,
-                'pusat' => $pusat
+                'pusat' => $pusat,
+                'image1Data' => config('base64_images.jataNegara'),
+                'image2Data' => config('base64_images.logoMPM'),
+                'image3Data' => config('base64_images.sign'),
             ])
             ->setPaper('a4', 'portrait')
             ->setOptions(['isRemoteEnabled' => true]);
@@ -820,7 +811,10 @@ class CandidateController extends Controller
             'result' => $result,
             'candidate' => $candidate,
             'scheme' => $scheme,
-            'pusat' => $pusat
+            'pusat' => $pusat,
+            'image1Data' => config('base64_images.jataNegara'),
+            'image2Data' => config('base64_images.logoMPM'),
+            'image3Data' => config('base64_images.sign'),
         ])
         ->setPaper('a4', 'portrait')
         ->setOptions(['isRemoteEnabled' => true]);
