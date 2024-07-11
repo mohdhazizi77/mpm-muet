@@ -33,16 +33,18 @@ class ImportCandidateExcelCommand extends Command
     {
         $this->info('Script starting ['.date('Y-m-d H:i:s').']');
 
-        Excel::import(new ImportMuetCandidate, resource_path('excel/importExcelFiles/MUET.xlsx'));
-        Excel::import(new ImportModCandidate, resource_path('excel/importExcelFiles/MOD.xlsx'));
+        // Excel::import(new ImportMuetCandidate, resource_path('excel/importExcelFiles/MUET.xlsx'));
+        // Excel::import(new ImportModCandidate, resource_path('excel/importExcelFiles/MOD.xlsx'));
 
-        // $arr = [
-        //     2022,2023,2024
-        // ];
+        $arr = [
+            // 2022,2023,2024
+            // 2023
+            2024
+        ];
 
-        // foreach ($arr as $key => $year) {
-        //     Excel::import(new ImportMuetCandidate, resource_path('excel/importExcelFiles/Data Sijil MUET/data sijil MUET '.$year.'.csv'));
-        // }
+        foreach ($arr as $key => $year) {
+            Excel::import(new ImportMuetCandidate, resource_path('excel/importExcelFiles/Data Sijil MUET/data sijil MUET '.$year.'.csv'));
+        }
 
         // for ($i=1; $i < 10; $i++) {
         // for ($i=10; $i < 20; $i++) {
