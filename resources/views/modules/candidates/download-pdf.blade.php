@@ -1000,7 +1000,7 @@
         </div>
     @endif
 
-    <div class="footer" style="padding-top: 10px;text-align: center; font-size: 10pt">
+    <div class="footer mx-0" style="padding-top: 10px;text-align: center; font-size: 10pt; padding-left: 4%; padding-right: 8%">
         The QR code will redirect you to MPM MUET Online
         Certificate System. Make sure that it redirects you to
         <a href="https://sijil.mpm.edu.my" target="_blank">sijil.mpm.edu.my</a> for authenticity <span class="pagenum"></span>
