@@ -116,6 +116,28 @@ class MuetCalon extends Model
             '-5' => 'NULLIFIED',
         ];
 
-        return array_key_exists($id, $checkingArr) ? $checkingArr[ $id ] : number_format((float)$id, 1);
+        // List of disallowed values
+        $disallowed = ["-1", "-2", "-3", "-4", "-5", "X"];
+
+        // Check if the number is in the disallowed list
+        if (in_array($id, $disallowed)) {
+            // return $number;
+            $id = $id;
+        }
+
+        // Check if the number contains a '+'
+        else if (strpos($id, '+') !== false) {
+            // return $number;
+            $id = $id;
+        }
+
+        else {
+            // Convert to float and format to one decimal place
+            $id = number_format((float)$id, 1);
+
+        }
+
+
+        return array_key_exists($id, $checkingArr) ? $checkingArr[ $id ] : $id;
     }
 }

@@ -171,6 +171,11 @@ class CandidateController extends Controller
             return $number;
         }
 
+        // Check if the number contains a '+'
+        if (strpos($number, '+') !== false) {
+            return $number;
+        }
+
         // Convert to float and format to one decimal place
         $formattedNumber = number_format((float)$number, 1);
 
