@@ -110,7 +110,7 @@ class CandidateController extends Controller
                 "type"              => 'MUET',
                 "year"              => $muet->tahun,
                 "session"           => $muet->getTarikh->sesi,
-                "band"              => "Band ".$muet->band,
+                "band"              => "Band ".self::formatNumber($muet->band),
                 "is_more2year"      => $is_more2year,
                 "is_selfPrintPaid"  => $is_selfPrintPaid,
                 "is_mpmPrintPaid"   => $is_mpmPrintPaid,
@@ -160,6 +160,21 @@ class CandidateController extends Controller
         }
 
         return datatables($cert_datas)->toJson();
+    }
+
+    function formatNumber($number) {
+        // List of disallowed values
+        $disallowed = ["-1", "-2", "-3", "-4", "-5", "X"];
+
+        // Check if the number is in the disallowed list
+        if (in_array($number, $disallowed)) {
+            return $number;
+        }
+
+        // Convert to float and format to one decimal place
+        $formattedNumber = number_format((float)$number, 1);
+
+        return $formattedNumber;
     }
 
     public function verifyIndexNumber(Request $request)

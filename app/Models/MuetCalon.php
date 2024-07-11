@@ -116,6 +116,6 @@ class MuetCalon extends Model
             '-5' => 'NULLIFIED',
         ];
 
-        return array_key_exists($id, $checkingArr) ? $checkingArr[ $id ] : $id;
+        return array_key_exists($id, $checkingArr) ? $checkingArr[ $id ] : number_format((float)$id, 1);
     }
 }
