@@ -16,7 +16,7 @@ return new class extends Migration {
             $table->string('identity_card_number')->unique();
             $table->string('password');
             $table->integer('retry_verify_index_number')->default(0);
-            $table->timestamp('date_verify_index_number')->default(date('Y-m-d H:i:s'));
+            $table->timestamp('date_verify_index_number')->default(date('Y-m-d H:i:s'))->nullable();
             $table->integer('is_deleted')->default(0);
             $table->timestamps();
 
