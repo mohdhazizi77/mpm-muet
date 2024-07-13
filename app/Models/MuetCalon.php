@@ -34,6 +34,8 @@ class MuetCalon extends Model
     public function getSkor(){
 
         return $this->hasMany('App\Models\MuetSkor', 'kodnegeri', 'kodnegeri')
+                    ->where('tahun', $this->tahun)
+                    ->where('sidang', $this->sidang)
                     ->where('kodpusat', $this->kodpusat)
                     ->where('jcalon', $this->jcalon)
                     ->where('nocalon', $this->nocalon);
