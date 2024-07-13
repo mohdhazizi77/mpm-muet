@@ -37,6 +37,8 @@ class ModCalon extends Model
     public function getSkor(){
 
         return $this->hasMany('App\Models\ModSkor', 'kodnegeri', 'kodnegeri')
+                    ->where('tahun', $this->tahun)
+                    ->where('sidang', $this->sidang)
                     ->where('kodpusat', $this->kodpusat)
                     ->where('nocalon', $this->nocalon)
                     ->where('reg_id', $this->reg_id);
