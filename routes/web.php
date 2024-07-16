@@ -94,6 +94,7 @@ Route::group(['middleware' => ['auth:candidate','role:CALON']], function () {
         Route::post('/track-order/ajax', [OrderController::class, 'getAjaxTrackOrder'])->name('order.getAjaxTrackOrder');
         Route::post('/track-shipping/ajax', [OrderController::class, 'getAjaxTrackShipping'])->name('order.getAjaxTrackShipping')->middleware('poslaju.token');
         Route::get('/muet-status/{id}', [CandidateController::class, 'muetstatus'])->name('candidate.muet-status');
+        Route::post('/log-download', [CandidateController::class, 'logDownload'])->name('log.download');
 
     });
     Route::get('/payment/getdata', [PaymentController::class, 'getpayment'])->name('candidate.getpayment');

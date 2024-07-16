@@ -131,12 +131,14 @@
         <div>
 
             <x-button.back></x-button.back>
-            <a id="button-download"  href="{{ route('candidate.downloadpdf', ['id' => $cryptId]) }}" target="_blank" class="btn btn-soft-success btn-label btn-border waves-effect waves-light w-lg float-end">
+            <a id="button-download"  data-download-url="{{ route('candidate.downloadpdf', ['id' => $cryptId]) }}" target="_blank" class="btn btn-soft-success btn-label btn-border waves-effect waves-light w-lg float-end">
                 <i class="ri-file-download-line label-icon align-middle fs-16 me-2"></i>DOWNLOAD
             </a>
         </div>
 
-
+        <form id="downloadForm" action="" method="GET" target="_blank" style="display: none;">
+            @csrf
+        </form>
     </div>
 @endsection
 @section('script')
@@ -144,29 +146,30 @@
     <script>
 
         $(document).ready(function () {
-
             $('#button-download').on('click', function (e) {
 
-                // e.preventDefault();
+                var downloadUrl = $(this).data('download-url');
 
-                // let selectedState = $('#state').val();
-                // let selectedType = $('#type').val();
-                // let selectedCollege = $('#collegeAll').val();
-                // let selectedYear = $('#year').val();
-                // let selectedSemester = $('#semester').val();
-                // let selectedCourse = $('#courseAll').val();
-
-                let action = $(this).attr('href')
-                // let url = action + '?state=' + selectedState +
-                //     '&type=' + selectedType +
-                //     '&college=' + selectedCollege +
-                //     '&year=' + selectedYear +
-                //     '&semester=' + selectedSemester +
-                //     '&course=' + selectedCourse;
-
-                let url = action;
-                // window.location.href = url;
-                $(this).attr('href', url);
+                $.ajax({
+                    url: '{{ route('log.download') }}',
+                    type: 'POST',
+                    data: {
+                        _token: '{{ csrf_token() }}'
+                    },
+                    success: function(response) {
+                        if (response.status === 'success') {
+                            // Set the action attribute of the form to the download URL
+                            $('#downloadForm').attr('action', downloadUrl);
+                            // Submit the form, which will open the download in a new tab
+                            $('#downloadForm').submit();
+                        } else {
+                            alert('Failed to log download activity.');
+                        }
+                    },
+                    error: function() {
+                        alert('An error occurred while logging download activity.');
+                    }
+                });
             })
 
         })

@@ -27,6 +27,7 @@ use App\Models\Order;
 use App\Models\TrackingOrder;
 use App\Models\Payment;
 use App\Models\ConfigGeneral;
+use App\Models\CandidateActivityLog;
 use Carbon\Carbon;
 use setasign\Fpdi\Fpdi;
 use setasign\Fpdf\Fpdf;
@@ -331,6 +332,12 @@ class CandidateController extends Controller
             ];
         }
 
+        // Log result view activity
+        CandidateActivityLog::create([
+            'candidate_id' => Auth::guard('candidate')->id(),
+            'activity_type' => 'view_result'
+        ]);
+
         return view('modules.candidates.print-pdf', compact(['user','scheme','result','cryptId']));
 
     }
@@ -406,7 +413,7 @@ class CandidateController extends Controller
             ])
             ->setPaper('a4', 'portrait')
             ->setOptions(['isRemoteEnabled' => true]);
-            // return $pdf->download($type.' RESULT.pdf');
+            // return $pdf->download($result['index_number'].' '.$type.' RESULT.pdf');
             return $pdf->stream($result['index_number'].' '.$type.' RESULT.pdf');
 
         } catch
@@ -879,5 +886,18 @@ class CandidateController extends Controller
         }
 
         return response()->download($mergedPdfPath, 'List Bulk Muet '.date('d_m_y').' RESULT.pdf')->deleteFileAfterSend(true);
+    }
+
+    public function logDownload(Request $request)
+    {
+        $candidateId = Auth::guard('candidate')->id();
+
+        // Log the download activity
+        CandidateActivityLog::create([
+            'candidate_id' => $candidateId,
+            'activity_type' => 'download_result'
+        ]);
+
+        return response()->json(['status' => 'success']);
     }
 }

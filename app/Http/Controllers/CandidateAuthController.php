@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Models\CandidateActivityLog;
 
 class CandidateAuthController extends Controller
 {
@@ -21,6 +22,13 @@ class CandidateAuthController extends Controller
         ];
 
         if (Auth::guard('candidate')->attempt($credentials)) {
+
+            // Log the login activity
+            CandidateActivityLog::create([
+                'candidate_id' => Auth::guard('candidate')->id(),
+                'activity_type' => 'login'
+            ]);
+
             // Authentication successful
             return redirect()->route('candidate.index');
         }
