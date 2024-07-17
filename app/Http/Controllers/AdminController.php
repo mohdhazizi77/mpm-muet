@@ -9,6 +9,9 @@ use App\Models\Order;
 use App\Models\Payment;
 use App\Models\ConfigGeneral;
 use App\Models\Courier;
+use App\Models\CandidateActivityLog;
+use Carbon\Carbon;
+
 
 class AdminController extends Controller
 {
@@ -33,12 +36,6 @@ class AdminController extends Controller
         $orderCompleteMOD = $order->where('current_status','COMPLETED')->where('type', 'MOD')->where('payment_for', 'MPM_PRINT')->where('payment_status', 'SUCCESS')->count();
 
         $totalMUET_mpmprint = $payment->where('amount','=', $rateMpmPrint)->where('type', 'MUET')->sum('amount');
-        // $records = $payment->where('amount','=', $rateMpmPrint)->where('type', 'MUET')->pluck('amount');
-        // dd($totalMUET_mpmprint);
-        // $totalMUET_mpmprint = 0;
-        // foreach ($records as $key => $value) {
-        //     $totalMUET_mpmprint += $value - $rateCourier;
-        // }
         $totalMUET_selfprint = $payment->where('amount','=', $rateSelfPrint)->where('type', 'MUET')->sum('amount');
         $totalMUET   = $totalMUET_mpmprint + $totalMUET_selfprint;
 
@@ -61,10 +58,88 @@ class AdminController extends Controller
             "totalMOD" => $totalMOD,
         ];
 
+        $dailyCounts = $this->getDailyActivityCounts();
+        // $monthlyCounts = $this->getMonthlyActivityCounts();
+        // dd($dailyCounts);
         return view('modules.admin.dashboard',
             compact([
-                'user','count','rateMpmPrint', 'rateSelfPrint'
+                'user','count','rateMpmPrint', 'rateSelfPrint', 'dailyCounts'
             ]));
+    }
+
+    public function getDailyActivityCounts()
+    {
+        $today = Carbon::today();
+
+        $loginsCount = CandidateActivityLog::where('activity_type', 'login')
+            ->whereDate('created_at', $today)
+            ->count();
+
+        $viewsCountMUET = CandidateActivityLog::where('activity_type', 'view_result')
+            ->whereDate('created_at', $today)
+            ->where('type', 'MUET')
+            ->count();
+
+        $downloadsCountMUET = CandidateActivityLog::where('activity_type', 'download_result')
+            ->whereDate('created_at', $today)
+            ->where('type', 'MUET')
+            ->count();
+
+        $viewsCountMOD = CandidateActivityLog::where('activity_type', 'view_result')
+            ->whereDate('created_at', $today)
+            ->where('type', 'MOD')
+            ->count();
+
+        $downloadsCountMOD = CandidateActivityLog::where('activity_type', 'download_result')
+            ->whereDate('created_at', $today)
+            ->where('type', 'MOD')
+            ->count();
+
+        return [
+            'logins' => $loginsCount,
+            'viewsMUET' => $viewsCountMUET,
+            'downloadsMUET' => $downloadsCountMUET,
+            'viewsMOD' => $viewsCountMOD,
+            'downloadsMOD' => $downloadsCountMOD
+        ];
+    }
+
+    public function getMonthlyActivityCounts()
+    {
+        $startOfMonth = Carbon::now()->startOfMonth();
+        $endOfMonth = Carbon::now()->endOfMonth();
+
+        $loginsCount = CandidateActivityLog::where('activity_type', 'login')
+            ->whereBetween('created_at', [$startOfMonth, $endOfMonth])
+            ->count();
+
+        $viewsCountMUET = CandidateActivityLog::where('activity_type', 'view_result')
+            ->whereBetween('created_at', [$startOfMonth, $endOfMonth])
+            ->where('type', 'MUET')
+            ->count();
+
+        $downloadsCountMUET = CandidateActivityLog::where('activity_type', 'download_result')
+            ->whereBetween('created_at', [$startOfMonth, $endOfMonth])
+            ->where('type', 'MUET')
+            ->count();
+
+        $viewsCountMOD = CandidateActivityLog::where('activity_type', 'view_result')
+            ->whereBetween('created_at', [$startOfMonth, $endOfMonth])
+            ->where('type', 'MOD')
+            ->count();
+
+        $downloadsCountMOD = CandidateActivityLog::where('activity_type', 'download_result')
+            ->whereBetween('created_at', [$startOfMonth, $endOfMonth])
+            ->where('type', 'MOD')
+            ->count();
+
+        return [
+            'logins' => $loginsCount,
+            'viewsMUET' => $viewsCountMUET,
+            'downloadsMUET' => $downloadsCountMUET,
+            'viewsMOD' => $viewsCountMOD,
+            'downloadsMOD' => $downloadsCountMOD
+        ];
     }
 
     public function muetPieChart(){
@@ -136,6 +211,76 @@ class AdminController extends Controller
             ->whereYear('payment_date', $currentYear)
             ->where('type', 'MOD')
             ->groupByRaw('MONTH(payment_date)')
+            ->pluck('total', 'month');
+
+        // Initialize arrays for each month
+        $muetCounts = array_fill(1, 12, 0);
+        $modCounts = array_fill(1, 12, 0);
+
+        // Fill the arrays with data
+        foreach ($muetData as $month => $count) {
+            $muetCounts[$month] = $count;
+        }
+        foreach ($modData as $month => $count) {
+            $modCounts[$month] = $count;
+        }
+
+        return response()->json([
+            'muet' => array_values($muetCounts),
+            'mod' => array_values($modCounts),
+        ]);
+    }
+
+    public function lineChartViewMuetMod(){
+        $currentYear = now()->year;
+
+        $muetData = CandidateActivityLog::selectRaw('MONTH(created_at) as month, COUNT(*) as total')
+            ->whereYear('created_at', $currentYear)
+            ->where('activity_type', 'view_result')
+            ->where('type', 'MUET')
+            ->groupByRaw('MONTH(created_at)')
+            ->pluck('total', 'month');
+
+        $modData = CandidateActivityLog::selectRaw('MONTH(created_at) as month, COUNT(*) as total')
+            ->whereYear('created_at', $currentYear)
+            ->where('activity_type', 'view_result')
+            ->where('type', 'MOD')
+            ->groupByRaw('MONTH(created_at)')
+            ->pluck('total', 'month');
+
+        // Initialize arrays for each month
+        $muetCounts = array_fill(1, 12, 0);
+        $modCounts = array_fill(1, 12, 0);
+
+        // Fill the arrays with data
+        foreach ($muetData as $month => $count) {
+            $muetCounts[$month] = $count;
+        }
+        foreach ($modData as $month => $count) {
+            $modCounts[$month] = $count;
+        }
+
+        return response()->json([
+            'muet' => array_values($muetCounts),
+            'mod' => array_values($modCounts),
+        ]);
+    }
+
+    public function lineChartDownloadMuetMod(){
+        $currentYear = now()->year;
+
+        $muetData = CandidateActivityLog::selectRaw('MONTH(created_at) as month, COUNT(*) as total')
+            ->whereYear('created_at', $currentYear)
+            ->where('activity_type', 'download_result')
+            ->where('type', 'MUET')
+            ->groupByRaw('MONTH(created_at)')
+            ->pluck('total', 'month');
+
+        $modData = CandidateActivityLog::selectRaw('MONTH(created_at) as month, COUNT(*) as total')
+            ->whereYear('created_at', $currentYear)
+            ->where('activity_type', 'download_result')
+            ->where('type', 'MOD')
+            ->groupByRaw('MONTH(created_at)')
             ->pluck('total', 'month');
 
         // Initialize arrays for each month

@@ -335,7 +335,8 @@ class CandidateController extends Controller
         // Log result view activity
         CandidateActivityLog::create([
             'candidate_id' => Auth::guard('candidate')->id(),
-            'activity_type' => 'view_result'
+            'activity_type' => 'view_result',
+            'type'          => $type
         ]);
 
         return view('modules.candidates.print-pdf', compact(['user','scheme','result','cryptId']));
@@ -890,12 +891,23 @@ class CandidateController extends Controller
 
     public function logDownload(Request $request)
     {
+        try {
+            $id = Crypt::decrypt($request->id);
+        } catch (Illuminate\Contracts\Encryption\DecryptException $e) {
+            return redirect()->back();
+        }
+
+        $value = explode('-', $id);
+        $certID = $value[0];
+        $type = $value[1];
+
         $candidateId = Auth::guard('candidate')->id();
 
         // Log the download activity
         CandidateActivityLog::create([
             'candidate_id' => $candidateId,
-            'activity_type' => 'download_result'
+            'activity_type' => 'download_result',
+            'type' => $type
         ]);
 
         return response()->json(['status' => 'success']);

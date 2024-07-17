@@ -17,6 +17,7 @@ class CreateCandidateActivityLogsTable extends Migration
             $table->id();
             $table->unsignedBigInteger('candidate_id');
             $table->string('activity_type');
+            $table->string('type')->nullable();
             $table->timestamps();
         });
     }

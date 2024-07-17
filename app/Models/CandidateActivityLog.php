@@ -9,6 +9,6 @@ class CandidateActivityLog extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['candidate_id', 'activity_type'];
+    protected $fillable = ['candidate_id', 'activity_type', 'type'];
 
 }
