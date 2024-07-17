@@ -39,12 +39,12 @@ class ImportCandidateExcelCommand extends Command
         $arr = [
             // 2022,2023,2024
             // 2023
-            2024
+            // 2024
         ];
 
-        foreach ($arr as $key => $year) {
-            Excel::import(new ImportMuetCandidate, resource_path('excel/importExcelFiles/Data Sijil MUET/data sijil MUET '.$year.'.csv'));
-        }
+        // foreach ($arr as $key => $year) {
+        //     Excel::import(new ImportMuetCandidate, resource_path('excel/importExcelFiles/Data Sijil MUET/data sijil MUET '.$year.'.csv'));
+        // }
 
         // for ($i=1; $i < 10; $i++) {
         // for ($i=10; $i < 20; $i++) {
