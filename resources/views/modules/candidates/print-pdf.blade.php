@@ -154,7 +154,8 @@
                     url: '{{ route('log.download') }}',
                     type: 'POST',
                     data: {
-                        _token: '{{ csrf_token() }}'
+                        _token: '{{ csrf_token() }}',
+                        id: '{{ $cryptId }}'
                     },
                     success: function(response) {
                         if (response.status === 'success') {
