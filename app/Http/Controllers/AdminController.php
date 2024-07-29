@@ -35,12 +35,12 @@ class AdminController extends Controller
         $orderProcessingMOD = $order->where('current_status','PROCESSING')->where('type', 'MOD')->where('payment_for', 'MPM_PRINT')->where('payment_status', 'SUCCESS')->count();
         $orderCompleteMOD = $order->where('current_status','COMPLETED')->where('type', 'MOD')->where('payment_for', 'MPM_PRINT')->where('payment_status', 'SUCCESS')->count();
 
-        $totalMUET_mpmprint = $payment->where('amount','=', $rateMpmPrint)->where('type', 'MUET')->sum('amount');
-        $totalMUET_selfprint = $payment->where('amount','=', $rateSelfPrint)->where('type', 'MUET')->sum('amount');
+        $totalMUET_mpmprint = $payment->where('status', 'SUCCESS')->where('amount','=', $rateMpmPrint)->where('type', 'MUET')->sum('amount');
+        $totalMUET_selfprint = $payment->where('status', 'SUCCESS')->where('amount','=', $rateSelfPrint)->where('type', 'MUET')->sum('amount');
         $totalMUET   = $totalMUET_mpmprint + $totalMUET_selfprint;
 
-        $totalMOD_mpmprint = $payment->where('amount','=', $rateMpmPrint)->where('type', 'MOD')->sum('amount');
-        $totalMOD_selfprint = $payment->where('amount','=', $rateSelfPrint)->where('type', 'MOD')->sum('amount');
+        $totalMOD_mpmprint = $payment->where('status', 'SUCCESS')->where('amount','=', $rateMpmPrint)->where('type', 'MOD')->sum('amount');
+        $totalMOD_selfprint = $payment->where('status', 'SUCCESS')->where('amount','=', $rateSelfPrint)->where('type', 'MOD')->sum('amount');
         $totalMOD   = $totalMOD_mpmprint + $totalMOD_selfprint;
 
         $count = [
@@ -172,7 +172,7 @@ class AdminController extends Controller
 
     private function getMuetCountByLabel($value, $type)
     {
-        return Payment::where('type', $type)->where('amount', $value)->count();
+        return Payment::where('status','SUCCESS')->where('type', $type)->where('amount', $value)->count();
     }
 
     public function modPieChart(){
@@ -204,12 +204,14 @@ class AdminController extends Controller
         $muetData = Payment::selectRaw('MONTH(payment_date) as month, COUNT(*) as total')
             ->whereYear('payment_date', $currentYear)
             ->where('type', 'MUET')
+            ->where('status', 'SUCCESS')
             ->groupByRaw('MONTH(payment_date)')
             ->pluck('total', 'month');
 
         $modData = Payment::selectRaw('MONTH(payment_date) as month, COUNT(*) as total')
             ->whereYear('payment_date', $currentYear)
             ->where('type', 'MOD')
+            ->where('status', 'SUCCESS')
             ->groupByRaw('MONTH(payment_date)')
             ->pluck('total', 'month');
 
