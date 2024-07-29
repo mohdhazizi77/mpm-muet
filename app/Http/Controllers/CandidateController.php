@@ -27,6 +27,7 @@ use App\Models\Order;
 use App\Models\TrackingOrder;
 use App\Models\Payment;
 use App\Models\ConfigGeneral;
+use App\Models\ConfigMpmBayar;
 use App\Models\CandidateActivityLog;
 use Carbon\Carbon;
 use setasign\Fpdi\Fpdi;
@@ -711,10 +712,69 @@ class CandidateController extends Controller
         };
 
 
-        $order = Order::find($orderId);
-        $tracks = TrackingOrder::where('order_id',$orderId)->latest()->get();
         $payment = Payment::where('order_id',$orderId)->first();
 
+        $order = Order::find($orderId);
+        $tracks = TrackingOrder::where('order_id',$orderId)->latest()->get();
+
+        if ($payment->status == 'PENDING') {
+            $url = ConfigMpmBayar::first()->url.'/api/payment/status';
+            $token = ConfigMpmBayar::first()->token;
+            $secret_key = ConfigMpmBayar::first()->secret_key;
+
+            $data = [
+                "ref_no" => $payment->ref_no,
+            ];
+
+            $output = '';
+            $curl = curl_init();
+            curl_setopt($curl, CURLOPT_URL, $url);
+            curl_setopt($curl, CURLOPT_POST, 1);
+            curl_setopt($curl, CURLOPT_HTTPHEADER, array(
+                'Accept: application/json',
+                'MPMToken: ' . $token
+            ));
+            curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+            curl_setopt($curl, CURLOPT_POSTFIELDS, http_build_query($data));
+            curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, 0);
+            curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 0);
+            $output = curl_exec($curl);
+            $output = json_decode($output);
+
+            if (curl_errno($curl)) {
+                $error_msg = curl_error($curl);
+                var_dump($error_msg);
+                exit();
+            }
+            // dd($output->data);
+            // echo(print_r($output->data,1));
+            if (!empty($output->data)) {
+                curl_close($curl);
+                $order->update(['payment_status' => $output->data->txn_status, 'current_status' => $output->data->txn_status]);
+                    $payment = Payment::updateOrCreate(
+                        [
+                            'ref_no' => $payment->ref_no,
+                        ],
+                        [
+                            'payment_date' => $output->data->txn_time,
+                            'method' => $output->data->payment_provider,
+                            'amount' => $output->data->txn_final_amount,
+                            'status' => $output->data->txn_status,
+                            'txn_id' => $output->data->txn_id,
+                            'ref_no' => $output->data->ref_no,
+                            'cust_info' => serialize(array("full_name"=>$output->data->full_name, "email"=>$output->data->email_address, "phoneNum"=>$output->data->phone_number)),
+                            'receipt' => $output->data->receipt_url,
+                            'receipt_number' => $output->data->receipt_no,
+                            'error_message' => "",
+                            'payment_for' => $order->payment_for,
+                            'type' => $order->type,
+                        ]
+                    );
+            } else {
+                echo "Payment Gateway tidak dapat disambung. Pastikan URL dan TOKEN adalah betul.";
+                curl_close($curl);
+            }
+        }
 
         return view('modules.candidates.muet-status', compact([
             'order',

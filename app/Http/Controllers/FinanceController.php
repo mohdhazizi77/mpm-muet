@@ -33,8 +33,8 @@ class FinanceController extends Controller
         $payments = Payment::where('type', $exam_type);
 
         $totalSuccess   = $payments->where('status', 'SUCCESS')->count();
-        $totalPay60     = $payments->where('amount','=', 60.0)->where('type', $exam_type)->sum('amount');
-        $totalPay20     = Payment::where('amount', 20.0)->where('type', $exam_type)->sum('amount');
+        $totalPay60     = $payments->where('type', $exam_type)->sum('amount');
+        $totalPay20     = $payments->where('type', $exam_type)->sum('amount');
 
         $totalCollect   = $totalPay60 + $totalPay20;
 
@@ -42,6 +42,7 @@ class FinanceController extends Controller
             'totalSuccess' => $totalSuccess,
             'totalPay60' => $totalPay60,
             'totalPay20' => $totalPay20,
+            // 'totalCollect' => $totalCollect,
             'totalCollect' => $totalCollect,
         ];
 
@@ -61,7 +62,6 @@ class FinanceController extends Controller
     {
 
         $payments = Payment::latest();
-
         if ($request->has('exam_type_select') && !empty($request->exam_type_select)) {
             $payments->where('type', $request->exam_type_select);
         }else{

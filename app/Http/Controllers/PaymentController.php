@@ -221,11 +221,19 @@ class PaymentController extends Controller
         else
             $order->mod_calon_id = $id;
 
-
         $order->save();
 
         // Store the order ID in the session
         Session::put('payment_ref_no', $order->payment_ref_no);
+
+        $payment = new Payment();
+        $payment->order_id = $order->id;
+        $payment->status = 'PENDING';
+        $payment->ref_no = $output->ref_no;
+        $payment->type = $exam_type;
+        $payment->payment_date = date('d-m-y H:i:s');
+        $payment->amount = $data['amount'];
+        $payment->save();
 
         header("Location: " . $output->url);
         exit();
