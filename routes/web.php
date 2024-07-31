@@ -94,6 +94,7 @@ Route::group(['middleware' => ['auth:candidate','role:CALON']], function () {
         Route::post('/track-order/ajax', [OrderController::class, 'getAjaxTrackOrder'])->name('order.getAjaxTrackOrder');
         Route::post('/track-shipping/ajax', [OrderController::class, 'getAjaxTrackShipping'])->name('order.getAjaxTrackShipping')->middleware('poslaju.token');
         Route::get('/muet-status/{id}', [CandidateController::class, 'muetstatus'])->name('candidate.muet-status');
+        Route::post('/log-download', [CandidateController::class, 'logDownload'])->name('log.download');
 
     });
     Route::get('/payment/getdata', [PaymentController::class, 'getpayment'])->name('candidate.getpayment');
@@ -107,6 +108,8 @@ Route::group(['middleware' => ['role:PENTADBIR|BPKOM|PSM|FINANCE']], function ()
         Route::get('/dashboard-muet-pie-chart', [AdminController::class, 'muetPieChart'])->name('admin.muet_pie_chart');
         Route::get('/dashboard-mod-pie-chart', [AdminController::class, 'modPieChart'])->name('admin.mod_pie_chart');
         Route::get('/dashboard-line-chart', [AdminController::class, 'lineChart'])->name('admin.line_chart');
+        Route::get('/dashboard-line-chart-view-muet-mod', [AdminController::class, 'lineChartViewMuetMod'])->name('admin.line_chart_view_muet_mod');
+        Route::get('/dashboard-line-chart-download-muet-mod', [AdminController::class, 'lineChartDownloadMuetMod'])->name('admin.line_chart_download_muet_mod');
 
         Route::get('/pos-management/{type}', [PosController::class, 'index'])->middleware('poslaju.token');
         Route::get('/pos-management/{type}/getPosDetail', [PosController::class, 'getPosDetail']);

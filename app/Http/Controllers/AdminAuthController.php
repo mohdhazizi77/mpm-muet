@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Models\AuditLog;
+
 
 class AdminAuthController extends Controller
 {
@@ -15,6 +17,7 @@ class AdminAuthController extends Controller
 
     public function login(Request $request)
     {
+
         $this->validate($request, [
             'email' => 'required|email',
             'password' => 'required|min:6',
@@ -28,6 +31,15 @@ class AdminAuthController extends Controller
                 return redirect()->back()->with('fail', 'Your Account is Inactive, Please contact system admin');
             }
             if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
+
+                AuditLog::create([
+                    'user_id' => Auth::User()->id,
+                    // 'candidate_id' => Auth::guard('candidate')->id(),
+                    'activity' => 'Login into system',
+                    'summary' => serialize('Login into system'),
+                    'device' => AuditLog::getDeviceDetail(),
+                ]);
+
                 return redirect(route('admin.index'));
             }
         }

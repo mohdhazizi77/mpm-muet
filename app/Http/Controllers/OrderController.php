@@ -107,6 +107,10 @@ class OrderController extends Controller
                 $data = [];
                 $response = json_decode($response->getBody()->getContents());
                 foreach ($response as $key => $value) {
+
+                    if ($value->type == "Invalid Request/Empty Connote") {
+                        continue;
+                    }
                     $data[] = [
                         'no' => $key+1,
                         'date' => $value->date,
@@ -399,7 +403,7 @@ class OrderController extends Controller
 
         if (!empty($output->data)) {
             curl_close($curl);
-            $order->update(['payment_status' => $output->data->txn_status]);
+            $order->update(['payment_status' => $output->data->txn_status, 'current_status' => $output->data->txn_status]);
             $payment->update(['status' => $output->data->txn_status]);
         } else {
             // echo "Payment Gateway tidak dapat disambung. Pastikan URL dan TOKEN adalah betul.";

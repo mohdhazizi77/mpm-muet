@@ -14,6 +14,7 @@ class AuditLog extends Model
 
     protected $fillable = [
         'user_id',
+        'candidate_id',
         'activity',
         'summary',
         'device',
@@ -24,7 +25,12 @@ class AuditLog extends Model
         return $this->belongsTo('App\Models\User', 'user_id');
     }
 
-    public function getDeviceDetail()
+    public function candidate()
+    {
+        return $this->belongsTo('App\Models\Candidate', 'candidate_id');
+    }
+
+    public static function getDeviceDetail()
     {
         $agent = new Agent;
         $arr = array(

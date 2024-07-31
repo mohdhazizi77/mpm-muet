@@ -3,9 +3,10 @@
 namespace App\Console\Commands;
 
 use App\Models\MuetCalon;
+use App\Models\ModCalon;
 use App\Models\Candidate;
-
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
 class ImportCandidatesDBCommand extends Command
@@ -29,34 +30,83 @@ class ImportCandidatesDBCommand extends Command
      */
     public function handle()
     {
-        $muetCalonRecords = MuetCalon::all();
+        // DB::beginTransaction();
 
-        foreach ($muetCalonRecords as $record) {
-            $identityCardNumber = $record->kp;
+        try {
+            $this->importFromMuetCalon();
+            $this->importFromModCalon();
 
-            if (strpos($identityCardNumber, '-') !== false) {
-                $identityCardNumber = str_replace('-', '', $identityCardNumber); // buang '-' dekat ic
-            }
+            // DB::commit();
+            $this->info('Import completed successfully.');
+        } catch (\Exception $e) {
+            // DB::rollBack();
+            $this->error('Import failed: ' . $e->getMessage());
+        }
+    }
+
+    private function importFromMuetCalon()
+    {
+        $this->info('Import Candidate from MuetCalon Started.');
+
+        MuetCalon::chunk(1000, function ($muetCalonRecords) {
+            $this->bulkInsertCandidates($muetCalonRecords);
+        });
+
+        $this->info('Import Candidate from MuetCalon Completed.');
+    }
+
+    private function importFromModCalon()
+    {
+        $this->info('Import Candidate from ModCalon Started.');
+
+        ModCalon::chunk(100000, function ($modCalonRecords) {
+            $this->bulkInsertCandidates($modCalonRecords);
+        });
+
+        $this->info('Import Candidate from ModCalon Completed.');
+    }
+
+    private function bulkInsertCandidates($records)
+    {
+        $candidates = [];
+
+        foreach ($records as $record) {
+            $identityCardNumber = str_replace('-', '', $record->kp); // Remove '-' from IC number
+
             // Check if the candidate already exists
-            $candidate = Candidate::where('identity_card_number', $identityCardNumber)->first();
+            $existingCandidate = Candidate::where('identity_card_number', $identityCardNumber)->exists();
 
-            if (!$candidate) {
-                // If candidate does not exist, create a new candidate record
-                $candidate = new Candidate();
-                $candidate->name = $record->nama;
-                $candidate->identity_card_number = $identityCardNumber;
-                $candidate->password = Hash::make($identityCardNumber);
-                $candidate->save();
-
-                // Assign role 'Calon' to the new candidate
-                $candidate->assignRole('CALON');
-
-                $this->info("New candidate imported: {$candidate->name}");
+            if (!$existingCandidate) {
+                $candidates[] = [
+                    // 'id' => '',
+                    'name' => $record->nama,
+                    'identity_card_number' => $identityCardNumber,
+                    'password' => Hash::make($identityCardNumber),
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ];
+                // $this->info("Candidate inserted: {$record->nama}");
             } else {
-                $this->info("Candidate already exists: {$candidate->name}");
+                $this->info("Candidate already exists: {$record->nama}");
             }
         }
 
-        $this->info('Import completed.');
+        // Debugging: Output the $candidates array
+        // $this->info('Candidates to be inserted:');
+        // $this->info(print_r($candidates, true));
+
+        // Perform bulk insert
+        if (!empty($candidates)) {
+            try {
+                $check = Candidate::insert($candidates);
+                $this->info(count($candidates) . " new candidates imported.");
+
+            } catch (\Exception $e) {
+                $this->error('Bulk insert failed: ' . $e->getMessage());
+            }
+        } else {
+            $this->info('No new candidates to insert.');
+        }
     }
+
 }

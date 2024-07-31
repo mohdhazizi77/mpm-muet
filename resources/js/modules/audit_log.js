@@ -41,7 +41,7 @@ $(document).ready(function() {
                     orderable: true,
                     render(data, type, row) {
                         let html = '';
-                        html = '<p>'+data+'</p> <p>'+row.created_date.date+'</p>';
+                        html = '<p>'+data+'</p> <p>'+row.created_date+'</p>';
                         return html;
                     }
                 },
@@ -51,28 +51,29 @@ $(document).ready(function() {
                     className: "text-start",
                     render(data, type, row) {
                         let html = '';
-                        console.log(data);
-                        html = '<p>'+data['table']+' ID:'+data['id']+'</p>';
-                        // html += '<p>'+row.created_date.date+'</p>';
 
-                        if (data['data']['old']) {
-                            html += '<p class="pt-3 fw-bold">Old</p>';
-                            html += '<ul>';
-                            Object.entries(data['data']['old']).forEach(([key, value]) => {
-                                html += '<li>' + key + ': ' + value + '</li>';
-                            });
-                            html += '</ul>';
+                        if (data['table']) {
+                            html = '<p>'+data['table']+' ID:'+data['id']+'</p>';
+                            html += '<p>'+row.created_date.date+'</p>';
+
+                            if (data['data']['old']) {
+                                html += '<p class="pt-3 fw-bold">Old</p>';
+                                html += '<ul>';
+                                Object.entries(data['data']['old']).forEach(([key, value]) => {
+                                    html += '<li>' + key + ': ' + value + '</li>';
+                                });
+                                html += '</ul>';
+                            }
+
+                            if (data['data']['new']) {
+                                html += '<p class="pt-3 fw-bold">New</p>';
+                                html += '<ul>';
+                                Object.entries(data['data']['new']).forEach(([key, value]) => {
+                                    html += '<li>' + key + ': ' + value + '</li>';
+                                });
+                                html += '</ul>';
+                            }
                         }
-
-                        if (data['data']['new']) {
-                            html += '<p class="pt-3 fw-bold">New</p>';
-                            html += '<ul>';
-                            Object.entries(data['data']['new']).forEach(([key, value]) => {
-                                html += '<li>' + key + ': ' + value + '</li>';
-                            });
-                            html += '</ul>';
-                        }
-
                         return html;
                     }
                 },

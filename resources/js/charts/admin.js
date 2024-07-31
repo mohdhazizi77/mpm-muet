@@ -223,7 +223,212 @@ $(document).ready(function() {
         });
     }
 
-    
+    // double line chart line_chart_view_muet_mod
+    var linechartDatalabelColors = getChartColorsArray("line_chart_view_muet_mod");
+    if (linechartDatalabelColors) {
+        $.ajax({
+            url: './admin/dashboard-line-chart-view-muet-mod', // Adjust the URL to match your route
+            method: 'GET',
+            success: function(response) {
+                var muetData = response.muet;
+                var modData = response.mod;
+
+                var options = {
+                    chart: {
+                        height: 380,
+                        type: 'line',
+                        zoom: {
+                            enabled: false
+                        },
+                        toolbar: {
+                            show: false
+                        }
+                    },
+                    colors: linechartDatalabelColors,
+                    dataLabels: {
+                        enabled: false,
+                    },
+                    stroke: {
+                        width: [3, 3],
+                        curve: 'straight'
+                    },
+                    series: [{
+                            name: "MUET - " + new Date().getFullYear(),
+                            data: muetData
+                        },
+                        {
+                            name: "MOD - " + new Date().getFullYear(),
+                            data: modData
+                        }
+                    ],
+                    title: {
+                        text: 'Collection from Jan to Dec',
+                        align: 'left',
+                        style: {
+                            fontWeight: 500,
+                        },
+                    },
+                    grid: {
+                        row: {
+                            colors: ['transparent', 'transparent'], // takes an array which will be repeated on columns
+                            opacity: 0.2
+                        },
+                        borderColor: '#f1f1f1'
+                    },
+                    markers: {
+                        style: 'inverted',
+                        size: 6
+                    },
+                    xaxis: {
+                        categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                        title: {
+                            text: 'Month'
+                        }
+                    },
+                    yaxis: {
+                        title: {
+                            text: 'Count'
+                        },
+                        min: 0,
+                        max: Math.max(Math.max(...muetData), Math.max(...modData)) + 5 // Adjust max y-axis value
+                    },
+                    legend: {
+                        position: 'top',
+                        horizontalAlign: 'right',
+                        floating: true,
+                        offsetY: -25,
+                        offsetX: -5
+                    },
+                    responsive: [{
+                        breakpoint: 600,
+                        options: {
+                            chart: {
+                                toolbar: {
+                                    show: false
+                                }
+                            },
+                            legend: {
+                                show: false
+                            },
+                        }
+                    }]
+                };
+
+                var chart = new ApexCharts(
+                    document.querySelector("#line_chart_view_muet_mod"),
+                    options
+                );
+                chart.render();
+            },
+            error: function(xhr, status, error) {
+                console.error(error);
+            }
+        });
+    }
+
+    // double line chart line_chart_download_muet_mod
+    var linechartDatalabelColors = getChartColorsArray("line_chart_download_muet_mod");
+    if (linechartDatalabelColors) {
+        $.ajax({
+            url: './admin/dashboard-line-chart-download-muet-mod', // Adjust the URL to match your route
+            method: 'GET',
+            success: function(response) {
+                var muetData = response.muet;
+                var modData = response.mod;
+
+                var options = {
+                    chart: {
+                        height: 380,
+                        type: 'line',
+                        zoom: {
+                            enabled: false
+                        },
+                        toolbar: {
+                            show: false
+                        }
+                    },
+                    colors: linechartDatalabelColors,
+                    dataLabels: {
+                        enabled: false,
+                    },
+                    stroke: {
+                        width: [3, 3],
+                        curve: 'straight'
+                    },
+                    series: [{
+                            name: "MUET - " + new Date().getFullYear(),
+                            data: muetData
+                        },
+                        {
+                            name: "MOD - " + new Date().getFullYear(),
+                            data: modData
+                        }
+                    ],
+                    title: {
+                        text: 'Collection from Jan to Dec',
+                        align: 'left',
+                        style: {
+                            fontWeight: 500,
+                        },
+                    },
+                    grid: {
+                        row: {
+                            colors: ['transparent', 'transparent'], // takes an array which will be repeated on columns
+                            opacity: 0.2
+                        },
+                        borderColor: '#f1f1f1'
+                    },
+                    markers: {
+                        style: 'inverted',
+                        size: 6
+                    },
+                    xaxis: {
+                        categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                        title: {
+                            text: 'Month'
+                        }
+                    },
+                    yaxis: {
+                        title: {
+                            text: 'Count'
+                        },
+                        min: 0,
+                        max: Math.max(Math.max(...muetData), Math.max(...modData)) + 5 // Adjust max y-axis value
+                    },
+                    legend: {
+                        position: 'top',
+                        horizontalAlign: 'right',
+                        floating: true,
+                        offsetY: -25,
+                        offsetX: -5
+                    },
+                    responsive: [{
+                        breakpoint: 600,
+                        options: {
+                            chart: {
+                                toolbar: {
+                                    show: false
+                                }
+                            },
+                            legend: {
+                                show: false
+                            },
+                        }
+                    }]
+                };
+
+                var chart = new ApexCharts(
+                    document.querySelector("#line_chart_download_muet_mod"),
+                    options
+                );
+                chart.render();
+            },
+            error: function(xhr, status, error) {
+                console.error(error);
+            }
+        });
+    }
+
 });
 
 

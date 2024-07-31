@@ -167,11 +167,11 @@
             <div class="row logo-container" style="text-align: center; padding-top: 90px">
                 <span style="padding-right: 10px">
                     {{-- <img style="width: 100px" src="{{ URL::asset('build/images/jatanegara/jataNegara.jpg') }}" alt="Logo"> --}}
-                    <img style="width: 100px" src="{{ $jataNegaraBase64 }}" alt="Logo1">
+                        <img style="width: 100px" src="data:image/jpg;base64,{{ $image1Data }}" alt="Logo1">
                 </span>
                 <span>
                     {{-- <img style="width: 80px;height: auto;" src="{{ URL::asset('build/images/logo-mpm-kuningpinang.jpg') }}" alt="Logo"> --}}
-                    <img style="width: 80px" src="{{ $mpmLogoBase64 }}" alt="Logo">
+                        <img style="width: 80px;height: auto;" src="data:image/jpg;base64,{{ $image2Data }}" alt="Logo">
                 </span>
             </div>
             <div id="title_session" style="text-align: center; padding-top: 25px">
@@ -289,7 +289,7 @@
                     <tr>
                         <td>
                             {{-- <img style="width: 100px" src="{{ URL::asset('build/images/sign/sign_new.png') }}" alt="Logo"> --}}
-                            <img style="width: 100px" src="{{ $signBase64 }}" alt="Logo">
+                            <img style="width: 100px" src="data:image/jpg;base64,{{ $image3Data }}" alt="Logo">
                         </td>
                     </tr>
                     <tr>
