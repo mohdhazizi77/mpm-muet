@@ -68,7 +68,7 @@ $(document).ready(function() {
 
                             buttonPrintMPM =
                             // href="/candidate/pos-result/'+data+'"
-                            '<a data-id='+data+' class="btn btn-soft-info waves-effect text-black mx-2 modalUpcoming1 modalPaymentMpm" data-bs-toggle="modal" data-bs-target="#modalPaymentMpm">' +
+                            '<a data-id='+data+' class="btn btn-soft-info waves-effect text-black mx-2 modalUpcoming modalPaymentMpm1" data-bs-toggle="modal" data-bs-target="#modalPaymentMpm1">' +
                                 '<i class="ri-printer-line label-icon align-middle fs-16 me-2"></i> ' +
                                 'PRINTING BY MPM' +
                             '</a> '
@@ -86,7 +86,7 @@ $(document).ready(function() {
                             '</button>'
 
                             buttonPrintMPM =
-                            '<button data-type="MPM_PRINT" type="button" data-id='+data+' class="btn btn-soft-info waves-effect text-black mx-2 modalUpcoming1 modalVerify" data-bs-toggle="modal" data-bs-target="#'+modalMPM+'">' +
+                            '<button data-type="MPM_PRINT" type="button" data-id='+data+' class="btn btn-soft-info waves-effect text-black mx-2 modalUpcoming modalVerify1" data-bs-toggle="modal" data-bs-target="#'+modalMPM+'1">' +
                                 '<i class="ri-printer-line label-icon align-middle fs-16 me-2"></i> ' +
                                 'PRINTING BY MPM' +
                             '</button> '
