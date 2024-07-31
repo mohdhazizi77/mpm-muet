@@ -37,6 +37,18 @@
                         <input type="text" id="text-search" class="form-control" placeholder="Enter text">
                     </div>
                 </div>
+                @role('PENTADBIR')
+                <div class="row gy-1 mt-2">
+                    <div class="col-md-3">
+                        <label for="exam_type" class="form-label">Exam type</label>
+                        <select name="exam_type" id="exam_type" class="form-control">
+                            <option value="">Please Select</option>
+                            <option value="MUET">MUET</option>
+                            <option value="MOD">MOD</option>
+                        </select>
+                    </div>
+                </div>
+                @endrole
             </div>
         </div>
     </div>
