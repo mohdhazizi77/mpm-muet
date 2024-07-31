@@ -84,6 +84,14 @@ class PosController extends Controller
             });
         }
 
+        // Apply filtering based on muet type
+        if ($request->has('examType') && !empty($request->examType)) {
+            $examType = $request->examType;
+            $pos->where(function ($query) use ($examType) {
+                $query->where('type', $examType );
+            });
+        }
+
         // Apply filtering for no tracking number
         if ($request->has('noTracking') && !empty($request->noTracking)) {
             if($request->noTracking){//true
