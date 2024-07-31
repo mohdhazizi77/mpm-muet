@@ -15,12 +15,12 @@ return new class extends Migration
             $table->id();
             $table->integer('order_id'); //from order
             $table->timestamp('payment_date')->nullable(); // get from return URL txn_time
-            $table->string('method')->nuallable();// get from return URL type
-            $table->float('amount')->nuallable(); // get from return URL amount
+            $table->string('method')->nullable();// get from return URL type
+            $table->float('amount')->nullable(); // get from return URL amount
             $table->string('status')->default('PENDING'); // get from return URL status
             $table->string('txn_id')->nullable(); //get from return URL txn_id
             $table->string('ref_no')->unique()->nullable(); //get from return URL once create payment url
-            $table->text('cust_info')->nuallable(); // get from  return url serialize full_name,email,phone,nric,extra_data['type']
+            $table->text('cust_info')->nullable(); // get from  return url serialize full_name,email,phone,nric,extra_data['type']
             $table->string('receipt')->nullable(); //get from return URL once create payment url
             $table->string('receipt_number')->nullable(); //get from return URL once create payment url
             $table->string('error_message')->nullable();

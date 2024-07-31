@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\URL;
 
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -26,6 +27,8 @@ use App\Models\Order;
 use App\Models\TrackingOrder;
 use App\Models\Payment;
 use App\Models\ConfigGeneral;
+use App\Models\ConfigMpmBayar;
+use App\Models\CandidateActivityLog;
 use Carbon\Carbon;
 use setasign\Fpdi\Fpdi;
 use setasign\Fpdf\Fpdf;
@@ -109,7 +112,7 @@ class CandidateController extends Controller
                 "type"              => 'MUET',
                 "year"              => $muet->tahun,
                 "session"           => $muet->getTarikh->sesi,
-                "band"              => "Band ".$muet->band,
+                "band"              => "Band ".self::formatNumber($muet->band),
                 "is_more2year"      => $is_more2year,
                 "is_selfPrintPaid"  => $is_selfPrintPaid,
                 "is_mpmPrintPaid"   => $is_mpmPrintPaid,
@@ -159,6 +162,26 @@ class CandidateController extends Controller
         }
 
         return datatables($cert_datas)->toJson();
+    }
+
+    function formatNumber($number) {
+        // List of disallowed values
+        $disallowed = ["-1", "-2", "-3", "-4", "-5", "X"];
+
+        // Check if the number is in the disallowed list
+        if (in_array($number, $disallowed)) {
+            return $number;
+        }
+
+        // Check if the number contains a '+'
+        if (strpos($number, '+') !== false) {
+            return $number;
+        }
+
+        // Convert to float and format to one decimal place
+        $formattedNumber = number_format((float)$number, 1);
+
+        return $formattedNumber;
     }
 
     public function verifyIndexNumber(Request $request)
@@ -310,6 +333,13 @@ class CandidateController extends Controller
             ];
         }
 
+        // Log result view activity
+        CandidateActivityLog::create([
+            'candidate_id' => Auth::guard('candidate')->id(),
+            'activity_type' => 'view_result',
+            'type'          => $type
+        ]);
+
         return view('modules.candidates.print-pdf', compact(['user','scheme','result','cryptId']));
 
     }
@@ -372,9 +402,20 @@ class CandidateController extends Controller
             $qr = QrCode::size(50)->style('round')->generate($url);
 
             $pdf = PDF::loadView('modules.candidates.download-pdf', [
-                    'tarikh' => $tarikh,'qr' => $qr, 'type' => $type, 'result' => $result, 'candidate' => $candidate, 'scheme' => $scheme, 'pusat' => $pusat])->setPaper('a4', 'portrait');
-
-            // return $pdf->download($type.' RESULT.pdf');
+                'tarikh' => $tarikh,
+                'qr' => $qr,
+                'type' => $type,
+                'result' => $result,
+                'candidate' => $candidate,
+                'scheme' => $scheme,
+                'pusat' => $pusat,
+                'image1Data' => config('base64_images.jataNegara'),
+                'image2Data' => config('base64_images.logoMPM'),
+                'image3Data' => config('base64_images.sign'),
+            ])
+            ->setPaper('a4', 'portrait')
+            ->setOptions(['isRemoteEnabled' => true]);
+            // return $pdf->download($result['index_number'].' '.$type.' RESULT.pdf');
             return $pdf->stream($result['index_number'].' '.$type.' RESULT.pdf');
 
         } catch
@@ -426,8 +467,19 @@ class CandidateController extends Controller
             $qr = QrCode::size(50)->style('round')->generate($url);
 
             $pdf = PDF::loadView('modules.candidates.download-pdf', [
-                    'tarikh' => $tarikh,'qr' => $qr, 'type' => $type, 'result' => $result, 'candidate' => $candidate, 'scheme' => $scheme, 'pusat' => $pusat])->setPaper('a4', 'portrait');
-
+                'tarikh' => $tarikh,
+                'qr' => $qr,
+                'type' => $type,
+                'result' => $result,
+                'candidate' => $candidate,
+                'scheme' => $scheme,
+                'pusat' => $pusat,
+                'image1Data' => config('base64_images.jataNegara'),
+                'image2Data' => config('base64_images.logoMPM'),
+                'image3Data' => config('base64_images.sign'),
+            ])
+            ->setPaper('a4', 'portrait')
+            ->setOptions(['isRemoteEnabled' => true]);
             // return $pdf->download($type.' RESULT.pdf');
             return $pdf->stream($result['index_number'].' '.$type.' RESULT.pdf');
 
@@ -491,8 +543,19 @@ class CandidateController extends Controller
 
 
             $pdf = PDF::loadView('modules.candidates.download-pdf', [
-                    'tarikh' => $tarikh, 'qr' => $qr, 'type' => $type, 'result' => $result, 'candidate' => $candidate, 'scheme' => $scheme, 'pusat' => $pusat])->setPaper('a4', 'portrait');
-
+                'tarikh' => $tarikh,
+                'qr' => $qr,
+                'type' => $type,
+                'result' => $result,
+                'candidate' => $candidate,
+                'scheme' => $scheme,
+                'pusat' => $pusat,
+                'image1Data' => config('base64_images.jataNegara'),
+                'image2Data' => config('base64_images.logoMPM'),
+                'image3Data' => config('base64_images.sign'),
+            ])
+            ->setPaper('a4', 'portrait')
+            ->setOptions(['isRemoteEnabled' => true]);
             return $pdf->download($result['index_number'].' '.$type.' RESULT.pdf');
 
         } catch
@@ -649,10 +712,69 @@ class CandidateController extends Controller
         };
 
 
-        $order = Order::find($orderId);
-        $tracks = TrackingOrder::where('order_id',$orderId)->latest()->get();
         $payment = Payment::where('order_id',$orderId)->first();
 
+        $order = Order::find($orderId);
+        $tracks = TrackingOrder::where('order_id',$orderId)->latest()->get();
+
+        if ($payment->status == 'PENDING') {
+            $url = ConfigMpmBayar::first()->url.'/api/payment/status';
+            $token = ConfigMpmBayar::first()->token;
+            $secret_key = ConfigMpmBayar::first()->secret_key;
+
+            $data = [
+                "ref_no" => $payment->ref_no,
+            ];
+
+            $output = '';
+            $curl = curl_init();
+            curl_setopt($curl, CURLOPT_URL, $url);
+            curl_setopt($curl, CURLOPT_POST, 1);
+            curl_setopt($curl, CURLOPT_HTTPHEADER, array(
+                'Accept: application/json',
+                'MPMToken: ' . $token
+            ));
+            curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+            curl_setopt($curl, CURLOPT_POSTFIELDS, http_build_query($data));
+            curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, 0);
+            curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 0);
+            $output = curl_exec($curl);
+            $output = json_decode($output);
+
+            if (curl_errno($curl)) {
+                $error_msg = curl_error($curl);
+                var_dump($error_msg);
+                exit();
+            }
+            // dd($output->data);
+            // echo(print_r($output->data,1));
+            if (!empty($output->data)) {
+                curl_close($curl);
+                $order->update(['payment_status' => $output->data->txn_status, 'current_status' => $output->data->txn_status]);
+                    $payment = Payment::updateOrCreate(
+                        [
+                            'ref_no' => $payment->ref_no,
+                        ],
+                        [
+                            'payment_date' => $output->data->txn_time,
+                            'method' => $output->data->payment_provider,
+                            'amount' => $output->data->txn_final_amount,
+                            'status' => $output->data->txn_status,
+                            'txn_id' => $output->data->txn_id,
+                            'ref_no' => $output->data->ref_no,
+                            'cust_info' => serialize(array("full_name"=>$output->data->full_name, "email"=>$output->data->email_address, "phoneNum"=>$output->data->phone_number)),
+                            'receipt' => $output->data->receipt_url,
+                            'receipt_number' => $output->data->receipt_no,
+                            'error_message' => "",
+                            'payment_for' => $order->payment_for,
+                            'type' => $order->type,
+                        ]
+                    );
+            } else {
+                echo "Payment Gateway tidak dapat disambung. Pastikan URL dan TOKEN adalah betul.";
+                curl_close($curl);
+            }
+        }
 
         return view('modules.candidates.muet-status', compact([
             'order',
@@ -668,7 +790,7 @@ class CandidateController extends Controller
         $currentYear = Carbon::now()->year;
 
         // Check if the given year is more than 2 years ago from the current year
-        if ($currentYear - $year >= 2) {
+        if ($currentYear - $year >= 3) {
             return true; // Given year is more than 2 years ago
         } else {
             return false; // Given year is less than 2 years ago
@@ -770,16 +892,20 @@ class CandidateController extends Controller
         $url = config('app.url').'/verify/result/'.$id;
         $qr = QrCode::size(50)->style('round')->generate($url);
 
-
         $pdf = PDF::loadView('modules.candidates.download-pdf', [
+            'tarikh' => $tarikh,
             'qr' => $qr,
             'type' => $type,
             'result' => $result,
             'candidate' => $candidate,
             'scheme' => $scheme,
             'pusat' => $pusat,
-            'tarikh' => $tarikh,
-        ])->setPaper('a4', 'portrait');
+            'image1Data' => config('base64_images.jataNegara'),
+            'image2Data' => config('base64_images.logoMPM'),
+            'image3Data' => config('base64_images.sign'),
+        ])
+        ->setPaper('a4', 'portrait')
+        ->setOptions(['isRemoteEnabled' => true]);
 
         $pdfPath = storage_path('app/temp/'.$id.'.pdf');
         $pdf->save($pdfPath);
@@ -821,5 +947,29 @@ class CandidateController extends Controller
         }
 
         return response()->download($mergedPdfPath, 'List Bulk Muet '.date('d_m_y').' RESULT.pdf')->deleteFileAfterSend(true);
+    }
+
+    public function logDownload(Request $request)
+    {
+        try {
+            $id = Crypt::decrypt($request->id);
+        } catch (Illuminate\Contracts\Encryption\DecryptException $e) {
+            return redirect()->back();
+        }
+
+        $value = explode('-', $id);
+        $certID = $value[0];
+        $type = $value[1];
+
+        $candidateId = Auth::guard('candidate')->id();
+
+        // Log the download activity
+        CandidateActivityLog::create([
+            'candidate_id' => $candidateId,
+            'activity_type' => 'download_result',
+            'type' => $type
+        ]);
+
+        return response()->json(['status' => 'success']);
     }
 }

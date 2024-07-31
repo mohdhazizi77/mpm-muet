@@ -37,6 +37,8 @@ class ModCalon extends Model
     public function getSkor(){
 
         return $this->hasMany('App\Models\ModSkor', 'kodnegeri', 'kodnegeri')
+                    ->where('tahun', $this->tahun)
+                    ->where('sidang', $this->sidang)
                     ->where('kodpusat', $this->kodpusat)
                     ->where('nocalon', $this->nocalon)
                     ->where('reg_id', $this->reg_id);
@@ -93,7 +95,7 @@ class ModCalon extends Model
     static function checkingAggSkor($id){
 
         $checkingArr = [
-            '-1' => '',
+            '-1' => 'NIL',
             'X'  => 'NIL',
             '-3' => '',
             '-4' => 'WITHHELD',
@@ -113,7 +115,7 @@ class ModCalon extends Model
             '-5' => 'NULLIFIED',
         ];
 
-        return array_key_exists($id, $checkingArr) ? $checkingArr[ $id ] : $id;
+        return array_key_exists($id, $checkingArr) ? $checkingArr[ $id ] : number_format((float)$id, 1);
     }
 
 }

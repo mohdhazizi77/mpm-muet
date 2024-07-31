@@ -35,7 +35,7 @@
 
                             <div class="py-2">
 
-                                <table id="dt-auditLog" class="table w-100 table-striped text-center align-middle">
+                                <table id="dt-auditLog" class="table table-sm w-100 table-striped text-center align-middle">
                                     <thead>
                                     <tr class="text-center bg-dark-subtle">
                                         <th scope="col">NO.</th>

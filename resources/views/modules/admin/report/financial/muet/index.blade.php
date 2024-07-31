@@ -123,11 +123,11 @@
                         <div class="row gy-1">
                             <div class="col-md-3">
                                 <label for="start-date" class="form-label">Start Date:</label>
-                                <input type="date" id="start-date-fin-muet" class="form-control datepicker" placeholder="DD-MM-YYYY">
+                                <input type="date" id="start-date-fin-muet" class="form-control datepicker" value="{{ date('d-m-y') }}" placeholder="DD-MM-YYYY">
                             </div>
                             <div class="col-md-3">
                                 <label for="end-date" class="form-label">End Date:</label>
-                                <input type="date" id="end-date-fin-muet" class="form-control datepicker" placeholder="DD-MM-YYYY">
+                                <input type="date" id="end-date-fin-muet" class="form-control datepicker" value="{{ date('d-m-y') }}" placeholder="DD-MM-YYYY">
                             </div>
                             <div class="col-md-3" style="align-content: end;">
                                 <button id="filterBtnFinMuet" class="btn btn-primary">Filter</button>
@@ -150,7 +150,7 @@
                                 <label for="start-date" class="form-label">Status</label>
                                 <select name="status_muet" id="status_muet" class="form-control">
                                     <option value="">Please Select</option>
-                                    <option value="SUCCESS">SUCCESS</option>
+                                    <option selected value="SUCCESS">SUCCESS</option>
                                     <option value="FAIL">FAIL</option>
                                 </select>
                             </div>

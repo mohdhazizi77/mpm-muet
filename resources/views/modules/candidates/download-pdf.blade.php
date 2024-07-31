@@ -156,19 +156,20 @@
     <div id="page-1" style="padding-left: 10%; padding-right: 10%;page-break-after: always;">
         <div class="row logo-container" style="text-align: center; padding-top: 90px">
             <span style="padding-right: 10px">
-                <img style="width: 100px" src="{{ asset('build/images/jatanegara/JataNegara.png') }}" alt="Logo1">
+                {{-- <img style="width: 100px" src="{{ asset('build/images/jatanegara/JataNegara.png') }}" alt="Logo1"> --}}
+                <img style="width: 100px" src="data:image/jpg;base64,{{ $image1Data }}" alt="Logo1">
             </span>
             <span>
-                <img style="width: 80px;height: auto;" src="{{ asset('build/images/logo-mpm-kuningpinang.jpg') }}"
-                    alt="Logo">
+                {{-- <img style="width: 80px;height: auto;" src="{{ asset('build/images/logo-mpm-kuningpinang.jpg') }}"alt="Logo"> --}}
+                <img style="width: 80px;height: auto;" src="data:image/jpg;base64,{{ $image2Data }}" alt="Logo">
             </span>
         </div>
         <div id="title_session" style="text-align: center; padding-top: 25px">
-            <span style="font-size: 15pt; font-weight: bolder">MAJLIS PEPERIKSAAN MALYSIA</span><br>
+            <span style="font-size: 15pt; font-weight: bolder">MAJLIS PEPERIKSAAN MALAYSIA</span><br>
             <span style="font-size: 12pt; font-weight: bold">MALAYSIAN EXAMINATIONS COUNCIL</span>
             <p style="font-size: 10pt">This is to certify that the below candidate has sat for the</p>
             <span style="font-size: 12pt; font-weight: bolder">MALAYSIAN UNIVERSITY ENGLISH TEST <br>
-                {{ Str::upper($tarikh->sesi) }}</span>
+                {{ Str::upper(str_replace("MUET ", "", $tarikh->sesi)) }}</span>
             <p style="font-size: 10pt">and obtained the following score.</p>
         </div>
         {{-- <div id="session">
@@ -265,7 +266,8 @@
             <table style="width: 105%; margin-left: -15px; margin-right: -15px;">
                 <tr>
                     <td>
-                        <img style="width: 100px" src="{{ asset('build/images/sign/sign_new.png') }}" alt="Logo">
+                        {{-- <img style="width: 100px" src="{{ URL::asset('build/images/sign/sign_new.png') }}" alt="Logo"> --}}
+                        <img style="width: 100px" src="data:image/jpg;base64,{{ $image3Data }}" alt="Logo">
                     </td>
                 </tr>
                 <tr>
@@ -300,192 +302,12 @@
 
             <table style="width: 105%; margin-left: -15px; margin-right: -15px">
                 <tr>
-                    <td style="text-align: right"><img src="data:image/jpg;base64,{{ base64_encode($qr) }}"
-                            alt="QR Code"></td>
+                    <td style="text-align: right"><img src="data:image/jpg;base64,{{ base64_encode($qr) }}" alt="QR Code"></td>
                 </tr>
             </table>
 
         </div>
     </div>
-
-    {{-- <div id="page-2">
-    <title>MUET Alignment of Aggregated Scores with the CEFR Global Scale</title>
-   <div id="student-details-2">
-    <table id="scheme-student">
-        <tbody>
-            <tr>
-            <td>{{ strtoupper($candidate->nama) }}</td>
-            <td style="text-align: right;">{{ $result['index_number'] }}</td>
-            </tr>
-            @if ($candidate->jcalon == 1)
-                <tr>
-                    <td>{{ strtoupper($pusat->namapusat) }}</td>
-                    <td></td>
-                </tr>
-            @else
-                <tr>
-                <td>{{ strtoupper($candidate->alamat1) }}</td>
-                <td></td>
-                </tr>
-                @if (!empty($candidate->alamat2))
-                    <tr>
-                    <td>{{ strtoupper($candidate->alamat2) }}</td>
-                    <td></td>
-                    </tr>
-                @endif
-                <tr>
-                <td>{{ strtoupper($candidate->poskod) . " " . strtoupper($candidate->bandar)}}</td>
-                <td></td>
-                </tr>
-                <tr>
-                <td>{{ strtoupper($candidate->negeri) }}</td>
-                <td></td>
-                </tr>
-            @endif
-        </tbody>
-      </table>
-   </div>
-   <div id="score-description">
-       <h3 style="text-align: center; margin-bottom:0px; padding-bottom: 0px">MUET</h3>
-       <h5 style="text-align: center; margin:0px; padding: 0px">Alignment of Aggregated Scores with the CEFR Global Scale</h5>
-   </div>
-   <div >
-
-
-    @if ($result['year'] > 2020) above 2020
-        <table id="scheme">
-            <thead>
-                <tr>
-                <th width=10%>AGGREGATED SCORE</th>
-                <th width=5%>BAND</th>
-                <th width=13%>CEFR LEVEL</th>
-                <th>USER</th>
-                <th width=43%>THE CEFR GLOBAL SCALE: COMMON REFERENCES LEVEL</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                <td class={{ ($result['agg_score'] >= 331 && $result['agg_score'] <= 360) ? 'highlight' : 'border' }}>331 - 360</td>
-                <td class={{ ($result['agg_score'] >= 331 && $result['agg_score'] <= 360) ? 'highlight' : 'border' }}>5+</td>
-                <td class={{ ($result['agg_score'] >= 331 && $result['agg_score'] <= 360) ? 'highlight' : 'border' }}>C1+</td>
-                <td rowspan="2">Profecient</td>
-                <td id="description" rowspan="2" style="text-align: justify !important">Can understand a wide range of demanding, longer texts, and recognise implicit meaning. Can express him/herself fluently and spontaneously without much obvious searching for expressions. Can use language flexibly and effectively for social, academic and professional purposes, can produce clear, well-structured, detailed text on complex subjects, showing controlled use of organisational patterns, connectors and cohesive devices.</td>
-                </tr>
-                <tr>
-                <td class={{ ($result['agg_score'] >= 294 && $result['agg_score'] <= 330) ? 'highlight' : 'border' }}>294 - 330</td>
-                <td class={{ ($result['agg_score'] >= 294 && $result['agg_score'] <= 330) ? 'highlight' : 'border' }}>5.0</td>
-                <td class={{ ($result['agg_score'] >= 294 && $result['agg_score'] <= 330) ? 'highlight' : 'border' }}>C1</td>
-                </tr>
-                <tr>
-                <td class={{ ($result['agg_score'] >= 258 && $result['agg_score'] <= 293) ? 'highlight' : 'border' }}>258 - 293</td>
-                <td class={{ ($result['agg_score'] >= 258 && $result['agg_score'] <= 293) ? 'highlight' : 'border' }}>4.5</td>
-                <td class={{ ($result['agg_score'] >= 211 && $result['agg_score'] <= 293) ? 'highlight' : 'border' }} rowspan="2">B2</td>
-                <td rowspan="4">Independent</td>
-                <td rowspan="2" class="description" style="text-align: justify !important">Can understand the main ideas of complex text on both concrete and abstract topics, including technical discussions in his/her field of specialisation. Can interact with a degree of fluency and spontaneity that makes regular interaction with native speakers quite possible without strain for either party. Can produce clear, detailed text on a wide range of subjects and explain a viewpoint on a topical issue giving the advantages and disadvantages of various options.</td>
-                </tr>
-                <tr>
-                <td class={{ ($result['agg_score'] >= 211 && $result['agg_score'] <= 257) ? 'highlight' : 'border' }}>211 - 257</td>
-                <td class={{ ($result['agg_score'] >= 211 && $result['agg_score'] <= 257) ? 'highlight' : 'border' }}>4.0</td>
-                </tr>
-                <tr>
-                <td class={{ ($result['agg_score'] >= 164 && $result['agg_score'] <= 210) ? 'highlight' : 'border' }}>164 - 210</td>
-                <td class={{ ($result['agg_score'] >= 164 && $result['agg_score'] <= 210) ? 'highlight' : 'border' }}>3.5</td>
-                <td class={{ ($result['agg_score'] >= 123 && $result['agg_score'] <= 210) ? 'highlight' : 'border' }} rowspan="2">B1</td>
-                <td rowspan="2" class="description" style="text-align: justify !important">Can understand the main points of clear standard input on familiar matters regularly encountered in work, school, leisure, etc. Can deal with most situations likely to arise whilst travelling in an area where the language is spoken. Can produce simple connected text on topics which are familiar, or of personal interest. Can describe experiences and events, dreams, hopes and ambitions and briefly give reasons and explanations for opinions and plans.</td>
-                </tr>
-                <tr>
-                <td class={{ ($result['agg_score'] >= 123 && $result['agg_score'] <= 163) ? 'highlight' : 'border' }}>123 - 163</td>
-                <td class={{ ($result['agg_score'] >= 123 && $result['agg_score'] <= 163) ? 'highlight' : 'border' }}>3.0</td>
-                </tr>
-                <tr>
-                <td class={{ ($result['agg_score'] >= 82 && $result['agg_score'] <= 122) ? 'highlight' : 'border' }} >82 - 122</td>
-                <td class={{ ($result['agg_score'] >= 82 && $result['agg_score'] <= 122) ? 'highlight' : 'border' }} >2.5</td>
-                <td class={{ ($result['agg_score'] >= 1 && $result['agg_score'] <= 122) ? 'highlight' : 'border' }}  rowspan="3">A2</td>
-                <td rowspan="3">Basic</td>
-                <td rowspan="3" class="description" style="text-align: justify !important">Can understand sentences and frequently used expressions related to areas of most immediate relevance (e.g. very basic personal and family information, shopping, local geography, employment). Can communicate in simple and routine tasks requiring a simple and direct exchange of information on familiar and routine matters. Can describe in simple terms aspects of his/her background, immediate environment and matters in areas of immediate need.</td>
-                </tr>
-                <tr>
-                <td class={{ ($result['agg_score'] >= 36 && $result['agg_score'] <= 81) ? 'highlight' : 'border' }} >36 - 81</td>
-                <td class={{ ($result['agg_score'] >= 36 && $result['agg_score'] <= 81) ? 'highlight' : 'border' }} >2.0</td>
-                </tr>
-                <tr>
-                <td class={{ ($result['agg_score'] >= 1 && $result['agg_score'] <= 35) ? 'highlight' : 'border' }} >1 - 35</td>
-                <td class={{ ($result['agg_score'] >= 1 && $result['agg_score'] <= 35) ? 'highlight' : 'border' }} >1.0</td>
-                </tr>
-            </tbody>
-        </table>
-    @else 2020 and before
-        <table id="scheme">
-            <tr>
-                <th>AGGREGATED SCORE</th>
-                <th>BAND</th>
-                <th>USER</th>
-                <th>COMMUNICATIVE ABILITY</th>
-                <th>COMPREHENSION</th>
-                <th>TASK PERFORMANCE</th>
-            </tr>
-            <tr>
-                <td class={{ ($result['agg_score'] >= 260 && $result['agg_score'] <= 300) ? 'highlight' : 'border' }}>260 - 300</td>
-                <td class={{ ($result['agg_score'] >= 260 && $result['agg_score'] <= 300) ? 'highlight' : 'border' }}>6</td>
-                <td class={{ ($result['agg_score'] >= 260 && $result['agg_score'] <= 300) ? 'highlight' : 'border' }}>Highly proficient user</td>
-                <td class={{ ($result['agg_score'] >= 260 && $result['agg_score'] <= 300) ? 'highlight' : 'border' }}>Very fluent; highly appropriate use of language; hardly any grammatical error</td>
-                <td class={{ ($result['agg_score'] >= 260 && $result['agg_score'] <= 300) ? 'highlight' : 'border' }}>Very good understanding of language and context</td>
-                <td class={{ ($result['agg_score'] >= 260 && $result['agg_score'] <= 300) ? 'highlight' : 'border' }}>Very high ability to function in the language</td>
-            </tr>
-            <tr>
-                <td class={{ ($result['agg_score'] >= 220 && $result['agg_score'] <= 259) ? 'highlight' : 'border' }}>220 - 259</td>
-                <td class={{ ($result['agg_score'] >= 220 && $result['agg_score'] <= 259) ? 'highlight' : 'border' }}>5</td>
-                <td class={{ ($result['agg_score'] >= 220 && $result['agg_score'] <= 259) ? 'highlight' : 'border' }}>Proficient user</td>
-                <td class={{ ($result['agg_score'] >= 220 && $result['agg_score'] <= 259) ? 'highlight' : 'border' }}>Fluent; appropriate use of language; few grammatical errors</td>
-                <td class={{ ($result['agg_score'] >= 220 && $result['agg_score'] <= 259) ? 'highlight' : 'border' }}>Good understanding of language and context</td>
-                <td class={{ ($result['agg_score'] >= 220 && $result['agg_score'] <= 259) ? 'highlight' : 'border' }}>High ability to function in the language</td>
-            </tr>
-            <tr>
-                <td class={{ ($result['agg_score'] >= 180 && $result['agg_score'] <= 219) ? 'highlight' : 'border' }}>180 - 219</td>
-                <td class={{ ($result['agg_score'] >= 180 && $result['agg_score'] <= 219) ? 'highlight' : 'border' }}>4</td>
-                <td class={{ ($result['agg_score'] >= 180 && $result['agg_score'] <= 219) ? 'highlight' : 'border' }}>Satisfactory user</td>
-                <td class={{ ($result['agg_score'] >= 180 && $result['agg_score'] <= 219) ? 'highlight' : 'border' }}>Generally fluent; generally appropriate use of language; some grammatical errors</td>
-                <td class={{ ($result['agg_score'] >= 180 && $result['agg_score'] <= 219) ? 'highlight' : 'border' }}>Satisfactory understanding of language and context</td>
-                <td class={{ ($result['agg_score'] >= 180 && $result['agg_score'] <= 219) ? 'highlight' : 'border' }}>Satisfactory ability to function in the language</td>
-            </tr>
-            <tr>
-                <td class={{ ($result['agg_score'] >= 140 && $result['agg_score'] <= 179) ? 'highlight' : 'border' }}>140 - 179</td>
-                <td class={{ ($result['agg_score'] >= 140 && $result['agg_score'] <= 179) ? 'highlight' : 'border' }}>3</td>
-                <td class={{ ($result['agg_score'] >= 140 && $result['agg_score'] <= 179) ? 'highlight' : 'border' }}>Modest user</td>
-                <td class={{ ($result['agg_score'] >= 140 && $result['agg_score'] <= 179) ? 'highlight' : 'border' }}>Fairly fluent; fairly appropriate use of language; many grammatical errors</td>
-                <td class={{ ($result['agg_score'] >= 140 && $result['agg_score'] <= 179) ? 'highlight' : 'border' }}>Fair understanding of language and context</td>
-                <td class={{ ($result['agg_score'] >= 140 && $result['agg_score'] <= 179) ? 'highlight' : 'border' }}>Fair ability to function in the language</td>
-            </tr>
-            <tr>
-                <td class={{ ($result['agg_score'] >= 100 && $result['agg_score'] <= 139) ? 'highlight' : 'border' }}>100 - 139</td>
-                <td class={{ ($result['agg_score'] >= 100 && $result['agg_score'] <= 139) ? 'highlight' : 'border' }}>2</td>
-                <td class={{ ($result['agg_score'] >= 100 && $result['agg_score'] <= 139) ? 'highlight' : 'border' }}>Limited user</td>
-                <td class={{ ($result['agg_score'] >= 100 && $result['agg_score'] <= 139) ? 'highlight' : 'border' }}>Limited ability to use language; frequent grammatical errors</td>
-                <td class={{ ($result['agg_score'] >= 100 && $result['agg_score'] <= 139) ? 'highlight' : 'border' }}>Limited understanding of language and context</td>
-                <td class={{ ($result['agg_score'] >= 100 && $result['agg_score'] <= 139) ? 'highlight' : 'border' }}>Limited ability to function in the language</td>
-            </tr>
-            <tr>
-                <td class={{ ($result['agg_score'] >= 0 && $result['agg_score'] <= 99) ? 'highlight' : 'border' }}>Below 100</td>
-                <td class={{ ($result['agg_score'] >= 0 && $result['agg_score'] <= 99) ? 'highlight' : 'border' }}>1</td>
-                <td class={{ ($result['agg_score'] >= 0 && $result['agg_score'] <= 99) ? 'highlight' : 'border' }}>Very limited user</td>
-                <td class={{ ($result['agg_score'] >= 0 && $result['agg_score'] <= 99) ? 'highlight' : 'border' }}>Hardly able to use the language</td>
-                <td class={{ ($result['agg_score'] >= 0 && $result['agg_score'] <= 99) ? 'highlight' : 'border' }}>Very limited understanding of language and context</td>
-                <td class={{ ($result['agg_score'] >= 0 && $result['agg_score'] <= 99) ? 'highlight' : 'border' }}>Very limited ability to function in the language</td>
-            </tr>
-        </table>
-    @endif
-
-
-   </div>
-   <table id="band-achieved" style="margin-top: -10px">
-       <tr>
-           <td>
-            <h4 style="margin-bottom:0px; padding-bottom: 0px">BAND ACHIEVED : {{ $result['band'] }}</h4>
-            </td>
-        </tr>
-    </table>
-
-    </div> --}}
 
     @if ($result['year'] > 1999 && $result['year'] < 2008)
         <div id="back-tahun-1999">
@@ -975,7 +797,7 @@
                             <th colspan="3" style="border: 1px solid black;font-size: 10pt">Descriptions</th>
                         </tr>
                         <tr>
-                            <td colspan="3" style="border: 1px solid black;font-size: 10pt">
+                            <td colspan="3" style="border: 1px solid black;font-size: 9pt">
                                 Can understand a wide range of demanding, longer texts, and recognise implicit meaning.
                                 Can
                                 express him/herself fluently and spontaneously without much obvious searching for
@@ -1033,7 +855,7 @@
                             <th colspan="3" style="border: 1px solid black;font-size: 10pt">Descriptions</th>
                         </tr>
                         <tr>
-                            <td colspan="3" style="border: 1px solid black;font-size: 10pt">
+                            <td colspan="3" style="border: 1px solid black;font-size: 9pt">
                                 Can understand the main ideas of complex text on both concrete and abstract topics,
                                 including
                                 technical discussions in his/her field of specialisation. Can interact with a degree of
@@ -1091,7 +913,7 @@
                             <th colspan="3" style="border: 1px solid black;font-size: 10pt">Descriptions</th>
                         </tr>
                         <tr>
-                            <td colspan="3" style="border: 1px solid black">
+                            <td colspan="3" style="border: 1px solid black;font-size: 9pt">
                                 Can understand the main points of clear standard input on familiar matters regularly
                                 encountered in
                                 work, school, leisure, etc. Can deal with most situations likely to arise whilst
@@ -1160,7 +982,7 @@
                             <th colspan="3" style="border: 1px solid black;font-size: 10pt">Descriptions</th>
                         </tr>
                         <tr>
-                            <td colspan="3" style="border: 1px solid black;font-size: 10pt">
+                            <td colspan="3" style="border: 1px solid black;font-size: 9pt">
                                 Can understand sentences and frequently used expressions related to areas of most
                                 immediate
                                 relevance (e.g. very basic personal and family information, shopping, local geography,
@@ -1178,10 +1000,10 @@
         </div>
     @endif
 
-    <div class="footer" style="padding-top: 10px;text-align: center; font-size: 10pt">
+    <div class="footer mx-0" style="padding-top: 10px;text-align: center; font-size: 10pt; padding-left: 4%; padding-right: 8%">
         The QR code will redirect you to MPM MUET Online
         Certificate System. Make sure that it redirects you to
-        <a href="https://sijil.mpm.edu.my" target="_blank">sijil.mpm.edu.my</a> for authenticity <span class="pagenum"></span>
+        <a href="https://sijil.mpm.edu.my" target="_blank">sijil.mpm.edu.my</a> for authenticity. <span class="pagenum"></span>
     </div>
 
 </body>

@@ -13,7 +13,8 @@ return new class extends Migration
     {
         Schema::create('audit_logs', function (Blueprint $table) {
             $table->id();
-            $table->integer('user_id');
+            $table->integer('user_id')->nullable();
+            $table->integer('candidate_id')->nullable();
             $table->string('activity');
             $table->text('summary');
             $table->text('device');

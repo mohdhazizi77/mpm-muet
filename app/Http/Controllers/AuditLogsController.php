@@ -27,14 +27,21 @@ class AuditLogsController extends Controller
 
         $data = [];
         foreach ($logs as $key => $log) {
-            $data[] = [
-                'user_id'   => $log->user->id,
-                'user_name' => $log->user->name,
+            $data[$key] = [
                 'action'    => $log->activity,
-                'created_date' => $log->created_at,
+                'created_date' => $log->created_at->format('d/m/y H:i:s'),
                 'data'      => unserialize($log->summary),
             ];
+            if (!empty($log->user->id)) {
+                $data[$key]['user_id'] = $log->user->id;
+                $data[$key]['user_name'] = $log->user->name;
+            } else {
+                $data[$key]['user_id'] = $log->candidate->id;
+                $data[$key]['user_name'] = $log->candidate->name;
+            }
+
         }
+
         return datatables($data)->toJson();
     }
 }

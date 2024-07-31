@@ -14,7 +14,7 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         $this->call(DefaultUserRoleSeeder::class);
-        $this->call(ExamSessionSeeder::class);
+
         $this->call(CourierSeeder::class);
         // $this->call(OrderSeeder::class);
         // $this->call(TrackingOrderSeeder::class);
@@ -26,10 +26,10 @@ class DatabaseSeeder extends Seeder
         $this->call(ConfigMpmBayarSeeder::class);
 
         // MUET Seeder
-        $this->call(MuetCalonSeeder::class);
-        $this->call(MuetPusatSeeder::class);
-        $this->call(MuetSkorSeeder::class);
-        $this->call(MuetTarikhSeeder::class);
+        // $this->call(MuetCalonSeeder::class);
+        // $this->call(MuetPusatSeeder::class);
+        // $this->call(MuetSkorSeeder::class);
+        // $this->call(MuetTarikhSeeder::class);
 
     }
 }

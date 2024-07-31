@@ -28,6 +28,9 @@ class ImportMuetCandidate implements ToModel, WithChunkReading, WithBatchInserts
             // if ($key == 0 || $key == 1)
                 continue;
 
+            if ($row[7] == "ANGKA GILIRAN")
+                continue;
+            
             if (empty($row[0])) {
                 break;
             }

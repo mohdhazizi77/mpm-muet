@@ -27,7 +27,7 @@ return new class extends Migration
             $table->string('payment_for');
             $table->string('type');
             $table->string('payment_status')->default('PENDING')->nullable();
-            $table->string('current_status')->default('NEW')->nullable();
+            $table->string('current_status')->default('PENDING')->nullable();
             $table->string('courier_id')->nullable();
             $table->string('muet_calon_id')->nullable();
             $table->string('mod_calon_id')->nullable();

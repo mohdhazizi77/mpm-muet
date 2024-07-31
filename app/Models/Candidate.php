@@ -14,10 +14,12 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class Candidate extends Authenticatable
 {
-    use HasRoles;
-    // use HasFactory;
-    protected $fillable = ['name','identity_card_number','password'];
+    use HasRoles, HasFactory;
 
+    protected $fillable = ['name', 'identity_card_number', 'password'];
+
+    // Ensure the timestamps are enabled
+    public $timestamps = true;
 
     public function user()
     {

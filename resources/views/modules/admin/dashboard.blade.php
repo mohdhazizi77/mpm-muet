@@ -25,7 +25,7 @@
             /* background-size: 600% 600%; */
             /* animation: gradientAnimation 10s ease infinite; */
         }
-        
+
         .gradient-card-yellow {
             /* background: linear-gradient(270deg, #ffcccc, #ff9900, #ffcccc); */
             background: linear-gradient(to left, #ffbe88 0%, #ffcc66 100%);
@@ -58,6 +58,113 @@
 @endsection
 @section('content')
 
+    <div class="row">
+        <div class="col-12">
+            <h5 class="text-decoration-underline mb-3 pb-1">Daily Activity Counts ({{ date('d/m/Y') }})</h5>
+        </div>
+    </div>
+    <div class="row">
+
+        <div class="col-xl-3 col-md-3">
+            <div class="card card-animate" style="background-color: #bce6ff">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="flex-grow-1">
+                            <p class="text-uppercase fw-semibold mb-0">View Result MUET</p>
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-end justify-content-between mt-4">
+                        <div>
+                            <h4 class="fs-22 fw-semibold ff-secondary mb-2">
+                                <span class="counter-value" data-target="6000">{{ $dailyCounts['viewsMUET'] }}</span>
+                            </h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-md-3">
+            <div class="card card-animate" style="background-color: #bce6ff">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="flex-grow-1">
+                            <p class="text-uppercase fw-semibold mb-0">Download Result MUET</p>
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-end justify-content-between mt-4">
+                        <div>
+                            <h4 class="fs-22 fw-semibold ff-secondary mb-2">
+                                <span class="counter-value" data-target="6000">{{ $dailyCounts['downloadsMUET'] }}</span>
+                            </h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-md-3">
+            <div class="card card-animate" style="background-color: #bce6ff">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="flex-grow-1">
+                            <p class="text-uppercase fw-semibold mb-0">View Result MOD</p>
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-end justify-content-between mt-4">
+                        <div>
+                            <h4 class="fs-22 fw-semibold ff-secondary mb-2">
+                                <span class="counter-value" data-target="6000">{{ $dailyCounts['viewsMOD'] }}</span>
+                            </h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-md-3">
+            <div class="card card-animate" style="background-color: #bce6ff">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="flex-grow-1">
+                            <p class="text-uppercase fw-semibold mb-0">DOwnload Result MOD</p>
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-end justify-content-between mt-4">
+                        <div>
+                            <h4 class="fs-22 fw-semibold ff-secondary mb-2">
+                                <span class="counter-value" data-target="6000">{{ $dailyCounts['downloadsMOD'] }}</span>
+                            </h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title mb-0">Total View Ceritificate for Year 2024</h4>
+                </div><!-- end card header -->
+
+                <div class="card-body">
+                    <div id="line_chart_view_muet_mod" data-colors='["--vz-primary", "--vz-info"]' class="apex-charts" dir="ltr"></div>
+                </div><!-- end card-body -->
+            </div><!-- end card -->
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title mb-0">Total Download Ceritificate for Year 2024</h4>
+                </div><!-- end card header -->
+
+                <div class="card-body">
+                    <div id="line_chart_download_muet_mod" data-colors='["--vz-primary", "--vz-info"]' class="apex-charts" dir="ltr"></div>
+                </div><!-- end card-body -->
+            </div><!-- end card -->
+        </div>
+    </div>
+
     @role('PSM|PENTADBIR')
         <div class="row">
             <div class="col-12">
@@ -83,10 +190,7 @@
                             </div>
                             <div class="col" style="padding-top: 10px; padding-bottom: 20px">
                                 <div class="align-middle text-center">
-                                    {{-- <i class="fas fa-location-arrow text-dark" style="font-size: 50px;"></i> --}}
-                                    {{-- <i class="ri-star-fill" style="font-size: 24px;"></i> --}}
-                                    <img src="{{ asset('build/images/dashboard/megaphone_white.png') }}"
-                                                    width="60px" class="icon-info">
+                                    <img src="{{ asset('build/images/dashboard/megaphone_white.png') }}" width="60px" class="icon-info">
                                 </div>
                             </div>
                         </div>

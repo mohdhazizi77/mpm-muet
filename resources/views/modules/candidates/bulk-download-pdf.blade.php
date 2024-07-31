@@ -164,11 +164,12 @@
         <div id="page-1" style="padding-left: 10%; padding-right: 10%;page-break-after: always;">
             <div class="row logo-container" style="text-align: center; padding-top: 90px">
                 <span style="padding-right: 10px">
-                    <img style="width: 100px" src="{{ asset('build/images/jatanegara/jataNegara.jpg') }}" alt="Logo">
+                    {{-- <img style="width: 100px" src="{{ URL::asset('build/images/jatanegara/jataNegara.jpg') }}" alt="Logo"> --}}
+                        <img style="width: 100px" src="data:image/jpg;base64,{{ $image1Data }}" alt="Logo1">
                 </span>
                 <span>
-                    <img style="width: 80px;height: auto;" src="{{ asset('build/images/logo-mpm-kuningpinang.jpg') }}"
-                        alt="Logo">
+                    {{-- <img style="width: 80px;height: auto;" src="{{ URL::asset('build/images/logo-mpm-kuningpinang.jpg') }}" alt="Logo"> --}}
+                        <img style="width: 80px;height: auto;" src="data:image/jpg;base64,{{ $image2Data }}" alt="Logo">
                 </span>
             </div>
             <div id="title_session" style="text-align: center; padding-top: 25px">
@@ -285,7 +286,8 @@
                 <table style="width: 105%; margin-left: -15px; margin-right: -15px;">
                     <tr>
                         <td>
-                            <img style="width: 100px" src="{{ asset('build/images/sign/sign_new.png') }}" alt="Logo">
+                            {{-- <img style="width: 100px" src="{{ URL::asset('build/images/sign/sign_new.png') }}" alt="Logo"> --}}
+                            <img style="width: 100px" src="data:image/jpg;base64,{{ $image3Data }}" alt="Logo">
                         </td>
                     </tr>
                     <tr>
@@ -815,7 +817,7 @@
                                 <th colspan="3" style="border: 1px solid black;font-size: 10pt">Descriptions</th>
                             </tr>
                             <tr>
-                                <td colspan="3" style="border: 1px solid black;font-size: 10pt">
+                                <td colspan="3" style="border: 1px solid black;font-size: 9pt">
                                     Can understand a wide range of demanding, longer texts, and recognise implicit meaning.
                                     Can
                                     express him/herself fluently and spontaneously without much obvious searching for
@@ -873,7 +875,7 @@
                                 <th colspan="3" style="border: 1px solid black;font-size: 10pt">Descriptions</th>
                             </tr>
                             <tr>
-                                <td colspan="3" style="border: 1px solid black;font-size: 10pt">
+                                <td colspan="3" style="border: 1px solid black;font-size: 9pt">
                                     Can understand the main ideas of complex text on both concrete and abstract topics,
                                     including
                                     technical discussions in his/her field of specialisation. Can interact with a degree of
@@ -931,7 +933,7 @@
                                 <th colspan="3" style="border: 1px solid black;font-size: 10pt">Descriptions</th>
                             </tr>
                             <tr>
-                                <td colspan="3" style="border: 1px solid black">
+                                <td colspan="3" style="border: 1px solid black;font-size: 9pt">
                                     Can understand the main points of clear standard input on familiar matters regularly
                                     encountered in
                                     work, school, leisure, etc. Can deal with most situations likely to arise whilst
@@ -1000,7 +1002,7 @@
                                 <th colspan="3" style="border: 1px solid black;font-size: 10pt">Descriptions</th>
                             </tr>
                             <tr>
-                                <td colspan="3" style="border: 1px solid black;font-size: 10pt">
+                                <td colspan="3" style="border: 1px solid black;font-size: 9pt">
                                     Can understand sentences and frequently used expressions related to areas of most
                                     immediate
                                     relevance (e.g. very basic personal and family information, shopping, local geography,

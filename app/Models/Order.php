@@ -53,9 +53,11 @@ class Order extends Model
 
     public static function statusColor($id = ''){
         $arr = [
+            'PENDING' => 'warning',
             'PAID' => 'secondary',
             'NEW' => 'info',
             'PROCESSING'=> 'warning',
+            'FAILED' => 'danger',
             'CANCEL' => 'danger',
             'COMPLETED' => 'success',
         ];

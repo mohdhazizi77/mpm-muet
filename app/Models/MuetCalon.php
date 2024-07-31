@@ -34,6 +34,8 @@ class MuetCalon extends Model
     public function getSkor(){
 
         return $this->hasMany('App\Models\MuetSkor', 'kodnegeri', 'kodnegeri')
+                    ->where('tahun', $this->tahun)
+                    ->where('sidang', $this->sidang)
                     ->where('kodpusat', $this->kodpusat)
                     ->where('jcalon', $this->jcalon)
                     ->where('nocalon', $this->nocalon);
@@ -96,7 +98,7 @@ class MuetCalon extends Model
     static function checkingAggSkor($id){
 
         $checkingArr = [
-            '-1' => '',
+            '-1' => 'NIL',
             'X'  => 'NIL',
             '-3' => '',
             '-4' => 'WITHHELD',
@@ -115,6 +117,28 @@ class MuetCalon extends Model
             '-4' => 'WITHHELD',
             '-5' => 'NULLIFIED',
         ];
+
+        // List of disallowed values
+        $disallowed = ["-1", "-2", "-3", "-4", "-5", "X"];
+
+        // Check if the number is in the disallowed list
+        if (in_array($id, $disallowed)) {
+            // return $number;
+            $id = $id;
+        }
+
+        // Check if the number contains a '+'
+        else if (strpos($id, '+') !== false) {
+            // return $number;
+            $id = $id;
+        }
+
+        else {
+            // Convert to float and format to one decimal place
+            $id = number_format((float)$id, 1);
+
+        }
+
 
         return array_key_exists($id, $checkingArr) ? $checkingArr[ $id ] : $id;
     }
