@@ -68,7 +68,7 @@ $(document).ready(function() {
 
                             buttonPrintMPM =
                             // href="/candidate/pos-result/'+data+'"
-                            '<a data-id='+data+' class="btn btn-soft-info waves-effect text-black mx-2 modalUpcoming modalPaymentMpm1" data-bs-toggle="modal" data-bs-target="#modalPaymentMpm1">' +
+                            '<a data-id='+data+' class="btn btn-soft-info waves-effect text-black mx-2 modalUpcoming1 modalPaymentMpm" data-bs-toggle="modal" data-bs-target="#modalPaymentMpm">' +
                                 '<i class="ri-printer-line label-icon align-middle fs-16 me-2"></i> ' +
                                 'PRINTING BY MPM' +
                             '</a> '
@@ -86,7 +86,7 @@ $(document).ready(function() {
                             '</button>'
 
                             buttonPrintMPM =
-                            '<button data-type="MPM_PRINT" type="button" data-id='+data+' class="btn btn-soft-info waves-effect text-black mx-2 modalUpcoming modalVerify1" data-bs-toggle="modal" data-bs-target="#'+modalMPM+'1">' +
+                            '<button data-type="MPM_PRINT" type="button" data-id='+data+' class="btn btn-soft-info waves-effect text-black mx-2 modalUpcoming1 modalVerify" data-bs-toggle="modal" data-bs-target="#'+modalMPM+'">' +
                                 '<i class="ri-printer-line label-icon align-middle fs-16 me-2"></i> ' +
                                 'PRINTING BY MPM' +
                             '</button> '
@@ -227,5 +227,13 @@ $(document).ready(function() {
             showConfirmButton: false,
         });
     });
+
+    $(document).on('click', '.btnForgotIndexNumber', function(){
+        Swal.fire({
+            title: "Forget your Index Number?",
+            html: "<p>Kindly go to this link to find your index number.</p> <p>Link : <a href='http://webmpm1.mpm.edu.my/muetresults/ '>http://webmpm1.mpm.edu.my/muetresults/ </a></p>",
+            icon: "question"
+          });
+    })
 
 });
