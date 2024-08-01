@@ -48,6 +48,11 @@
                             @role('PENTADBIR|BPKOM')
                             <option value="MOD">MOD</option>
                             @endrole
+                            @role('FINANCE')
+                            <option value="MUET">MUET</option>
+                            <option value="MOD">MOD</option>
+                            @endrole
+
 
                         </select>
                     </div>
@@ -66,6 +71,7 @@
                         <label for="start-date" class="form-label">Status</label>
                         <select name="status_trx" id="status_trx" class="form-control">
                             <option value="">Please Select</option>
+                            <option value="FAILED">FAILED</option>
                             <option value="PAID">PAID</option>
                             <option value="NEW">NEW</option>
                             <option value="PROCESSING">PROCESSING</option>

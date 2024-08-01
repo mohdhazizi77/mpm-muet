@@ -909,13 +909,13 @@
                             </tr>
                             <tr>
                                 <td style="border: 1px solid black; text-align: center;padding: 5px;font-size: 10pt"
-                                    class={{ $result['agg_score'] >= 264 && $result['agg_score'] <= 210 ? 'highlight' : 'border' }}>
-                                    264 - 210</td>
+                                    class={{ $result['agg_score'] >= 164 && $result['agg_score'] <= 210 ? 'highlight' : 'border' }}>
+                                    164 - 210</td>
                                 <td style="border: 1px solid black; text-align: center;padding: 5px;font-size: 10pt"
-                                    class={{ $result['agg_score'] >= 264 && $result['agg_score'] <= 210 ? 'highlight' : 'border' }}>
+                                    class={{ $result['agg_score'] >= 164 && $result['agg_score'] <= 210 ? 'highlight' : 'border' }}>
                                     3.5</td>
                                 <td style="border: 1px solid black; text-align: center;padding: 5px;font-size: 10pt"
-                                    class={{ $result['agg_score'] >= 264 && $result['agg_score'] <= 210 ? 'highlight' : 'border' }}>
+                                    class={{ $result['agg_score'] >= 164 && $result['agg_score'] <= 210 ? 'highlight' : 'border' }}>
                                     B1</td>
                             </tr>
                             <tr>
