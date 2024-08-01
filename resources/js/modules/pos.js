@@ -16,6 +16,7 @@ $(document).ready(function() {
                     d.startDate = $('#start-date').val();
                     d.endDate = $('#end-date').val();
                     d.textSearch = $('#text-search').val();
+                    d.examType = $('#exam_type').val();
                 }
             },
             columns: [
@@ -300,6 +301,7 @@ $(document).ready(function() {
                     d.endDate = $('#end-date').val();
                     d.noTracking = $('#noTracking').val();
                     d.textSearch = $('#text-search').val();
+                    d.examType = $('#exam_type').val();
                 }
             },
             columns: [
@@ -565,6 +567,7 @@ $(document).ready(function() {
                     d.textSearch = $('#text-search').val();
                     d.startDate = $('#start-date').val();
                     d.endDate = $('#end-date').val();
+                    d.examType = $('#exam_type').val();
                 }
             },
             columns: [
@@ -699,6 +702,7 @@ $(document).ready(function() {
         $('#start-date').val('');
         $('#end-date').val('');
         $('#text-search').val('');
+        $('#exam_type').val('');
 
         $('#noTracking').prop('value', '0');
         $('#noTracking').prop('checked', false);

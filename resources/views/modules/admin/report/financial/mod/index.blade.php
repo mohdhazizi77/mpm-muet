@@ -144,7 +144,7 @@
                                 <select name="status_mod" id="status_mod" class="form-control">
                                     <option value="">Please Select</option>
                                     <option value="SUCCESS">SUCCESS</option>
-                                    <option value="FAIL">FAIL</option>
+                                    <option value="FAILED">FAILED</option>
                                 </select>
                             </div>
                             <div class="col-md-3">
