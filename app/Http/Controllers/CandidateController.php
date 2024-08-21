@@ -29,6 +29,8 @@ use App\Models\Payment;
 use App\Models\ConfigGeneral;
 use App\Models\ConfigMpmBayar;
 use App\Models\CandidateActivityLog;
+use App\Models\AuditLog;
+
 use Carbon\Carbon;
 use setasign\Fpdi\Fpdi;
 use setasign\Fpdf\Fpdf;
@@ -45,13 +47,6 @@ class CandidateController extends Controller
         $muets = $user->muetCalon;
         $mods = $user->modCalon;
         $config = ConfigGeneral::get()->first();
-        // dd($user->muetCalon);
-
-
-        // foreach ($certificates as $key => $certificate) {
-        //     $certificate->exam_session_name = $certificate->examsession->name .", ".$certificate->examsession->year;
-        //     $certificate->band = unserialize($certificate->result)['band'];
-        // }
 
         return view('modules.candidates.index',
             compact([
@@ -302,7 +297,6 @@ class CandidateController extends Controller
         } else {
             $candidate = ModCalon::find($certID);
         }
-
         $result = $candidate->getResult($candidate);
 
         $cert = '';
@@ -338,6 +332,14 @@ class CandidateController extends Controller
             'candidate_id' => Auth::guard('candidate')->id(),
             'activity_type' => 'view_result',
             'type'          => $type
+        ]);
+
+        AuditLog::create([
+            // 'user_id' => Auth::guard('candidate')->id(),
+            'candidate_id' => Auth::guard('candidate')->id(),
+            'activity' => 'View Result Index Number :'.$candidate->angka_giliran,
+            'summary' => serialize(['View Result', $candidate, $result]),
+            'device' => AuditLog::getDeviceDetail(),
         ]);
 
         return view('modules.candidates.print-pdf', compact(['user','scheme','result','cryptId']));
@@ -416,6 +418,15 @@ class CandidateController extends Controller
             ->setPaper('a4', 'portrait')
             ->setOptions(['isRemoteEnabled' => true]);
             // return $pdf->download($result['index_number'].' '.$type.' RESULT.pdf');
+
+            AuditLog::create([
+                // 'user_id' => Auth::guard('candidate')->id(),
+                'candidate_id' => Auth::guard('candidate')->id(),
+                'activity' => 'Download Result Index Number :'.$candidate->angka_giliran,
+                'summary' => serialize(['View Result', $candidate, $result]),
+                'device' => AuditLog::getDeviceDetail(),
+            ]);
+
             return $pdf->stream($result['index_number'].' '.$type.' RESULT.pdf');
 
         } catch
@@ -481,8 +492,16 @@ class CandidateController extends Controller
             ->setPaper('a4', 'portrait')
             ->setOptions(['isRemoteEnabled' => true]);
             // return $pdf->download($type.' RESULT.pdf');
-            return $pdf->stream($result['index_number'].' '.$type.' RESULT.pdf');
 
+            AuditLog::create([
+                // 'user_id' => Auth::guard('candidate')->id(),
+                'candidate_id' => Auth::guard('candidate')->id(),
+                'activity' => 'Download Result Index Number :'.$candidate->angka_giliran,
+                'summary' => serialize(['View Result', $candidate, $result]),
+                'device' => AuditLog::getDeviceDetail(),
+            ]);
+
+            return $pdf->stream($result['index_number'].' '.$type.' RESULT.pdf');
         } catch
         (Exception $e) {
             return back()->withError($e->getMessage());
@@ -556,7 +575,16 @@ class CandidateController extends Controller
             ])
             ->setPaper('a4', 'portrait')
             ->setOptions(['isRemoteEnabled' => true]);
+
+            AuditLog::create([
+                'user_id' => Auth::User()->id(),
+                'activity' => 'Download Result Index Number :'.$candidate->angka_giliran,
+                'summary' => serialize(['View Result', $candidate, $result]),
+                'device' => AuditLog::getDeviceDetail(),
+            ]);
+
             return $pdf->download($result['index_number'].' '.$type.' RESULT.pdf');
+
 
         } catch
         (Exception $e) {
@@ -906,6 +934,13 @@ class CandidateController extends Controller
         ])
         ->setPaper('a4', 'portrait')
         ->setOptions(['isRemoteEnabled' => true]);
+
+        AuditLog::create([
+            'user_id' => Auth::User()->id(),
+            'activity' => 'Bulk Download Result Index Number :'.$candidate->angka_giliran,
+            'summary' => serialize(['View Result', $candidate, $result]),
+            'device' => AuditLog::getDeviceDetail(),
+        ]);
 
         $pdfPath = storage_path('app/temp/'.$id.'.pdf');
         $pdf->save($pdfPath);
