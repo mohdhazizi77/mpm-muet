@@ -76,11 +76,11 @@ $(document).ready(function() {
                             '<span style="display: block; margin-bottom: 5px;">NRIC: ' + row.candidate_nric + '</span>' +
                             '<span style="display: block;">' + row.session + '</span>' +
                         '</div>';
-                        
+
                         return html;
                     }
                 },
-                
+
                 // {
                 //     data: "status",
                 //     orderable: true,
@@ -98,21 +98,28 @@ $(document).ready(function() {
                         let html = '';
                         // Generate pill button based on status
                         switch (data) {
-                            // case 'new':
-                            //     html = '<span class="badge bg-info">' + data + '</span>';
-                            //     break;
                             case 'PENDING':
+                            case 'PROCESSING':
                                 html = '<span class="badge bg-warning text-dark">' + data + '</span>';
                                 break;
+                            case 'PAID':
+                                html = '<span class="badge bg-secondary">' + data + '</span>';
+                                break;
+                            case 'NEW':
+                                html = '<span class="badge bg-info">' + data + '</span>';
+                                break;
+                            case 'FAILED':
+                            case 'CANCEL':
+                                html = '<span class="badge bg-danger">' + data + '</span>';
+                                break;
+                            case 'COMPLETED':
                             case 'SUCCESS':
                                 html = '<span class="badge bg-success">' + data + '</span>';
-                                break;
-                            case 'FAIL':
-                                html = '<span class="badge bg-danger">' + data + '</span>';
                                 break;
                             default:
                                 html = '<span class="badge bg-secondary">' + data + '</span>';
                         }
+
                         return html;
                     }
                 },
