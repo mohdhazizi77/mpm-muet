@@ -56,19 +56,20 @@
                 {{--                        <i class='bx bx-moon fs-22'></i>--}}
                 {{--                    </button>--}}
                 {{--                </div>--}}
-
+                @if(!empty(Auth::user()))
                 <div class="dropdown ms-sm-3 header-item topbar-user">
                     <button type="button" class="btn" id="page-header-user-dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <span class="d-flex align-items-center">
-                            <img class="rounded-circle header-profile-user" src="@if (Auth::user()->avatar != ''){{ URL::asset('build/images/users/user-dummy-img.jpg') }}@else{{ URL::asset('build/images/users/user-dummy-img.jpg') }}@endif"
+                            <img class="rounded-circle header-profile-user" src="@if (Auth::user()?->avatar != ''){{ URL::asset('build/images/users/user-dummy-img.jpg') }}@else{{ URL::asset('build/images/users/user-dummy-img.jpg') }}@endif"
                                  alt="Header Avatar">
                             <span class="text-start ms-xl-2">
-                                <span class="d-none d-xl-inline-block ms-1 fw-semibold user-name-text">{{Auth::user()->name}}</span><br>
-                                <span class="d-none d-xl-inline-block ms-1 fw-semibold user-name-text">{{Auth::user()->identity_card_number}}</span>
+                                <span class="d-none d-xl-inline-block ms-1 fw-semibold user-name-text">{{Auth::user()?->name}}</span><br>
+                                <span class="d-none d-xl-inline-block ms-1 fw-semibold user-name-text">{{Auth::user()?->identity_card_number}}</span>
                                 {{-- <span class="d-none d-xl-block ms-1 fs-13 user-name-sub-text">Candidate</span> --}}
                             </span>
                         </span>
                     </button>
+                    
                     <div class="dropdown-menu dropdown-menu-end" aria-labelledby="page-header-user-dropdown">
                         <a class="dropdown-item" href="javascript:void(0);" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                             <i class="bx bx-power-off font-size-16 align-middle me-1"></i>
@@ -78,7 +79,9 @@
                             @csrf
                         </form>
                     </div>
+                    
                 </div>
+                @endif
                 {{-- <div class="dropdown ms-sm-3 header-item topbar-user">
                     <button type="button" class="btn" id="page-header-user-dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <span class="d-flex align-items-center">

@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Exports\TransactionExport;
 use App\Notifications\OrderReceivedNotification;
 
@@ -36,10 +37,12 @@ class PaymentController extends Controller
     {
         $user = Auth::User() ? Auth::User() : abort(403);
 
-        return view('modules.admin.report.transaction.index',
+        return view(
+            'modules.admin.report.transaction.index',
             compact([
                 'user',
-            ]));
+            ])
+        );
     }
 
     public function getAjax(Request $request)
@@ -54,8 +57,8 @@ class PaymentController extends Controller
             // Convert startDate and endDate to Carbon instances
             $startDate = Carbon::parse($request->startDateTrx)->startOfDay()->format('Y-m-d H:i:s');
             $endDate = $request->has('endDateTrx') && !empty($request->endDateTrx)
-                        ? Carbon::parse($request->endDateTrx)->endOfDay()->format('Y-m-d H:i:s')
-                        : $currentDate;
+                ? Carbon::parse($request->endDateTrx)->endOfDay()->format('Y-m-d H:i:s')
+                : $currentDate;
 
             // Filter based on the date range
             $transaction->whereBetween('payment_date', [$startDate, $endDate]);
@@ -88,18 +91,18 @@ class PaymentController extends Controller
             case 'PSM':
                 // $transaction->where('type', 'MUET');
                 $transaction->when($request->filled('exam_type'), function ($query) use ($request) {
-                        return $query->where('type', $request->input('exam_type'));
-                    }, function ($query) {
-                        return $query->where('type', 'MUET');
-                    });
+                    return $query->where('type', $request->input('exam_type'));
+                }, function ($query) {
+                    return $query->where('type', 'MUET');
+                });
                 break;
             case 'BPKOM':
                 // $transaction->where('type', 'MOD');
                 $transaction->when($request->filled('exam_type'), function ($query) use ($request) {
-                        return $query->where('type', $request->input('exam_type'));
-                    }, function ($query) {
-                        return $query->where('type', 'MOD');
-                    });
+                    return $query->where('type', $request->input('exam_type'));
+                }, function ($query) {
+                    return $query->where('type', 'MOD');
+                });
                 break;
         }
 
@@ -132,7 +135,6 @@ class PaymentController extends Controller
         }
 
         return datatables($data)->toJson();
-
     }
 
     public function makepayment(PaymentRequest $request)
@@ -150,7 +152,7 @@ class PaymentController extends Controller
         // $token = 'a2aWmIGjPSVZ8F3OvS2BtppKM2j6TKvKXE7u8W7MwbkVyZjwZfSYdNP5ACem';
         // $secret_key = '1eafc1e9-df86-4c8c-a3de-291ada259ab0';
 
-        $url = ConfigMpmBayar::first()->url.'/api/payment/create';
+        $url = ConfigMpmBayar::first()->url . '/api/payment/create';
         $token = ConfigMpmBayar::first()->token;
         $secret_key = ConfigMpmBayar::first()->secret_key;
 
@@ -237,7 +239,6 @@ class PaymentController extends Controller
 
         header("Location: " . $output->url);
         exit();
-
     }
 
     public function paymentstatus(Request $request)
@@ -293,30 +294,72 @@ class PaymentController extends Controller
         }
     }
 
-    public function getpayment(Request $request){
+    public function getpayment(Request $request)
+    {
 
         $configGeneral = ConfigGeneral::get()->first();
 
         // dd($request->toArray());
         // update order
-        $order = Order::where('payment_ref_no',$request->ref_no)->first();
-
+        $order = Order::where('payment_ref_no', $request->ref_no)->first();
+        // dd($order, $request);
         if (!$order) {
             // dd("no order found");
             // show return to view
             return redirect()->back();
         }
 
+        $secret_key = ConfigMpmBayar::first()->secret_key;
+        $hashed = hash_hmac('SHA256', urlencode($secret_key) . urlencode($request->full_name) . urlencode($request->phone) . urlencode($request->email) . urlencode($request->amount), $secret_key);
+        //check for valid data only can pass
+        if ($request->hash != $hashed) {
+            die("Hash tidak sah.");
+        }
+
+        // dd($request);
         // add payment record
-        if($request->status == "SUCCESS"){
+        if ($request->status == "SUCCESS") {
 
             $order->payment_status = 'SUCCESS';
             // $order->current_status = 'SUCCESS';
             // SELF_PRINT
             // MPM_PRINT
-            $data = json_decode($request->extra_data,1);
+            $data = json_decode($request->extra_data, 1);
 
             try {
+                // $payment = new Payment();
+                // $payment->order_id = $order->id;
+                // $payment->payment_date = $request->txn_time;
+                // $payment->method = $request->type;
+                // $payment->amount = $request->amount;
+                // $payment->status = $request->status;
+                // $payment->txn_id = $request->txn_id;
+                // $payment->ref_no = $request->ref_no;
+                // $payment->cust_info = serialize(array("full_name" => $request->full_name, "email" => $request->email, "phoneNum" => $request->phone));
+                // $payment->receipt = $request->receipt;
+                // $payment->receipt_number = $request->receipt_number;
+                // $payment->error_message = "";
+                // $payment->payment_for = $order->payment_for;
+                // $payment->type = $order->type;
+                // $payment->save();
+
+                $payment = Payment::updateOrCreate(
+                    ['ref_no' => $request->ref_no],
+                    [
+                        'order_id' => $order->id,
+                        'payment_date' => $request->txn_time,
+                        'method' => $request->type,
+                        'amount' => $request->amount,
+                        'status' => $request->status,
+                        'txn_id' => $request->txn_id,
+                        'cust_info' => serialize(array("full_name" => $request->full_name, "email" => $request->email, "phoneNum" => $request->phone)),
+                        'receipt' => $request->receipt,
+                        'receipt_number' => $request->receipt_number,
+                        'error_message' => "",
+                        'payment_for' => $order->payment_for,
+                        'type' => $order->type,
+                    ]
+                );
 
                 $payment = Payment::updateOrCreate([
                     'order_id' => $order->id,
@@ -339,36 +382,41 @@ class PaymentController extends Controller
                 // dd($order->payment_for);
                 if ($order->payment_for == 'MPM_PRINT') {
 
-                    $track = TrackingOrder::where('order_id', $order->id)->get();
-                    if (count($track->where('status', 'PAID')) < 1) {
-                        $trackNew = new TrackingOrder();
-                        $trackNew->order_id = $order->id;
-                        $trackNew->detail = 'Payment made';
-                        $trackNew->status = 'PAID';
-                        $trackNew->save();
-                    }
+                    // $track = new TrackingOrder();
+                    // $track->order_id = $order->id;
+                    // $track->detail = 'Payment made';
+                    // $track->status = 'PAID';
+                    // $track->save();
 
-                    if (count($track->where('status', 'NEW')) < 1) {
-                        $trackNew = new TrackingOrder();
-                        $trackNew->order_id = $order->id;
-                        $trackNew->detail = 'Admin received order';
-                        $trackNew->status = 'NEW';
-                        $trackNew->save();
-                    }
+                    TrackingOrder::firstOrCreate(
+                        ['order_id' => $order->id, 'status' => 'PAID'],
+                        ['detail' => 'Payment made']
+                    );
+
+                    // $track = new TrackingOrder();
+                    // $track->order_id = $order->id;
+                    // $track->detail = 'Admin received order';
+                    // $track->status = 'NEW';
+                    // $track->save();
+
+                    TrackingOrder::firstOrCreate(
+                        ['order_id' => $order->id, 'status' => 'NEW'],
+                        ['detail' => 'Admin received order']
+                    );
 
                     $order->current_status = 'NEW';
+                } elseif ($order->payment_for == 'SELF_PRINT') {
 
-                } elseif($order->payment_for == 'SELF_PRINT'){
+                    // $track = new TrackingOrder();
+                    // $track->order_id = $order->id;
+                    // $track->detail = 'Payment made';
+                    // $track->status = 'PAID';
+                    // $track->save();
 
-                    $track = TrackingOrder::where('order_id', $order->id)->get();
-
-                    if (count($track->where('status', 'PAID')) < 1) {
-                        $trackNew = new TrackingOrder();
-                        $trackNew->order_id = $order->id;
-                        $trackNew->detail = 'Payment made';
-                        $trackNew->status = 'PAID';
-                        $trackNew->save();
-                    }
+                    TrackingOrder::firstOrCreate(
+                        ['order_id' => $order->id, 'status' => 'PAID'],
+                        ['detail' => 'Payment made']
+                    );
 
                     $order->current_status = 'PAID';
                 }
@@ -381,6 +429,7 @@ class PaymentController extends Controller
                 // }
 
             } catch (\Illuminate\Database\QueryException $e) {
+
                 // Check if the error is a duplicate entry error
                 if ($e->getCode() != 23000) {
                     throw $e;
@@ -403,7 +452,7 @@ class PaymentController extends Controller
 
         $order->save();
 
-        $user = Candidate::where('identity_card_number',$request->nric)->first();
+        $user = Candidate::where('identity_card_number', $request->nric)->first();
         $status = $request->status;
         $ref_no = $request->ref_no;
         $txn_id = $request->txn_id;
@@ -415,7 +464,7 @@ class PaymentController extends Controller
         if ($request->hash != $hashed) {
             die("Hash tidak sah.");
         } else {
-            if($order->payment_for == 'MPM_PRINT'){
+            if ($order->payment_for == 'MPM_PRINT') {
                 if ($request->status == 'SUCCESS') {
                     return view('modules.candidates.print-mpm-return', compact([
                         'payment',
@@ -438,7 +487,7 @@ class PaymentController extends Controller
                         'order'
                     ]));
                 }
-            }else{
+            } else {
                 if ($request->status == 'SUCCESS') {
                     return view('modules.candidates.print-mpm-return', compact([
                         'payment',
@@ -463,10 +512,10 @@ class PaymentController extends Controller
                 }
             }
         }
-
     }
 
-    public function checkpayment(Request $request){
+    public function checkpayment(Request $request)
+    {
 
         $order = Order::where('payment_ref_no', $request->ref_no)->first();
         $payment = Payment::where('ref_no', $request->ref_no)->first();
@@ -475,7 +524,7 @@ class PaymentController extends Controller
         // $token = 'a2aWmIGjPSVZ8F3OvS2BtppKM2j6TKvKXE7u8W7MwbkVyZjwZfSYdNP5ACem';
         // $secret_key = '1eafc1e9-df86-4c8c-a3de-291ada259ab0';
 
-        $url = ConfigMpmBayar::first()->url.'/api/payment/status';
+        $url = ConfigMpmBayar::first()->url . '/api/payment/status';
         $token = ConfigMpmBayar::first()->token;
         $secret_key = ConfigMpmBayar::first()->secret_key;
 
@@ -536,7 +585,8 @@ class PaymentController extends Controller
         return response()->json($arr);
     }
 
-    public function generateExcel(Request $request){
+    public function generateExcel(Request $request)
+    {
 
         $currentDate = Carbon::now()->format('Y-m-d H:i:s');
         $transactions = Payment::latest();
@@ -545,26 +595,26 @@ class PaymentController extends Controller
             case 'PSM':
                 // $transactions->where('type', 'MUET');
                 $transactions->when($request->filled('exam_type'), function ($query) use ($request) {
-                        return $query->where('type', $request->input('exam_type'));
-                    }, function ($query) {
-                        return $query->where('type', 'MUET');
-                    });
+                    return $query->where('type', $request->input('exam_type'));
+                }, function ($query) {
+                    return $query->where('type', 'MUET');
+                });
                 break;
             case 'BPKOM':
                 // $transactions->where('type', 'MOD');
                 $transactions->when($request->filled('exam_type'), function ($query) use ($request) {
-                        return $query->where('type', $request->input('exam_type'));
-                    }, function ($query) {
-                        return $query->where('type', 'MOD');
-                    });
+                    return $query->where('type', $request->input('exam_type'));
+                }, function ($query) {
+                    return $query->where('type', 'MOD');
+                });
                 break;
         }
 
-        if(filled($request->startDate) || filled($request->endDate)){
+        if (filled($request->startDate) || filled($request->endDate)) {
             $startDate = Carbon::parse($request->startDate)->startOfDay()->format('Y-m-d H:i:s');
             $endDate = $request->has('endDateTrx') && !empty($request->endDate)
-                        ? Carbon::parse($request->endDate)->endOfDay()->format('Y-m-d H:i:s')
-                        : $currentDate;
+                ? Carbon::parse($request->endDate)->endOfDay()->format('Y-m-d H:i:s')
+                : $currentDate;
 
             // Filter based on the date range
             $transactions->whereBetween('created_at', [$startDate, $endDate]);
@@ -582,7 +632,7 @@ class PaymentController extends Controller
             $transactions->where('status', $request->status_trx);
         }
 
-        if(filled($request->textSearch)){
+        if (filled($request->textSearch)) {
             $textSearch = $request->textSearch;
             $transactions->where(function ($query) use ($textSearch) {
                 $query->where('txn_id', 'LIKE', '%' . $textSearch . '%')
@@ -596,7 +646,8 @@ class PaymentController extends Controller
         return Excel::download(new TransactionExport($transactions), 'transaction_' . now() . '.xlsx');
     }
 
-    public function generatePdf(Request $request){
+    public function generatePdf(Request $request)
+    {
 
         $currentDate = Carbon::now()->format('Y-m-d H:i:s');
 
@@ -607,25 +658,25 @@ class PaymentController extends Controller
             case 'PSM':
                 // $transactions->where('type', 'MUET');
                 $transactions->when($request->filled('exam_type'), function ($query) use ($request) {
-                        return $query->where('type', $request->input('exam_type'));
-                    }, function ($query) {
-                        return $query->where('type', 'MUET');
-                    });
+                    return $query->where('type', $request->input('exam_type'));
+                }, function ($query) {
+                    return $query->where('type', 'MUET');
+                });
                 break;
             case 'BPKOM':
                 // $transactions->where('type', 'MOD');
                 $transactions->when($request->filled('exam_type'), function ($query) use ($request) {
-                        return $query->where('type', $request->input('exam_type'));
-                    }, function ($query) {
-                        return $query->where('type', 'MOD');
-                    });
+                    return $query->where('type', $request->input('exam_type'));
+                }, function ($query) {
+                    return $query->where('type', 'MOD');
+                });
                 break;
         }
-        if(filled($request->startDate) || filled($request->endDate)){
+        if (filled($request->startDate) || filled($request->endDate)) {
             $startDate = Carbon::parse($request->startDate)->startOfDay()->format('Y-m-d H:i:s');
             $endDate = $request->has('endDateTrx') && !empty($request->endDate)
-                        ? Carbon::parse($request->endDate)->endOfDay()->format('Y-m-d H:i:s')
-                        : $currentDate;
+                ? Carbon::parse($request->endDate)->endOfDay()->format('Y-m-d H:i:s')
+                : $currentDate;
 
             // Filter based on the date range
             $transactions->whereBetween('created_at', [$startDate, $endDate]);
@@ -643,7 +694,7 @@ class PaymentController extends Controller
             $transactions->where('status', $request->status_trx);
         }
 
-        if(filled($request->textSearch)){
+        if (filled($request->textSearch)) {
             $textSearch = $request->textSearch;
             $transactions->where(function ($query) use ($textSearch) {
                 $query->where('txn_id', 'LIKE', '%' . $textSearch . '%')
@@ -702,7 +753,8 @@ class PaymentController extends Controller
         }
     }
 
-    function generateOrderId($type) {
+    function generateOrderId($type)
+    {
 
         if ($type == "MUET") {
             $prefix = "MUET";

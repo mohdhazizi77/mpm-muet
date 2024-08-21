@@ -1,2 +1,0 @@
-<a href="<?php echo e(route('candidates.index')); ?>" class="btn btn-soft-dark btn-label btn-border btn-outline-dark waves-effect waves-light w-lg float-start"><i class="ri-reply-fill label-icon align-middle fs-16 me-2"></i>BACK</a>
-<?php /**PATH C:\Users\hazizi-3TDS\Desktop\CODE\mpm-muet\resources\views/components/button/back.blade.php ENDPATH**/ ?>
