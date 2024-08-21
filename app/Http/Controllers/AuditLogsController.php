@@ -23,7 +23,7 @@ class AuditLogsController extends Controller
 
     public function getAjax(){
 
-        $logs = AuditLog::get();
+        $logs = AuditLog::latest()->get();
 
         $data = [];
         foreach ($logs as $key => $log) {
