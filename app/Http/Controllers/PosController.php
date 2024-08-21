@@ -37,7 +37,6 @@ use DataTables;
 use stdClass;
 use TCPDF;
 
-
 class PosController extends Controller
 {
     public function index($type)
@@ -873,7 +872,6 @@ class PosController extends Controller
 
     public function bulkDownloadConnote(Request $request)
     {
-
         // dd($request->toArray() ,$request->orderIds);
         $connote_arr = [];
         foreach ($request->orderIds as $key => $value) {
@@ -925,12 +923,12 @@ class PosController extends Controller
         // $pdfMerger->merge($outputFilePath);
 
         // return $outputFilePath;
-
         $pdf = new Fpdi();
 
         foreach ($pdfPaths as $pdfPath) {
             $pageCount = $pdf->setSourceFile($pdfPath);
             for ($i = 1; $i <= $pageCount; $i++) {
+
                 $templateId = $pdf->importPage($i);
                 $size = $pdf->getTemplateSize($templateId);
 
@@ -959,6 +957,7 @@ class PosController extends Controller
             $pdfPath = self::downloadPDFFromURL($pdfUrl, $tempDir);
             $pdfPaths[] = $pdfPath;
         }
+
 
         // Merge downloaded PDFs
         $outputFileName = 'merged_result_' . time();
