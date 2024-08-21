@@ -13,6 +13,7 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="card rounded-0 {{ $status == 'SUCCESS' ? 'bg-success-subtle' : 'bg-danger' }}  mx-n4 mt-n4 border-top">
+
                     <div class="px-4">
                         <div class="row">
                                     <h3 class="fw-bold">We have received your payment!</h3>
@@ -22,26 +23,26 @@
                                             <td class="fw-bold" style="text-align: left;">
                                                 PAYMENT REFERENCE: {{ $txn_id }}<br>
                                                 TRANSACTION REFERENCE: {{ $order->unique_order_id }}<br>
-                                               
+
                                             </td>
                                         </tr>
                                         <tr>
                                             <td  style="text-align: left;">
-                                                
+
                                                 Your certificate will be processed and will be shipped
                                                 according to the shipping information given. An
                                                 automated payment receipt will be sent to your
                                                 email.
                                                 <br>
-                                                If you have not received your order after seven (7) working days, kindly email us at 
+                                                If you have not received your order after seven (7) working days, kindly email us at
                                                 <a href="mailto:sijil@mpm.edu.my?subject=Order%20Inquiry&body=Please%20attach%20your%20transaction%20reference%20and%20payment%20receipt.">sijil@mpm.edu.my</a> and attach your transaction reference and payment receipt.
                                             </td>
                                         </tr>
-                                        
-                                    </table>
 
+                                    </table>
                         </div>
                     </div>
+
                     <!-- end card body -->
                 </div>
             </div>

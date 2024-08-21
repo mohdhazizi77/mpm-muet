@@ -60,6 +60,7 @@ class Order extends Model
             'FAILED' => 'danger',
             'CANCEL' => 'danger',
             'COMPLETED' => 'success',
+            'SUCCESS' => 'success',
         ];
 
         return empty($id) ? $arr : $arr[$id];

@@ -361,6 +361,25 @@ class PaymentController extends Controller
                     ]
                 );
 
+                $payment = Payment::updateOrCreate([
+                    'order_id' => $order->id,
+                ],
+                [
+                    'payment_date' =>$request->txn_time,
+                    'method' => $request->type,
+                    'amount' => $request->amount,
+                    'status' => $request->status,
+                    'txn_id' => $request->txn_id,
+                    'ref_no' => $request->ref_no,
+                    'cust_info' => serialize(array("full_name"=>$request->full_name, "email"=>$request->email, "phoneNum"=>$request->phone)),
+                    'receipt' => $request->receipt,
+                    'receipt_number' =>$request->receipt_number,
+                    'error_message' => "",
+                    'payment_for' => $order->payment_for,
+                    'type' => $order->type,
+                ]
+                );
+                // dd($order->payment_for);
                 if ($order->payment_for == 'MPM_PRINT') {
 
                     // $track = new TrackingOrder();
@@ -416,6 +435,7 @@ class PaymentController extends Controller
                     throw $e;
                 }
             }
+            // dd($order, $payment);
 
             //order received once payment success
             // try {
@@ -447,6 +467,7 @@ class PaymentController extends Controller
             if ($order->payment_for == 'MPM_PRINT') {
                 if ($request->status == 'SUCCESS') {
                     return view('modules.candidates.print-mpm-return', compact([
+                        'payment',
                         'user',
                         'status',
                         'ref_no',
@@ -457,6 +478,7 @@ class PaymentController extends Controller
                 } elseif ($request->status == 'FAILED') {
                     $show_result = false;
                     return view('modules.candidates.print-mpm-return', compact([
+                        'payment',
                         'user',
                         'status',
                         'ref_no',
@@ -468,6 +490,7 @@ class PaymentController extends Controller
             } else {
                 if ($request->status == 'SUCCESS') {
                     return view('modules.candidates.print-mpm-return', compact([
+                        'payment',
                         'user',
                         'status',
                         'ref_no',
@@ -478,6 +501,7 @@ class PaymentController extends Controller
                 } elseif ($request->status == 'FAILED') {
                     $show_result = false;
                     return view('modules.candidates.self-print-return', compact([
+                        'payment',
                         'user',
                         'status',
                         'ref_no',
