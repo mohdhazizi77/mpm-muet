@@ -34,6 +34,7 @@ use setasign\Fpdi\Fpdi;
 use setasign\Fpdf\Fpdf;
 use Exception;
 use DataTables;
+
 class CandidateController extends Controller
 {
 
@@ -53,11 +54,13 @@ class CandidateController extends Controller
         //     $certificate->band = unserialize($certificate->result)['band'];
         // }
 
-        return view('modules.candidates.index',
+        return view(
+            'modules.candidates.index',
             compact([
                 'user',
                 'config',
-            ]));
+            ])
+        );
     }
 
     public function getAjax()
@@ -88,21 +91,21 @@ class CandidateController extends Controller
                 // $res = $muet->getOrder->where('payment_status','SUCCESS')->where('payment_for', 'SELF_PRINT')->toArray();
 
                 $res = $muet->getOrder()
-                        ->where('payment_status', 'SUCCESS')
-                        ->where('payment_for', 'SELF_PRINT')
-                        ->where('created_at', '>=', $cutoffTime)
-                        ->get()
-                        ->toArray();
-                $is_selfPrintPaid = count($res)>0 ? true : false;
+                    ->where('payment_status', 'SUCCESS')
+                    ->where('payment_for', 'SELF_PRINT')
+                    ->where('created_at', '>=', $cutoffTime)
+                    ->get()
+                    ->toArray();
+                $is_selfPrintPaid = count($res) > 0 ? true : false;
 
-                $res = $muet->getOrder->where('payment_status','SUCCESS')->where('payment_for', 'MPM_PRINT')->toArray();
-                $is_mpmPrintPaid = count($res)>0 ? true : false;
+                $res = $muet->getOrder->where('payment_status', 'SUCCESS')->where('payment_for', 'MPM_PRINT')->toArray();
+                $is_mpmPrintPaid = count($res) > 0 ? true : false;
             } else {
-                $res = $muet->getOrder->where('payment_status','SUCCESS')->where('payment_for', 'SELF_PRINT')->toArray();
-                $is_selfPrintPaid = count($res)>0 ? true : false;
+                $res = $muet->getOrder->where('payment_status', 'SUCCESS')->where('payment_for', 'SELF_PRINT')->toArray();
+                $is_selfPrintPaid = count($res) > 0 ? true : false;
 
-                $res = $muet->getOrder->where('payment_status','SUCCESS')->where('payment_for', 'MPM_PRINT')->toArray();
-                $is_mpmPrintPaid = count($res)>0 ? true : false;
+                $res = $muet->getOrder->where('payment_status', 'SUCCESS')->where('payment_for', 'MPM_PRINT')->toArray();
+                $is_mpmPrintPaid = count($res) > 0 ? true : false;
             }
 
             $cert_datas[] = [
@@ -112,12 +115,11 @@ class CandidateController extends Controller
                 "type"              => 'MUET',
                 "year"              => $muet->tahun,
                 "session"           => $muet->getTarikh->sesi,
-                "band"              => "Band ".self::formatNumber($muet->band),
+                "band"              => "Band " . self::formatNumber($muet->band),
                 "is_more2year"      => $is_more2year,
                 "is_selfPrintPaid"  => $is_selfPrintPaid,
                 "is_mpmPrintPaid"   => $is_mpmPrintPaid,
             ];
-
         }
 
         foreach ($mods as $key => $mod) {
@@ -129,21 +131,21 @@ class CandidateController extends Controller
                 // $res = $muet->getOrder->where('payment_status','SUCCESS')->where('payment_for', 'SELF_PRINT')->toArray();
 
                 $res = $mod->getOrder()
-                        ->where('payment_status', 'SUCCESS')
-                        ->where('payment_for', 'SELF_PRINT')
-                        ->where('created_at', '>=', $cutoffTime)
-                        ->get()
-                        ->toArray();
-                $is_selfPrintPaid = count($res)>0 ? true : false;
+                    ->where('payment_status', 'SUCCESS')
+                    ->where('payment_for', 'SELF_PRINT')
+                    ->where('created_at', '>=', $cutoffTime)
+                    ->get()
+                    ->toArray();
+                $is_selfPrintPaid = count($res) > 0 ? true : false;
 
-                $res = $mod->getOrder->where('payment_status','SUCCESS')->where('payment_for', 'MPM_PRINT')->toArray();
-                $is_mpmPrintPaid = count($res)>0 ? true : false;
+                $res = $mod->getOrder->where('payment_status', 'SUCCESS')->where('payment_for', 'MPM_PRINT')->toArray();
+                $is_mpmPrintPaid = count($res) > 0 ? true : false;
             } else {
-                $res = $mod->getOrder->where('payment_status','SUCCESS')->where('payment_for', 'SELF_PRINT')->toArray();
-                $is_selfPrintPaid = count($res)>0 ? true : false;
+                $res = $mod->getOrder->where('payment_status', 'SUCCESS')->where('payment_for', 'SELF_PRINT')->toArray();
+                $is_selfPrintPaid = count($res) > 0 ? true : false;
 
-                $res = $mod->getOrder->where('payment_status','SUCCESS')->where('payment_for', 'MPM_PRINT')->toArray();
-                $is_mpmPrintPaid = count($res)>0 ? true : false;
+                $res = $mod->getOrder->where('payment_status', 'SUCCESS')->where('payment_for', 'MPM_PRINT')->toArray();
+                $is_mpmPrintPaid = count($res) > 0 ? true : false;
             }
 
             $cert_datas[] = [
@@ -153,18 +155,18 @@ class CandidateController extends Controller
                 "type"              => 'MOD',
                 "year"              => $mod->tahun,
                 "session"           => $mod->getTarikh->sesi,
-                "band"              => "Band ".$mod->band,
+                "band"              => "Band " . $mod->band,
                 "is_more2year"      => $is_more2year,
                 "is_selfPrintPaid"  => $is_selfPrintPaid,
                 "is_mpmPrintPaid"   => $is_mpmPrintPaid,
             ];
-
         }
 
         return datatables($cert_datas)->toJson();
     }
 
-    function formatNumber($number) {
+    function formatNumber($number)
+    {
         // List of disallowed values
         $disallowed = ["-1", "-2", "-3", "-4", "-5", "X"];
 
@@ -189,7 +191,6 @@ class CandidateController extends Controller
         try {
             $certID = Crypt::decrypt($request->certID);
         } catch (Illuminate\Contracts\Encryption\DecryptException $e) {
-
         }
 
         $value = explode('-', $certID);
@@ -282,7 +283,6 @@ class CandidateController extends Controller
     {
         $user = Auth::User() ? Auth::User() : abort(403);
         return view('candidates.show');
-
     }
 
     public function printpdf($cryptId)
@@ -315,7 +315,7 @@ class CandidateController extends Controller
                 "writing" => 90,
                 "agg_score" => 360,
             ];
-        } else if($result['year'] > 2008 && $result['year'] < 2021){
+        } else if ($result['year'] > 2008 && $result['year'] < 2021) {
             $scheme = [
                 "listening" => 45,
                 "speaking" => 45,
@@ -340,8 +340,7 @@ class CandidateController extends Controller
             'type'          => $type
         ]);
 
-        return view('modules.candidates.print-pdf', compact(['user','scheme','result','cryptId']));
-
+        return view('modules.candidates.print-pdf', compact(['user', 'scheme', 'result', 'cryptId']));
     }
 
     public function qrscan()
@@ -379,7 +378,7 @@ class CandidateController extends Controller
                     "writing" => 90,
                     "agg_score" => 360,
                 ];
-            } else if($result['year'] > 2008 && $result['year'] < 2021){
+            } else if ($result['year'] > 2008 && $result['year'] < 2021) {
                 $scheme = [
                     "listening" => 45,
                     "speaking" => 45,
@@ -398,7 +397,7 @@ class CandidateController extends Controller
             }
 
             $url = 'http://localhost:8000/qrscan'; // Replace with your URL or data
-            $url = config('app.url').'/verify/result/'.$cryptId; // Replace with your URL or data /verify/result/{id}
+            $url = config('app.url') . '/verify/result/' . $cryptId; // Replace with your URL or data /verify/result/{id}
             $qr = QrCode::size(50)->style('round')->generate($url);
 
             $pdf = PDF::loadView('modules.candidates.download-pdf', [
@@ -413,13 +412,11 @@ class CandidateController extends Controller
                 'image2Data' => config('base64_images.logoMPM'),
                 'image3Data' => config('base64_images.sign'),
             ])
-            ->setPaper('a4', 'portrait')
-            ->setOptions(['isRemoteEnabled' => true]);
+                ->setPaper('a4', 'portrait')
+                ->setOptions(['isRemoteEnabled' => true]);
             // return $pdf->download($result['index_number'].' '.$type.' RESULT.pdf');
-            return $pdf->stream($result['index_number'].' '.$type.' RESULT.pdf');
-
-        } catch
-        (Exception $e) {
+            return $pdf->stream($result['index_number'] . ' ' . $type . ' RESULT.pdf');
+        } catch (Exception $e) {
             return back()->withError($e->getMessage());
         }
     }
@@ -443,7 +440,7 @@ class CandidateController extends Controller
                     "writing" => 90,
                     "agg_score" => 360,
                 ];
-            } else if($result['year'] > 2008 && $result['year'] < 2021){
+            } else if ($result['year'] > 2008 && $result['year'] < 2021) {
                 $scheme = [
                     "listening" => 45,
                     "speaking" => 45,
@@ -463,7 +460,7 @@ class CandidateController extends Controller
 
             $cryptId = Crypt::encrypt($id . "-" . $type);
             $url = 'http://localhost:8000/qrscan'; // Replace with your URL or data
-            $url = config('app.url').'/verify/result/'.$cryptId; // Replace with your URL or data /verify/result/{id}
+            $url = config('app.url') . '/verify/result/' . $cryptId; // Replace with your URL or data /verify/result/{id}
             $qr = QrCode::size(50)->style('round')->generate($url);
 
             $pdf = PDF::loadView('modules.candidates.download-pdf', [
@@ -478,13 +475,11 @@ class CandidateController extends Controller
                 'image2Data' => config('base64_images.logoMPM'),
                 'image3Data' => config('base64_images.sign'),
             ])
-            ->setPaper('a4', 'portrait')
-            ->setOptions(['isRemoteEnabled' => true]);
+                ->setPaper('a4', 'portrait')
+                ->setOptions(['isRemoteEnabled' => true]);
             // return $pdf->download($type.' RESULT.pdf');
-            return $pdf->stream($result['index_number'].' '.$type.' RESULT.pdf');
-
-        } catch
-        (Exception $e) {
+            return $pdf->stream($result['index_number'] . ' ' . $type . ' RESULT.pdf');
+        } catch (Exception $e) {
             return back()->withError($e->getMessage());
         }
     }
@@ -519,7 +514,7 @@ class CandidateController extends Controller
                     "writing" => 90,
                     "agg_score" => 360,
                 ];
-            } else if($result['year'] > 2008 && $result['year'] < 2021){
+            } else if ($result['year'] > 2008 && $result['year'] < 2021) {
                 $scheme = [
                     "listening" => 45,
                     "speaking" => 45,
@@ -537,7 +532,7 @@ class CandidateController extends Controller
                 ];
             }
             $url = 'http://localhost:8000/qrscan'; // Replace with your URL or data
-            $url = config('app.url').'/verify/result/'.$cryptId; // Replace with your URL or data /verify/result/{id}
+            $url = config('app.url') . '/verify/result/' . $cryptId; // Replace with your URL or data /verify/result/{id}
 
             $qr = QrCode::size(50)->style('round')->generate($url);
 
@@ -554,12 +549,10 @@ class CandidateController extends Controller
                 'image2Data' => config('base64_images.logoMPM'),
                 'image3Data' => config('base64_images.sign'),
             ])
-            ->setPaper('a4', 'portrait')
-            ->setOptions(['isRemoteEnabled' => true]);
-            return $pdf->download($result['index_number'].' '.$type.' RESULT.pdf');
-
-        } catch
-        (Exception $e) {
+                ->setPaper('a4', 'portrait')
+                ->setOptions(['isRemoteEnabled' => true]);
+            return $pdf->download($result['index_number'] . ' ' . $type . ' RESULT.pdf');
+        } catch (Exception $e) {
             return back()->withError($e->getMessage());
         }
     }
@@ -567,7 +560,7 @@ class CandidateController extends Controller
     public function bulkDownloadPdf(Request $request)
     {
         // dd($request->toArray());
-        $arr_calon= [];
+        $arr_calon = [];
         foreach ($request->orderIds as $key => $value) {
             if (empty($value))
                 continue;
@@ -588,9 +581,9 @@ class CandidateController extends Controller
 
             $order = Order::find($id);
             if ($order->muet_calon_id != null) { //MUET
-                $arr_calon[] =  $order->muet_calon_id.'-MUET';
+                $arr_calon[] =  $order->muet_calon_id . '-MUET';
             } else { //MOD
-                $arr_calon[] = $order->mod_calon_id.'-MOD';
+                $arr_calon[] = $order->mod_calon_id . '-MOD';
             }
         }
 
@@ -606,7 +599,6 @@ class CandidateController extends Controller
             $id = $data[0];
             $exam_type = $data[1];
         } catch (Illuminate\Contracts\Encryption\DecryptException $e) {
-
         };
         $config = ConfigGeneral::get()->first();
         $user = Auth::User();
@@ -627,7 +619,7 @@ class CandidateController extends Controller
                 "writing" => 90,
                 "agg_score" => 360,
             ];
-        } else if($result['year'] > 2008 && $result['year'] < 2021){
+        } else if ($result['year'] > 2008 && $result['year'] < 2021) {
             $scheme = [
                 "listening" => 45,
                 "speaking" => 45,
@@ -654,15 +646,15 @@ class CandidateController extends Controller
 
         if ($is_more2year) {
             $res = $candidate->getOrder()
-                        ->where('payment_status', 'SUCCESS')
-                        ->where('payment_for', 'SELF_PRINT')
-                        ->where('created_at', '>=', $cutoffTime)
-                        ->get()
-                        ->toArray();
+                ->where('payment_status', 'SUCCESS')
+                ->where('payment_for', 'SELF_PRINT')
+                ->where('created_at', '>=', $cutoffTime)
+                ->get()
+                ->toArray();
 
-            $show_result = count($res)>0 ? true : false;
+            $show_result = count($res) > 0 ? true : false;
         } else {
-            $show_result = true ;
+            $show_result = true;
         }
 
         return view('modules.candidates.print-mpm', compact([
@@ -686,7 +678,6 @@ class CandidateController extends Controller
             $id = $data[0];
             $exam_type = $data[1];
         } catch (Illuminate\Contracts\Encryption\DecryptException $e) {
-
         };
 
         if ($exam_type == "MUET") {
@@ -708,17 +699,16 @@ class CandidateController extends Controller
         try {
             $orderId = Crypt::decrypt($cryptId);
         } catch (Illuminate\Contracts\Encryption\DecryptException $e) {
-
         };
 
 
-        $payment = Payment::where('order_id',$orderId)->first();
+        $payment = Payment::where('order_id', $orderId)->first();
 
         $order = Order::find($orderId);
-        $tracks = TrackingOrder::where('order_id',$orderId)->latest()->get();
+        $tracks = TrackingOrder::where('order_id', $orderId)->latest()->get();
 
         if ($payment->status == 'PENDING') {
-            $url = ConfigMpmBayar::first()->url.'/api/payment/status';
+            $url = ConfigMpmBayar::first()->url . '/api/payment/status';
             $token = ConfigMpmBayar::first()->token;
             $secret_key = ConfigMpmBayar::first()->secret_key;
 
@@ -751,25 +741,25 @@ class CandidateController extends Controller
             if (!empty($output->data)) {
                 curl_close($curl);
                 $order->update(['payment_status' => $output->data->txn_status, 'current_status' => $output->data->txn_status]);
-                    $payment = Payment::updateOrCreate(
-                        [
-                            'ref_no' => $payment->ref_no,
-                        ],
-                        [
-                            'payment_date' => $output->data->txn_time,
-                            'method' => $output->data->payment_provider,
-                            'amount' => $output->data->txn_final_amount,
-                            'status' => $output->data->txn_status,
-                            'txn_id' => $output->data->txn_id,
-                            'ref_no' => $output->data->ref_no,
-                            'cust_info' => serialize(array("full_name"=>$output->data->full_name, "email"=>$output->data->email_address, "phoneNum"=>$output->data->phone_number)),
-                            'receipt' => $output->data->receipt_url,
-                            'receipt_number' => $output->data->receipt_no,
-                            'error_message' => "",
-                            'payment_for' => $order->payment_for,
-                            'type' => $order->type,
-                        ]
-                    );
+                $payment = Payment::updateOrCreate(
+                    [
+                        'ref_no' => $payment->ref_no,
+                    ],
+                    [
+                        'payment_date' => $output->data->txn_time,
+                        'method' => $output->data->payment_provider,
+                        'amount' => $output->data->txn_final_amount,
+                        'status' => $output->data->txn_status,
+                        'txn_id' => $output->data->txn_id,
+                        'ref_no' => $output->data->ref_no,
+                        'cust_info' => serialize(array("full_name" => $output->data->full_name, "email" => $output->data->email_address, "phoneNum" => $output->data->phone_number)),
+                        'receipt' => $output->data->receipt_url,
+                        'receipt_number' => $output->data->receipt_no,
+                        'error_message' => "",
+                        'payment_for' => $order->payment_for,
+                        'type' => $order->type,
+                    ]
+                );
             } else {
                 echo "Payment Gateway tidak dapat disambung. Pastikan URL dan TOKEN adalah betul.";
                 curl_close($curl);
@@ -826,7 +816,7 @@ class CandidateController extends Controller
                 "writing" => 90,
                 "agg_score" => 360,
             ];
-        } else if($result['year'] > 2008 && $result['year'] < 2021){
+        } else if ($result['year'] > 2008 && $result['year'] < 2021) {
             $scheme = [
                 "listening" => 45,
                 "speaking" => 45,
@@ -845,11 +835,11 @@ class CandidateController extends Controller
         }
 
         // dd($candidate->getResult($candidate));
-        return view('modules.candidates.verify-result', compact(['candidate','scheme','result','cryptId']));
-
+        return view('modules.candidates.verify-result', compact(['candidate', 'scheme', 'result', 'cryptId']));
     }
 
-    function generatePDF($id) {
+    function generatePDF($id)
+    {
         $value = explode('-', $id);
         $certID = $value[0];
         $type = $value[1];
@@ -870,7 +860,7 @@ class CandidateController extends Controller
                 "writing" => 90,
                 "agg_score" => 360,
             ];
-        } else if($result['year'] > 2008 && $result['year'] < 2021){
+        } else if ($result['year'] > 2008 && $result['year'] < 2021) {
             $scheme = [
                 "listening" => 45,
                 "speaking" => 45,
@@ -889,7 +879,7 @@ class CandidateController extends Controller
         }
 
         $cryptId = Crypt::encrypt($certID);
-        $url = config('app.url').'/verify/result/'.$id;
+        $url = config('app.url') . '/verify/result/' . Crypt::encrypt($id);
         $qr = QrCode::size(50)->style('round')->generate($url);
 
         $pdf = PDF::loadView('modules.candidates.download-pdf', [
@@ -904,16 +894,17 @@ class CandidateController extends Controller
             'image2Data' => config('base64_images.logoMPM'),
             'image3Data' => config('base64_images.sign'),
         ])
-        ->setPaper('a4', 'portrait')
-        ->setOptions(['isRemoteEnabled' => true]);
+            ->setPaper('a4', 'portrait')
+            ->setOptions(['isRemoteEnabled' => true]);
 
-        $pdfPath = storage_path('app/temp/'.$id.'.pdf');
+        $pdfPath = storage_path('app/temp/' . $id . '.pdf');
         $pdf->save($pdfPath);
 
         return $pdfPath;
     }
 
-    function mergePDFs($pdfPaths) {
+    function mergePDFs($pdfPaths)
+    {
         $pdf = new Fpdi();
 
         foreach ($pdfPaths as $pdfPath) {
@@ -933,7 +924,8 @@ class CandidateController extends Controller
         return $mergedPdfPath;
     }
 
-    function processBulkPDF($ids) {
+    function processBulkPDF($ids)
+    {
         $pdfPaths = [];
         foreach ($ids as $id) {
             $pdfPaths[] = self::generatePDF($id);
@@ -946,7 +938,7 @@ class CandidateController extends Controller
             Storage::delete($pdfPath);
         }
 
-        return response()->download($mergedPdfPath, 'List Bulk Muet '.date('d_m_y').' RESULT.pdf')->deleteFileAfterSend(true);
+        return response()->download($mergedPdfPath, 'List Bulk Muet ' . date('d_m_y') . ' RESULT.pdf')->deleteFileAfterSend(true);
     }
 
     public function logDownload(Request $request)

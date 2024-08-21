@@ -121,7 +121,7 @@ $(document).ready(function () {
 
         Swal.fire({
             title: "Are you sure?",
-            text: "Once approved, the data will be updated!",
+            // text: "Once approved, the data will be updated!",
             icon: "warning",
             // showDenyButton: true,
             showCancelButton: true,
@@ -337,8 +337,8 @@ $(document).ready(function () {
                     orderable: false,
                     render(data, type, row) {
                         let html = '';
-                        html = data + '<br><p>Tracking Number : ' + row.tracking_number + '</p>';
-
+                        // html = data + '<br><p>Tracking Number : ' + row.tracking_number + '</p>';
+                        html = '<div style="text-align:left;">' + data + '<br>' + row.candidate_name + '<br>Tracking Number : ' + row.tracking_number + '</div>';
                         return html;
                     }
                 },
