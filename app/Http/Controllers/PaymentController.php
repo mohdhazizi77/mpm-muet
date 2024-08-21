@@ -317,45 +317,58 @@ class PaymentController extends Controller
             $data = json_decode($request->extra_data,1);
 
             try {
-                $payment = new Payment();
-                $payment->order_id = $order->id;
-                $payment->payment_date = $request->txn_time;
-                $payment->method = $request->type;
-                $payment->amount = $request->amount;
-                $payment->status = $request->status;
-                $payment->txn_id = $request->txn_id;
-                $payment->ref_no = $request->ref_no;
-                $payment->cust_info = serialize(array("full_name"=>$request->full_name, "email"=>$request->email, "phoneNum"=>$request->phone));
-                $payment->receipt = $request->receipt;
-                $payment->receipt_number = $request->receipt_number;
-                $payment->error_message = "";
-                $payment->payment_for = $order->payment_for;
-                $payment->type = $order->type;
-                $payment->save();
 
+                $payment = Payment::updateOrCreate([
+                    'order_id' => $order->id,
+                ],
+                [
+                    'payment_date' =>$request->txn_time,
+                    'method' => $request->type,
+                    'amount' => $request->amount,
+                    'status' => $request->status,
+                    'txn_id' => $request->txn_id,
+                    'ref_no' => $request->ref_no,
+                    'cust_info' => serialize(array("full_name"=>$request->full_name, "email"=>$request->email, "phoneNum"=>$request->phone)),
+                    'receipt' => $request->receipt,
+                    'receipt_number' =>$request->receipt_number,
+                    'error_message' => "",
+                    'payment_for' => $order->payment_for,
+                    'type' => $order->type,
+                ]
+                );
+                // dd($order->payment_for);
                 if ($order->payment_for == 'MPM_PRINT') {
 
-                    $track = new TrackingOrder();
-                    $track->order_id = $order->id;
-                    $track->detail = 'Payment made';
-                    $track->status = 'PAID';
-                    $track->save();
+                    $track = TrackingOrder::where('order_id', $order->id)->get();
+                    if (count($track->where('status', 'PAID')) < 1) {
+                        $trackNew = new TrackingOrder();
+                        $trackNew->order_id = $order->id;
+                        $trackNew->detail = 'Payment made';
+                        $trackNew->status = 'PAID';
+                        $trackNew->save();
+                    }
 
-                    $track = new TrackingOrder();
-                    $track->order_id = $order->id;
-                    $track->detail = 'Admin received order';
-                    $track->status = 'NEW';
-                    $track->save();
+                    if (count($track->where('status', 'NEW')) < 1) {
+                        $trackNew = new TrackingOrder();
+                        $trackNew->order_id = $order->id;
+                        $trackNew->detail = 'Admin received order';
+                        $trackNew->status = 'NEW';
+                        $trackNew->save();
+                    }
 
                     $order->current_status = 'NEW';
 
                 } elseif($order->payment_for == 'SELF_PRINT'){
 
-                    $track = new TrackingOrder();
-                    $track->order_id = $order->id;
-                    $track->detail = 'Payment made';
-                    $track->status = 'PAID';
-                    $track->save();
+                    $track = TrackingOrder::where('order_id', $order->id)->get();
+
+                    if (count($track->where('status', 'PAID')) < 1) {
+                        $trackNew = new TrackingOrder();
+                        $trackNew->order_id = $order->id;
+                        $trackNew->detail = 'Payment made';
+                        $trackNew->status = 'PAID';
+                        $trackNew->save();
+                    }
 
                     $order->current_status = 'PAID';
                 }
@@ -373,6 +386,7 @@ class PaymentController extends Controller
                     throw $e;
                 }
             }
+            // dd($order, $payment);
 
             //order received once payment success
             // try {
@@ -404,6 +418,7 @@ class PaymentController extends Controller
             if($order->payment_for == 'MPM_PRINT'){
                 if ($request->status == 'SUCCESS') {
                     return view('modules.candidates.print-mpm-return', compact([
+                        'payment',
                         'user',
                         'status',
                         'ref_no',
@@ -414,6 +429,7 @@ class PaymentController extends Controller
                 } elseif ($request->status == 'FAILED') {
                     $show_result = false;
                     return view('modules.candidates.print-mpm-return', compact([
+                        'payment',
                         'user',
                         'status',
                         'ref_no',
@@ -425,6 +441,7 @@ class PaymentController extends Controller
             }else{
                 if ($request->status == 'SUCCESS') {
                     return view('modules.candidates.print-mpm-return', compact([
+                        'payment',
                         'user',
                         'status',
                         'ref_no',
@@ -435,6 +452,7 @@ class PaymentController extends Controller
                 } elseif ($request->status == 'FAILED') {
                     $show_result = false;
                     return view('modules.candidates.self-print-return', compact([
+                        'payment',
                         'user',
                         'status',
                         'ref_no',

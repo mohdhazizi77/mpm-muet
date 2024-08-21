@@ -13,9 +13,10 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="card rounded-0 {{ $status == 'SUCCESS' ? 'bg-success-subtle' : 'bg-danger' }}  mx-n4 mt-n4 border-top">
+
                     <div class="px-4">
                         <div class="row">
-                            <div class="col-xxl-6 align-self-center">
+                            <div class=" align-self-center">
                                 <div class="py-3">
                                     <h3 class="fw-bold">We have received your payment!</h3>
                                     {{-- <h3 class="fw-bold">PAYMENT {{ $status }}!</h3> --}}
@@ -24,30 +25,28 @@
                                             <td class="fw-bold" style="text-align: left;">
                                                 TRANSACTION REFERENCE: {{ $order->unique_order_id }}
                                             </td>
-                                            <td class="fw-bold"  style="text-align: right;">
-                                                PAYMENT REFERENCE: {{ $order->payment_ref_no }}
+                                            <td class="fw-bold" style="text-align: right;">
+                                                PAYMENT REFERENCE: {{ $payment->txn_id }}
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td rowspan="2">Your certificate will be processed and will be shipped
-                                                according to the shipping information given. An
-                                                automated payment receipt will be sent to your
-                                                email.
-                                                </td>
+                                            <td colspan="2">
+                                                Your certificate will be processed and shipped according to the shipping information provided. An automated payment receipt will be sent to your email.
+                                            </td>
                                         </tr>
                                         <tr>
-                                            <td rowspan="2">
-                                                If you have not received your order after seven (7) working days, kindly email us at 
-                                                <a href="mailto:sijil@mpm.edu.my?subject=Order%20Inquiry&body=Please%20attach%20your%20transaction%20reference%20and%20payment%20receipt.">sijil@mpm.edu.my</a> and attach your transaction reference and payment receipt.
+                                            <td colspan="2">
+                                                If you have not received your order after seven (7) working days, kindly email us at
+                                                <a href="mailto:sijil@mpm.edu.my?subject=Order%20Inquiry&body=Please%20attach%20your%20transaction%20reference%20and%20payment%20receipt.">sijil@mpm.edu.my</a>
+                                                and attach your transaction reference and payment receipt.
                                             </td>
-                                            
                                         </tr>
                                     </table>
                                 </div>
                             </div>
-
                         </div>
                     </div>
+
                     <!-- end card body -->
                 </div>
             </div>
@@ -74,7 +73,7 @@
                                                 <th scope="row">1</th>
                                                 <td>{{ $order->created_at->format('d/m/y H:i:s') }}</td>
                                                 <td>User had  make payment</td>
-                                                <td><h5><span class="badge rounded-pill bg-info">{{ $order->current_status }}</span></h5></td>
+                                                <td><h5><span class="badge rounded-pill bg-info">{{ $order->payment_status }}</span></h5></td>
                                             </tr>
                                             </tbody>
                                         </table>
