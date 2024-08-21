@@ -434,7 +434,7 @@
                         {{-- <a href="javascript:void(0);" class="btn btn-link link-success fw-medium" data-bs-dismiss="modal"><i class="ri-close-line me-1 align-middle"></i> Close</a> --}}
                         <a href='#' id="button-print-certificate-pdf" class="btn btn-outline-secondary float-end" target="_blank">Print Certificate</a>
                         <a id="button-save-pos-processing" class="btn btn-outline-secondary float-end">Save</a>
-                        <button type="button" class="btn btn-outline-success float-end btn-approve-processing">Approve</button>
+                        <button type="button" class="btn btn-outline-success float-end btn-approve-processing">Complete</button>
                     </div>
                 </div>
             </div>
