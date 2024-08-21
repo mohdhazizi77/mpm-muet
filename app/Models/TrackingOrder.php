@@ -9,11 +9,20 @@ class TrackingOrder extends Model
 {
     use HasFactory;
 
-    public static function statusColor($id = ''){
+    protected $fillable = [
+        'order_id',
+        'detail',
+        'status',
+        'created_at',
+        'updated_at',
+    ];
+
+    public static function statusColor($id = '')
+    {
         $arr = [
             'PAID' => 'secondary',
             'NEW' => 'info',
-            'PROCESSING'=> 'warning',
+            'PROCESSING' => 'warning',
             'CANCEL' => 'danger',
             'COMPLETED' => 'success',
         ];

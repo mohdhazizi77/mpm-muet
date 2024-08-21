@@ -53,10 +53,14 @@ Route::get('/', function () {
     }
 })->name('root');
 
+Route::get('/payment/getdata', [PaymentController::class, 'getpayment'])->name('candidate.getpayment');
+Route::post('/payment/getdata', [PaymentController::class, 'getpayment'])->name('candidate.callback');
+
+
 Auth::routes();
 
-Route::get('paymentstatus', [CandidateController::class, 'paymentstatus']);
-Route::post('paymentstatus', [CandidateController::class, 'paymentstatus']);
+// Route::get('paymentstatus', [CandidateController::class, 'paymentstatus']);
+// Route::post('paymentstatus', [CandidateController::class, 'paymentstatus']);
 
 Route::get('qrscan', [CandidateController::class, 'qrscan']);
 
@@ -77,7 +81,7 @@ Route::post('/candidate/logout', [CandidateAuthController::class, 'logout'])->na
 Route::get('/template', [HomeController::class, 'template']);
 
 //CALON
-Route::group(['middleware' => ['auth:candidate','role:CALON']], function () {
+Route::group(['middleware' => ['auth:candidate', 'role:CALON']], function () {
 
     Route::prefix('candidate')->group(function () {
         Route::get('/', [CandidateController::class, 'index'])->name('candidate.index');
@@ -95,10 +99,7 @@ Route::group(['middleware' => ['auth:candidate','role:CALON']], function () {
         Route::post('/track-shipping/ajax', [OrderController::class, 'getAjaxTrackShipping'])->name('order.getAjaxTrackShipping')->middleware('poslaju.token');
         Route::get('/muet-status/{id}', [CandidateController::class, 'muetstatus'])->name('candidate.muet-status');
         Route::post('/log-download', [CandidateController::class, 'logDownload'])->name('log.download');
-
     });
-    Route::get('/payment/getdata', [PaymentController::class, 'getpayment'])->name('candidate.getpayment');
-    Route::post('/payment/getdata', [PaymentController::class, 'callbackpayment'])->name('candidate.callback');
 });
 
 Route::group(['middleware' => ['role:PENTADBIR|BPKOM|PSM|FINANCE']], function () {
@@ -197,4 +198,3 @@ Route::post('/update-password/{id}', [App\Http\Controllers\HomeController::class
 // Route::get('{any}', [App\Http\Controllers\HomeController::class, 'index'])->name('index');
 
 Route::get('/verify/result/{id}', [CandidateController::class, 'verifyResult'])->name('verify.result');
-
