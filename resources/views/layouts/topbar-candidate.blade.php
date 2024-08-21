@@ -69,6 +69,7 @@
                             </span>
                         </span>
                     </button>
+                    @if(!empty(Auth::user()))
                     <div class="dropdown-menu dropdown-menu-end" aria-labelledby="page-header-user-dropdown">
                         <a class="dropdown-item" href="javascript:void(0);" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                             <i class="bx bx-power-off font-size-16 align-middle me-1"></i>
@@ -78,6 +79,7 @@
                             @csrf
                         </form>
                     </div>
+                    @endif
                 </div>
                 {{-- <div class="dropdown ms-sm-3 header-item topbar-user">
                     <button type="button" class="btn" id="page-header-user-dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
