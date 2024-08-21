@@ -931,7 +931,7 @@ class CandidateController extends Controller
 
         $pdfPath = storage_path('app/temp/' . $id . '.pdf');
         AuditLog::create([
-            'user_id' => Auth::User()->id(),
+            'user_id' => Auth::User()->id,
             'activity' => 'Bulk Download Result Index Number :'.$candidate->angka_giliran,
             'summary' => serialize(['View Result', $candidate, $result]),
             'device' => AuditLog::getDeviceDetail(),
