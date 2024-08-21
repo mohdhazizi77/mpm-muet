@@ -3,7 +3,7 @@
     <!-- LOGO -->
     <div class="navbar-brand-box mt-2 mb-n3">
         <!-- Light Logo-->
-        <a href="admin" class="logo logo-light">
+        <a href="{{ route('admin.index') }}" class="logo logo-light">
             <span class="logo-sm">
                 <img src="{{ URL::asset('build/images/mpm-logo.png') }}" alt="" height="70">
             </span>
@@ -14,7 +14,7 @@
     </div>
     <div class="navbar-brand-box">
         <!-- Light Logo-->
-        <a href="admin" class="logo logo-light">
+        <a href="{{ route('admin.index') }}" class="logo logo-light">
             <span class="logo-sm">
                 <img src="{{ URL::asset('build/images/muet-online-certificate.png') }}" alt="" height="60">
             </span>

@@ -81,7 +81,7 @@
                                         {{-- <th scope="col">#</th> --}}
                                         <th scope="col">DATE</th>
                                         <th scope="col">REFERENCE ID</th>
-                                        <th scope="col">DETAILS</th>
+                                        <th scope="col" style="text-align:left;">DETAILS</th>
                                         <th scope="col">ACTION</th>
                                     </tr>
                                     </thead>

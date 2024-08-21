@@ -1,4 +1,4 @@
-$(document).ready(function() {
+$(document).ready(function () {
 
     if ($('#posNewTable').length) {
 
@@ -24,7 +24,7 @@ $(document).ready(function() {
                 {
                     data: null,
                     orderable: false,
-                    render: function(data, type, row, meta) {
+                    render: function (data, type, row, meta) {
                         return '<input type="checkbox" class="form-check-input row-checkbox" data-id="' + data.id + '">';
                     }
                 },
@@ -46,6 +46,11 @@ $(document).ready(function() {
                 {
                     data: "details",
                     orderable: false,
+                    render(data, type, row) {
+                        let txt = '';
+                        txt = '<div style="text-align:left;">' + data + '<br>' + row.candidate_name + '</div>';
+                        return txt;
+                    }
                 },
                 {
                     data: 'id',
@@ -54,7 +59,7 @@ $(document).ready(function() {
                     searchable: false,
                     render(data, type, row) {
                         let btn = '';
-                        btn = '<button type="button" data-id="'+data+'" class="btn btn-info btn-icon waves-effect waves-light me-2 btn-update-pos"><i class="ri-information-line fs-22"></i></button>';
+                        btn = '<button type="button" data-id="' + data + '" class="btn btn-info btn-icon waves-effect waves-light me-2 btn-update-pos"><i class="ri-information-line fs-22"></i></button>';
                         return btn;
                     }
                 }
@@ -112,7 +117,7 @@ $(document).ready(function() {
         });
     }
 
-    $(document).on('click', '.btn-cancel-pos', function() {
+    $(document).on('click', '.btn-cancel-pos', function () {
 
         Swal.fire({
             title: "Are you sure?",
@@ -123,14 +128,14 @@ $(document).ready(function() {
             confirmButtonText: "Save",
             reverseButtons: true
             // denyButtonText: `Don't save`
-          }).then((result) => {
+        }).then((result) => {
             /* Read more about isConfirmed, isDenied below */
             if (result.isConfirmed) {
                 $.ajax({
                     url: '/pos/new/cancel',
                     type: 'POST',
                     data: $('form').serialize(),
-                    beforeSend:function(){
+                    beforeSend: function () {
                         Swal.fire({
                             title: 'Loading...', // Optional title for the alert
                             allowEscapeKey: false,  // Disables escape key closing the alert
@@ -141,7 +146,7 @@ $(document).ready(function() {
                             }
                         });
                     },
-                    success: function(response){
+                    success: function (response) {
                         Swal.close()
                         if (response.success) {
                             // Close modal
@@ -158,7 +163,7 @@ $(document).ready(function() {
                             Swal.fire("Error!", response.message, "error");
                         }
                     },
-                    error: function(xhr, status, error){
+                    error: function (xhr, status, error) {
                         // Handle error
                         Swal.fire("Error!", "Failed to update data.", "error");
                     }
@@ -169,7 +174,7 @@ $(document).ready(function() {
         });
     })
 
-    $(document).on('click', '.btn-approve-new', function() {
+    $(document).on('click', '.btn-approve-new', function () {
 
         Swal.fire({
             title: "Are you sure?",
@@ -180,14 +185,14 @@ $(document).ready(function() {
             confirmButtonText: "Save",
             reverseButtons: true
             // denyButtonText: `Don't save`
-          }).then((result) => {
+        }).then((result) => {
             /* Read more about isConfirmed, isDenied below */
             if (result.isConfirmed) {
                 $.ajax({
                     url: '/pos/new/update',
                     type: 'POST',
                     data: $('form').serialize(),
-                    beforeSend:function(){
+                    beforeSend: function () {
                         Swal.fire({
                             title: 'Loading...', // Optional title for the alert
                             allowEscapeKey: false,  // Disables escape key closing the alert
@@ -198,7 +203,7 @@ $(document).ready(function() {
                             }
                         });
                     },
-                    success: function(response){
+                    success: function (response) {
                         Swal.close()
                         if (response.success) {
                             // Close modal
@@ -215,7 +220,7 @@ $(document).ready(function() {
                             Swal.fire("Error!", response.message, "error");
                         }
                     },
-                    error: function(xhr, status, error){
+                    error: function (xhr, status, error) {
                         // Handle error
                         Swal.fire("Error!", "Failed to update data.", "error");
                     }
@@ -226,14 +231,14 @@ $(document).ready(function() {
         });
     })
 
-    $(document).on('click', '.btn-update-pos', function() {
+    $(document).on('click', '.btn-update-pos', function () {
 
         var recordId = $(this).data('id');
         $.ajax({
             url: './new/getPosDetail', // Replace with your endpoint
             method: 'GET',
             data: { id: recordId },
-            beforeSend:function(){
+            beforeSend: function () {
                 Swal.fire({
                     title: 'Loading...', // Optional title for the alert
                     allowEscapeKey: false,  // Disables escape key closing the alert
@@ -244,7 +249,7 @@ $(document).ready(function() {
                     }
                 });
             },
-            success: function(response) {
+            success: function (response) {
                 Swal.close()
                 console.log(response);
                 // Populate modal with record details
@@ -279,7 +284,7 @@ $(document).ready(function() {
                 // Show the modal
                 $('#modalUpdatePos').modal('show');
             },
-            error: function(xhr, status, error) {
+            error: function (xhr, status, error) {
                 // Handle errors
                 console.error(error);
             }
@@ -308,7 +313,7 @@ $(document).ready(function() {
                 {
                     data: null,
                     orderable: false,
-                    render: function(data, type, row, meta) {
+                    render: function (data, type, row, meta) {
                         return '<input type="checkbox" class="form-check-input row-checkbox" data-id="' + data.id + '">';
                     }
                 },
@@ -332,7 +337,7 @@ $(document).ready(function() {
                     orderable: false,
                     render(data, type, row) {
                         let html = '';
-                        html = data + '<br><p>Tracking Number : '+row.tracking_number+'</p>';
+                        html = data + '<br><p>Tracking Number : ' + row.tracking_number + '</p>';
 
                         return html;
                     }
@@ -344,7 +349,7 @@ $(document).ready(function() {
                     searchable: false,
                     render(data, type, row) {
                         let btn = '';
-                        btn = '<button type="button" data-id="'+data+'" class="btn btn-info btn-icon waves-effect waves-light me-2 btn-update-pos"><i class="ri-information-line fs-22"></i></button>';
+                        btn = '<button type="button" data-id="' + data + '" class="btn btn-info btn-icon waves-effect waves-light me-2 btn-update-pos"><i class="ri-information-line fs-22"></i></button>';
 
                         return btn;
                     }
@@ -409,7 +414,7 @@ $(document).ready(function() {
         });
     }
 
-    $('#noTracking').on('change', function() {
+    $('#noTracking').on('change', function () {
         if (this.checked) {
             $(this).prop('value', '1');
             $('#noTrackingLabel').text('Got Tracking Number');
@@ -419,7 +424,7 @@ $(document).ready(function() {
         }
     });
 
-    $(document).on('click', '.btn-approve-processing', function() {
+    $(document).on('click', '.btn-approve-processing', function () {
 
         Swal.fire({
             title: "Are you sure?",
@@ -430,14 +435,14 @@ $(document).ready(function() {
             confirmButtonText: "Save",
             reverseButtons: true
             // denyButtonText: `Don't save`
-          }).then((result) => {
+        }).then((result) => {
             /* Read more about isConfirmed, isDenied below */
             if (result.isConfirmed) {
                 $.ajax({
                     url: '/pos/processing/update',
                     type: 'POST',
                     data: $('form').serialize(),
-                    beforeSend:function(){
+                    beforeSend: function () {
                         Swal.fire({
                             title: 'Loading...', // Optional title for the alert
                             allowEscapeKey: false,  // Disables escape key closing the alert
@@ -448,7 +453,7 @@ $(document).ready(function() {
                             }
                         });
                     },
-                    success: function(response){
+                    success: function (response) {
                         Swal.close()
                         if (response.success) {
                             // Close modal
@@ -468,7 +473,7 @@ $(document).ready(function() {
 
                         }
                     },
-                    error: function(xhr, status, error){
+                    error: function (xhr, status, error) {
                         // Handle error
                         Swal.fire("Error!", "Failed to update data.", "error");
                     }
@@ -479,7 +484,7 @@ $(document).ready(function() {
         });
     })
 
-    $(document).on('click', '#button-save-pos-processing', function() {
+    $(document).on('click', '#button-save-pos-processing', function () {
 
         if (
             $('#ship_name').val() == "" ||
@@ -503,14 +508,14 @@ $(document).ready(function() {
                 confirmButtonText: "Save",
                 reverseButtons: true
                 // denyButtonText: `Don't save`
-              }).then((result) => {
+            }).then((result) => {
                 /* Read more about isConfirmed, isDenied below */
                 if (result.isConfirmed) {
                     $.ajax({
                         url: '/pos/save/update',
                         type: 'POST',
                         data: $('form').serialize(),
-                        beforeSend:function(){
+                        beforeSend: function () {
                             Swal.fire({
                                 title: 'Loading...', // Optional title for the alert
                                 allowEscapeKey: false,  // Disables escape key closing the alert
@@ -521,7 +526,7 @@ $(document).ready(function() {
                                 }
                             });
                         },
-                        success: function(response){
+                        success: function (response) {
                             Swal.close()
                             if (response.success) {
                                 // Close modal
@@ -541,7 +546,7 @@ $(document).ready(function() {
 
                             }
                         },
-                        error: function(xhr, status, error){
+                        error: function (xhr, status, error) {
                             // Handle error
                             Swal.fire("Error!", "Failed to update data.", "error");
                         }
@@ -574,7 +579,7 @@ $(document).ready(function() {
                 {
                     data: null,
                     orderable: false,
-                    render: function(data, type, row, meta) {
+                    render: function (data, type, row, meta) {
                         return '<input type="checkbox" class="form-check-input row-checkbox" data-id="' + data.id + '">';
                     }
                 },
@@ -604,8 +609,8 @@ $(document).ready(function() {
                     searchable: false,
                     render(data, type, row) {
                         let btn = '';
-                        btn = '<a href="'+row.consignment_note+'" target=_blank type="button" data-id="'+data+'" class="btn btn-info btn-icon waves-effect waves-light me-2"><i class="ri-download-2-line" aria-hidden="true"></i></a>';
-                        btn += '<button type="button" data-id="'+data+'" class="btn btn-info btn-icon waves-effect waves-light me-2 btn-update-pos"><i class="ri-information-line fs-22"></i></button>';
+                        btn = '<a href="' + row.consignment_note + '" target=_blank type="button" data-id="' + data + '" class="btn btn-info btn-icon waves-effect waves-light me-2"><i class="ri-download-2-line" aria-hidden="true"></i></a>';
+                        btn += '<button type="button" data-id="' + data + '" class="btn btn-info btn-icon waves-effect waves-light me-2 btn-update-pos"><i class="ri-information-line fs-22"></i></button>';
                         return btn;
                     }
                 }
@@ -663,20 +668,20 @@ $(document).ready(function() {
             // },
         });
     }
-        // // Handle change event on custom dropdown
-        // $('#entries').on('change', function() {
-        //     var length = $(this).val();
-        //     table.page.len(length).draw();  // Update the DataTable page length
-        // });
+    // // Handle change event on custom dropdown
+    // $('#entries').on('change', function() {
+    //     var length = $(this).val();
+    //     table.page.len(length).draw();  // Update the DataTable page length
+    // });
 
-        // // Optional: Set the initial value of the dropdown based on the DataTable's page length
-        // $('#entries').val(table.page.len());
+    // // Optional: Set the initial value of the dropdown based on the DataTable's page length
+    // $('#entries').val(table.page.len());
 
     var today = new Date().toISOString().split('T')[0];
     $('#start-date').attr('max', today);
 
     // Enable/disable the end date input based on the start date value
-    $('#start-date').on('change', function() {
+    $('#start-date').on('change', function () {
         if ($(this).val()) {
             $('#end-date').prop('disabled', false);
         } else {
@@ -688,17 +693,17 @@ $(document).ready(function() {
         $('#end-date').val(startDate)
     });
 
-    $('#text-search').on('keyup change', function() {
+    $('#text-search').on('keyup change', function () {
         table.search(this.value).draw();
     });
 
-    $(document).on('click', '#filterBtn', function (){
+    $(document).on('click', '#filterBtn', function () {
 
         table.ajax.reload();
     })
 
     //clear filter
-    $(document).on('click', '#resetBtn', function (){
+    $(document).on('click', '#resetBtn', function () {
         $('#start-date').val('');
         $('#end-date').val('');
         $('#text-search').val('');
@@ -712,13 +717,13 @@ $(document).ready(function() {
 
 
     // BULK ACTION
-    $(document).on('click', '.check-all', function() {
+    $(document).on('click', '.check-all', function () {
         $('.row-checkbox').prop('checked', $(this).prop('checked'));
     });
 
-    $(document).on('click', '#btnBulkCancel', function() {
+    $(document).on('click', '#btnBulkCancel', function () {
         var orderIds = [];
-        $('.row-checkbox:checked').each(function() {
+        $('.row-checkbox:checked').each(function () {
             orderIds.push($(this).data('id'));
         });
 
@@ -727,7 +732,7 @@ $(document).ready(function() {
             orderID: orderIds
         };
 
-        if(orderIds.length > 0){
+        if (orderIds.length > 0) {
             Swal.fire({
                 title: "Are you sure to bulk cancel?",
                 text: "Once cancel, the data will be updated!",
@@ -737,14 +742,14 @@ $(document).ready(function() {
                 confirmButtonText: "Save",
                 reverseButtons: true
                 // denyButtonText: `Don't save`
-              }).then((result) => {
+            }).then((result) => {
                 /* Read more about isConfirmed, isDenied below */
                 if (result.isConfirmed) {
                     $.ajax({
                         url: '/pos/new/bulk/cancel',
                         type: 'POST',
                         data: postData,
-                        beforeSend:function(){
+                        beforeSend: function () {
                             Swal.fire({
                                 title: 'Loading...', // Optional title for the alert
                                 allowEscapeKey: false,  // Disables escape key closing the alert
@@ -755,7 +760,7 @@ $(document).ready(function() {
                                 }
                             });
                         },
-                        success: function(response){
+                        success: function (response) {
                             Swal.close()
                             if (response.success) {
                                 // Close modal
@@ -772,7 +777,7 @@ $(document).ready(function() {
                                 Swal.fire("Error!", response.message, "error");
                             }
                         },
-                        error: function(xhr, status, error){
+                        error: function (xhr, status, error) {
                             // Handle error
                             Swal.fire("Error!", "Failed to update data.", "error");
                         }
@@ -784,15 +789,15 @@ $(document).ready(function() {
                 title: "No row selected",
                 // text: "Once approved, the data will be updated!",
                 icon: "error",
-              })
+            })
         }
 
     });
 
-    $(document).on('click', '#btnBulkApprove', function() {
+    $(document).on('click', '#btnBulkApprove', function () {
         var orderIds = [];
 
-        $('.row-checkbox:checked').each(function() {
+        $('.row-checkbox:checked').each(function () {
             orderIds.push($(this).data('id'));
         });
 
@@ -801,24 +806,24 @@ $(document).ready(function() {
             orderID: orderIds
         };
 
-        if(orderIds.length > 0){
+        if (orderIds.length > 0) {
             Swal.fire({
                 title: "Are you sure to bulk approve?",
                 text: "Once approved, the data will be updated!",
                 icon: "warning",
                 // showDenyButton: true,
                 showCancelButton: true,
-                confirmButtonText: "Save",
+                confirmButtonText: "Yes",
                 reverseButtons: true
                 // denyButtonText: `Don't save`
-              }).then((result) => {
+            }).then((result) => {
                 /* Read more about isConfirmed, isDenied below */
                 if (result.isConfirmed) {
                     $.ajax({
                         url: '/pos/new/bulk/update',
                         type: 'POST',
                         data: postData,
-                        beforeSend:function(){
+                        beforeSend: function () {
                             Swal.fire({
                                 title: 'Loading...', // Optional title for the alert
                                 allowEscapeKey: false,  // Disables escape key closing the alert
@@ -829,7 +834,7 @@ $(document).ready(function() {
                                 }
                             });
                         },
-                        success: function(response){
+                        success: function (response) {
                             Swal.close()
                             if (response.success) {
                                 // Close modal
@@ -846,7 +851,7 @@ $(document).ready(function() {
                                 Swal.fire("Error!", response.message, "error");
                             }
                         },
-                        error: function(xhr, status, error){
+                        error: function (xhr, status, error) {
                             // Handle error
                             Swal.fire("Error!", "Failed to update data.", "error");
                         }
@@ -860,15 +865,15 @@ $(document).ready(function() {
                 title: "No row selected",
                 // text: "Once approved, the data will be updated!",
                 icon: "error",
-              })
+            })
         }
 
     });
 
-    $(document).on('click', '#btnBulkComplete', function() {
+    $(document).on('click', '#btnBulkComplete', function () {
         var orderIds = [];
 
-        $('.row-checkbox:checked').each(function() {
+        $('.row-checkbox:checked').each(function () {
             orderIds.push($(this).data('id'));
         });
         var postData = {
@@ -876,24 +881,24 @@ $(document).ready(function() {
             orderID: orderIds
         };
 
-        if(orderIds.length > 0){
+        if (orderIds.length > 0) {
             Swal.fire({
                 title: "Are you sure to bulk approve?",
                 text: "Please make sure all the record already have tracking number. Once approved, the data will be updated!",
                 icon: "warning",
                 // showDenyButton: true,
                 showCancelButton: true,
-                confirmButtonText: "Save",
+                confirmButtonText: "Yes",
                 reverseButtons: true
                 // denyButtonText: `Don't save`
-              }).then((result) => {
+            }).then((result) => {
                 /* Read more about isConfirmed, isDenied below */
                 if (result.isConfirmed) {
                     $.ajax({
                         url: '/pos/processing/bulk/update',
                         type: 'POST',
                         data: postData,
-                        beforeSend:function(){
+                        beforeSend: function () {
                             Swal.fire({
                                 title: 'Loading...', // Optional title for the alert
                                 allowEscapeKey: false,  // Disables escape key closing the alert
@@ -904,7 +909,7 @@ $(document).ready(function() {
                                 }
                             });
                         },
-                        success: function(response){
+                        success: function (response) {
                             Swal.close()
                             if (response.success) {
                                 // Close modal
@@ -921,7 +926,7 @@ $(document).ready(function() {
                                 Swal.fire("Error!", response.message, "error");
                             }
                         },
-                        error: function(xhr, status, error){
+                        error: function (xhr, status, error) {
                             // Handle error
                             Swal.fire("Error!", "Failed to update data.", "error");
                         }
@@ -935,16 +940,16 @@ $(document).ready(function() {
                 title: "No row selected",
                 // text: "Once approved, the data will be updated!",
                 icon: "error",
-              })
+            })
         }
 
     });
 
-    $(document).on('click', '#btnExportExcel', function (){
+    $(document).on('click', '#btnExportExcel', function () {
 
         var orderIds = [];
 
-        $('.row-checkbox:checked').each(function() {
+        $('.row-checkbox:checked').each(function () {
             orderIds.push($(this).data('id'));
         });
 
@@ -960,21 +965,21 @@ $(document).ready(function() {
             textSearch: textSearch,
         };
 
-        if(orderIds.length > 0){
+        if (orderIds.length > 0) {
             Swal.fire({
-                title: "Are you sure to bulk approve?",
-                text: "Once approved, the data will be updated!",
+                title: "Are you sure to export xlsx?",
+                // text: "Once approved, the data will be updated!",
                 icon: "warning",
                 // showDenyButton: true,
                 showCancelButton: true,
-                confirmButtonText: "Save",
+                confirmButtonText: "Export",
                 reverseButtons: true
                 // denyButtonText: `Don't save`
-              }).then((result) => {
+            }).then((result) => {
                 /* Read more about isConfirmed, isDenied below */
                 if (result.isConfirmed) {
                     var type = $(this).data('type');
-                    const url = '/admin/pos-management/'+type+'/generateExcel';
+                    const url = '/admin/pos-management/' + type + '/generateExcel';
                     $.ajax({
                         url: url,
                         method: 'POST',
@@ -985,7 +990,7 @@ $(document).ready(function() {
                         headers: {
                             'X-CSRF-TOKEN': csrfToken
                         },
-                        beforeSend:function(){
+                        beforeSend: function () {
                             Swal.fire({
                                 title: 'Loading...', // Optional title for the alert
                                 allowEscapeKey: false,  // Disables escape key closing the alert
@@ -996,7 +1001,7 @@ $(document).ready(function() {
                                 }
                             });
                         },
-                        success: function(data) {
+                        success: function (data) {
                             Swal.close()
                             var a = document.createElement('a');
                             var url = window.URL.createObjectURL(data);
@@ -1007,7 +1012,7 @@ $(document).ready(function() {
                             a.remove();
                             window.URL.revokeObjectURL(url);
                         },
-                        error: function() {
+                        error: function () {
                             alert('Error generating the report.');
                         }
                     });
@@ -1018,15 +1023,15 @@ $(document).ready(function() {
                 title: "No row selected",
                 // text: "Once approved, the data will be updated!",
                 icon: "error",
-              })
+            })
         }
     });
 
-    $(document).on('click', '#button-export-xlsx', function (){
+    $(document).on('click', '#button-export-xlsx', function () {
 
         var orderIds = [];
 
-        $('.row-checkbox:checked').each(function() {
+        $('.row-checkbox:checked').each(function () {
             orderIds.push($(this).data('id'));
         });
 
@@ -1043,7 +1048,7 @@ $(document).ready(function() {
             noTracking: noTracking,
         };
 
-        if(orderIds.length > 0){
+        if (orderIds.length > 0) {
             Swal.fire({
                 title: "Are you sure want to export record to excel?",
                 // text: "Once approved, the data will be updated!",
@@ -1053,11 +1058,11 @@ $(document).ready(function() {
                 confirmButtonText: "Save",
                 reverseButtons: true
                 // denyButtonText: `Don't save`
-              }).then((result) => {
+            }).then((result) => {
                 /* Read more about isConfirmed, isDenied below */
                 if (result.isConfirmed) {
                     var type = $(this).data('type');
-                    const url = '/admin/pos-management/'+type+'/generateExcel';
+                    const url = '/admin/pos-management/' + type + '/generateExcel';
                     $.ajax({
                         url: url,
                         method: 'POST',
@@ -1068,7 +1073,7 @@ $(document).ready(function() {
                         headers: {
                             'X-CSRF-TOKEN': csrfToken
                         },
-                        beforeSend:function(){
+                        beforeSend: function () {
                             Swal.fire({
                                 title: 'Loading...', // Optional title for the alert
                                 allowEscapeKey: false,  // Disables escape key closing the alert
@@ -1079,7 +1084,7 @@ $(document).ready(function() {
                                 }
                             });
                         },
-                        success: function(data) {
+                        success: function (data) {
                             Swal.close()
                             var a = document.createElement('a');
                             var url = window.URL.createObjectURL(data);
@@ -1090,7 +1095,7 @@ $(document).ready(function() {
                             a.remove();
                             window.URL.revokeObjectURL(url);
                         },
-                        error: function() {
+                        error: function () {
                             alert('Error generating the report.');
                         }
                     });
@@ -1101,15 +1106,15 @@ $(document).ready(function() {
                 title: "No row selected",
                 // text: "Once approved, the data will be updated!",
                 icon: "error",
-              })
+            })
         }
     });
 
-    $(document).on('click', '#button-export-pos-xlsx', function (){
+    $(document).on('click', '#button-export-pos-xlsx', function () {
 
         var orderIds = [];
 
-        $('.row-checkbox:checked').each(function() {
+        $('.row-checkbox:checked').each(function () {
             orderIds.push($(this).data('id'));
         });
 
@@ -1127,7 +1132,7 @@ $(document).ready(function() {
             noTracking: noTracking,
         };
 
-        if(orderIds.length > 0){
+        if (orderIds.length > 0) {
             Swal.fire({
                 title: "Are you sure want to export POS excel?",
                 // text: "Once approved, the data will be updated!",
@@ -1137,11 +1142,11 @@ $(document).ready(function() {
                 confirmButtonText: "Save",
                 reverseButtons: true
                 // denyButtonText: `Don't save`
-              }).then((result) => {
+            }).then((result) => {
                 /* Read more about isConfirmed, isDenied below */
                 if (result.isConfirmed) {
                     var type = $(this).data('type');
-                    const url = '/admin/pos-management/'+type+'/generateExcelPos';
+                    const url = '/admin/pos-management/' + type + '/generateExcelPos';
                     $.ajax({
                         url: url,
                         method: 'POST',
@@ -1152,7 +1157,7 @@ $(document).ready(function() {
                         headers: {
                             'X-CSRF-TOKEN': csrfToken
                         },
-                        beforeSend:function(){
+                        beforeSend: function () {
                             Swal.fire({
                                 title: 'Loading...', // Optional title for the alert
                                 allowEscapeKey: false,  // Disables escape key closing the alert
@@ -1163,7 +1168,7 @@ $(document).ready(function() {
                                 }
                             });
                         },
-                        success: function(data) {
+                        success: function (data) {
                             Swal.close()
 
                             var a = document.createElement('a');
@@ -1175,7 +1180,7 @@ $(document).ready(function() {
                             a.remove();
                             window.URL.revokeObjectURL(url);
                         },
-                        error: function() {
+                        error: function () {
                             alert('Error generating the report.');
                         }
                     });
@@ -1186,16 +1191,16 @@ $(document).ready(function() {
                 title: "No row selected",
                 // text: "Once approved, the data will be updated!",
                 icon: "error",
-              })
+            })
         }
     });
 
-    $(document).on('click', '#button-import-pos-xlsx', function (){
+    $(document).on('click', '#button-import-pos-xlsx', function () {
         $('#formFile').val('');
         $('#modal_upload_xlsx').modal('show');
     });
 
-    $(document).on('click', '#submit-upload', function(e) {
+    $(document).on('click', '#submit-upload', function (e) {
         var csrfToken = $('meta[name="csrf-token"]').attr('content');
         var formData = new FormData($('#form_upluad_xlsx')[0]);
 
@@ -1224,7 +1229,7 @@ $(document).ready(function() {
                     headers: {
                         'X-CSRF-TOKEN': csrfToken
                     },
-                    beforeSend:function(){
+                    beforeSend: function () {
                         Swal.fire({
                             title: 'Loading...', // Optional title for the alert
                             allowEscapeKey: false,  // Disables escape key closing the alert
@@ -1235,7 +1240,7 @@ $(document).ready(function() {
                             }
                         });
                     },
-                    success: function(response) {
+                    success: function (response) {
                         $('#form_upluad_xlsx').removeClass('was-validated');
                         Swal.fire({
                             type: 'success',
@@ -1253,7 +1258,7 @@ $(document).ready(function() {
                             }
                         });
                     },
-                    error: function(xhr, status, errors) {
+                    error: function (xhr, status, errors) {
                         $('#form_upluad_xlsx').addClass('was-validated');
                         if (xhr.responseJSON && xhr.responseJSON.errors) {
                             console.log(xhr.responseJSON.errors);
@@ -1270,7 +1275,7 @@ $(document).ready(function() {
 
                             var firstError = Object.values(xhr.responseJSON.errors)[0][0];
                             $('#show-validate').text(firstError);
-                        }else{
+                        } else {
                             Swal.fire({
                                 icon: "error",
                                 title: 'Gagal',
@@ -1289,10 +1294,10 @@ $(document).ready(function() {
         });
     });
 
-    $(document).on('click', '#btnBulkProcessing', function() {
+    $(document).on('click', '#btnBulkProcessing', function () {
         var orderIds = [];
 
-        $('.row-checkbox:checked').each(function() {
+        $('.row-checkbox:checked').each(function () {
             orderIds.push($(this).data('id'));
         });
 
@@ -1301,24 +1306,24 @@ $(document).ready(function() {
             orderID: orderIds
         };
 
-        if(orderIds.length > 0){
+        if (orderIds.length > 0) {
             Swal.fire({
                 title: "Are you sure to bulk approve?",
                 text: "Once approved, the data will be updated!",
                 icon: "warning",
                 // showDenyButton: true,
                 showCancelButton: true,
-                confirmButtonText: "Save",
+                confirmButtonText: "Yes",
                 reverseButtons: true
                 // denyButtonText: `Don't save`
-              }).then((result) => {
+            }).then((result) => {
                 /* Read more about isConfirmed, isDenied below */
                 if (result.isConfirmed) {
                     $.ajax({
                         url: '/pos/processing/bulk/update',
                         type: 'POST',
                         data: postData,
-                        beforeSend:function(){
+                        beforeSend: function () {
                             Swal.fire({
                                 title: 'Loading...', // Optional title for the alert
                                 allowEscapeKey: false,  // Disables escape key closing the alert
@@ -1329,7 +1334,7 @@ $(document).ready(function() {
                                 }
                             });
                         },
-                        success: function(response){
+                        success: function (response) {
                             Swal.close()
                             if (response.success) {
                                 // Close modal
@@ -1346,7 +1351,7 @@ $(document).ready(function() {
                                 Swal.fire("Error!", response.message, "error");
                             }
                         },
-                        error: function(xhr, status, error){
+                        error: function (xhr, status, error) {
                             // Handle error
                             Swal.fire("Error!", "Failed to update data.", "error");
                         }
@@ -1360,18 +1365,18 @@ $(document).ready(function() {
                 title: "No row selected",
                 // text: "Once approved, the data will be updated!",
                 icon: "error",
-              })
+            })
         }
 
     });
 
-    $(document).on('click', '#btnBulkPrintProcessing', function() {
+    $(document).on('click', '#btnBulkPrintProcessing', function () {
         var orderIds = [];
-        $('.row-checkbox:checked').each(function() {
+        $('.row-checkbox:checked').each(function () {
             orderIds.push($(this).data('id'));
         });
 
-        if(orderIds.length > 0){
+        if (orderIds.length > 0) {
             Swal.fire({
                 title: 'Preparing Bulk MUET Result...', // Optional title for the alert
                 allowEscapeKey: false,  // Disables escape key closing the alert
@@ -1393,19 +1398,19 @@ $(document).ready(function() {
                 headers: {
                     'X-CSRF-TOKEN': csrfToken
                 },
-                success: function(data) {
+                success: function (data) {
                     var a = document.createElement('a');
                     var url = window.URL.createObjectURL(data);
                     window.open(url, '_blank');
                     Swal.close();
                 },
-                error: function() {
+                error: function () {
                     Swal.close();
                     Swal.fire({
                         title: "Error generating the Bulk Result",
                         // text: "Once approved, the data will be updated!",
                         icon: "error",
-                      })
+                    })
                 }
             });
         } else {
@@ -1413,18 +1418,18 @@ $(document).ready(function() {
                 title: "No row selected",
                 // text: "Once approved, the data will be updated!",
                 icon: "error",
-              })
+            })
         }
 
     });
 
-    $(document).on('click', '#btnBulkConsignment', function() {
+    $(document).on('click', '#btnBulkConsignment', function () {
         var orderIds = [];
-        $('.row-checkbox:checked').each(function() {
+        $('.row-checkbox:checked').each(function () {
             orderIds.push($(this).data('id'));
         });
 
-        if(orderIds.length > 0){
+        if (orderIds.length > 0) {
             Swal.fire({
                 title: 'Preparing Bulk Consignment Note...', // Optional title for the alert
                 allowEscapeKey: false,  // Disables escape key closing the alert
@@ -1446,19 +1451,19 @@ $(document).ready(function() {
                 headers: {
                     'X-CSRF-TOKEN': csrfToken
                 },
-                success: function(data) {
+                success: function (data) {
                     var a = document.createElement('a');
                     var url = window.URL.createObjectURL(data);
                     window.open(url, '_blank');
                     Swal.close();
                 },
-                error: function() {
+                error: function () {
                     Swal.close();
                     Swal.fire({
                         title: "Error generating the Bulk Result",
                         // text: "Once approved, the data will be updated!",
                         icon: "error",
-                      })
+                    })
                 }
             });
         } else {
@@ -1466,7 +1471,7 @@ $(document).ready(function() {
                 title: "No row selected",
                 // text: "Once approved, the data will be updated!",
                 icon: "error",
-              })
+            })
         }
 
     });
