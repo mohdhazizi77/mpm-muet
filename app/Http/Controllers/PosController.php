@@ -109,7 +109,7 @@ class PosController extends Controller
         }
 
         // Fetch the data
-        $posData = $pos->orderBy('created_at', 'desc')->get();
+        $posData = $pos->orderBy('updated_at', 'desc')->get();
 
         // Prepare the data array
         $data = [];
