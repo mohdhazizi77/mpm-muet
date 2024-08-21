@@ -598,9 +598,18 @@ $(document).ready(function () {
                     data: "order_id",
                     orderable: false,
                 },
+                // {
+                //     data: "details",
+                //     orderable: false,
+                // },
                 {
                     data: "details",
                     orderable: false,
+                    render(data, type, row) {
+                        let html = '';
+                        html = '<div style="text-align:left;">' + data + '<br>' + row.candidate_name + '<br>Tracking Number : ' + row.tracking_number + '</div>';
+                        return html;
+                    }
                 },
                 {
                     data: 'id',

@@ -133,6 +133,11 @@ class PosController extends Controller
                 $arr['tracking_number'] = (!empty($order->tracking_number) ? $order->tracking_number : "");
             };
 
+            if ($request->type == "COMPLETED") {
+                $arr['tracking_number'] = (!empty($order->tracking_number) ? $order->tracking_number : "");
+            };
+
+
             $data[] = $arr;
         }
 
