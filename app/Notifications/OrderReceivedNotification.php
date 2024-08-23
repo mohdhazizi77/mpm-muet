@@ -40,14 +40,21 @@ class OrderReceivedNotification extends Notification
      */
     public function toMail($notifiable)
     {
+
+        $env = config('app.env');
+        if ($env == 'production') {
+            $subject = 'Transaction Received - MPM MUET Certificate Online System';
+        } else {
+            $subject = '['.strtoupper($env).']'.' Transaction Received - MPM MUET Certificate Online System';
+        }
+
         return (new MailMessage)
-                    ->greeting('')  // Setting an empty greeting
-                    ->subject('Transaction Received - MPM MUET Certificate Online System')
-                    ->line('Dear, MPM Admin')
-                    ->line('An order with reference ID  '.$this->order->unique_order_id.' has been received. Kindly complete this transaction within 3 working days.')
-                    ->line('Thank you.');
+                    ->subject($subject)
+                    ->markdown('emails.order-received', [
+                        'order' => $this->order,
+                    ]);
     }
-    
+
     /**
      * Get the array representation of the notification.
      *

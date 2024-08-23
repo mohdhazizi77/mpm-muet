@@ -43,6 +43,19 @@ class OrderConfirmedNotification extends Notification
      */
     public function toMail($notifiable)
     {
+
+        $env = config('app.env');
+        if ($env == 'production') {
+            $subject = 'Transaction Confirmed - MPM MUET Certificate Online System';
+        } else {
+            $subject = '['.strtoupper($env).']'.' Transaction Confirmed - MPM MUET Certificate Online System';
+        }
+        return (new MailMessage)
+                    ->subject($subject)
+                    ->markdown('emails.order-confirmed', [
+                        'order' => $this->order,
+                    ]);
+
         return (new MailMessage)
                     ->greeting('')  // Setting an empty greeting
                     ->subject('Transaction Confirmed - MPM MUET Certificate Online System')

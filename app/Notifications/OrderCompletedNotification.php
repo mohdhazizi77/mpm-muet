@@ -6,6 +6,8 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
+use Mail;
+
 
 class OrderCompletedNotification extends Notification
 {
@@ -42,16 +44,21 @@ class OrderCompletedNotification extends Notification
      */
     public function toMail($notifiable)
     {
+
+        $env = config('app.env');;
+        if ($env == 'production') {
+            $subject = 'Transaction Received - MPM MUET Certificate Online System';
+        } else {
+            $subject = '['.strtoupper($env).']'.' Transaction Received - MPM MUET Certificate Online System';
+        }
         return (new MailMessage)
-                    ->greeting('')  // Setting an empty greeting
-                    ->subject('Transaction Completed - MPM MUET Certificate Online System')
-                    ->line('Dear '.$this->order->name)
-                    ->line('We have received your order with reference ID '.$this->order->unique_order_id.' has been completed and shipped. You will receive your certificate within 7 working days.')
-                    ->line('You may check your order via web portal > Check Order History. Alternatively, you may key in this tracking number '.$this->order->tracking_number.' via Poslaju Portal')
-                    ->action('View Order', config('app.url'))
-                    ->line('For any enquiries, kindly email us at sijil@mpm.edu.my.')
-                    ->line('Thank you.');
+                    ->subject($subject)
+                    ->markdown('emails.order-completed', [
+                        'order' => $this->order,
+                    ]);
+
     }
+
 
     /**
      * Get the array representation of the notification.

@@ -421,12 +421,12 @@ class PaymentController extends Controller
                     $order->current_status = 'PAID';
                 }
 
-                // try {
-                //     Notification::route('mail', $order->email)
-                //         ->notify(new OrderConfirmedNotification($order));
-                // } catch (\Exception $e) {
-                //     \Log::error('Error sending email notification: ' . $e->getMessage());
-                // }
+                try {
+                    Notification::route('mail', $order->email)
+                        ->notify(new OrderConfirmedNotification($order));
+                } catch (\Exception $e) {
+                    \Log::error('Error sending email notification: ' . $e->getMessage());
+                }
 
             } catch (\Illuminate\Database\QueryException $e) {
 
@@ -438,12 +438,12 @@ class PaymentController extends Controller
             // dd($order, $payment);
 
             //order received once payment success
-            // try {
-            //     Notification::route('mail', $configGeneral->email_alert_order)
-            //         ->notify(new OrderReceivedNotification($order));
-            // } catch (\Exception $e) {
-            //     \Log::error('Error sending email notification: ' . $e->getMessage());
-            // }
+            try {
+                Notification::route('mail', $configGeneral->email_alert_order)
+                    ->notify(new OrderReceivedNotification($order));
+            } catch (\Exception $e) {
+                \Log::error('Error sending email notification: ' . $e->getMessage());
+            }
 
         } else {
             // Payment failed

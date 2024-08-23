@@ -259,12 +259,12 @@ class PosController extends Controller
             $tracking->status = "COMPLETED";
             $tracking->save();
 
-            // try {
-            //     Notification::route('mail', $order->email)
-            //         ->notify(new OrderCompletedNotification($order));
-            // } catch (\Exception $e) {
-            //     \Log::error('Error sending email notification: ' . $e->getMessage());
-            // }
+            try {
+                Notification::route('mail', $order->email)
+                    ->notify(new OrderCompletedNotification($order));
+            } catch (\Exception $e) {
+                \Log::error('Error sending email notification: ' . $e->getMessage());
+            }
 
         } else {
             $order->name = $request->ship_name;
@@ -407,6 +407,14 @@ class PosController extends Controller
                 $tracking->detail = "Transaction completed and Certificate out for shipment";
                 $tracking->status = "COMPLETED";
                 $tracking->save();
+
+                try {
+                    Notification::route('mail', $order->email)
+                        ->notify(new OrderCompletedNotification($order));
+                } catch (\Exception $e) {
+                    \Log::error('Error sending email notification: ' . $e->getMessage());
+                }
+                
             } else {
                 // Default case
                 // You can add code here if needed
