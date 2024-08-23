@@ -37,7 +37,7 @@ class UserController extends Controller
     {
         return view('auth.admin-verify-password', compact('id'));
     }
-    
+
     public function updatePassword(Request $request, $id)
     {
         $request->validate([
@@ -54,8 +54,9 @@ class UserController extends Controller
 
     public function getAjax(){
 
-        $users = Auth::User() ? User::get() : abort(403);
-        
+        // $users = Auth::User() ? User::get() : abort(403);
+        $users = Auth::check() ? User::where('id', '!=', Auth::id())->get() : abort(403);
+
         $data = [];
         foreach($users as $user){
             $data[] = [
@@ -88,7 +89,7 @@ class UserController extends Controller
         // try {
         //     $id = Crypt::decrypt($id);
         // } catch (Exception $e) {
-            
+
         // }
 
         $user = User::findOrFail($id);
@@ -141,7 +142,7 @@ class UserController extends Controller
         // Log the activity
         AuditLogService::log($user, 'Create', $old, $new);
 
-        //should send email 
+        //should send email
         // for verify and isi password for first time
 
         return redirect()->route('users.index')->with('success', 'User created successfully.');
@@ -158,10 +159,10 @@ class UserController extends Controller
             "role" => $user->roles->pluck('name')->first(),
             "status" => $user->is_deleted == 0 ? "Active" : "Inactive",
         ];
-        
+
         // Update role if necessary
         $user->syncRoles($request->role);
-        
+
         // New data
         $new = [
             "name" => $request->name,
@@ -170,7 +171,7 @@ class UserController extends Controller
             "role" => $request->role,
             "status" => $request->status == 0 ? "Active" : "Inactive",
         ];
-        
+
         $user->name = $request->name;
         $user->email = $request->email;
         $user->phone_num = $request->phonenumber;
@@ -222,7 +223,7 @@ class UserController extends Controller
 
         AuditLogService::log($user, 'Active', $old, $new);
     }
-    
+
     public function deactived(Request $request,User $user)
     {
         // Old data
@@ -266,7 +267,7 @@ class UserController extends Controller
             } catch (\Exception $e) {
                 \Log::error('Error sending email notification: ' . $e->getMessage());
             }
-            
+
             return response()->json(['success' => true, 'id' => $user->id]);
         }else{
             return response('Email is not on record!', 422);
