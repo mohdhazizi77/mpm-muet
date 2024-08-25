@@ -1454,25 +1454,43 @@ $(document).ready(function () {
                 url: '/pos/bulkdownloadconnote',
                 method: 'POST',
                 data: { orderIds: orderIds },
-                xhrFields: {
-                    responseType: 'blob' // Important for file download
-                },
                 headers: {
                     'X-CSRF-TOKEN': csrfToken
                 },
                 success: function (data) {
-                    var a = document.createElement('a');
-                    var url = window.URL.createObjectURL(data);
-                    window.open(url, '_blank');
-                    Swal.close();
+                    console.log(data)
+                    if (data) {
+                        // Open the PDF in a new tab
+                        // window.open(data, '_blank');
+                        Swal.close();
+                        // Create a temporary link element
+                        var link = document.createElement('a');
+                        link.href = data;
+                        link.download = 'Bulk_Connote.pdf'; // The name you want the file to be saved as
+
+                        // Append the link to the body (it must be in the DOM to work)
+                        document.body.appendChild(link);
+
+                        // Programmatically click the link to trigger the download
+                        link.click();
+
+                        // Remove the link from the DOM
+                        document.body.removeChild(link);
+                    } else {
+                        console.error('PDF URL not provided in response');
+                        Swal.fire({
+                            title: "Error",
+                            text: "Failed to retrieve PDF URL.",
+                            icon: "error"
+                        });
+                    }
                 },
                 error: function () {
                     Swal.close();
                     Swal.fire({
                         title: "Error generating the Bulk Result",
-                        // text: "Once approved, the data will be updated!",
                         icon: "error",
-                    })
+                    });
                 }
             });
         } else {

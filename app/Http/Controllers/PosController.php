@@ -29,6 +29,10 @@ use App\Models\ModCalon;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
 
+use iio\libmergepdf\Merger;
+use iio\libmergepdf\Pages;
+use iio\libmergepdf\Exception;
+
 use App\Exports\OrdersExport;
 use Carbon\Carbon;
 use setasign\Fpdi\Fpdi;
@@ -414,7 +418,7 @@ class PosController extends Controller
                 } catch (\Exception $e) {
                     \Log::error('Error sending email notification: ' . $e->getMessage());
                 }
-                
+
             } else {
                 // Default case
                 // You can add code here if needed
@@ -880,7 +884,6 @@ class PosController extends Controller
 
     public function bulkDownloadConnote(Request $request)
     {
-        // dd($request->toArray() ,$request->orderIds);
         $connote_arr = [];
         foreach ($request->orderIds as $key => $value) {
             if (empty($value))
@@ -904,57 +907,14 @@ class PosController extends Controller
             $connote_arr[] =  $order->consignment_note;
         }
 
-        self::processBulkPDFs($connote_arr);
-
-        return true;
-    }
-
-    function downloadPDFFromURL($pdfUrl, $tempDir)
-    {
-        $client = new Client();
-        $response = $client->request('GET', $pdfUrl);
-        $fileName = uniqid() . '.pdf'; // Generate unique filename
-        $filePath = $tempDir . '/' . $fileName;
-        file_put_contents($filePath, $response->getBody());
+        $filePath = self::processBulkPDFs($connote_arr);
         return $filePath;
-    }
-
-    function mergePDFs($pdfPaths, $outputFileName)
-    {
-        // $pdfMerger = new PdfMerger();
-
-        // foreach ($pdfPaths as $pdfPath) {
-        //     $pdfMerger->addPDF($pdfPath);
-        // }
-
-        // $outputFilePath = storage_path('app/public/') . $outputFileName . '.pdf';
-        // $pdfMerger->merge($outputFilePath);
-
-        // return $outputFilePath;
-        $pdf = new Fpdi();
-
-        foreach ($pdfPaths as $pdfPath) {
-            $pageCount = $pdf->setSourceFile($pdfPath);
-            for ($i = 1; $i <= $pageCount; $i++) {
-
-                $templateId = $pdf->importPage($i);
-                $size = $pdf->getTemplateSize($templateId);
-
-                $pdf->AddPage($size['orientation'], [$size['width'], $size['height']]);
-                $pdf->useTemplate($templateId);
-            }
-        }
-
-        $mergedPdfPath = storage_path('app/temp/merged_result.pdf');
-        $pdf->Output($mergedPdfPath, 'F');
-
-        return $mergedPdfPath;
     }
 
     function processBulkPDFs($pdfUrls)
     {
         // Temporary directory to store downloaded PDFs
-        $tempDir = storage_path('app/temp');
+        $tempDir = storage_path('app/public/temp');
         if (!file_exists($tempDir)) {
             mkdir($tempDir, 0777, true);
         }
@@ -963,21 +923,71 @@ class PosController extends Controller
         $pdfPaths = [];
         foreach ($pdfUrls as $pdfUrl) {
             $pdfPath = self::downloadPDFFromURL($pdfUrl, $tempDir);
-            $pdfPaths[] = $pdfPath;
+            if ($pdfPath) {
+                $pdfPaths[] = $pdfPath;
+            } else {
+                Log::error('Failed to download or validate PDF from: ' . $pdfUrl);
+            }
         }
 
-
+        if (empty($pdfPaths)) {
+            return response()->json(['error' => 'No valid PDFs to process.'], 400);
+        }
         // Merge downloaded PDFs
-        $outputFileName = 'merged_result_' . time();
-        $mergedPdfPath = self::mergePDFs($pdfPaths, $outputFileName);
+        $outputFileName = 'Bulk_Connote_' . date('d_m_Y');
+        self::mergePDFs($pdfPaths, $outputFileName);
 
-        // Clean up temporary files
-        foreach ($pdfPaths as $pdfPath) {
-            unlink($pdfPath);
-        }
-        rmdir($tempDir);
+        return asset('storage/temp/'.$outputFileName.'.pdf');
 
-        // Download the merged PDF
-        return response()->download($mergedPdfPath, 'Merged_Result.pdf')->deleteFileAfterSend(true);
     }
+
+    function mergePDFs($pdfPaths, $outputFileName)
+    {
+        $tempDir = storage_path('app\\public\temp');
+        $mergedPdfPath = $tempDir . '\\' . $outputFileName . '.pdf';
+
+
+        // Build the PDFtk command
+        $pdftkPath = 'C:\\Program Files (x86)\\PDFtk\\bin\\pdftk.exe'; // Update this to your actual pdftk path
+        $command = '"' . $pdftkPath . '" ' . implode(' ', array_map('escapeshellarg', $pdfPaths)) . ' cat output ' . escapeshellarg($mergedPdfPath);
+
+        // Build the PDFtk command
+        $pdftkPath = 'pdftk'; // Assuming pdftk is installed and in your PATH
+        $command = $pdftkPath . ' ' . implode(' ', array_map('escapeshellarg', $pdfPaths)) . ' cat output ' . escapeshellarg($mergedPdfPath);
+
+        // Execute the command
+        exec($command, $output, $return_var);
+
+        // Log the output and return value
+        Log::info('Command output: ' . implode("\n", $output));
+        Log::info('Executing command: ' . $command);
+        Log::info('Return var: ' . $return_var);
+
+        // Check if PDFtk succeeded
+        if ($return_var !== 0) {
+            Log::error('PDFtk failed to merge PDFs: ' . implode("\n", $output));
+            return false;
+        }
+        return $outputFileName;
+    }
+
+    function downloadPDFFromURL($pdfUrl, $tempDir)
+    {
+        $client = new Client(['verify' => false]); // Disable SSL verification if necessary
+        $response = $client->request('GET', $pdfUrl);
+        $fileName = uniqid() . '.pdf';
+        $filePath = $tempDir . '\\' . $fileName;
+
+        // Save the PDF content
+        file_put_contents($filePath, $response->getBody());
+
+        // Verify that the downloaded file is a valid PDF
+        if (!file_exists($filePath) || !mime_content_type($filePath) === 'application/pdf') {
+            Log::error('Invalid PDF file downloaded from: ' . $pdfUrl);
+            return null;
+        }
+
+        return $filePath;
+    }
+
 }
