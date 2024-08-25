@@ -948,11 +948,11 @@ class PosController extends Controller
 
 
         // command to run in local
-        $pdftkPath = 'C:\\Program Files (x86)\\PDFtk\\bin\\pdftk.exe'; // Update this to your actual pdftk path
-        $command = '"' . $pdftkPath . '" ' . implode(' ', array_map('escapeshellarg', $pdfPaths)) . ' cat output ' . escapeshellarg($mergedPdfPath);
+        // $pdftkPath = 'C:\\Program Files (x86)\\PDFtk\\bin\\pdftk.exe'; // Update this to your actual pdftk path
+        // $command = '"' . $pdftkPath . '" ' . implode(' ', array_map('escapeshellarg', $pdfPaths)) . ' cat output ' . escapeshellarg($mergedPdfPath);
 
         // command to run in server
-        $pdftkPath = 'pdftk'; // Assuming pdftk is installed and in your PATH
+        $pdftkPath = 'pdftk';
         $command = $pdftkPath . ' ' . implode(' ', array_map('escapeshellarg', $pdfPaths)) . ' cat output ' . escapeshellarg($mergedPdfPath);
 
         // Execute the command
