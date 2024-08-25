@@ -943,8 +943,8 @@ class PosController extends Controller
 
     function mergePDFs($pdfPaths, $outputFileName)
     {
-        $tempDir = storage_path('app/public/temp');
-        $mergedPdfPath = $tempDir . '/' . $outputFileName . '.pdf';
+        $tempDir = storage_path('app\\public\\temp');
+        $mergedPdfPath = $tempDir . '\\' . $outputFileName . '.pdf';
 
         // Specify the custom disk
         // $disk = Storage::disk('bulk_connote');
