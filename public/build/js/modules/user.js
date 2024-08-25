@@ -201,6 +201,11 @@ $(document).ready(function() {
 
     $('#show_create_modal').on('click', function() {
         $('#modal_create').modal('show');
+        $('.name').val('');
+        $('.email').val('');
+        $('.phonenumber').val('');
+        $('.role').val('');
+        $('.status').val('');
         $('#name_text').text('');
         $('#email_text').text('');
         $('#phone_text').text('');
@@ -211,88 +216,134 @@ $(document).ready(function() {
     });
 
     $(document).on('click', '#submit_add', function(e) {
-        var csrfToken = $('meta[name="csrf-token"]').attr('content');
-        var formData = new FormData($('#form_users_add')[0]);
+        e.preventDefault(); // Prevent the default form submission
 
-        Swal.fire({
-            icon: 'warning',
-            title: 'Are you sure?',
-            text: 'Users will be added!',
-            customClass: {
-                popup: 'my-swal-popup',
-                confirmButton: 'my-swal-confirm',
-                cancelButton: 'my-swal-cancel',
-            },
-            showCancelButton: true, // Show the cancel button
-            confirmButtonText: 'Ya',
-            cancelButtonText: 'Tidak'
-        }).then((result) => {
-            if (result.value) {
-                $.ajax({
-                    url: './users/store',
-                    method: 'POST',
-                    data: formData,
-                    processData: false,
-                    contentType: false,
-                    headers: {
-                        'X-CSRF-TOKEN': csrfToken
-                    },
-                    beforeSend: function() {
-                        Swal.fire({
-                            title: 'Loading...', // Optional title for the alert
-                            allowEscapeKey: false, // Disables escape key closing the alert
-                            allowOutsideClick: false, // Disables outside click closing the alert
-                            showConfirmButton: false, // Hides the "Confirm" button
-                            didOpen: () => {
-                                Swal.showLoading(Swal
-                                .getDenyButton()); // Show loading indicator on the Deny button
-                            }
-                        });
-                    },
-                    success: function(response) {
-                        Swal.close()
-                        $('#form_users_add').removeClass('was-validated');
-                        Swal.fire({
-                            type: 'success',
-                            title: 'Berjaya',
-                            text: 'User successfully added!',
-                            customClass: {
-                                popup: 'my-swal-popup',
-                                confirmButton: 'my-swal-confirm',
-                                cancelButton: 'my-swal-cancel',
-                            }
-                        }).then((result) => {
-                            if (result.value) {
-                                $('#modal_create').modal('hide');
-                                $('#dt-user').DataTable().ajax.reload();
-                            }
-                        });
-                    },
-                    error: function(xhr, status, errors) {
-                        $('#form_users_add').addClass('was-validated');
-                        if (xhr.responseJSON && xhr.responseJSON.errors) {
-                            $('#name_text').text(xhr.responseJSON.errors.name[0]);
-                            $('#email_text').text(xhr.responseJSON.errors.email[0]);
-                            $('#phone_text').text(xhr.responseJSON.errors.phonenumber[0]);
-                            $('#role_text').text(xhr.responseJSON.errors.role[0]);
-                            $('#status_text').text(xhr.responseJSON.errors.status[0]);
+        // Clear previous validation messages
+        $('.text-danger').text('');
 
+        // Validate the form fields
+        let isValid = true;
+
+        // Name validation
+        const name = $('#name').val().trim();
+        if (name === '') {
+            $('#name_text').text('Name is required.');
+            isValid = false;
+        }
+
+        // Email validation
+        const email = $('#email').val().trim();
+        if (email === '') {
+            $('#email_text').text('Email is required.');
+            isValid = false;
+        }
+
+        // Phone Number validation
+        const phonenumber = $('#phonenumber').val().trim();
+        if (phonenumber === '') {
+            $('#phone_text').text('Phone Number is required.');
+            isValid = false;
+        }
+
+        // Role validation
+        const role = $('select[name="role"]').val();
+        if (role === null || role === '') {
+            $('#role_text').text('Role is required.');
+            isValid = false;
+        }
+
+        // Status validation
+        const status = $('select[name="status"]').val();
+        if (status === null || status === '') {
+            $('#status_text').text('Status is required.');
+            isValid = false;
+        }
+
+        // If the form is valid, proceed with SweetAlert confirmation and AJAX request
+        if (isValid) {
+            var csrfToken = $('meta[name="csrf-token"]').attr('content');
+            var formData = new FormData($('#form_users_add')[0]);
+
+            Swal.fire({
+                icon: 'warning',
+                title: 'Are you sure?',
+                text: 'Users will be added!',
+                customClass: {
+                    popup: 'my-swal-popup',
+                    confirmButton: 'my-swal-confirm',
+                    cancelButton: 'my-swal-cancel',
+                },
+                showCancelButton: true, // Show the cancel button
+                confirmButtonText: 'Ya',
+                cancelButtonText: 'Tidak'
+            }).then((result) => {
+                if (result.value) {
+                    $.ajax({
+                        url: './users/store',
+                        method: 'POST',
+                        data: formData,
+                        processData: false,
+                        contentType: false,
+                        headers: {
+                            'X-CSRF-TOKEN': csrfToken
+                        },
+                        beforeSend: function() {
                             Swal.fire({
-                                icon: "error",
-                                title: 'Gagal',
-                                text: xhr.responseJSON.message,
+                                title: 'Loading...', // Optional title for the alert
+                                allowEscapeKey: false, // Disables escape key closing the alert
+                                allowOutsideClick: false, // Disables outside click closing the alert
+                                showConfirmButton: false, // Hides the "Confirm" button
+                                didOpen: () => {
+                                    Swal.showLoading();
+                                }
+                            });
+                        },
+                        success: function(response) {
+                            Swal.close()
+                            $('#form_users_add').removeClass('was-validated');
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Berjaya',
+                                text: 'User successfully added!',
                                 customClass: {
                                     popup: 'my-swal-popup',
                                     confirmButton: 'my-swal-confirm',
                                     cancelButton: 'my-swal-cancel',
                                 }
+                            }).then((result) => {
+                                if (result.value) {
+                                    $('#modal_create').modal('hide');
+                                    $('#dt-user').DataTable().ajax.reload();
+                                }
                             });
+                        },
+                        error: function(xhr, status, errors) {
+                            $('#form_users_add').addClass('was-validated');
+                            if (xhr.responseJSON && xhr.responseJSON.errors) {
+                                $('#name_text').text(xhr.responseJSON.errors.name ? xhr.responseJSON.errors.name[0] : '');
+                                $('#email_text').text(xhr.responseJSON.errors.email ? xhr.responseJSON.errors.email[0] : '');
+                                $('#phone_text').text(xhr.responseJSON.errors.phonenumber ? xhr.responseJSON.errors.phonenumber[0] : '');
+                                $('#role_text').text(xhr.responseJSON.errors.role ? xhr.responseJSON.errors.role[0] : '');
+                                $('#status_text').text(xhr.responseJSON.errors.status ? xhr.responseJSON.errors.status[0] : '');
+
+                                Swal.fire({
+                                    icon: "error",
+                                    title: 'Gagal',
+                                    text: xhr.responseJSON.message,
+                                    customClass: {
+                                        popup: 'my-swal-popup',
+                                        confirmButton: 'my-swal-confirm',
+                                        cancelButton: 'my-swal-cancel',
+                                    }
+                                });
+                            }
                         }
-                    }
-                });
-            }
-        });
+                    });
+                }
+            });
+        }
     });
+
 
     $(document).on('click', '#show_edit_modal', function(e) {
         e.preventDefault();
