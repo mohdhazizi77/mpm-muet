@@ -950,12 +950,12 @@ class PosController extends Controller
         // $disk = Storage::disk('bulk_connote');
 
         // command to run in local
-        $pdftkPath = 'C:\\Program Files (x86)\\PDFtk\\bin\\pdftk.exe'; // Update this to your actual pdftk path
-        $command = '"' . $pdftkPath . '" ' . implode(' ', array_map('escapeshellarg', $pdfPaths)) . ' cat output ' . escapeshellarg($mergedPdfPath);
+        // $pdftkPath = 'C:\\Program Files (x86)\\PDFtk\\bin\\pdftk.exe'; // Update this to your actual pdftk path
+        // $command = '"' . $pdftkPath . '" ' . implode(' ', array_map('escapeshellarg', $pdfPaths)) . ' cat output ' . escapeshellarg($mergedPdfPath);
 
         // command to run in server
-        // $pdftkPath = 'pdftk';
-        // $command = $pdftkPath . ' ' . implode(' ', array_map('escapeshellarg', $pdfPaths)) . ' cat output ' . escapeshellarg($mergedPdfPath);
+        $pdftkPath = 'pdftk';
+        $command = $pdftkPath . ' ' . implode(' ', array_map('escapeshellarg', $pdfPaths)) . ' cat output ' . escapeshellarg($mergedPdfPath);
 
         // Execute the command
         exec($command, $output, $return_var);
