@@ -209,7 +209,7 @@ class OrderController extends Controller
                 "session" => $value->muet_calon_id != null ? $value->muetCalon->getTarikh->sesi : $value->modCalon->getTarikh->sesi,
                 "cert_type" => $value->type,
                 "txn_type" => $value->payment_for,
-                "status" => $value->order?->payment_status,
+                // "status" => $value->order?->payment_status,
                 "status" => $value->current_status,
 
                 "payment_date" => $value->payment_date,
@@ -400,11 +400,34 @@ class OrderController extends Controller
 
             return response()->json($arr);
         }
-
+        // dd($output->data, json_decode($output->data->extra_data)->pay_for);
         if (!empty($output->data)) {
             curl_close($curl);
-            $order->update(['payment_status' => $output->data->txn_status, 'current_status' => $output->data->txn_status]);
-            $payment->update(['status' => $output->data->txn_status]);
+            $order->update(
+                [
+                    'payment_status' => $output->data->txn_status,
+                    'current_status' => $output->data->txn_status,
+                    'payment_ref_no' => $output->data->ref_no,
+                ]);
+
+            $cust_info = [
+                'full_name' => $output->data->full_name,
+                'nric'      => $output->data->nric,
+                'email'     => $output->data->email_address,
+                'phoneNum'  => $output->data->phone_number,
+            ];
+
+            $payment->update(
+                [
+                    'status' => $output->data->txn_status,
+                    'method' => $output->data->txn_type,
+                    'txn_id' => $output->data->txn_id,
+                    'cust_info' => serialize($cust_info),
+                    'receipt' => $output->data->receipt_url,
+                    'receipt_number' => $output->data->receipt_no,
+                    'payment_for' => json_decode($output->data->extra_data)->pay_for,
+                    'payment_date' => $output->data->txn_time,
+                ]);
         } else {
             // echo "Payment Gateway tidak dapat disambung. Pastikan URL dan TOKEN adalah betul.";
             curl_close($curl);
