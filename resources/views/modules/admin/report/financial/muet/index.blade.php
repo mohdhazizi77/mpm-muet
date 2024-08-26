@@ -151,6 +151,7 @@
                                 <select name="status_muet" id="status_muet" class="form-control">
                                     <option value="">Please Select</option>
                                     <option selected value="SUCCESS">SUCCESS</option>
+                                    <option value="PENDING">PENDING</option>
                                     <option value="FAILED">FAILED</option>
                                 </select>
                             </div>

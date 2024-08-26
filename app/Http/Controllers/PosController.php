@@ -124,7 +124,7 @@ class PosController extends Controller
             $arr = [
                 'id'         => Crypt::encrypt($order->id),
                 'order_id'   => $order->unique_order_id,
-                'order_date' => $order->created_at->format('d/m/Y'),
+                'order_date' => $order->created_at->format('d/m/Y H:i:s'),
                 'order_time' => $order->created_at->format('H:i:s'),
                 'consignment_note' => $order->consignment_note,
                 // 'details'    => $order->type . " | " . $calon->getTarikh->sesi . " | Angka Giliran : " . $calon->index_number($calon)
