@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Notifications\OrderCompletedNotification;
+
 use Illuminate\Support\Facades\Notification;
 
 use App\Exports\OrdersPosExport;
