@@ -914,7 +914,7 @@ class PosController extends Controller
     function processBulkPDFs($pdfUrls)
     {
         // Temporary directory to store downloaded PDFs
-        $tempDir = storage_path('app\\public\\temp');
+        $tempDir = storage_path('app/public/temp');
         if (!file_exists($tempDir)) {
             mkdir($tempDir, 0777, true);
         }
@@ -943,8 +943,8 @@ class PosController extends Controller
 
     function mergePDFs($pdfPaths, $outputFileName)
     {
-        $tempDir = storage_path('app\\public\\temp');
-        $mergedPdfPath = $tempDir . '\\' . $outputFileName . '.pdf';
+        $tempDir = storage_path('app/public//temp');
+        $mergedPdfPath = $tempDir . '/' . $outputFileName . '.pdf';
 
         // command to run in local
         // $pdftkPath = 'C:\\Program Files (x86)\\PDFtk\\bin\\pdftk.exe'; // Update this to your actual pdftk path
@@ -975,7 +975,7 @@ class PosController extends Controller
         $client = new Client(['verify' => false]); // Disable SSL verification if necessary
         $response = $client->request('GET', $pdfUrl);
         $fileName = uniqid() . '.pdf';
-        $filePath = $tempDir . '\\' . $fileName;
+        $filePath = $tempDir . '/' . $fileName;
 
         // Save the PDF content
         file_put_contents($filePath, $response->getBody());
