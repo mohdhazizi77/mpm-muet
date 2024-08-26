@@ -113,7 +113,7 @@ $(document).ready(function() {
                             case 'SUCCESS':
                                 html = '<span class="badge bg-success">' + data + '</span>';
                                 break;
-                            case 'FAIL':
+                            case 'FAILED':
                                 html = '<span class="badge bg-danger">' + data + '</span>';
                                 break;
                             default:
@@ -351,7 +351,7 @@ $(document).ready(function() {
                             case 'SUCCESS':
                                 html = '<span class="badge bg-success">' + data + '</span>';
                                 break;
-                            case 'FAIL':
+                            case 'FAILED':
                                 html = '<span class="badge bg-danger">' + data + '</span>';
                                 break;
                             default:

@@ -112,6 +112,8 @@ Route::group(['middleware' => ['role:PENTADBIR|BPKOM|PSM|FINANCE']], function ()
         Route::get('/dashboard-line-chart-view-muet-mod', [AdminController::class, 'lineChartViewMuetMod'])->name('admin.line_chart_view_muet_mod');
         Route::get('/dashboard-line-chart-download-muet-mod', [AdminController::class, 'lineChartDownloadMuetMod'])->name('admin.line_chart_download_muet_mod');
 
+        Route::get('/pos-management/tracking', [PosController::class, 'trackShipping'])->name('pos.tracking')->middleware('poslaju.token');
+        Route::post('/pos-management/tracking/ajax', [PosController::class, 'getAjaxTrackShipping'])->middleware('poslaju.token');
         Route::get('/pos-management/{type}', [PosController::class, 'index'])->middleware('poslaju.token');
         Route::get('/pos-management/{type}/getPosDetail', [PosController::class, 'getPosDetail']);
         Route::post('/pos-management/{type}/generateExcel', [PosController::class, 'generateExcel']);
@@ -187,7 +189,7 @@ Route::group(['middleware' => ['role:PENTADBIR|BPKOM|PSM|FINANCE']], function ()
     Route::post('/pos/bulkdownloadconnote', [PosController::class, 'bulkDownloadConnote'])->name('mpm.bulkdownloadconnote');
 });
 
-Route::get('users/verify-password/{id}', [UserController::class, 'verifyIndex'])->name('users.verify_index');
+Route::get('users/verify-email/{token}', [UserController::class, 'verifyIndex'])->name('users.verify_index');
 Route::post('users/verify-password/{id}/update', [UserController::class, 'updatePassword'])->name('users.verify_index_update');
 Route::post('users/verify-email', [UserController::class, 'verifyEmail'])->name('users.verify_email');
 
