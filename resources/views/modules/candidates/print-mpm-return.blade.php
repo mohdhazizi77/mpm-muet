@@ -28,7 +28,7 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td rowspan="2" style="text-align: left;">
+                                    <td colspan="2" style="text-align: left;">
 
                                         Your certificate will be processed and will be shipped
                                         according to the shipping information given. An

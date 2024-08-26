@@ -29,12 +29,12 @@
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td rowspan="2">
+                                            <td colspan="2">
                                                 You may now view your certificate <a href="{{ route('candidate.downloadpdfCandidate', ['id' => $user?->id, 'type' => $order?->type]) }}">here</a> <— link ke PDF self print untuk sijil tu
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td rowspan="2">
+                                            <td colspan="2">
                                                 The certificate will be open within 1 day. For more info, kindly email us at
                                                 <a href="mailto:sijil@mpm.edu.my?subject=Order%20Inquiry&body=Please%20attach%20your%20transaction%20reference%20and%20payment%20receipt.">sijil@mpm.edu.my</a> and attach your transaction reference and payment receipt.
                                             </td>
