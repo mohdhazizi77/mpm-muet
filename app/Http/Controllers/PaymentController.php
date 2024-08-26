@@ -362,25 +362,26 @@ class PaymentController extends Controller
                     ]
                 );
 
-                $payment = Payment::updateOrCreate([
-                    'order_id' => $order->id,
-                ],
-                [
-                    'payment_date' =>$request->txn_time,
-                    'method' => $request->type,
-                    'amount' => $request->amount,
-                    'status' => $request->status,
-                    'txn_id' => $request->txn_id,
-                    'ref_no' => $request->ref_no,
-                    'cust_info' => serialize(array("full_name"=>$request->full_name, "email"=>$request->email, "phoneNum"=>$request->phone)),
-                    'receipt' => $request->receipt,
-                    'receipt_number' =>$request->receipt_number,
-                    'error_message' => "",
-                    'payment_for' => $order->payment_for,
-                    'type' => $order->type,
-                ]
-                );
-                // dd($order->payment_for);
+                // $payment = Payment::updateOrCreate(
+                //     [
+                //         'order_id' => $order->id,
+                //     ],
+                //     [
+                //         'payment_date' =>$request->txn_time,
+                //         'method' => $request->type,
+                //         'amount' => $request->amount,
+                //         'status' => $request->status,
+                //         'txn_id' => $request->txn_id,
+                //         'ref_no' => $request->ref_no,
+                //         'cust_info' => serialize(array("full_name"=>$request->full_name, "email"=>$request->email, "phoneNum"=>$request->phone)),
+                //         'receipt' => $request->receipt,
+                //         'receipt_number' =>$request->receipt_number,
+                //         'error_message' => "",
+                //         'payment_for' => $order->payment_for,
+                //         'type' => $order->type,
+                //     ]
+                // );
+
                 if ($order->payment_for == 'MPM_PRINT') {
 
                     // $track = new TrackingOrder();
