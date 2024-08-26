@@ -586,7 +586,7 @@ class CandidateController extends Controller
             //     Log::error($e);
             // }
 
-            return $pdf->download($result['index_number'].' '.$type.' RESULT.pdf');
+            return $pdf->stream($result['index_number'].' '.$type.' RESULT.pdf');
 
 
         } catch (Exception $e) {
