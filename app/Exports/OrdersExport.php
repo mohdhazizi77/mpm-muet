@@ -21,11 +21,11 @@ class OrdersExport implements FromView, ShouldAutoSize
     public function view(): view
     {
         if($this->type == 'NEW'){
-            return view('modules.admin.pos.' . $this->type . '.new-xlsx', [
+            return view('modules.admin.pos.' . strtolower($this->type) . '.new-xlsx', [
                 'orders' => $this->orders,
             ]);
         }else{
-            return view('modules.admin.pos.' . $this->type . '.pos-xlsx', [
+            return view('modules.admin.pos.' . strtolower($this->type) . '.pos-xlsx', [
                 'orders' => $this->orders,
             ]);
         }
