@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Exports\TransactionExport;
 use App\Notifications\OrderReceivedNotification;
+use App\Notifications\OrderConfirmedNotification;
 
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Session;
