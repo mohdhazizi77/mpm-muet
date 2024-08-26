@@ -716,6 +716,8 @@ class PosController extends Controller
             $orders = $orders->merge($order);
         }
 
+        $type = strtolower($type);
+
         // Return the Excel download with all collected orders
         return Excel::download(new OrdersExport($orders, $type), 'list_pos_' . $type . '.xlsx');
 
