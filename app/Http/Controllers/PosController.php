@@ -907,7 +907,6 @@ class PosController extends Controller
             $order = Order::find($id);
             $connote_arr[] =  $order->consignment_note;
         }
-
         $filePath = self::processBulkPDFs($connote_arr);
         return $filePath;
     }
@@ -915,7 +914,7 @@ class PosController extends Controller
     function processBulkPDFs($pdfUrls)
     {
         // Temporary directory to store downloaded PDFs
-        $tempDir = storage_path('app/public/temp');
+        $tempDir = storage_path('app\\public\\temp');
         if (!file_exists($tempDir)) {
             mkdir($tempDir, 0777, true);
         }
@@ -935,7 +934,7 @@ class PosController extends Controller
             return response()->json(['error' => 'No valid PDFs to process.'], 400);
         }
         // Merge downloaded PDFs
-        $outputFileName = 'Bulk_Connote_' . date('d_m_Y');
+        $outputFileName = 'Bulk_Connote_' . date('d_m_Y_His');
         self::mergePDFs($pdfPaths, $outputFileName);
 
         return asset('storage/temp/'.$outputFileName.'.pdf');
@@ -944,9 +943,8 @@ class PosController extends Controller
 
     function mergePDFs($pdfPaths, $outputFileName)
     {
-        $tempDir = storage_path('app\\public\temp');
+        $tempDir = storage_path('app\\public\\temp');
         $mergedPdfPath = $tempDir . '\\' . $outputFileName . '.pdf';
-
 
         // command to run in local
         // $pdftkPath = 'C:\\Program Files (x86)\\PDFtk\\bin\\pdftk.exe'; // Update this to your actual pdftk path
