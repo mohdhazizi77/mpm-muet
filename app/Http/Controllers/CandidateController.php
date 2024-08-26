@@ -819,7 +819,7 @@ class CandidateController extends Controller
         $currentYear = Carbon::now()->year;
 
         // Check if the given year is more than 2 years ago from the current year
-        if ($currentYear - $year >= 3) {
+        if ($currentYear - $year >= 1) {
             return true; // Given year is more than 2 years ago
         } else {
             return false; // Given year is less than 2 years ago
