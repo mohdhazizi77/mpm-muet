@@ -14,32 +14,33 @@
             <div class="col-lg-12">
                 <div class="card rounded-0 {{ $status == 'SUCCESS' ? 'bg-success-subtle' : 'bg-danger' }}  mx-n4 mt-n4 border-top">
 
-                    <div class="px-4">
-                        <div class="row">
-                                    <h3 class="fw-bold">We have received your payment!</h3>
-                                    {{-- <h3 class="fw-bold">PAYMENT {{ $status }}!</h3> --}}
-                                    <table class="table-borderless fs-16 mt-3" width="100%">
-                                        <tr>
-                                            <td class="fw-bold" style="text-align: left;">
-                                                PAYMENT REFERENCE: {{ $txn_id }}<br>
-                                                TRANSACTION REFERENCE: {{ $order->unique_order_id }}<br>
+                    <div class="p-4">
+                        <div class="row1">
+                            <h3 class="fw-bold">We have received your payment!</h3>
+                            {{-- <h3 class="fw-bold">PAYMENT {{ $status }}!</h3> --}}
+                            <table class="table-borderless fs-16 mt-3" width="100%">
+                                <tr>
+                                    <td class="fw-bold" style="text-align: left;">
+                                        PAYMENT REFERENCE: {{ $txn_id }}<br>
+                                    </td>
+                                    <td class="fw-bold"  style="text-align: right;">
+                                        TRANSACTION REFERENCE: {{ $order->unique_order_id }}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td rowspan="2" style="text-align: left;">
 
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td  style="text-align: left;">
+                                        Your certificate will be processed and will be shipped
+                                        according to the shipping information given. An
+                                        automated payment receipt will be sent to your
+                                        email.
+                                        <br>
+                                        If you have not received your order after seven (7) working days, kindly email us at
+                                        <a href="mailto:sijil@mpm.edu.my?subject=Order%20Inquiry&body=Please%20attach%20your%20transaction%20reference%20and%20payment%20receipt.">sijil@mpm.edu.my</a> and attach your transaction reference and payment receipt.
+                                    </td>
+                                </tr>
 
-                                                Your certificate will be processed and will be shipped
-                                                according to the shipping information given. An
-                                                automated payment receipt will be sent to your
-                                                email.
-                                                <br>
-                                                If you have not received your order after seven (7) working days, kindly email us at
-                                                <a href="mailto:sijil@mpm.edu.my?subject=Order%20Inquiry&body=Please%20attach%20your%20transaction%20reference%20and%20payment%20receipt.">sijil@mpm.edu.my</a> and attach your transaction reference and payment receipt.
-                                            </td>
-                                        </tr>
-
-                                    </table>
+                            </table>
                         </div>
                     </div>
 
@@ -96,40 +97,38 @@
                 {{--                </a>--}}
             </div>
 
-
         </div>
-        @endsection
-        @section('script')
+    </div>
+@endsection
+@section('script')
+    <script>
 
-            <script>
+    $(document).ready(function () {
 
-                $(document).ready(function () {
+        $('#button-download').on('click', function (e) {
 
-                    $('#button-download').on('click', function (e) {
+            e.preventDefault();
 
-                        e.preventDefault();
+            // let selectedState = $('#state').val();
+            // let selectedType = $('#type').val();
+            // let selectedCollege = $('#collegeAll').val();
+            // let selectedYear = $('#year').val();
+            // let selectedSemester = $('#semester').val();
+            // let selectedCourse = $('#courseAll').val();
 
-                        // let selectedState = $('#state').val();
-                        // let selectedType = $('#type').val();
-                        // let selectedCollege = $('#collegeAll').val();
-                        // let selectedYear = $('#year').val();
-                        // let selectedSemester = $('#semester').val();
-                        // let selectedCourse = $('#courseAll').val();
+            let action = $(this).attr('href')
+            // let url = action + '?state=' + selectedState +
+            //     '&type=' + selectedType +
+            //     '&college=' + selectedCollege +
+            //     '&year=' + selectedYear +
+            //     '&semester=' + selectedSemester +
+            //     '&course=' + selectedCourse;
 
-                        let action = $(this).attr('href')
-                        // let url = action + '?state=' + selectedState +
-                        //     '&type=' + selectedType +
-                        //     '&college=' + selectedCollege +
-                        //     '&year=' + selectedYear +
-                        //     '&semester=' + selectedSemester +
-                        //     '&course=' + selectedCourse;
+            let url = action;
+            window.location.href = url;
+        })
 
-                        let url = action;
-                        window.location.href = url;
-                    })
+    })
 
-                })
-
-            </script>
-
+    </script>
 @endsection

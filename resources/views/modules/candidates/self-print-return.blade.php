@@ -13,8 +13,8 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="card rounded-0 {{ $status == 'SUCCESS' ? 'bg-success-subtle' : 'bg-danger' }}  mx-n4 mt-n4 border-top">
-                    <div class="px-4">
-                        <div class="row">
+                    <div class="p-4">
+                        <div class="row1">
                             <div class="col-xxl-6 align-self-center">
                                 <div class="py-3">
                                     <h3 class="fw-bold">We have received your payment!</h3>
@@ -22,10 +22,10 @@
                                     <table class="table-borderless fs-16 mt-3" width="100%">
                                         <tr>
                                             <td class="fw-bold" style="text-align: left;">
-                                                TRANSACTION REFERENCE: {{ $order->unique_order_id }}
+                                                PAYMENT REFERENCE: {{ $txn_id }}
                                             </td>
                                             <td class="fw-bold"  style="text-align: right;">
-                                                PAYMENT REFERENCE: {{ $order->payment_ref_no }}
+                                                TRANSACTION REFERENCE: {{ $order->unique_order_id }}
                                             </td>
                                         </tr>
                                         <tr>
@@ -38,7 +38,7 @@
                                                 The certificate will be open within 1 day. For more info, kindly email us at
                                                 <a href="mailto:sijil@mpm.edu.my?subject=Order%20Inquiry&body=Please%20attach%20your%20transaction%20reference%20and%20payment%20receipt.">sijil@mpm.edu.my</a> and attach your transaction reference and payment receipt.
                                             </td>
-                                            
+
                                         </tr>
                                     </table>
                                 </div>
