@@ -20,14 +20,19 @@ class OrdersExport implements FromView, ShouldAutoSize
 
     public function view(): view
     {
-        if($this->type == 'NEW'){
-            return view('modules.admin.pos.' . strtolower($this->type) . '.new-xlsx', [
-                'orders' => $this->orders,
-            ]);
-        }else{
-            return view('modules.admin.pos.' . strtolower($this->type) . '.pos-xlsx', [
-                'orders' => $this->orders,
-            ]);
+        try {
+            if (strtolower($this->type) == 'new') {
+                return view('modules.admin.pos.new.new-xlsx', [
+                    'orders' => $this->orders,
+                ]);
+            } else {
+                return view('modules.admin.pos.' . strtolower($this->type) . '.pos-xlsx', [
+                    'orders' => $this->orders,
+                ]);
+            }
+        } catch (\Exception $e) {
+            \Log::error('View not found: ' . $e->getMessage());
+            abort(404, 'View not found');
         }
     }
 }
