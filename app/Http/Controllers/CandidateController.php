@@ -575,16 +575,16 @@ class CandidateController extends Controller
             ->setPaper('a4', 'portrait')
             ->setOptions(['isRemoteEnabled' => true]);
 
-            try {
-                AuditLog::create([
-                    'user_id' => Auth::User()->id,
-                    'activity' => 'Download Result Index Number :'.$candidate->angka_giliran,
-                    'summary' => serialize(['View Result', $candidate, $result]),
-                    'device' => AuditLog::getDeviceDetail(),
-                ]);
-            } catch (Exception $e) {
-                Log::error($e);
-            }
+            // try {
+            //     AuditLog::create([
+            //         'user_id' => Auth::User()->id,
+            //         'activity' => 'Download Result Index Number :'.$candidate->angka_giliran,
+            //         'summary' => serialize(['View Result', $candidate, $result]),
+            //         'device' => AuditLog::getDeviceDetail(),
+            //     ]);
+            // } catch (Exception $e) {
+            //     Log::error($e);
+            // }
 
             return $pdf->download($result['index_number'].' '.$type.' RESULT.pdf');
 
