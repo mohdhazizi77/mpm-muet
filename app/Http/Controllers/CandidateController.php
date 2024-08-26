@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Facades\Log;
 
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -574,12 +575,16 @@ class CandidateController extends Controller
             ->setPaper('a4', 'portrait')
             ->setOptions(['isRemoteEnabled' => true]);
 
-            AuditLog::create([
-                'user_id' => Auth::User()->id(),
-                'activity' => 'Download Result Index Number :'.$candidate->angka_giliran,
-                'summary' => serialize(['View Result', $candidate, $result]),
-                'device' => AuditLog::getDeviceDetail(),
-            ]);
+            try {
+                AuditLog::create([
+                    'user_id' => Auth::User()->id,
+                    'activity' => 'Download Result Index Number :'.$candidate->angka_giliran,
+                    'summary' => serialize(['View Result', $candidate, $result]),
+                    'device' => AuditLog::getDeviceDetail(),
+                ]);
+            } catch (Exception $e) {
+                Log::error($e);
+            }
 
             return $pdf->download($result['index_number'].' '.$type.' RESULT.pdf');
 
