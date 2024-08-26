@@ -17,7 +17,7 @@ use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
 use Maatwebsite\Excel\Facades\Excel;
-
+use Illuminate\Support\Facades\Http;
 // use Yajra\DataTables\DataTables;
 
 use App\Models\Order;
@@ -147,6 +147,52 @@ class PosController extends Controller
 
         // Return the data in JSON format for DataTables
         return datatables()->of($data)->toJson();
+    }
+    public function trackShipping()
+    {
+        return view('modules.admin.pos.tracking');
+    }
+
+    public function getAjaxTrackShipping(Request $request)
+    {
+
+        $track_no = $request->trackNo;
+        if (empty($track_no)) {
+            return datatables([])->toJson();
+        }
+
+        // Replace these with actual values or retrieve from config/environment
+        $culture = 'EN';
+        $bearerToken = Session::get('bearer_token');;
+
+        try {
+            $response = Http::withToken($bearerToken)
+                            ->get('https://gateway-usc.pos.com.my/staging/as2corporate/v2trackntracewebapijson/v1/api/Details', [
+                                'id' => $track_no,
+                                'Culture' => $culture,
+                            ]);
+            if ($response->successful()) {
+                $data = [];
+                $response = json_decode($response->getBody()->getContents());
+                foreach ($response as $key => $value) {
+
+                    if ($value->type == "Invalid Request/Empty Connote") {
+                        continue;
+                    }
+                    $data[] = [
+                        'no' => $key+1,
+                        'date' => $value->date,
+                        'detail' => $value->process
+                    ];
+                }
+                return datatables($data)->toJson();
+
+            } else {
+                return response()->json(['error' => 'Failed to fetch data'], $response->status());
+            }
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
     }
 
     public function getPosDetail(Request $request, $type)

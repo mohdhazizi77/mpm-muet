@@ -64,6 +64,10 @@ $(document).ready(function () {
                     }
                 }
             ],
+            // rowCallback: function(row, data, index) {
+            //     // Add index number
+            //     $('td:eq(1)', row).html(index + 1);
+            // },
             dom: 'frtp',
             pageLength: 10,
             order: [[0, "asc"]],
@@ -1502,4 +1506,90 @@ $(document).ready(function () {
         }
 
     });
+
+    //tracking
+    if ($("#AdminTrackShippingTable").length) {
+        var trackTable = $('#AdminTrackShippingTable').DataTable({
+            processing: true,
+            serverSide: true,
+            ajax: {
+                "url": "/admin/pos-management/tracking/ajax",
+                "type": "POST",
+                "data": function (d) {
+                    d._token = $('meta[name="csrf-token"]').attr('content'),
+                    d.trackNo = $('#trackingNo').val()
+                }
+            },
+            columns: [
+
+                {
+                    data: "no",
+                    orderable: false,
+                },
+                {
+                    data: "date",
+                    orderable: false,
+                },
+                {
+                    data: "detail",
+                    orderable: false,
+                },
+                // {
+                //     data: "status",
+                //     orderable: false,
+                //     // render: function (data, type, row, meta) {
+                //     //     var html = '<span class="badge rounded-pill bg-'+row.color+'">'+data+'</span>';
+                //     //     return html;
+                //     // },
+
+                // },
+            ],
+            pageLength: 10,
+            // order: [[0, "asc"]],
+            buttons: {
+                dom: {
+                    button: {
+                        tag: 'button',
+                        className: 'btn btn-sm'
+                    }
+                },
+                buttons: [
+                    {
+                        extend: "copyHtml5",
+                        text: "Salin",
+                        className: 'btn-secondary'
+                    },
+                    // {
+                    //     extend: "csvHtml5",
+                    //     text: "CSV",
+                    //     className: 'btn-secondary'
+                    // }
+                ],
+            },
+            language: {
+                // "zeroRecords": "Tiada rekod untuk dipaparkan.",
+                // "paginate": {
+                // "info": "Paparan _START_ / _END_ dari _TOTAL_ rekod",
+                // "infoEmpty": "Paparan 0 / 0 dari 0 rekod",
+                // "infoFiltered": "(tapisan dari _MAX_ rekod)",
+                "processing": "Loading...",
+                // "search": "Carian:"
+            },
+            searching: false,
+            lengthChange: false,
+
+        });
+    }
+
+    $(document).on('click', '#trackBtn', function () {
+
+        $('.textTrackingNo').text($('#trackingNo').val());
+        trackTable.ajax.reload();
+    })
+
+    $(document).on('click', '#resetTrackBtn', function () {
+        $('.textTrackingNo').text('-');
+        $('#trackingNo').val('');
+        trackTable.ajax.reload();
+    })
 });
