@@ -16,7 +16,7 @@
 @section('content')
     @component('components.breadcrumb')
         @slot('li_1')
-            POS Management 123
+            POS Management
         @endslot
         @slot('title')
             Completed
