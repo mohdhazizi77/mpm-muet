@@ -112,6 +112,9 @@ Route::group(['middleware' => ['role:PENTADBIR|BPKOM|PSM|FINANCE']], function ()
         Route::get('/dashboard-line-chart-view-muet-mod', [AdminController::class, 'lineChartViewMuetMod'])->name('admin.line_chart_view_muet_mod');
         Route::get('/dashboard-line-chart-download-muet-mod', [AdminController::class, 'lineChartDownloadMuetMod'])->name('admin.line_chart_download_muet_mod');
 
+        Route::get('/pull-db', [AdminController::class, 'viewPullDB'])->name('admin.pullDB');
+        Route::post('/pull-db/ajax', [AdminController::class, 'pullDatabase'])->name('admin.pullDB.ajax');
+
         Route::get('/pos-management/tracking', [PosController::class, 'trackShipping'])->name('pos.tracking')->middleware('poslaju.token');
         Route::post('/pos-management/tracking/ajax', [PosController::class, 'getAjaxTrackShipping'])->middleware('poslaju.token');
         Route::get('/pos-management/{type}', [PosController::class, 'index'])->middleware('poslaju.token');
