@@ -400,10 +400,8 @@ class CandidateController extends Controller
                 ];
             }
 
-            $url = 'http://localhost:8000/qrscan'; // Replace with your URL or data
             $url = config('app.url') . '/verify/result/' . $cryptId; // Replace with your URL or data /verify/result/{id}
             $qr = QrCode::size(50)->style('round')->generate($url);
-
             $pdf = PDF::loadView('modules.candidates.download-pdf', [
                 'tarikh' => $tarikh,
                 'qr' => $qr,
@@ -434,81 +432,82 @@ class CandidateController extends Controller
             return back()->withError($e->getMessage());
         }
     }
-    public function downloadpdfCandidate($id, $type)
-    {
-        try {
 
-            if ($type == "MUET") {
-                $candidate = MuetCalon::find($id);
-            } else {
-                $candidate = ModCalon::find($id);
-            }
-            $pusat = $candidate->getPusat->first();
-            $tarikh = $candidate->getTarikh;
-            $result = $candidate->getResult($candidate);
-            if ($result['year'] > 2021) {
-                $scheme = [
-                    "listening" => 90,
-                    "speaking" => 90,
-                    "reading" => 90,
-                    "writing" => 90,
-                    "agg_score" => 360,
-                ];
-            } else if ($result['year'] > 2008 && $result['year'] < 2021) {
-                $scheme = [
-                    "listening" => 45,
-                    "speaking" => 45,
-                    "reading" => 120,
-                    "writing" => 90,
-                    "agg_score" => 360,
-                ];
-            } else { // lees than 2008
-                $scheme = [
-                    "listening" => 45,
-                    "speaking" => 45,
-                    "reading" => 135,
-                    "writing" => 75,
-                    "agg_score" => 360,
-                ];
-            }
+    // public function downloadpdfCandidate($id, $type)
+    // {
+    //     try {
 
-            $cryptId = Crypt::encrypt($id . "-" . $type);
-            $url = 'http://localhost:8000/qrscan'; // Replace with your URL or data
-            $url = config('app.url') . '/verify/result/' . $cryptId; // Replace with your URL or data /verify/result/{id}
-            $qr = QrCode::size(50)->style('round')->generate($url);
+    //         if ($type == "MUET") {
+    //             $candidate = MuetCalon::find($id);
+    //         } else {
+    //             $candidate = ModCalon::find($id);
+    //         }
+    //         $pusat = $candidate->getPusat->first();
+    //         $tarikh = $candidate->getTarikh;
+    //         $result = $candidate->getResult($candidate);
+    //         if ($result['year'] > 2021) {
+    //             $scheme = [
+    //                 "listening" => 90,
+    //                 "speaking" => 90,
+    //                 "reading" => 90,
+    //                 "writing" => 90,
+    //                 "agg_score" => 360,
+    //             ];
+    //         } else if ($result['year'] > 2008 && $result['year'] < 2021) {
+    //             $scheme = [
+    //                 "listening" => 45,
+    //                 "speaking" => 45,
+    //                 "reading" => 120,
+    //                 "writing" => 90,
+    //                 "agg_score" => 360,
+    //             ];
+    //         } else { // lees than 2008
+    //             $scheme = [
+    //                 "listening" => 45,
+    //                 "speaking" => 45,
+    //                 "reading" => 135,
+    //                 "writing" => 75,
+    //                 "agg_score" => 360,
+    //             ];
+    //         }
 
-            $pdf = PDF::loadView('modules.candidates.download-pdf', [
-                'tarikh' => $tarikh,
-                'qr' => $qr,
-                'type' => $type,
-                'result' => $result,
-                'candidate' => $candidate,
-                'scheme' => $scheme,
-                'pusat' => $pusat,
-                'image1Data' => config('base64_images.jataNegara'),
-                'image2Data' => config('base64_images.logoMPM'),
-                'image3Data' => config('base64_images.sign'),
-            ])
-                ->setPaper('a4', 'portrait')
-                ->setOptions(['isRemoteEnabled' => true]);
-            // return $pdf->download($type.' RESULT.pdf');
+    //         $cryptId = Crypt::encrypt($id . "-" . $type);
+    //         $url = config('app.url') . '/verify/result/' . $cryptId; // Replace with your URL or data /verify/result/{id}
+    //         $qr = QrCode::size(50)->style('round')->generate($url);
+    //         $pdf = PDF::loadView('modules.candidates.download-pdf', [
+    //             'tarikh' => $tarikh,
+    //             'qr' => $qr,
+    //             'type' => $type,
+    //             'result' => $result,
+    //             'candidate' => $candidate,
+    //             'scheme' => $scheme,
+    //             'pusat' => $pusat,
+    //             'image1Data' => config('base64_images.jataNegara'),
+    //             'image2Data' => config('base64_images.logoMPM'),
+    //             'image3Data' => config('base64_images.sign'),
+    //         ])
+    //             ->setPaper('a4', 'portrait')
+    //             ->setOptions(['isRemoteEnabled' => true]);
+    //         // return $pdf->download($type.' RESULT.pdf');
 
-            AuditLog::create([
-                // 'user_id' => Auth::guard('candidate')->id(),
-                'candidate_id' => Auth::guard('candidate')->id(),
-                'activity' => 'Download Result Index Number :'.$candidate->angka_giliran,
-                'summary' => serialize(['View Result', $candidate, $result]),
-                'device' => AuditLog::getDeviceDetail(),
-            ]);
+    //         AuditLog::create([
+    //             // 'user_id' => Auth::guard('candidate')->id(),
+    //             'candidate_id' => Auth::guard('candidate')->id(),
+    //             'activity' => 'Download Result Index Number :'.$candidate->angka_giliran,
+    //             'summary' => serialize(['View Result', $candidate, $result]),
+    //             'device' => AuditLog::getDeviceDetail(),
+    //         ]);
 
-            return $pdf->stream($result['index_number'].' '.$type.' RESULT.pdf');
-        } catch (Exception $e) {
-            return back()->withError($e->getMessage());
-        }
-    }
+    //         return $pdf->stream($result['index_number'].' '.$type.' RESULT.pdf');
+    //     } catch (Exception $e) {
+    //         return back()->withError($e->getMessage());
+    //     }
+    // }
 
     public function singleDownloadPdf($cryptId)
     {
+        //single download pdf pos
+
         try {
             $id = Crypt::decrypt($cryptId);
         } catch (Illuminate\Contracts\Encryption\DecryptException $e) {
@@ -554,13 +553,12 @@ class CandidateController extends Controller
                     "agg_score" => 360,
                 ];
             }
-            $url = 'http://localhost:8000/qrscan'; // Replace with your URL or data
             $url = config('app.url') . '/verify/result/' . $cryptId; // Replace with your URL or data /verify/result/{id}
 
             $qr = QrCode::size(50)->style('round')->generate($url);
 
 
-            $pdf = PDF::loadView('modules.candidates.download-pdf', [
+            $pdf = PDF::loadView('modules.candidates.mpmPrint-download-pdf', [
                 'tarikh' => $tarikh,
                 'qr' => $qr,
                 'type' => $type,
@@ -879,6 +877,7 @@ class CandidateController extends Controller
 
     function generatePDF($id)
     {
+        //bulk download pdf pos
         $value = explode('-', $id);
         $certID = $value[0];
         $type = $value[1];
@@ -921,7 +920,7 @@ class CandidateController extends Controller
         $url = config('app.url') . '/verify/result/' . Crypt::encrypt($id);
         $qr = QrCode::size(50)->style('round')->generate($url);
 
-        $pdf = PDF::loadView('modules.candidates.download-pdf', [
+        $pdf = PDF::loadView('modules.candidates.mpmPrint-download-pdf', [
             'tarikh' => $tarikh,
             'qr' => $qr,
             'type' => $type,

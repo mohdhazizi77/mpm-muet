@@ -302,4 +302,18 @@ class AdminController extends Controller
             'mod' => array_values($modCounts),
         ]);
     }
+
+    public function viewPullDB(){
+        return view('modules.admin.administration.pull-db.index');
+    }
+
+    public function pullDatabase(Request $request){
+        sleep(5);
+
+        $data = [
+            'success' => true,
+        ];
+
+        return response()->json($data);
+    }
 }
