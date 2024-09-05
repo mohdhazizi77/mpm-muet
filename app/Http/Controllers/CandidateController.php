@@ -43,8 +43,6 @@ class CandidateController extends Controller
 
     public function index()
     {
-        // dd(Auth::User(), Auth::User()->getRoleNames()[0]);
-
         $user = Auth::User() ? Auth::User() : abort(403);
         $muets = $user->muetCalon;
         $mods = $user->modCalon;
@@ -65,17 +63,7 @@ class CandidateController extends Controller
 
         $muets = $candidate->muetCalon;
         $mods = $candidate->modCalon;
-        // $certificates = $muets->concat($mods);
 
-        // Set attribute for each item in the combined collection
-        // $certificates = $certificates->map(function ($certificate) {
-        //     if ($certificate instanceof MuetCalon) {
-        //         $certificate->setAttribute('model_type', 'MuetCalon');
-        //     } elseif ($certificate instanceof ModCalon) {
-        //         $certificate->setAttribute('model_type', 'ModCalon');
-        //     }
-        //     return $certificate;
-        // });
 
         $cutoffTime = Carbon::now()->subDay(); // Get the current time and subtract 24 hours to get the cutoff time
         foreach ($muets as $key => $muet) {
