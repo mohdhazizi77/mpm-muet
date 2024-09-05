@@ -300,7 +300,6 @@ class PosController extends Controller
             if (!$preAcceptance)
                 return response()->json($data);
 
-            // dd($preAcceptance);
             $order->current_status = "COMPLETED";
             $order->consignment_note = $preAcceptance->pdf;
 
@@ -617,7 +616,6 @@ class PosController extends Controller
 
     function sendPreAcceptanceSingle($order)
     {
-
         // Ensure you have a valid session token
         $bearerToken = Session::get('bearer_token');
         if (!$bearerToken) {
@@ -635,10 +633,12 @@ class PosController extends Controller
         ];
 
         $body = [
-            "subscriptionCode" => "ECON001", //need to confirm back
+            // "subscriptionCode" => "ECON001",
+            "subscriptionCode" => "qaily@mpm.edu.my", //need to confirm back
             "requireToPickup" => false, //need to confirm back
             "requireWebHook" => false, //need to confirm back
-            "accountNo" => 9999999999, //need to confirm back
+            // "accountNo" => 9999999999, //need to confirm back
+            "accountNo" => 4681526086,
             "callerName" => "SUB(PSM)",
             "callerPhone" => "0361261600",
             "pickupLocationID" => ".", //Merchants Unique Register ID
