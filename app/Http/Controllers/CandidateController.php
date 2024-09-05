@@ -98,7 +98,7 @@ class CandidateController extends Controller
                 // "id"                => $muet->id . "-MUET", // xxx-MUET or xxx-MOD
                 "type"              => 'MUET',
                 "year"              => $muet->tahun,
-                "session"           => $muet->getTarikh->sesi,
+                "session"           => str_replace('MUET ', '', $muet->getTarikh->sesi),
                 "band"              => "Band " . self::formatNumber($muet->band),
                 "is_more2year"      => $is_more2year,
                 "is_selfPrintPaid"  => $is_selfPrintPaid,
@@ -138,7 +138,7 @@ class CandidateController extends Controller
                 // "id"                => $muet->id . "-MUET", // xxx-MUET or xxx-MOD
                 "type"              => 'MOD',
                 "year"              => $mod->tahun,
-                "session"           => $mod->getTarikh->sesi,
+                "session"           => str_replace('MOD ', '', $mod->getTarikh->sesi),
                 "band"              => "Band " . $mod->band,
                 "is_more2year"      => $is_more2year,
                 "is_selfPrintPaid"  => $is_selfPrintPaid,
