@@ -359,7 +359,7 @@ class CandidateController extends Controller
             } else {
                 $candidate = ModCalon::find($certID);
             }
-            $pusat = $candidate->getPusat->first();
+            // $pusat = $candidate->getPusat->first();
             $tarikh = $candidate->getTarikh;
             $result = $candidate->getResult($candidate);
             if ($result['year'] > 2021) {
@@ -397,7 +397,7 @@ class CandidateController extends Controller
                 'result' => $result,
                 'candidate' => $candidate,
                 'scheme' => $scheme,
-                'pusat' => $pusat,
+                // 'pusat' => $pusat,
                 'image1Data' => config('base64_images.jataNegara'),
                 'image2Data' => config('base64_images.logoMPM'),
                 'image3Data' => config('base64_images.sign'),
@@ -513,7 +513,7 @@ class CandidateController extends Controller
             } else {
                 $candidate = ModCalon::find($certID);
             }
-            $pusat = $candidate->getPusat->first();
+            // $pusat = $candidate->getPusat->first();
             $tarikh = $candidate->getTarikh;
             $result = $candidate->getResult($candidate);
             if ($result['year'] > 2021) {
@@ -553,7 +553,7 @@ class CandidateController extends Controller
                 'result' => $result,
                 'candidate' => $candidate,
                 'scheme' => $scheme,
-                'pusat' => $pusat,
+                // 'pusat' => $pusat,
                 'image1Data' => config('base64_images.jataNegara'),
                 'image2Data' => config('base64_images.logoMPM'),
                 'image3Data' => config('base64_images.sign'),
@@ -875,7 +875,7 @@ class CandidateController extends Controller
         } else {
             $candidate = ModCalon::find($certID);
         }
-        $pusat = $candidate->getPusat->first();
+        // $pusat = $candidate->getPusat->first();
         $tarikh = $candidate->getTarikh;
         $result = $candidate->getResult($candidate);
         if ($result['year'] > 2021) {
@@ -915,7 +915,7 @@ class CandidateController extends Controller
             'result' => $result,
             'candidate' => $candidate,
             'scheme' => $scheme,
-            'pusat' => $pusat,
+            // 'pusat' => $pusat,
             'image1Data' => config('base64_images.jataNegara'),
             'image2Data' => config('base64_images.logoMPM'),
             'image3Data' => config('base64_images.sign'),
