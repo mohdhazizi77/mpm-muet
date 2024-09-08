@@ -194,222 +194,273 @@ $(document).ready(function() {
                 // "processing": "Sila tunggu...",
                 // "search": "Carian:"
             },
-            searching: false,
-            lengthChange: false,
+            searching: true,
+            lengthChange: true,
         });
+        
+        $('#show_create_modal').on('click', function() {
+            $('#modal_create').modal('show');
+            $('.name').val('');
+            $('.email').val('');
+            $('.phonenumber').val('');
+            $('.role').val('');
+            $('.status').val('');
+            $('#name_text').text('');
+            $('#email_text').text('');
+            $('#phone_text').text('');
+            $('#role_text').text('');
+            $('#status_text').text('');
+            $('#form_users_add').removeClass('was-validated');
+
+        });
+
+        $(document).on('click', '#submit_add', function(e) {
+            e.preventDefault(); // Prevent the default form submission
+
+            // Clear previous validation messages
+            $('.text-danger').text('');
+
+            // Validate the form fields
+            let isValid = true;
+
+            // Name validation
+            const name = $('#name').val().trim();
+            if (name === '') {
+                $('#name_text').text('Name is required.');
+                isValid = false;
+            }
+
+            // Email validation
+            const email = $('#email').val().trim();
+            if (email === '') {
+                $('#email_text').text('Email is required.');
+                isValid = false;
+            }
+
+            // Phone Number validation
+            const phonenumber = $('#phonenumber').val().trim();
+            if (phonenumber === '') {
+                $('#phone_text').text('Phone Number is required.');
+                isValid = false;
+            }
+
+            // Role validation
+            const role = $('select[name="role"]').val();
+            if (role === null || role === '') {
+                $('#role_text').text('Role is required.');
+                isValid = false;
+            }
+
+            // Status validation
+            const status = $('select[name="status"]').val();
+            if (status === null || status === '') {
+                $('#status_text').text('Status is required.');
+                isValid = false;
+            }
+
+            // If the form is valid, proceed with SweetAlert confirmation and AJAX request
+            if (isValid) {
+                var csrfToken = $('meta[name="csrf-token"]').attr('content');
+                var formData = new FormData($('#form_users_add')[0]);
+
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Are you sure?',
+                    text: 'Users will be added!',
+                    customClass: {
+                        popup: 'my-swal-popup',
+                        confirmButton: 'my-swal-confirm',
+                        cancelButton: 'my-swal-cancel',
+                    },
+                    showCancelButton: true, // Show the cancel button
+                    confirmButtonText: 'Ya',
+                    cancelButtonText: 'Tidak'
+                }).then((result) => {
+                    if (result.value) {
+                        $.ajax({
+                            url: './users/store',
+                            method: 'POST',
+                            data: formData,
+                            processData: false,
+                            contentType: false,
+                            headers: {
+                                'X-CSRF-TOKEN': csrfToken
+                            },
+                            beforeSend: function() {
+                                Swal.fire({
+                                    title: 'Loading...', // Optional title for the alert
+                                    allowEscapeKey: false, // Disables escape key closing the alert
+                                    allowOutsideClick: false, // Disables outside click closing the alert
+                                    showConfirmButton: false, // Hides the "Confirm" button
+                                    didOpen: () => {
+                                        Swal.showLoading();
+                                    }
+                                });
+                            },
+                            success: function(response) {
+                                Swal.close()
+                                $('#form_users_add').removeClass('was-validated');
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Berjaya',
+                                    text: 'User successfully added!',
+                                    customClass: {
+                                        popup: 'my-swal-popup',
+                                        confirmButton: 'my-swal-confirm',
+                                        cancelButton: 'my-swal-cancel',
+                                    }
+                                }).then((result) => {
+                                    if (result.value) {
+                                        $('#modal_create').modal('hide');
+                                        $('#dt-user').DataTable().ajax.reload();
+                                    }
+                                });
+                            },
+                            error: function(xhr, status, errors) {
+                                $('#form_users_add').addClass('was-validated');
+                                if (xhr.responseJSON && xhr.responseJSON.errors) {
+                                    $('#name_text').text(xhr.responseJSON.errors.name ? xhr.responseJSON.errors.name[0] : '');
+                                    $('#email_text').text(xhr.responseJSON.errors.email ? xhr.responseJSON.errors.email[0] : '');
+                                    $('#phone_text').text(xhr.responseJSON.errors.phonenumber ? xhr.responseJSON.errors.phonenumber[0] : '');
+                                    $('#role_text').text(xhr.responseJSON.errors.role ? xhr.responseJSON.errors.role[0] : '');
+                                    $('#status_text').text(xhr.responseJSON.errors.status ? xhr.responseJSON.errors.status[0] : '');
+
+                                    Swal.fire({
+                                        icon: "error",
+                                        title: 'Gagal',
+                                        text: xhr.responseJSON.message,
+                                        customClass: {
+                                            popup: 'my-swal-popup',
+                                            confirmButton: 'my-swal-confirm',
+                                            cancelButton: 'my-swal-cancel',
+                                        }
+                                    });
+                                }
+                            }
+                        });
+                    }
+                });
+            }
+        });
+
+        $(document).on('click', '#show_edit_modal', function(e) {
+            e.preventDefault();
+
+            $('#name_text_edit').text('');
+            $('#email_text_edit').text('');
+            $('#phone_text_edit').text('');
+            $('#role_text_edit').text('');
+            $('#status_text_edit').text('');
+            $('#form_users_edit').removeClass('was-validated');
+
+            var rowData = table.row($(this).parents('tr')).data();
+            $('#form_users_edit [name="id"]').val(rowData.id);
+            $('#form_users_edit [name="name"]').val(rowData.name);
+            $('#form_users_edit [name="email"]').val(rowData.email);
+            $('#form_users_edit [name="phonenumber"]').val(rowData.phoneNum);
+            $('#form_users_edit [name="role"]').val(rowData.role);
+            $('#form_users_edit [name="status"]').val(rowData.status);
+
+            $('#modal_edit').modal('show');
+        })
+
+        $(document).on('click', '#submit', function(e) {
+            var csrfToken = $('meta[name="csrf-token"]').attr('content');
+            var formData = new FormData($('#form_users_edit')[0]);
+
+            const id = $('#id').val();
+
+            Swal.fire({
+                icon: 'warning',
+                title: 'Are you sure?',
+                text: 'Users will be updated!',
+                customClass: {
+                    popup: 'my-swal-popup',
+                    confirmButton: 'my-swal-confirm',
+                    cancelButton: 'my-swal-cancel',
+                },
+                showCancelButton: true, // Show the cancel button
+                confirmButtonText: 'Ya',
+                cancelButtonText: 'Tidak'
+            }).then((result) => {
+                if (result.value) {
+                    $.ajax({
+                        url: './users/update/' + id,
+                        method: 'POST',
+                        data: formData,
+                        processData: false,
+                        contentType: false,
+                        headers: {
+                            'X-CSRF-TOKEN': csrfToken
+                        },
+                        beforeSend: function() {
+                            Swal.fire({
+                                title: 'Loading...', // Optional title for the alert
+                                allowEscapeKey: false, // Disables escape key closing the alert
+                                allowOutsideClick: false, // Disables outside click closing the alert
+                                showConfirmButton: false, // Hides the "Confirm" button
+                                didOpen: () => {
+                                    Swal.showLoading(Swal
+                                    .getDenyButton()); // Show loading indicator on the Deny button
+                                }
+                            });
+                        },
+                        success: function(response) {
+                            Swal.close()
+                            $('#form_users_edit').removeClass('was-validated');
+                            Swal.fire({
+                                type: 'success',
+                                title: 'Berjaya',
+                                text: 'User successfully updated!',
+                                customClass: {
+                                    popup: 'my-swal-popup',
+                                    confirmButton: 'my-swal-confirm',
+                                    cancelButton: 'my-swal-cancel',
+                                }
+                            }).then((result) => {
+                                if (result.value) {
+                                    $('#modal_edit').modal('hide');
+                                    $('#dt-user').DataTable().ajax.reload();
+                                }
+                            });
+                        },
+                        error: function(xhr, status, errors) {
+                            $('#form_users_edit').addClass('was-validated');
+                            if (xhr.responseJSON && xhr.responseJSON.errors) {
+                                $('#name_text_edit').text(xhr.responseJSON.errors && xhr.responseJSON.errors.name ? xhr.responseJSON.errors.name[0] : '');
+                                $('#email_text_edit').text(xhr.responseJSON.errors && xhr.responseJSON.errors.email ? xhr.responseJSON.errors.email[0] : '');
+                                $('#phone_text_edit').text(xhr.responseJSON.errors && xhr.responseJSON.errors.phonenumber ? xhr.responseJSON.errors.phonenumber[0] : '');
+                                $('#role_text_edit').text(xhr.responseJSON.errors && xhr.responseJSON.errors.role ? xhr.responseJSON.errors.role[0] : '');
+                                $('#status_text_edit').text(xhr.responseJSON.errors && xhr.responseJSON.errors.status ? xhr.responseJSON.errors.status[0] : '');
+
+                                Swal.fire({
+                                    icon: "error",
+                                    title: 'Gagal',
+                                    text: xhr.responseJSON.message,
+                                    customClass: {
+                                        popup: 'my-swal-popup',
+                                        confirmButton: 'my-swal-confirm',
+                                        cancelButton: 'my-swal-cancel',
+                                    }
+                                });
+                            }
+                        }
+                    });
+                }
+            });
+        });
+
+        $(document).on('click', '#toggleStatus', function(e) {
+            e.preventDefault();
+            var rowData = table.row($(this).parents('tr')).data();
+            if(rowData.status == 0){
+                deactive(rowData.id);
+            }else{
+                active(rowData.id);
+            }
+        })
     }
 
-    $('#show_create_modal').on('click', function() {
-        $('#modal_create').modal('show');
-        $('#name_text').text('');
-        $('#email_text').text('');
-        $('#phone_text').text('');
-        $('#role_text').text('');
-        $('#status_text').text('');
-        $('#form_users_add').removeClass('was-validated');
-
-    });
-
-    $(document).on('click', '#submit_add', function(e) {
-        var csrfToken = $('meta[name="csrf-token"]').attr('content');
-        var formData = new FormData($('#form_users_add')[0]);
-
-        Swal.fire({
-            icon: 'warning',
-            title: 'Are you sure?',
-            text: 'Users will be added!',
-            customClass: {
-                popup: 'my-swal-popup',
-                confirmButton: 'my-swal-confirm',
-                cancelButton: 'my-swal-cancel',
-            },
-            showCancelButton: true, // Show the cancel button
-            confirmButtonText: 'Ya',
-            cancelButtonText: 'Tidak'
-        }).then((result) => {
-            if (result.value) {
-                $.ajax({
-                    url: './users/store',
-                    method: 'POST',
-                    data: formData,
-                    processData: false,
-                    contentType: false,
-                    headers: {
-                        'X-CSRF-TOKEN': csrfToken
-                    },
-                    beforeSend: function() {
-                        Swal.fire({
-                            title: 'Loading...', // Optional title for the alert
-                            allowEscapeKey: false, // Disables escape key closing the alert
-                            allowOutsideClick: false, // Disables outside click closing the alert
-                            showConfirmButton: false, // Hides the "Confirm" button
-                            didOpen: () => {
-                                Swal.showLoading(Swal
-                                .getDenyButton()); // Show loading indicator on the Deny button
-                            }
-                        });
-                    },
-                    success: function(response) {
-                        Swal.close()
-                        $('#form_users_add').removeClass('was-validated');
-                        Swal.fire({
-                            type: 'success',
-                            title: 'Berjaya',
-                            text: 'User successfully added!',
-                            customClass: {
-                                popup: 'my-swal-popup',
-                                confirmButton: 'my-swal-confirm',
-                                cancelButton: 'my-swal-cancel',
-                            }
-                        }).then((result) => {
-                            if (result.value) {
-                                $('#modal_create').modal('hide');
-                                $('#dt-user').DataTable().ajax.reload();
-                            }
-                        });
-                    },
-                    error: function(xhr, status, errors) {
-                        $('#form_users_add').addClass('was-validated');
-                        if (xhr.responseJSON && xhr.responseJSON.errors) {
-                            $('#name_text').text(xhr.responseJSON.errors.name[0]);
-                            $('#email_text').text(xhr.responseJSON.errors.email[0]);
-                            $('#phone_text').text(xhr.responseJSON.errors.phonenumber[0]);
-                            $('#role_text').text(xhr.responseJSON.errors.role[0]);
-                            $('#status_text').text(xhr.responseJSON.errors.status[0]);
-
-                            Swal.fire({
-                                icon: "error",
-                                title: 'Gagal',
-                                text: xhr.responseJSON.message,
-                                customClass: {
-                                    popup: 'my-swal-popup',
-                                    confirmButton: 'my-swal-confirm',
-                                    cancelButton: 'my-swal-cancel',
-                                }
-                            });
-                        }
-                    }
-                });
-            }
-        });
-    });
-
-    $(document).on('click', '#show_edit_modal', function(e) {
-        e.preventDefault();
-
-        $('#name_text_edit').text('');
-        $('#email_text_edit').text('');
-        $('#phone_text_edit').text('');
-        $('#role_text_edit').text('');
-        $('#status_text_edit').text('');
-        $('#form_users_edit').removeClass('was-validated');
-
-        var rowData = table.row($(this).parents('tr')).data();
-        $('#form_users_edit [name="id"]').val(rowData.id);
-        $('#form_users_edit [name="name"]').val(rowData.name);
-        $('#form_users_edit [name="email"]').val(rowData.email);
-        $('#form_users_edit [name="phonenumber"]').val(rowData.phoneNum);
-        $('#form_users_edit [name="role"]').val(rowData.role);
-        $('#form_users_edit [name="status"]').val(rowData.status);
-
-        $('#modal_edit').modal('show');
-    })
-
-    $(document).on('click', '#submit', function(e) {
-        var csrfToken = $('meta[name="csrf-token"]').attr('content');
-        var formData = new FormData($('#form_users_edit')[0]);
-
-        const id = $('#id').val();
-
-        Swal.fire({
-            icon: 'warning',
-            title: 'Are you sure?',
-            text: 'Users will be updated!',
-            customClass: {
-                popup: 'my-swal-popup',
-                confirmButton: 'my-swal-confirm',
-                cancelButton: 'my-swal-cancel',
-            },
-            showCancelButton: true, // Show the cancel button
-            confirmButtonText: 'Ya',
-            cancelButtonText: 'Tidak'
-        }).then((result) => {
-            if (result.value) {
-                $.ajax({
-                    url: './users/update/' + id,
-                    method: 'POST',
-                    data: formData,
-                    processData: false,
-                    contentType: false,
-                    headers: {
-                        'X-CSRF-TOKEN': csrfToken
-                    },
-                    beforeSend: function() {
-                        Swal.fire({
-                            title: 'Loading...', // Optional title for the alert
-                            allowEscapeKey: false, // Disables escape key closing the alert
-                            allowOutsideClick: false, // Disables outside click closing the alert
-                            showConfirmButton: false, // Hides the "Confirm" button
-                            didOpen: () => {
-                                Swal.showLoading(Swal
-                                .getDenyButton()); // Show loading indicator on the Deny button
-                            }
-                        });
-                    },
-                    success: function(response) {
-                        Swal.close()
-                        $('#form_users_edit').removeClass('was-validated');
-                        Swal.fire({
-                            type: 'success',
-                            title: 'Berjaya',
-                            text: 'User successfully updated!',
-                            customClass: {
-                                popup: 'my-swal-popup',
-                                confirmButton: 'my-swal-confirm',
-                                cancelButton: 'my-swal-cancel',
-                            }
-                        }).then((result) => {
-                            if (result.value) {
-                                $('#modal_edit').modal('hide');
-                                $('#dt-user').DataTable().ajax.reload();
-                            }
-                        });
-                    },
-                    error: function(xhr, status, errors) {
-                        $('#form_users_edit').addClass('was-validated');
-                        if (xhr.responseJSON && xhr.responseJSON.errors) {
-                            $('#name_text_edit').text(xhr.responseJSON.errors && xhr.responseJSON.errors.name ? xhr.responseJSON.errors.name[0] : '');
-                            $('#email_text_edit').text(xhr.responseJSON.errors && xhr.responseJSON.errors.email ? xhr.responseJSON.errors.email[0] : '');
-                            $('#phone_text_edit').text(xhr.responseJSON.errors && xhr.responseJSON.errors.phonenumber ? xhr.responseJSON.errors.phonenumber[0] : '');
-                            $('#role_text_edit').text(xhr.responseJSON.errors && xhr.responseJSON.errors.role ? xhr.responseJSON.errors.role[0] : '');
-                            $('#status_text_edit').text(xhr.responseJSON.errors && xhr.responseJSON.errors.status ? xhr.responseJSON.errors.status[0] : '');
-
-                            Swal.fire({
-                                icon: "error",
-                                title: 'Gagal',
-                                text: xhr.responseJSON.message,
-                                customClass: {
-                                    popup: 'my-swal-popup',
-                                    confirmButton: 'my-swal-confirm',
-                                    cancelButton: 'my-swal-cancel',
-                                }
-                            });
-                        }
-                    }
-                });
-            }
-        });
-    });
-
-    $(document).on('click', '#toggleStatus', function(e) {
-        e.preventDefault();
-        var rowData = table.row($(this).parents('tr')).data();
-        if(rowData.status == 0){
-            deactive(rowData.id);
-        }else{
-            active(rowData.id);
-        }
-    })
 
 });
 

@@ -152,7 +152,6 @@ Route::group(['middleware' => ['role:PENTADBIR|BPKOM|PSM|FINANCE']], function ()
         Route::get('/general-setting', [GeneralSettingController::class, 'index'])->name('general_setting.index');
         Route::post('/general-setting/store', [GeneralSettingController::class, 'store'])->name('general_setting.store');
 
-
         Route::post('/courier/ajax', [CourierController::class, 'getAjax'])->name('courier.ajax');
         Route::post('/courier/store', [CourierController::class, 'store'])->name('courier.store');
         Route::post('/courier/update/{id}', [CourierController::class, 'update'])->name('courier.update');
@@ -172,6 +171,10 @@ Route::group(['middleware' => ['role:PENTADBIR|BPKOM|PSM|FINANCE']], function ()
         Route::post('/users/update/{user}', [UserController::class, 'update'])->name('users.update');
         Route::post('/users/actived/{user}', [UserController::class, 'activated'])->name('users.activated');
         Route::post('/users/deactived/{user}', [UserController::class, 'deactived'])->name('users.deactived');
+
+        Route::get('/manage-candidate', [CandidateController::class, 'indexCandidate'])->name('admin.candidate.index');
+        Route::post('/manage-candidate/ajax', [CandidateController::class, 'ajaxCandidate'])->name('admin.candidate.ajax');
+        Route::post('/manage-candidate/update/{candidate}', [CandidateController::class, 'updateCandidate'])->name('admin.candidate.update');
 
         Route::resource('/audit-logs', AuditLogsController::class);
         Route::post('/audit-logs/ajax', [AuditLogsController::class, 'getAjax'])->name('audit-logs.ajax');

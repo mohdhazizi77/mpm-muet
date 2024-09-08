@@ -31,6 +31,7 @@ use App\Models\ConfigGeneral;
 use App\Models\ConfigMpmBayar;
 use App\Models\CandidateActivityLog;
 use App\Models\AuditLog;
+use App\Services\AuditLogService;
 
 use Carbon\Carbon;
 use setasign\Fpdi\Fpdi;
@@ -359,7 +360,7 @@ class CandidateController extends Controller
             } else {
                 $candidate = ModCalon::find($certID);
             }
-            $pusat = $candidate->getPusat->first();
+            // $pusat = $candidate->getPusat->first();
             $tarikh = $candidate->getTarikh;
             $result = $candidate->getResult($candidate);
             if ($result['year'] > 2021) {
@@ -397,7 +398,7 @@ class CandidateController extends Controller
                 'result' => $result,
                 'candidate' => $candidate,
                 'scheme' => $scheme,
-                'pusat' => $pusat,
+                // 'pusat' => $pusat,
                 'image1Data' => config('base64_images.jataNegara'),
                 'image2Data' => config('base64_images.logoMPM'),
                 'image3Data' => config('base64_images.sign'),
@@ -513,7 +514,7 @@ class CandidateController extends Controller
             } else {
                 $candidate = ModCalon::find($certID);
             }
-            $pusat = $candidate->getPusat->first();
+            // $pusat = $candidate->getPusat->first();
             $tarikh = $candidate->getTarikh;
             $result = $candidate->getResult($candidate);
             if ($result['year'] > 2021) {
@@ -553,7 +554,7 @@ class CandidateController extends Controller
                 'result' => $result,
                 'candidate' => $candidate,
                 'scheme' => $scheme,
-                'pusat' => $pusat,
+                // 'pusat' => $pusat,
                 'image1Data' => config('base64_images.jataNegara'),
                 'image2Data' => config('base64_images.logoMPM'),
                 'image3Data' => config('base64_images.sign'),
@@ -875,7 +876,7 @@ class CandidateController extends Controller
         } else {
             $candidate = ModCalon::find($certID);
         }
-        $pusat = $candidate->getPusat->first();
+        // $pusat = $candidate->getPusat->first();
         $tarikh = $candidate->getTarikh;
         $result = $candidate->getResult($candidate);
         if ($result['year'] > 2021) {
@@ -915,7 +916,7 @@ class CandidateController extends Controller
             'result' => $result,
             'candidate' => $candidate,
             'scheme' => $scheme,
-            'pusat' => $pusat,
+            // 'pusat' => $pusat,
             'image1Data' => config('base64_images.jataNegara'),
             'image2Data' => config('base64_images.logoMPM'),
             'image3Data' => config('base64_images.sign'),
@@ -996,5 +997,81 @@ class CandidateController extends Controller
         ]);
 
         return response()->json(['status' => 'success']);
+    }
+
+    public function indexCandidate()
+    {
+        return view('modules.admin.administration.manage-candidates.index');
+    }
+
+    // public function ajaxCandidate(Request $request)
+    // {
+    //     // $users = Auth::check() ? User::where('id', '!=', Auth::id())->get() : abort(403);
+    //     $candidates = Candidate::get();
+    //     $data = [];
+    //     foreach($candidates as $candidate){
+    //         $data[] = [
+    //             // "id"    => Crypt::encrypt($user->id),
+    //             "id"    => $candidate->id,
+    //             "name"  => $candidate->name,
+    //             "nric"  => $candidate->identity_card_number,
+    //         ];
+    //     };
+
+    //     return datatables($data)->toJson();
+    // }
+
+    public function ajaxCandidate(Request $request)
+    {
+        // Fetch records from the Candidate model with server-side processing
+        $candidates = Candidate::query();
+
+        // Return the DataTable response
+        return DataTables::of($candidates)
+            ->addColumn('name', function($candidate) {
+                return $candidate->name;
+            })
+            ->addColumn('nric', function($candidate) {
+                return $candidate->identity_card_number;
+            })
+            ->addColumn('action', function($candidate) {
+                return '<button type="button" class="btn btn-sm btn-info" id="show_edit_modal" data-id="'. $candidate->id .'">Action</button>';
+            })
+            ->toJson();
+
+    }
+
+
+
+    public function updateCandidate(Request $request,Candidate $candidate)
+    {
+        // Old data
+        $old = [
+            "name" => $candidate->name,
+            "nric" => $candidate->nric,
+        ];
+
+        // New data
+        $new = [
+            "name" => $request->name,
+            "nric" => $request->nric,
+        ];
+
+        $candidate->name = $request->name;
+        // $candidate->nric = $request->nric;
+
+        $candidate->save();
+
+        // Compare old and new data, and unset identical values
+        foreach ($old as $key => $value) {
+            if ($old[$key] === $new[$key]) {
+                unset($old[$key]);
+                unset($new[$key]);
+            }
+        }
+
+        AuditLogService::log($candidate, 'Update candidate', $old, $new);
+
+        return redirect()->route('users.index')->with('success', 'Candidate updated successfully.');
     }
 }

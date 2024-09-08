@@ -103,9 +103,7 @@
                     </div>
                 </li>
 
-                @php
-
-                @endphp
+                @role('PENTADBIR')
                 <li class="nav-item">
                     <a class="nav-link menu-link
                     {{ request()->is('admin/general-setting') ? 'active' : '' }}
@@ -144,7 +142,7 @@
                                     <a href="{{ route('users.index') }}" class="nav-link {{ request()->is('admin/users') ? 'active' : '' }}" >Users and Access</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="#" class="nav-link {{ request()->is('admin/manage-candidate') ? 'active' : '' }}">Muet Candidates</a>
+                                    <a href="{{ route('admin.candidate.index') }}" class="nav-link {{ request()->is('admin/manage-candidate') ? 'active' : '' }}">Muet Candidates</a>
                                 </li>
                                 <li class="nav-item">
                                     <a href="{{ route('admin.pullDB') }}" class="nav-link {{ request()->is('admin/pull-db') ? 'active' : '' }}">Pull DB Candidates</a>
@@ -157,6 +155,8 @@
                         </ul>
                     </div>
                 </li>
+                @endrole
+
 
             </ul>
         </div>
