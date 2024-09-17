@@ -21,7 +21,7 @@
                     <th style="border: 1px solid black; padding: 5px">CANDIDATE NAME</th>
                     <th style="border: 1px solid black; padding: 5px">AMOUNT</th>
                     <th style="border: 1px solid black; padding: 5px">STATUS</th>
-                    <th style="border: 1px solid black; padding: 5px">RECEIPT</th>
+                    {{-- <th style="border: 1px solid black; padding: 5px">RECEIPT</th> --}}
                 </tr>
             </thead>
             <tbody style="text-align: center">
@@ -29,13 +29,14 @@
                         @foreach ($payments as $payment)
                             <tr style="border: 1px solid black; padding: 5px">
                                 <td style="border: 1px solid black; padding: 5px">{{ $loop->iteration }}</td>
-                                <td style="border: 1px solid black; padding: 5px">{{ $payment->txn_id  ?? 'No Record' }}</td>
+                                <td style="border: 1px solid black; padding: 5px">{{ $payment->order->unique_order_id  ?? 'No Record' }}</td>
                                 <td style="border: 1px solid black; padding: 5px">{{ $payment->receipt_number  ?? 'No Record' }}</td>
                                 <td style="border: 1px solid black; padding: 5px">{{ date('d/m/Y' , strtotime($payment->payment_date)) }}</td>
                                 <td style="border: 1px solid black; padding: 5px">{{ $payment->order?->candidate?->name ?? 'No Record' }}</td>
                                 <td style="border: 1px solid black; padding: 5px">{{ $payment->amount  ?? 'No Record' }}</td>
                                 <td style="border: 1px solid black; padding: 5px">{{ $payment->status  ?? 'No Record' }}</td>
-                                <td style="border: 1px solid black; padding: 5px">{{ $payment->receipt  ?? 'No Record' }}</td>
+                                {{-- <td style="border: 1px solid black; padding: 5px">{{ $payment->receipt  ?? 'No Record' }}</td> --}}
+                                {{-- <td style="border: 1px solid black; padding: 5px">{{ 'No Record' }}</td> --}}
                             </tr>
                         @endforeach
                 @else

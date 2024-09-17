@@ -227,8 +227,17 @@ class OrderController extends Controller
             //     $data[]['session'] = $value->modCalon->getTarikh->sesi;
             // }
         }
-        // dd($data);
-        // dd($transaction);
+
+        // Apply text search after building the array
+        if ($request->has('textSearch') && !empty($request->textSearch)) {
+            $textSearch = $request->textSearch;
+            $data = array_filter($data, function ($item) use ($textSearch) {
+                return stripos($item['tracking_number'], $textSearch) !== false ||
+                    stripos($item['index_number'], $textSearch) !== false ||
+                    stripos($item['candidate_name'], $textSearch) !== false ||
+                    stripos($item['order_id'], $textSearch) !== false;
+            });
+        }
 
         return datatables($data)->toJson();
     }

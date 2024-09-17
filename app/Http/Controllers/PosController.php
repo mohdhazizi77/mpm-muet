@@ -74,19 +74,19 @@ class PosController extends Controller
                 : $currentDate;
 
             // Filter based on the date range
-            $pos->whereBetween('created_at', [$startDate, $endDate]);
+            $pos->whereBetween('updated_at', [$startDate, $endDate]);
         }
 
         // Apply filtering based on name search if provided
-        if ($request->has('textSearch') && !empty($request->textSearch)) {
-            $textSearch = $request->textSearch;
-            $pos->where(function ($query) use ($textSearch) {
-                $query->where('name', 'LIKE', '%' . $textSearch . '%')
-                    // Add more columns to search in if necessary
-                    ->orWhere('unique_order_id', 'LIKE', '%' . $textSearch . '%')
-                    ->orWhere('type', 'LIKE', '%' . $textSearch . '%');
-            });
-        }
+        // if ($request->has('textSearch') && !empty($request->textSearch)) {
+        //     $textSearch = $request->textSearch;
+        //     $pos->where(function ($query) use ($textSearch) {
+        //         $query->where('name', 'LIKE', '%' . $textSearch . '%')
+        //             // Add more columns to search in if necessary
+        //             ->orWhere('unique_order_id', 'LIKE', '%' . $textSearch . '%')
+        //             ->orWhere('type', 'LIKE', '%' . $textSearch . '%');
+        //     });
+        // }
 
         // Apply filtering based on muet type
         if ($request->has('examType') && !empty($request->examType)) {
@@ -114,7 +114,7 @@ class PosController extends Controller
         }
 
         // Fetch the data
-        $posData = $pos->orderBy('created_at', 'desc')->get();
+        $posData = $pos->orderBy('updated_at', 'desc')->get();
 
         // Prepare the data array
         $data = [];
@@ -124,30 +124,41 @@ class PosController extends Controller
             $arr = [
                 'id'         => Crypt::encrypt($order->id),
                 'order_id'   => $order->unique_order_id,
-                'order_date' => $order->created_at->format('d/m/Y H:i:s'),
-                'order_time' => $order->created_at->format('H:i:s'),
+                'order_date' => $order->updated_at->format('d/m/Y H:i:s'),
+                'order_time' => $order->updated_at->format('H:i:s'),
                 'consignment_note' => $order->consignment_note,
-                // 'details'    => $order->type . " | " . $calon->getTarikh->sesi . " | Angka Giliran : " . $calon->index_number($calon)
-                // 'details'    => $calon->getTarikh->sesi . " | Angka Giliran : " . $calon->index_number($calon)
                 'details'    => $order->type . " | Session " . $calon->sidang . " Year " . $calon->tahun . " | Angka Giliran : " . $calon->index_number($calon),
+                'index_number'    => $calon->index_number($calon),
                 'candidate_name' => $calon->nama,
+                'tracking_number' => (!empty($order->tracking_number) ? $order->tracking_number : ""),
             ];
 
-            if ($request->type == "PROCESSING") {
-                $arr['tracking_number'] = (!empty($order->tracking_number) ? $order->tracking_number : "");
-            };
+            // if ($request->type == "PROCESSING") {
+            // };
 
-            if ($request->type == "COMPLETED") {
-                $arr['tracking_number'] = (!empty($order->tracking_number) ? $order->tracking_number : "");
-            };
+            // if ($request->type == "COMPLETED") {
+            //     $arr['tracking_number'] = (!empty($order->tracking_number) ? $order->tracking_number : "");
+            // };
 
 
             $data[] = $arr;
         }
 
+        // Apply text search after building the array
+        if ($request->has('textSearch') && !empty($request->textSearch)) {
+            $textSearch = $request->textSearch;
+            $data = array_filter($data, function ($item) use ($textSearch) {
+                return stripos($item['tracking_number'], $textSearch) !== false ||
+                    stripos($item['index_number'], $textSearch) !== false ||
+                    stripos($item['candidate_name'], $textSearch) !== false ||
+                    stripos($item['order_id'], $textSearch) !== false;
+            });
+        }
+
         // Return the data in JSON format for DataTables
         return datatables()->of($data)->toJson();
     }
+
     public function trackShipping()
     {
         return view('modules.admin.pos.tracking');

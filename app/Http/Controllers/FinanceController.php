@@ -8,7 +8,9 @@ use App\Models\Order;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Exports\FinanceExport;
 
+use Maatwebsite\Excel\Facades\Excel;
 use Carbon\Carbon;
 use DataTables;
 
@@ -91,15 +93,15 @@ class FinanceController extends Controller
             $payments->whereBetween('created_at', [$startDate, $endDate]);
         }
 
-        // Apply filtering based on name search if provided
-        if ($request->has('textSearch') && !empty($request->textSearch)) {
-            $textSearch = $request->textSearchTrx;
-            $payments->where(function ($query) use ($textSearch) {
-                $query->where('txn_id', 'LIKE', '%' . $textSearch . '%')
-                    // Add more columns to search in if necessary
-                    ->orWhere('ref_no', 'LIKE', '%' . $textSearch . '%');
-            });
-        }
+        // // Apply filtering based on name search if provided
+        // if ($request->has('textSearch') && !empty($request->textSearch)) {
+        //     $textSearch = $request->textSearchTrx;
+        //     $payments->where(function ($query) use ($textSearch) {
+        //         $query->where('txn_id', 'LIKE', '%' . $textSearch . '%')
+        //             // Add more columns to search in if necessary
+        //             ->orWhere('ref_no', 'LIKE', '%' . $textSearch . '%');
+        //     });
+        // }
 
         // Retrieve the filtered results
         $payments = $payments->get();
@@ -118,6 +120,17 @@ class FinanceController extends Controller
                 'status' => $payment->status ?? 'Tiada Rekod',
                 'receipt' => $payment->receipt ?? 'Tiada Rekod',
             ];
+        }
+
+        // Apply text search after building the array
+        if ($request->has('textSearch') && !empty($request->textSearch)) {
+            $textSearch = $request->textSearch;
+            $data = array_filter($data, function ($item) use ($textSearch) {
+                return stripos($item['reference_id'], $textSearch) !== false ||
+                    stripos($item['ref_no'], $textSearch) !== false ||
+                    stripos($item['candidate_name'], $textSearch) !== false ||
+                    stripos($item['txn_id'], $textSearch) !== false;
+            });
         }
 
         return datatables($data)->toJson();
@@ -146,13 +159,13 @@ class FinanceController extends Controller
                             ->when($request->filled('payment_for'), function ($query) use ($request) {
                                 return $query->where('payment_for', 'like', "%{$request->input('payment_for')}%");
                             })
-                            ->when($request->filled('textSearch'), function ($query) use ($request) {
-                                $textSearch = $request->textSearch;
-                                $request->where(function ($query) use ($textSearch) {
-                                    $query->where('txn_id', 'LIKE', '%' . $textSearch . '%')
-                                        ->orWhere('ref_no', 'LIKE', '%' . $textSearch . '%');
-                                });
-                            })
+                            // ->when($request->filled('textSearch'), function ($query) use ($request) {
+                            //     $textSearch = $request->textSearch;
+                            //     $request->where(function ($query) use ($textSearch) {
+                            //         $query->where('txn_id', 'LIKE', '%' . $textSearch . '%')
+                            //             ->orWhere('ref_no', 'LIKE', '%' . $textSearch . '%');
+                            //     });
+                            // })
                             ->when($request->filled('status'), fn($query) => $query->where('status', 'like', "%{$request->input('status')}%"))
                             ->count();
 
@@ -182,13 +195,13 @@ class FinanceController extends Controller
                                 // Filter based on the date range
                                 $query->whereBetween('payment_date', [$startDate, $endDate]);
                             })
-                            ->when($request->filled('textSearch'), function ($query) use ($request) {
-                                $textSearch = $request->textSearch;
-                                $request->where(function ($query) use ($textSearch) {
-                                    $query->where('txn_id', 'LIKE', '%' . $textSearch . '%')
-                                        ->orWhere('ref_no', 'LIKE', '%' . $textSearch . '%');
-                                });
-                            })
+                            // ->when($request->filled('textSearch'), function ($query) use ($request) {
+                            //     $textSearch = $request->textSearch;
+                            //     $request->where(function ($query) use ($textSearch) {
+                            //         $query->where('txn_id', 'LIKE', '%' . $textSearch . '%')
+                            //             ->orWhere('ref_no', 'LIKE', '%' . $textSearch . '%');
+                            //     });
+                            // })
                             ->when($request->filled('status'), fn($query) => $query->where('status', 'like', "%{$request->input('status')}%"))
                             ->sum('amount');
 
@@ -218,13 +231,13 @@ class FinanceController extends Controller
                                 // Filter based on the date range
                                 $query->whereBetween('payment_date', [$startDate, $endDate]);
                             })
-                            ->when($request->filled('textSearch'), function ($query) use ($request) {
-                                $textSearch = $request->textSearch;
-                                $request->where(function ($query) use ($textSearch) {
-                                    $query->where('txn_id', 'LIKE', '%' . $textSearch . '%')
-                                        ->orWhere('ref_no', 'LIKE', '%' . $textSearch . '%');
-                                });
-                            })
+                            // ->when($request->filled('textSearch'), function ($query) use ($request) {
+                            //     $textSearch = $request->textSearch;
+                            //     $request->where(function ($query) use ($textSearch) {
+                            //         $query->where('txn_id', 'LIKE', '%' . $textSearch . '%')
+                            //             ->orWhere('ref_no', 'LIKE', '%' . $textSearch . '%');
+                            //     });
+                            // })
                             ->when($request->filled('status'), fn($query) => $query->where('status', 'like', "%{$request->input('status')}%"))
                             ->sum('amount');
 
@@ -267,6 +280,7 @@ class FinanceController extends Controller
                         });
                     })
                     ->when($request->filled('status'), fn($query) => $query->where('status', 'like', "%{$request->input('status')}%"))
+                    ->latest()
                     ->get();
 
         if($request->exam_type == 'mod'){
@@ -277,6 +291,102 @@ class FinanceController extends Controller
         }
 
         return $pdf->stream('List_finance_' . $request->exam_type . '.pdf');
+    }
+
+    public function generateExcel(Request $request){
+
+        // $currentDate = Carbon::now()->format('Y-m-d H:i:s');
+        // $transactions = Order::latest();
+        // // list by transaction by role
+        // switch (Auth::User()->getRoleNames()[0]) {
+        //     case 'PSM':
+        //         // $transactions->where('type', 'MUET');
+        //         $transactions->when($request->filled('exam_type'), function ($query) use ($request) {
+        //                 return $query->where('type', $request->input('exam_type'));
+        //             }, function ($query) {
+        //                 return $query->where('type', 'MUET');
+        //             });
+        //         break;
+        //     case 'BPKOM':
+        //         // $transactions->where('type', 'MOD');
+        //         $transactions->when($request->filled('exam_type'), function ($query) use ($request) {
+        //                 return $query->where('type', $request->input('exam_type'));
+        //             }, function ($query) {
+        //                 return $query->where('type', 'MOD');
+        //             });
+        //         break;
+        // }
+
+        // if(filled($request->startDate) || filled($request->endDate)){
+        //     $startDate = Carbon::parse($request->startDate)->startOfDay()->format('Y-m-d H:i:s');
+        //     $endDate = $request->has('endDateTrx') && !empty($request->endDate)
+        //                 ? Carbon::parse($request->endDate)->endOfDay()->format('Y-m-d H:i:s')
+        //                 : $currentDate;
+
+        //     // Filter based on the date range
+        //     $transactions->whereBetween('created_at', [$startDate, $endDate]);
+        // }
+
+        // if ($request->has('exam_type') && !empty($request->exam_type)) {
+        //     $transactions->where('type', $request->exam_type);
+        // }
+
+        // if ($request->has('payment_for') && !empty($request->payment_for)) {
+        //     $transactions->where('payment_for', $request->payment_for);
+        // }
+
+        // if ($request->has('status_trx') && !empty($request->status_trx)) {
+        //     $transactions->where('current_status', $request->status_trx);
+        // }
+
+        // if(filled($request->textSearch)){
+        //     $textSearch = $request->textSearch;
+        //     $transactions->where(function ($query) use ($textSearch) {
+        //         $query->where('unique_order_id', 'LIKE', '%' . $textSearch . '%');
+        //             // Add more columns to search in if necessary
+        //             // ->orWhere('ref_no', 'LIKE', '%' . $textSearch . '%');
+        //     });
+        // }
+
+        // $transactions = $transactions->get();
+
+        // return Excel::download(new FinanceExport($transactions), 'transaction_' . now() . '.xlsx');
+
+
+
+
+        $payments = Payment::when($request->filled('exam_type_select'), function ($query) use ($request) {
+            return $query->where('type', $request->input('exam_type_select'));
+        }, function ($query) use ($request){
+            return $query->where('type', strtoupper($request->exam_type));
+        })
+        ->when($request->filled('payment_for'), function ($query) use ($request) {
+            return $query->where('payment_for', 'like', "%{$request->input('payment_for')}%");
+        })
+        ->when($request->filled('startDate') || $request->filled('endDate'), function ($query) use ($request) {
+            $currentDate = Carbon::now()->format('Y-m-d H:i:s');
+
+            $startDate = Carbon::parse($request->startDate)->startOfDay()->format('Y-m-d H:i:s');
+            $endDate = $request->has('endDate') && !empty($request->endDate)
+                        ? Carbon::parse($request->endDate)->endOfDay()->format('Y-m-d H:i:s')
+                        : $currentDate;
+
+            // Filter based on the date range
+            $query->whereBetween('payment_date', [$startDate, $endDate]);
+        })
+        ->when($request->filled('textSearch'), function ($query) use ($request) {
+            $textSearch = $request->textSearch;
+            $request->where(function ($query) use ($textSearch) {
+                $query->where('txn_id', 'LIKE', '%' . $textSearch . '%')
+                    ->orWhere('ref_no', 'LIKE', '%' . $textSearch . '%');
+            });
+        })
+        ->when($request->filled('status'), fn($query) => $query->where('status', 'like', "%{$request->input('status')}%"))
+        ->latest()
+        ->get();
+
+        return Excel::download(new FinanceExport($payments), 'finance_' . now() . '.xlsx');
+
     }
 
     public function ajaxDashboard(){

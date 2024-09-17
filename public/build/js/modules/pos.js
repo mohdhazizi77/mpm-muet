@@ -706,9 +706,9 @@ $(document).ready(function () {
         $('#end-date').val(startDate)
     });
 
-    $('#text-search').on('keyup change', function () {
-        table.search(this.value).draw();
-    });
+    // $('#text-search').on('keyup change', function () {
+    //     table.search(this.value).draw();
+    // });
 
     $(document).on('click', '#filterBtn', function () {
 

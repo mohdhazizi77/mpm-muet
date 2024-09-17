@@ -185,7 +185,53 @@ $(document).ready(function() {
             lengthChange: true,
         });
 
-    fetchDataMuet();
+        fetchDataMuet();
+
+        $(document).on('click', '#button-export-pdf-fin', function (){
+            // const textSearch    = $('#text-search-trx').val();
+            // const startDate     = $('#start-date-trx').val();
+            // const endDate       = $('#end-date-trx').val();
+            // const exam_type     = $('#exam_type').val();
+            // const payment_for   = $('#payment_for').val();
+            // const status_trx    = $('#status_trx').val();
+
+            const textSearch    = $('#text-search-fin-muet').val();
+            const startDate     = $('#start-date-fin-muet').val();
+            const endDate       = $('#end-date-fin-muet').val();
+            // const exam_type     = $('#exam_type').val();
+            const exam_type     = 'muet';
+            const payment_for   = $('#payment_for').val();
+            const status   = $('#status_muet').val();
+
+            const url = `./muet/pdf?textSearch=${encodeURIComponent(textSearch)}
+            &startDate=${encodeURIComponent(startDate)}
+            &exam_type=${encodeURIComponent(exam_type)}
+            &payment_for=${encodeURIComponent(payment_for)}
+            &status=${encodeURIComponent(status)}
+            &endDate=${encodeURIComponent(endDate)}`;
+
+            // Open the URL in a new tab
+            window.open(url, '_blank');
+        });
+
+        $(document).on('click', '#button-export-xlsx-fin', function (){
+            const textSearch    = $('#text-search-fin-muet').val();
+            const startDate     = $('#start-date-fin-muet').val();
+            const endDate       = $('#end-date-fin-muet').val();
+            // const exam_type     = $('#exam_type').val();
+            const exam_type     = 'muet';
+            const payment_for   = $('#payment_for').val();
+            const status   = $('#status_muet').val();
+
+            const url = `./muet/excel?textSearch=${encodeURIComponent(textSearch)}
+            &startDate=${encodeURIComponent(startDate)}
+            &exam_type=${encodeURIComponent(exam_type)}
+            &payment_for=${encodeURIComponent(payment_for)}
+            &status=${encodeURIComponent(status)}
+            &endDate=${encodeURIComponent(endDate)}`;
+
+            window.location.href = url;
+        });
 
     }
 
@@ -230,10 +276,10 @@ $(document).ready(function() {
     })
 
     //text search
-    $('#text-search-fin-muet').on('keyup change', function() {
-        tableMuet.search(this.value).draw();
-        fetchDataMuet();
-    });
+    // $('#text-search-fin-muet').on('keyup change', function() {
+    //     tableMuet.search(this.value).draw();
+    //     fetchDataMuet();
+    // });
 
 
     // -------------------------------------------------------------------------
@@ -425,6 +471,52 @@ $(document).ready(function() {
         });
 
         fetchDataMod();
+
+        $(document).on('click', '#button-export-pdf-fin', function (){
+            // const textSearch    = $('#text-search-trx').val();
+            // const startDate     = $('#start-date-trx').val();
+            // const endDate       = $('#end-date-trx').val();
+            // const exam_type     = $('#exam_type').val();
+            // const payment_for   = $('#payment_for').val();
+            // const status_trx    = $('#status_trx').val();
+
+            const textSearch    = $('#text-search-fin-mod').val();
+            const startDate     = $('#start-date-fin-mod').val();
+            const endDate       = $('#end-date-fin-mod').val();
+            // const exam_type     = $('#exam_type').val();
+            const exam_type     = 'mod';
+            const payment_for   = $('#payment_for_mod').val();
+            const status   = $('#status_muet').val();
+
+            const url = `./mod/pdf?textSearch=${encodeURIComponent(textSearch)}
+            &startDate=${encodeURIComponent(startDate)}
+            &exam_type=${encodeURIComponent(exam_type)}
+            &payment_for=${encodeURIComponent(payment_for)}
+            &status=${encodeURIComponent(status)}
+            &endDate=${encodeURIComponent(endDate)}`;
+
+            // Open the URL in a new tab
+            window.open(url, '_blank');
+        });
+
+        $(document).on('click', '#button-export-xlsx-fin', function (){
+            const textSearch    = $('#text-search-fin-mod').val();
+            const startDate     = $('#start-date-fin-mod').val();
+            const endDate       = $('#end-date-fin-mod').val();
+            // const exam_type     = $('#exam_type').val();
+            const exam_type     = 'mod';
+            const payment_for   = $('#payment_for_mod').val();
+            const status   = $('#status_mod').val();
+
+            const url = `./mod/excel?textSearch=${encodeURIComponent(textSearch)}
+            &startDate=${encodeURIComponent(startDate)}
+            &exam_type=${encodeURIComponent(exam_type)}
+            &payment_for=${encodeURIComponent(payment_for)}
+            &status=${encodeURIComponent(status)}
+            &endDate=${encodeURIComponent(endDate)}`;
+
+            window.location.href = url;
+        });
     }
 
     $('.dt-search').hide();
@@ -467,9 +559,9 @@ $(document).ready(function() {
     })
 
     //text search
-    $('#text-search-fin-mod').on('keyup change', function() {
-        tableMod.search(this.value).draw();
-    });
+    // $('#text-search-fin-mod').on('keyup change', function() {
+    //     tableMod.search(this.value).draw();
+    // });
 
     // fetchDataMuet();
     // fetchDataMod();
