@@ -74,7 +74,7 @@ class PosController extends Controller
                 : $currentDate;
 
             // Filter based on the date range
-            $pos->whereBetween('created_at', [$startDate, $endDate]);
+            $pos->whereBetween('updated_at', [$startDate, $endDate]);
         }
 
         // Apply filtering based on name search if provided
@@ -114,7 +114,7 @@ class PosController extends Controller
         }
 
         // Fetch the data
-        $posData = $pos->orderBy('created_at', 'desc')->get();
+        $posData = $pos->orderBy('updated_at', 'desc')->get();
 
         // Prepare the data array
         $data = [];
@@ -124,8 +124,8 @@ class PosController extends Controller
             $arr = [
                 'id'         => Crypt::encrypt($order->id),
                 'order_id'   => $order->unique_order_id,
-                'order_date' => $order->created_at->format('d/m/Y H:i:s'),
-                'order_time' => $order->created_at->format('H:i:s'),
+                'order_date' => $order->updated_at->format('d/m/Y H:i:s'),
+                'order_time' => $order->updated_at->format('H:i:s'),
                 'consignment_note' => $order->consignment_note,
                 'details'    => $order->type . " | Session " . $calon->sidang . " Year " . $calon->tahun . " | Angka Giliran : " . $calon->index_number($calon),
                 'index_number'    => $calon->index_number($calon),

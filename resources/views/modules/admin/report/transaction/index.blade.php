@@ -97,6 +97,7 @@
                                 <button id="button-export-pdf-trans" target="_blank"  type="button" class="btn btn-soft-secondary waves-effect float-end mx-1">EXPORT PDF</button>
                                 <button id="button-export-xlsx-trans"  type="button" class="btn btn-soft-secondary waves-effect float-end mx-1">EXPORT XLSX</button>
                             </div>
+                        </div>
                     </div>
 
                     <div class="row">
@@ -108,7 +109,7 @@
                                     style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                                     <thead>
                                     <tr class="text-center bg-dark-subtle">
-                                        <th scope="col">DATE CREATED</th>
+                                        <th scope="col">DATE</th>
                                         <th scope="col">REFERENCE ID</th>
                                         <th scope="col">CERTIFICATE TYPE</th>
                                         <th scope="col">TRANSACTION TYPE</th>
