@@ -49,13 +49,13 @@
                                 <a href="{{ url('/admin/pos-management/new') }}" class="nav-link {{ request()->is('admin/pos-management/new') ? 'active' : '' }}">New</a>
                             </li>
                             <li class="nav-item">
-                                <a href="{{ url('/admin/pos-management/processing') }}" class="nav-link {{ request()->is('admin/pos-management/processing') ? 'active' : '' }}">Processing</a>
+                                <a href="{{ url('/admin/pos-management/processing') }}" class="nav-link {{ request()->is('admin/pos-management/processing') ? 'active' : '' }}">In Progress</a>
                             </li>
                             <li class="nav-item">
-                                <a href="{{ url('/admin/pos-management/completed') }}" class="nav-link {{ request()->is('admin/pos-management/completed') ? 'active' : '' }}">Completed</a>
+                                <a href="{{ url('/admin/pos-management/completed') }}" class="nav-link {{ request()->is('admin/pos-management/completed') ? 'active' : '' }}">Ready To Pickup</a>
                             </li>
                             <li class="nav-item">
-                                <a href="{{ route('pos.tracking') }}" class="nav-link {{ request()->is('admin/pos-management/tracking') ? 'active' : '' }}">Track Shipping</a>
+                                <a href="{{ route('pos.tracking') }}" class="nav-link {{ request()->is('admin/pos-management/tracking') ? 'active' : '' }}">Track Shipment</a>
                             </li>
                         </ul>
                     </div>
