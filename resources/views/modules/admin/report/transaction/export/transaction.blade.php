@@ -1,12 +1,16 @@
 <table>
     <thead>
         <tr>
-            <th>Bil</th>
-            <th>Date</th>
-            <th>Transaction ID</th>
-            <th>Reference ID</th>
-            <th>Detail</th>
-            <th>Status</th>
+            <th>#</th>
+            <th>DATE</th>
+            <th>TRANSACTION ID</th>
+            <th>REFERENCE ID</th>
+            <th>AMOUNT</th>
+            <th>EXAM TYPE</th>
+            <th>TRANSACTION TYPE</th>
+            <th>CANDIDATE NAME</th>
+            <th>CANDIDATE NRIC</th>
+            <th>STATUS</th>
         </tr>
     </thead>
     <tbody style="text-align: center">
@@ -16,7 +20,11 @@
                 <td>{{ date('d/m/Y' , strtotime($transaction->created_at)) }}</td>
                 <td>{{ $transaction->unique_order_id ?? 'no record' }}</td>
                 <td>{{ $transaction->payment_ref_no ?? 'no record' }}</td>
-                <td>Amount : RM {{ $transaction->payment->amount ?? 'no record' }}</td>
+                <td>RM {{ $transaction->payment->amount ?? 'no record' }}</td>
+                <td>{{ $transaction->type ?? 'no record' }}</td>
+                <td>{{ $transaction->payment_for ?? 'no record' }}</td>
+                <td>{{ $transaction->candidate->name ?? 'no record' }}</td>
+                <td>{{ $transaction->candidate->identity_card_number ?? 'no record' }}</td>
                 <td>{{ $transaction->current_status ?? 'no record' }}</td>
             </tr>
         @endforeach
