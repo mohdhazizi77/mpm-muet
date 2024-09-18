@@ -300,12 +300,10 @@ class PaymentController extends Controller
 
         $configGeneral = ConfigGeneral::get()->first();
 
-        // dd($request->toArray());
         // update order
         $order = Order::where('payment_ref_no', $request->ref_no)->first();
-        // dd($order, $request);
+
         if (!$order) {
-            // dd("no order found");
             // show return to view
             return redirect()->back();
         }
@@ -343,7 +341,7 @@ class PaymentController extends Controller
                 // $payment->payment_for = $order->payment_for;
                 // $payment->type = $order->type;
                 // $payment->save();
-
+                sleep(1);
                 $payment = Payment::updateOrCreate(
                     ['ref_no' => $request->ref_no],
                     [
