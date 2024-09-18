@@ -24,9 +24,12 @@
                     <th style="border: 1px solid black; padding: 5px">TRANSACTION ID</th>
                     <th style="border: 1px solid black; padding: 5px">REFERENCE ID</th>
                     <th style="border: 1px solid black; padding: 5px">AMOUNT</th>
-                    <th style="border: 1px solid black; padding: 5px">TYPE</th>
-                    <th style="border: 1px solid black; padding: 5px">DETAIL</th>
+                    <th style="border: 1px solid black; padding: 5px">EXAM TYPE</th>
+                    <th style="border: 1px solid black; padding: 5px">TRANSACTION TYPE</th>
+                    <th style="border: 1px solid black; padding: 5px">CANDIDATE NAME</th>
+                    <th style="border: 1px solid black; padding: 5px">CANDIDATE NRIC</th>
                     <th style="border: 1px solid black; padding: 5px">STATUS</th>
+
                 </tr>
             </thead>
             <tbody style="text-align: center">
@@ -38,8 +41,10 @@
                             <td style="border: 1px solid black; padding: 5px">{{ $transaction->unique_order_id ?? 'no record' }}</td>
                             <td style="border: 1px solid black; padding: 5px">{{ $transaction->payment_ref_no ?? 'no record' }}</td>
                             <td style="border: 1px solid black; padding: 5px">RM {{ $transaction->payment->amount ?? 'no record' }}</td>
+                            <td style="border: 1px solid black; padding: 5px">{{ $transaction->type ?? 'no record' }}</td>
                             <td style="border: 1px solid black; padding: 5px">{{ $transaction->payment_for ?? 'no record' }}</td>
-                            <td style="border: 1px solid black; padding: 5px">{{ $transaction->candidate->name ?? 'no record' }} || {{ $transaction->candidate->identity_card_number }}</td>
+                            <td style="border: 1px solid black; padding: 5px">{{ $transaction->candidate->name ?? 'no record' }}</td>
+                            <td style="border: 1px solid black; padding: 5px">{{ $transaction->candidate->identity_card_number }}</td>
                             <td style="border: 1px solid black; padding: 5px">{{ $transaction->current_status ?? 'no record' }}</td>
                         </tr>
                     @endforeach
