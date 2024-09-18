@@ -242,7 +242,8 @@ class OrderController extends Controller
         return datatables($data)->toJson();
     }
 
-    public function generateExcelAdmin(Request $request){
+    public function generateExcelAdmin(Request $request)
+    {
 
         $currentDate = Carbon::now()->format('Y-m-d H:i:s');
         $transactions = Order::latest();
@@ -302,7 +303,8 @@ class OrderController extends Controller
         return Excel::download(new TransactionExport($transactions), 'transaction_' . now() . '.xlsx');
     }
 
-    public function generatePdfAdmin(Request $request){
+    public function generatePdfAdmin(Request $request)
+    {
 
         $currentDate = Carbon::now()->format('Y-m-d H:i:s');
 
@@ -359,12 +361,14 @@ class OrderController extends Controller
 
         $transactions = $transactions->get();
 
-        $pdf = PDF::loadView('modules.admin.report.transaction.pdf.transaction', ['transactions' => $transactions]);
+        $pdf = PDF::loadView('modules.admin.report.transaction.pdf.transaction', ['transactions' => $transactions])
+                ->setPaper('a4', 'landscape');  // Set paper size to A4 and orientation to landscape
 
         return $pdf->stream('ListTransaction.pdf');
     }
 
-    public function checkpaymentAdmin(Request $request){
+    public function checkpaymentAdmin(Request $request)
+    {
 
         $order = Order::where('payment_ref_no', $request->ref_no)->first();
         $payment = Payment::where('ref_no', $request->ref_no)->first();
@@ -409,13 +413,12 @@ class OrderController extends Controller
 
             return response()->json($arr);
         }
-        // dd($output->data, json_decode($output->data->extra_data)->pay_for);
         if (!empty($output->data)) {
             curl_close($curl);
             $order->update(
                 [
                     'payment_status' => $output->data->txn_status,
-                    'current_status' => $output->data->txn_status,
+                    // 'current_status' => $output->data->txn_status,
                     'payment_ref_no' => $output->data->ref_no,
                 ]);
 
