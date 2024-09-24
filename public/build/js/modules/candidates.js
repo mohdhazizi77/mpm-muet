@@ -332,29 +332,15 @@ $(document).ready(function() {
                 { data: 'identity_card_number', name: 'identity_card_number' },
                 { data: 'action', name: 'action', orderable: false, searchable: false }
             ],
-            pageLength: 50,
+            pageLength: 10,
             order: [[0, "asc"]],
             responsive: true,
-            autoWidth: false,
-            searching: true,
-            lengthChange: false,
-
+            autoWidth: false
         });
 
-        // Add event listener to the search input field
-        // Add event listener to the search input field
-        $('#dt-search-0').on('input', function () {
-            var searchTerm = $(this).val();
-
-            // Clear any previous search
-            table.columns().search('');
-
-            // Search on column 1 (name) and column 2 (identity_card_number)
-            table
-                .column(1).search(searchTerm)  // Search in the "name" column
-                .column(2).search(searchTerm)  // Search in the "identity_card_number" column
-                .draw();                       // Redraw the DataTable
-        });
+        if ($('.dt-search').length) {
+            $('.dt-search').show()
+        }
 
         $(document).on('click', '#show_edit_modal', function(e) {
             e.preventDefault();
