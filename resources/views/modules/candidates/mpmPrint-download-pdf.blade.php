@@ -61,7 +61,7 @@
     }
 
     #signature {
-        padding-top: 90px;
+        padding-top: 40px;
         line-height: 0.8;
     }
 
