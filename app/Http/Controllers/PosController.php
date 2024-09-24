@@ -461,9 +461,16 @@ class PosController extends Controller
                 // }
 
                 $preAcceptance = self::sendPreAcceptanceSingle($order); // return output or error
-                dd($preAcceptance->toArray());
-                if (!$preAcceptance)
+                if (!$preAcceptance){
+
+                    // Decode the JSON string into an associative array
+                    $dataR = json_decode($preAcceptance->getContent(), true); // Pass true to get an associative array
+
+                    // Access the specific error message
+                    $data['error'] = $dataR['error'] ?? null;
+
                     return response()->json($data);
+                }
 
                 $order->consignment_note = $preAcceptance->pdf;
                 $order->current_status = "COMPLETED";
