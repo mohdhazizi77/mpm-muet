@@ -345,7 +345,7 @@ class PaymentController extends Controller
                 // $payment->payment_for = $order->payment_for;
                 // $payment->type = $order->type;
                 // $payment->save();
-                sleep(1);
+                sleep(3);
                 $payment = Payment::updateOrCreate(
                     ['ref_no' => $request->ref_no],
                     [
