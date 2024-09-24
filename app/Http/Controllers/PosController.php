@@ -649,8 +649,8 @@ class PosController extends Controller
 
         //pickup date tomorrow at 9; if friday or weekend set pickup on moday at 9 am
         $next9AM = Carbon::now()->isWeekend() || Carbon::now()->isFriday()
-                ? Carbon::now()->next(Carbon::MONDAY)
-                : Carbon::tomorrow();
+                ? Carbon::now()->next(Carbon::MONDAY)->format('Y-m-d')
+                : Carbon::tomorrow()->format('Y-m-d');
 
         $body = [
             // "subscriptionCode" => "qaily@mpm.edu.my",
@@ -680,8 +680,8 @@ class PosController extends Controller
             "ConsignmentNoteNumber" => $order->tracking_number,
             "CreatedDate" => Carbon::now()->format('Y-m-d H:i:s'),
             "PaymentType" => 2,
-            "readyToCollectAt" => $ConfigPoslaju->readyToCollectAt,
-            "closeAt" => $ConfigPoslaju->closeAt,
+            "readyToCollectAt" => self::convertTo12HourFormat($ConfigPoslaju->readyToCollectAt),
+            "closeAt" => self::convertTo12HourFormat($ConfigPoslaju->closeAt),
             "receiverName" => $order->name,
             "receiverID" => "",
             "receiverAddress" => $order->address1,
@@ -1057,6 +1057,19 @@ class PosController extends Controller
         }
 
         return $filePath;
+    }
+
+    function convertTo12HourFormat($time) {
+        // Create a DateTime object from the given time string
+        $dateTime = DateTime::createFromFormat('H:i', $time);
+
+        // Check if the dateTime object was created successfully
+        if ($dateTime) {
+            // Return the time in 12-hour format with AM/PM
+            return $dateTime->format('h:i A');
+        }
+
+        return false; // Return false if conversion fails
     }
 
 }
