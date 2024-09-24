@@ -64,7 +64,7 @@
                             </div>
                             <div class="float-end my-3">
                                 <button type="button" id="btnBulkApprove" class="btn btn-soft-success waves-effect float-end ">APPROVE</button>
-                                <button type="button" id="btnBulkCancel" class="btn btn-soft-warning waves-effect float-end mx-1 ">CANCEL</button>
+                                {{-- <button type="button" id="btnBulkCancel" class="btn btn-soft-warning waves-effect float-end mx-1 ">CANCEL</button> --}}
                             </div>
 
                         </div>
