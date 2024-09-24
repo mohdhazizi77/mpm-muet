@@ -419,7 +419,6 @@ class OrderController extends Controller
         }
         if (!empty($output->data)) {
             curl_close($curl);
-            // dd($output->data->txn_status);
             if (in_array($output->data->txn_status, ['FAILED'])) {
                 $order->update(
                     [
