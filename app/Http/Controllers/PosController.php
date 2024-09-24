@@ -41,6 +41,7 @@ use setasign\Fpdf\Fpdf;
 use DataTables;
 use stdClass;
 use TCPDF;
+use DateTime;
 
 class PosController extends Controller
 {
