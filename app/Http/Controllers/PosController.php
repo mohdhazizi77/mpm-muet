@@ -461,7 +461,7 @@ class PosController extends Controller
                 // }
 
                 $preAcceptance = self::sendPreAcceptanceSingle($order); // return output or error
-                dd($preAcceptance);
+                dd($preAcceptance->error);
                 if (!$preAcceptance)
                     return response()->json($data);
 
