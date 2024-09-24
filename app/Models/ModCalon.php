@@ -40,7 +40,7 @@ class ModCalon extends Model
                     ->where('tahun', $this->tahun)
                     ->where('sidang', $this->sidang)
                     ->where('kodpusat', $this->kodpusat)
-                    ->where('nocalon', $this->nocalon)
+                    // ->where('nocalon', $this->nocalon)
                     ->where('reg_id', $this->reg_id);
     }
 
@@ -67,7 +67,7 @@ class ModCalon extends Model
         $result['year'] = $candidate->getTarikh->tahun;
         $result['session'] = $candidate->getTarikh->sesi . " " . $candidate->getTarikh->tahun;
         $result['session'] = $candidate->getTarikh->sesi;
-        $result['index_number'] = $candidate->kodnegeri . $candidate->kodpusat ."/". $candidate->jcalon . $candidate->nocalon;
+        $result['index_number'] = $candidate->kodnegeri . $candidate->kodpusat ."/". $candidate->reg_id;
         foreach ($candidate->getSkor as $key => $value) {
             $result[$value->getKodKertasName($value->kodkts)] = self::checkingMarkah($value->skorbaru);
         }

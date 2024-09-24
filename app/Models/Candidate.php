@@ -54,7 +54,7 @@ class Candidate extends Authenticatable
         $mod_calon = ModCalon::where('kp', $candidate->identity_card_number)->get();
 
         foreach ($mod_calon as $key => $value) {
-            $arr_index_number [] = $value->kodnegeri.$value->kodpusat."/".$value->jcalon.$value->nocalon;
+            $arr_index_number [] = $value->kodnegeri.$value->kodpusat."/".$value->reg_id;
         }
 
         return $arr_index_number;
