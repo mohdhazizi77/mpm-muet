@@ -225,12 +225,12 @@
                 <div class="row mt-2">
                     <div class="form-group col-6">
                         <label for="readyToCollectAt">Ready To Collect At</label>
-                        <input type="text" class="form-control" id="readyToCollectAt" name="readyToCollectAt" value="{{ $configPoslaju->readyToCollectAt }}" required>
+                        <input type="time" class="form-control" id="readyToCollectAt" name="readyToCollectAt" value="{{ $configPoslaju->readyToCollectAt }}" required>
                     </div>
 
                     <div class="form-group col-6">
                         <label for="closeAt">Close At</label>
-                        <input type="text" class="form-control" id="closeAt" name="closeAt" value="{{ $configPoslaju->closeAt }}" required>
+                        <input type="time" class="form-control" id="closeAt" name="closeAt" value="{{ $configPoslaju->closeAt }}" required>
                     </div>
                 </div>
 

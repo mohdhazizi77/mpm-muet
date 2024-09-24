@@ -132,9 +132,9 @@
                                 <li class="nav-item">
                                     <a href="{{ route('general_setting.index') }}" class="nav-link {{ request()->is('admin/general-setting') ? 'active' : '' }}">General Settings</a>
                                 </li>
-                                {{-- <li class="nav-item">
+                                <li class="nav-item">
                                     <a href="{{ route('config_poslaju.index') }}" class="nav-link {{ request()->is('admin/config-poslaju') ? 'active' : '' }}">PosLaju Integration</a>
-                                </li> --}}
+                                </li>
                                 <li class="nav-item">
                                     <a href="{{ route('config.mpmbayar.index') }}" class="nav-link {{ request()->is('admin/config-mpmbayar') ? 'active' : '' }}">MPMBayar Integration</a>
                                 </li>
