@@ -19,7 +19,8 @@ class CandidateAuthController extends Controller
 
         $credentials = [
             'identity_card_number' => $request->username, // Assuming 'username' field contains identity card number
-            'password' => $request->username
+            // 'password' => $request->username
+            'password' => 12345678
         ];
 
         if (Auth::guard('candidate')->attempt($credentials)) {
