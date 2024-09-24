@@ -148,10 +148,6 @@ class CandidateController extends Controller
             ];
         }
 
-        foreach ($cert_datas as $key => $value) {
-            $value['no'] = $key+1;
-        }
-
         return datatables($cert_datas)->toJson();
     }
 
