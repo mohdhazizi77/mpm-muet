@@ -31,21 +31,23 @@ class MuetCalon extends Model
     ];
 
 
-    public function getSkor(){
+    public function getSkor()
+    {
 
         return $this->hasMany('App\Models\MuetSkor', 'kodnegeri', 'kodnegeri')
-                    ->where('tahun', $this->tahun)
-                    ->where('sidang', $this->sidang)
-                    ->where('kodpusat', $this->kodpusat)
-                    ->where('jcalon', $this->jcalon)
-                    ->where('nocalon', $this->nocalon);
+            ->where('tahun', $this->tahun)
+            ->where('sidang', $this->sidang)
+            ->where('kodpusat', $this->kodpusat)
+            ->where('jcalon', $this->jcalon)
+            ->where('nocalon', $this->nocalon);
     }
 
-    public function getPusat(){
-        return $this->hasMany('App\Models\MuetPusat','tahun', 'tahun')
-                    ->where('sidang', $this->sidang)
-                    ->where('kodnegeri', $this->kodnegeri)
-                    ->where('kodpusat', $this->kodpusat);
+    public function getPusat()
+    {
+        return $this->hasMany('App\Models\MuetPusat', 'tahun', 'tahun')
+            ->where('sidang', $this->sidang)
+            ->where('kodnegeri', $this->kodnegeri)
+            ->where('kodpusat', $this->kodpusat);
     }
 
     public function getTarikh()
@@ -58,13 +60,14 @@ class MuetCalon extends Model
         return $this->hasMany('App\Models\Order', 'muet_calon_id', 'id');
     }
 
-    public function getResult($candidate){
+    public function getResult($candidate)
+    {
 
         $result = [];
         $result['year'] = $candidate->getTarikh->tahun;
         $result['session'] = $candidate->getTarikh->sesi . " " . $candidate->getTarikh->tahun;
         $result['session'] = $candidate->getTarikh->sesi;
-        $result['index_number'] = $candidate->kodnegeri . $candidate->kodpusat ."/". $candidate->jcalon . $candidate->nocalon;
+        $result['index_number'] = $candidate->kodnegeri . $candidate->kodpusat . "/" . $candidate->jcalon . $candidate->nocalon;
         foreach ($candidate->getSkor as $key => $value) {
             $result[$value->getKodKertasName($value->kodkts)] = self::checkingMarkah($value->mkhbaru);
         }
@@ -76,13 +79,15 @@ class MuetCalon extends Model
         return $result;
     }
 
-    public function index_number($candidate){
+    public function index_number($candidate)
+    {
 
-        $value = $candidate->kodnegeri.$candidate->kodpusat."/".$candidate->jcalon.$candidate->nocalon;
+        $value = $candidate->kodnegeri . $candidate->kodpusat . "/" . $candidate->jcalon . $candidate->nocalon;
         return $value;
     }
 
-    static function checkingMarkah($id){
+    static function checkingMarkah($id)
+    {
 
         $checkingArr = [
             '-1' => 'ABSENT',
@@ -92,10 +97,11 @@ class MuetCalon extends Model
             '-5' => 'NULLIFIED',
         ];
 
-        return array_key_exists($id, $checkingArr) ? $checkingArr[ $id ] : $id;
+        return array_key_exists($id, $checkingArr) ? $checkingArr[$id] : $id;
     }
 
-    static function checkingAggSkor($id){
+    static function checkingAggSkor($id)
+    {
 
         $checkingArr = [
             '-1' => 'NIL',
@@ -105,10 +111,11 @@ class MuetCalon extends Model
             '-5' => 'NULLIFIED',
         ];
 
-        return array_key_exists($id, $checkingArr) ? $checkingArr[ $id ] : $id;
+        return array_key_exists($id, $checkingArr) ? $checkingArr[$id] : $id;
     }
 
-    static function checkingBand($id){
+    static function checkingBand($id)
+    {
 
         $checkingArr = [
             '-1' => '',
@@ -131,15 +138,12 @@ class MuetCalon extends Model
         else if (strpos($id, '+') !== false) {
             // return $number;
             $id = $id;
-        }
-
-        else {
+        } else {
             // Convert to float and format to one decimal place
             $id = number_format((float)$id, 1);
-
         }
 
 
-        return array_key_exists($id, $checkingArr) ? $checkingArr[ $id ] : $id;
+        return array_key_exists($id, $checkingArr) ? $checkingArr[$id] : $id;
     }
 }
