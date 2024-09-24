@@ -3,12 +3,8 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
-use Maatwebsite\Excel\Facades\Excel;
-use App\Imports\ImportMuetCandidate;
-use App\Imports\ImportModCandidate;
-
+use App\Jobs\ProcessImport;
 use Storage;
-
 
 class ImportCandidateExcelCommand extends Command
 {

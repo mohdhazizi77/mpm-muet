@@ -237,3 +237,228 @@ $(document).ready(function() {
     })
 
 });
+
+$(document).ready(function() {
+    if ($('#dt-candidate').length) {
+
+        // var table = $('#dt-candidate').DataTable({
+        //     processing: true,
+        //     serverSide: true,
+        //     ajax: {
+        //         "url": "./manage-candidate/ajax",
+        //         "type": "POST",
+        //         "data": function (d) {
+        //             d._token = $('meta[name="csrf-token"]').attr('content');
+        //         }
+        //     },
+        //     columns: [
+        //         {
+        //             data: null,
+        //             orderable: false,
+        //             render: function(data, type, row, meta) {
+        //                 var pageInfo1 = table.page.info();
+        //                 var continuousRowNumber1 = pageInfo1.start + meta.row + 1;
+        //                 return continuousRowNumber1;
+        //             }
+        //         },
+        //         {
+        //             data: "name",
+        //             orderable: true,
+        //         },
+        //         {
+        //             data: "phoneNum",
+        //             orderable: false,
+        //         },
+        //         {
+        //             data: 'id',
+        //             class: 'text-center',
+        //             orderable: false,
+        //             searchable: false,
+        //             render(data, type, row) {
+        //                 let btn = '<button id="show_edit_modal" type="button" class="btn btn-sm btn-soft-info waves-effect text-black mx-2">' +
+        //                             ' <i class="ri-edit-line"></i>' +
+        //                             'EDIT' +
+        //                         '</button>';
+        //                 return btn;
+        //             }
+        //         }
+        //     ],
+        //     pageLength: 10,
+        //     order: [[0, "asc"]],
+        //     responsive: true, // Enable responsive mode
+        //     autoWidth: false,
+        //     buttons: {
+        //         dom: {
+        //             button: {
+        //                 tag: 'button',
+        //                 className: 'btn btn-sm'
+        //             }
+        //         },
+        //         buttons: [
+        //             {
+        //                 extend: "copyHtml5",
+        //                 text: "Salin",
+        //                 className: 'btn-secondary'
+        //             }
+        //         ],
+        //     },
+        //     // language: {
+        //     //     search: "Carian:",
+        //     //     zeroRecords: "Tiada rekod untuk dipaparkan.",
+        //     //     paginate: {
+        //     //         info: "Paparan _START_ / _END_ dari _TOTAL_ rekod",
+        //     //         infoEmpty: "Paparan 0 / 0 dari 0 rekod",
+        //     //         infoFiltered: "(tapisan dari _MAX_ rekod)",
+        //     //         processing: "Sila tunggu...",
+        //     //     }
+        //     // },
+        //     searching: true,
+        //     lengthChange: true,
+        // });
+
+        var table = $('#dt-candidate').DataTable({
+            processing: true,
+            serverSide: true,
+            ajax: {
+                url: "./manage-candidate/ajax", // Change the URL to the appropriate route
+                type: "POST",
+                data: function (d) {
+                    d._token = $('meta[name="csrf-token"]').attr('content');
+                }
+            },
+            columns: [
+                { data: 'id', name: 'id' },
+                { data: 'name', name: 'name' },
+                { data: 'identity_card_number', name: 'identity_card_number' },
+                { data: 'action', name: 'action', orderable: false, searchable: false }
+            ],
+            pageLength: 50,
+            order: [[0, "asc"]],
+            responsive: true,
+            autoWidth: false,
+            searching: true,
+            lengthChange: false,
+
+        });
+
+        // Add event listener to the search input field
+        // Add event listener to the search input field
+        $('#dt-search-0').on('input', function () {
+            var searchTerm = $(this).val();
+
+            // Clear any previous search
+            table.columns().search('');
+
+            // Search on column 1 (name) and column 2 (identity_card_number)
+            table
+                .column(1).search(searchTerm)  // Search in the "name" column
+                .column(2).search(searchTerm)  // Search in the "identity_card_number" column
+                .draw();                       // Redraw the DataTable
+        });
+
+        $(document).on('click', '#show_edit_modal', function(e) {
+            e.preventDefault();
+
+            $('#name_text_edit').text('');
+            $('#nric_text_edit').text('');
+            $('#form_candidate_edit').removeClass('was-validated');
+
+            var rowData = table.row($(this).parents('tr')).data();
+            $('#form_candidate_edit [name="id"]').val(rowData.id);
+            $('#form_candidate_edit [name="name"]').val(decodeHTMLEntities(rowData.name));
+            $('#form_candidate_edit [name="nric"]').val(rowData.nric);
+
+            $('#modal_edit').modal('show');
+        })
+
+        function decodeHTMLEntities(text) {
+            var textarea = document.createElement('textarea');
+            textarea.innerHTML = text;
+            return textarea.value;
+        }
+
+        $(document).on('click', '#submit', function(e) {
+            var csrfToken = $('meta[name="csrf-token"]').attr('content');
+            var formData = new FormData($('#form_candidate_edit')[0]);
+
+            const id = $('#id').val();
+
+            Swal.fire({
+                icon: 'warning',
+                title: 'Are you sure?',
+                text: 'Candidates will be updated!',
+                customClass: {
+                    popup: 'my-swal-popup',
+                    confirmButton: 'my-swal-confirm',
+                    cancelButton: 'my-swal-cancel',
+                },
+                showCancelButton: true, // Show the cancel button
+                confirmButtonText: 'Ya',
+                cancelButtonText: 'Tidak'
+            }).then((result) => {
+                if (result.value) {
+                    $.ajax({
+                        url: './manage-candidate/update/' + id,
+                        method: 'POST',
+                        data: formData,
+                        processData: false,
+                        contentType: false,
+                        headers: {
+                            'X-CSRF-TOKEN': csrfToken
+                        },
+                        beforeSend: function() {
+                            Swal.fire({
+                                title: 'Loading...', // Optional title for the alert
+                                allowEscapeKey: false, // Disables escape key closing the alert
+                                allowOutsideClick: false, // Disables outside click closing the alert
+                                showConfirmButton: false, // Hides the "Confirm" button
+                                didOpen: () => {
+                                    Swal.showLoading(Swal
+                                    .getDenyButton()); // Show loading indicator on the Deny button
+                                }
+                            });
+                        },
+                        success: function(response) {
+                            Swal.close()
+                            $('#form_candidate_edit').removeClass('was-validated');
+                            Swal.fire({
+                                type: 'success',
+                                title: 'Berjaya',
+                                text: 'Candidate successfully updated!',
+                                customClass: {
+                                    popup: 'my-swal-popup',
+                                    confirmButton: 'my-swal-confirm',
+                                    cancelButton: 'my-swal-cancel',
+                                }
+                            }).then((result) => {
+                                if (result.value) {
+                                    $('#modal_edit').modal('hide');
+                                    $('#dt-candidate').DataTable().ajax.reload();
+                                }
+                            });
+                        },
+                        error: function(xhr, status, errors) {
+                            $('#form_candidate_edit').addClass('was-validated');
+                            if (xhr.responseJSON && xhr.responseJSON.errors) {
+                                $('#name_text_edit').text(xhr.responseJSON.errors && xhr.responseJSON.errors.name ? xhr.responseJSON.errors.name[0] : '');
+                                $('#nric_text_edit').text(xhr.responseJSON.errors && xhr.responseJSON.errors.nric ? xhr.responseJSON.errors.nric[0] : '');
+
+                                Swal.fire({
+                                    icon: "error",
+                                    title: 'Gagal',
+                                    text: xhr.responseJSON.message,
+                                    customClass: {
+                                        popup: 'my-swal-popup',
+                                        confirmButton: 'my-swal-confirm',
+                                        cancelButton: 'my-swal-cancel',
+                                    }
+                                });
+                            }
+                        }
+                    });
+                }
+            });
+        });
+
+    }
+})

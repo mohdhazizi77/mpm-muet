@@ -31,7 +31,7 @@
                                             <tr>
                                                 {{-- <td class="fw-bold"> TRANSACTION REFERENCE ID : {{ empty($payment->txn_id) ? '' : $payment->txn_id }} </td> --}}
                                                 <td class="fw-bold"> TRANSACTION REFERENCE ID : {{ empty($order->unique_order_id) ? '' : $order->unique_order_id }} </td>
-                                                <td class="fw-bold" style="text-align: end"> PAYMENT REFERENCE ID  : {{ empty($payment->ref_no) ? $order->payment_ref_no : $payment->ref_no }}</td>
+                                                <td class="fw-bold" style="text-align: end"> PAYMENT REFERENCE ID  : {{ empty($payment->ref_no) ? $order->payment_ref_no : $payment->txn_id }}</td>
                                             </tr>
                                            {{-- <tr>
                                                 <td></td>
@@ -146,7 +146,7 @@
         @endif
 
         <div>
-            <a href="javascript:history.go(-1)" class="btn btn-soft-dark btn-label btn-border btn-outline-dark waves-effect waves-light w-lg float-start">
+            <a href="{{ url()->previous() }}" class="btn btn-soft-dark btn-label btn-border btn-outline-dark waves-effect waves-light w-lg float-start">
                 <i class="ri-reply-fill label-icon align-middle fs-16 me-2"></i>BACK TO ORDER HISTORY
             </a>
         </div>

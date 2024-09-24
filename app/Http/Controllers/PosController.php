@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Notifications\OrderCompletedNotification;
+
 use Illuminate\Support\Facades\Notification;
 
 use App\Exports\OrdersPosExport;
@@ -16,7 +17,7 @@ use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
 use Maatwebsite\Excel\Facades\Excel;
-
+use Illuminate\Support\Facades\Http;
 // use Yajra\DataTables\DataTables;
 
 use App\Models\Order;
@@ -29,6 +30,10 @@ use App\Models\ModCalon;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
 
+use iio\libmergepdf\Merger;
+use iio\libmergepdf\Pages;
+use iio\libmergepdf\Exception;
+
 use App\Exports\OrdersExport;
 use Carbon\Carbon;
 use setasign\Fpdi\Fpdi;
@@ -36,7 +41,6 @@ use setasign\Fpdf\Fpdf;
 use DataTables;
 use stdClass;
 use TCPDF;
-
 
 class PosController extends Controller
 {
@@ -66,35 +70,35 @@ class PosController extends Controller
             // Convert startDate and endDate to Carbon instances
             $startDate = Carbon::parse($request->startDate)->startOfDay()->format('Y-m-d H:i:s');
             $endDate = $request->has('endDate') && !empty($request->endDate)
-                        ? Carbon::parse($request->endDate)->endOfDay()->format('Y-m-d H:i:s')
-                        : $currentDate;
+                ? Carbon::parse($request->endDate)->endOfDay()->format('Y-m-d H:i:s')
+                : $currentDate;
 
             // Filter based on the date range
-            $pos->whereBetween('created_at', [$startDate, $endDate]);
+            $pos->whereBetween('updated_at', [$startDate, $endDate]);
         }
 
         // Apply filtering based on name search if provided
-        if ($request->has('textSearch') && !empty($request->textSearch)) {
-            $textSearch = $request->textSearch;
-            $pos->where(function ($query) use ($textSearch) {
-                $query->where('name', 'LIKE', '%' . $textSearch . '%')
-                    // Add more columns to search in if necessary
-                    ->orWhere('unique_order_id', 'LIKE', '%' . $textSearch . '%')
-                    ->orWhere('type', 'LIKE', '%' . $textSearch . '%');
-            });
-        }
+        // if ($request->has('textSearch') && !empty($request->textSearch)) {
+        //     $textSearch = $request->textSearch;
+        //     $pos->where(function ($query) use ($textSearch) {
+        //         $query->where('name', 'LIKE', '%' . $textSearch . '%')
+        //             // Add more columns to search in if necessary
+        //             ->orWhere('unique_order_id', 'LIKE', '%' . $textSearch . '%')
+        //             ->orWhere('type', 'LIKE', '%' . $textSearch . '%');
+        //     });
+        // }
 
         // Apply filtering based on muet type
         if ($request->has('examType') && !empty($request->examType)) {
             $examType = $request->examType;
             $pos->where(function ($query) use ($examType) {
-                $query->where('type', $examType );
+                $query->where('type', $examType);
             });
         }
 
         // Apply filtering for no tracking number
         if ($request->has('noTracking') && !empty($request->noTracking)) {
-            if($request->noTracking){//true
+            if ($request->noTracking) { //true
                 $pos->where('tracking_number', "");
             }
         }
@@ -110,35 +114,100 @@ class PosController extends Controller
         }
 
         // Fetch the data
-        $posData = $pos->get();
+        $posData = $pos->orderBy('updated_at', 'desc')->get();
 
         // Prepare the data array
         $data = [];
         foreach ($posData as $key => $order) {
             $calon = $order->muet_calon_id != null ? $order->muetCalon : $order->modCalon;
+
             $arr = [
                 'id'         => Crypt::encrypt($order->id),
                 'order_id'   => $order->unique_order_id,
-                'order_date' => $order->created_at->format('d/m/Y'),
-                'order_time' => $order->created_at->format('H:i:s'),
+                'order_date' => $order->updated_at->format('d/m/Y H:i:s'),
+                'order_time' => $order->updated_at->format('H:i:s'),
                 'consignment_note' => $order->consignment_note,
-                // 'details'    => $order->type . " | " . $calon->getTarikh->sesi . " | Angka Giliran : " . $calon->index_number($calon)
-                // 'details'    => $calon->getTarikh->sesi . " | Angka Giliran : " . $calon->index_number($calon)
-                'details'    => $order->type . " | Session " . $calon->sidang . " Year " . $calon->tahun . " | Angka Giliran : " . $calon->index_number($calon)
+                'details'    => $order->type . " | Session " . $calon->sidang . " Year " . $calon->tahun . " | Angka Giliran : " . $calon->index_number($calon),
+                'index_number'    => $calon->index_number($calon),
+                'candidate_name' => $calon->nama,
+                'tracking_number' => (!empty($order->tracking_number) ? $order->tracking_number : ""),
             ];
 
-            if ($request->type == "PROCESSING") {
-                $arr['tracking_number'] = (!empty($order->tracking_number) ? $order->tracking_number : "") ;
-            };
+            // if ($request->type == "PROCESSING") {
+            // };
+
+            // if ($request->type == "COMPLETED") {
+            //     $arr['tracking_number'] = (!empty($order->tracking_number) ? $order->tracking_number : "");
+            // };
+
 
             $data[] = $arr;
+        }
+
+        // Apply text search after building the array
+        if ($request->has('textSearch') && !empty($request->textSearch)) {
+            $textSearch = $request->textSearch;
+            $data = array_filter($data, function ($item) use ($textSearch) {
+                return stripos($item['tracking_number'], $textSearch) !== false ||
+                    stripos($item['index_number'], $textSearch) !== false ||
+                    stripos($item['candidate_name'], $textSearch) !== false ||
+                    stripos($item['order_id'], $textSearch) !== false;
+            });
         }
 
         // Return the data in JSON format for DataTables
         return datatables()->of($data)->toJson();
     }
 
-    public function getPosDetail(Request $request, $type){
+    public function trackShipping()
+    {
+        return view('modules.admin.pos.tracking');
+    }
+
+    public function getAjaxTrackShipping(Request $request)
+    {
+
+        $track_no = $request->trackNo;
+        if (empty($track_no)) {
+            return datatables([])->toJson();
+        }
+
+        // Replace these with actual values or retrieve from config/environment
+        $culture = 'EN';
+        $bearerToken = Session::get('bearer_token');;
+
+        try {
+            $response = Http::withToken($bearerToken)
+                            ->get('https://gateway-usc.pos.com.my/staging/as2corporate/v2trackntracewebapijson/v1/api/Details', [
+                                'id' => $track_no,
+                                'Culture' => $culture,
+                            ]);
+            if ($response->successful()) {
+                $data = [];
+                $response = json_decode($response->getBody()->getContents());
+                foreach ($response as $key => $value) {
+
+                    if ($value->type == "Invalid Request/Empty Connote") {
+                        continue;
+                    }
+                    $data[] = [
+                        'no' => $key+1,
+                        'date' => $value->date,
+                        'detail' => $value->process
+                    ];
+                }
+                return datatables($data)->toJson();
+
+            } else {
+                return response()->json(['error' => 'Failed to fetch data'], $response->status());
+            }
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+    }
+
+    public function getPosDetail(Request $request, $type)
+    {
 
         $user = Auth::User() ? Auth::User() : abort(403);
 
@@ -160,7 +229,7 @@ class PosController extends Controller
         $order->order_id = Crypt::encrypt($order->id);
         $order->state_name = User::getStates($order->state);
 
-        if(!empty($order->muetCalon)){
+        if (!empty($order->muetCalon)) {
             $candidate = $order->muetCalon;
             $candidate->candidate_cryptId = Crypt::encrypt($candidate->id . "-MUET");
         } else {
@@ -178,7 +247,8 @@ class PosController extends Controller
         return response()->json($data);
     }
 
-    public function update(Request $request, $type){
+    public function update(Request $request, $type)
+    {
         // If validation fails, return error response
         if (empty($request->ship_trackNum) === "processing") {
             $data = [
@@ -211,7 +281,7 @@ class PosController extends Controller
 
             $connote = self::getConNote([$stringOrderID]); // return output or error
 
-            if($connote['success']){ //true
+            if ($connote['success']) { //true
 
                 $order->tracking_number = $connote['con_note'];
                 // $order->tracking_number = "ER".$order->unique_order_id."MY";
@@ -222,7 +292,6 @@ class PosController extends Controller
                 $tracking->detail = "MPM currently processing the certificate for shipping";
                 $tracking->status = "PROCESSING";
                 $tracking->save();
-
             } else { // if api pos down
                 $data = [
                     'success' => false,
@@ -232,8 +301,6 @@ class PosController extends Controller
 
                 return response()->json($data);
             }
-
-
         } elseif ($type == 'processing') {
 
             if ($order->tracking_number !== $request->ship_trackNum) {
@@ -244,7 +311,6 @@ class PosController extends Controller
             if (!$preAcceptance)
                 return response()->json($data);
 
-            // dd($preAcceptance);
             $order->current_status = "COMPLETED";
             $order->consignment_note = $preAcceptance->pdf;
 
@@ -254,12 +320,12 @@ class PosController extends Controller
             $tracking->status = "COMPLETED";
             $tracking->save();
 
-            // try {
-            //     Notification::route('mail', $order->email)
-            //         ->notify(new OrderCompletedNotification($order));
-            // } catch (\Exception $e) {
-            //     \Log::error('Error sending email notification: ' . $e->getMessage());
-            // }
+            try {
+                Notification::route('mail', $order->email)
+                    ->notify(new OrderCompletedNotification($order));
+            } catch (\Exception $e) {
+                \Log::error('Error sending email notification: ' . $e->getMessage());
+            }
 
         } else {
             $order->name = $request->ship_name;
@@ -279,7 +345,8 @@ class PosController extends Controller
         return response()->json($data);
     }
 
-    public function cancel(Request $request, $type){
+    public function cancel(Request $request, $type)
+    {
 
         try {
             $id = Crypt::decrypt($request->order_id);
@@ -318,7 +385,8 @@ class PosController extends Controller
         return response()->json($data);
     }
 
-    public function updateBulk(Request $request, $type){
+    public function updateBulk(Request $request, $type)
+    {
         // dd($request->toArray());
 
         foreach ($request->orderID as $key => $value) {
@@ -355,9 +423,9 @@ class PosController extends Controller
             $data['success'] = false;
 
             if ($type == 'new') {
-                 $connote = self::getConNote([$stringOrderID]); // return output or error
+                $connote = self::getConNote([$stringOrderID]); // return output or error
 
-                if($connote['success']){ //true
+                if ($connote['success']) { //true
 
                     $order->tracking_number = $connote['con_note'];
                     // $order->tracking_number = "ER".$order->unique_order_id."MY";
@@ -378,11 +446,10 @@ class PosController extends Controller
                     // return response()->json($data);
                     continue;
                 }
-
             } elseif ($type == 'processing') {
 
                 //bulk update checking no tracking number not process
-                if(empty($order->tracking_number))
+                if (empty($order->tracking_number))
                     continue;
 
                 // if ($order->tracking_number !== $request->ship_trackNum) {
@@ -401,6 +468,14 @@ class PosController extends Controller
                 $tracking->detail = "Transaction completed and Certificate out for shipment";
                 $tracking->status = "COMPLETED";
                 $tracking->save();
+
+                try {
+                    Notification::route('mail', $order->email)
+                        ->notify(new OrderCompletedNotification($order));
+                } catch (\Exception $e) {
+                    \Log::error('Error sending email notification: ' . $e->getMessage());
+                }
+
             } else {
                 // Default case
                 // You can add code here if needed
@@ -415,7 +490,8 @@ class PosController extends Controller
         return response()->json($data);
     }
 
-    public function cancelBulk(Request $request, $type){
+    public function cancelBulk(Request $request, $type)
+    {
 
         foreach ($request->orderID as $key => $value) {
 
@@ -442,7 +518,7 @@ class PosController extends Controller
 
             if ($type == 'new') {
 
-                $order->tracking_number = "ER".$order->unique_order_id."MY";
+                $order->tracking_number = "ER" . $order->unique_order_id . "MY";
                 $order->current_status = "CANCEL";
             }
 
@@ -456,7 +532,8 @@ class PosController extends Controller
         return response()->json($data);
     }
 
-    function getConNote($orders){
+    function getConNote($orders)
+    {
 
         // Ensure you have a valid session token
         $bearerToken = Session::get('bearer_token');
@@ -469,7 +546,7 @@ class PosController extends Controller
         $ConfigPoslaju = ConfigPoslaju::first();
         try {
             // Send a GET request
-            $response = $client->request('GET', $ConfigPoslaju->url.'/as01/gen-connote/v1/api/GConnote', [
+            $response = $client->request('GET', $ConfigPoslaju->url . '/as01/gen-connote/v1/api/GConnote', [
                 'query' => [
                     'numberOfItem' => count($orders),
                     'Prefix' => $ConfigPoslaju->Prefix,
@@ -497,7 +574,6 @@ class PosController extends Controller
                     'message_detail' => '',
                 ];
             }
-
         } catch (ConnectException $e) {
             // Handle connection errors (e.g., DNS issues, server not reachable)
             return [
@@ -522,20 +598,20 @@ class PosController extends Controller
                 $statusCode = $e->getResponse()->getStatusCode();
                 if ($statusCode == 503) {
                     return [
-                            'success' => false,
-                            'error' => 'Service unavailable',
-                            'message' => 'API POS is temporarily down for maintenance. Please try again later.',
-                            'message_detail' => 'Please contact POS IT Team for more info.',
-                            'details' => $e->getResponse()->getBody()->getContents()
-                        ];
+                        'success' => false,
+                        'error' => 'Service unavailable',
+                        'message' => 'API POS is temporarily down for maintenance. Please try again later.',
+                        'message_detail' => 'Please contact POS IT Team for more info.',
+                        'details' => $e->getResponse()->getBody()->getContents()
+                    ];
                 } else {
                     return [
-                            'success' => false,
-                            'error' => 'Request error',
-                            'message' => 'An error occurred while processing your request.',
-                            'message_detail' => 'Please contact POS IT Team for more info.',
-                            'details' => $e->getResponse()->getBody()->getContents()
-                        ];
+                        'success' => false,
+                        'error' => 'Request error',
+                        'message' => 'An error occurred while processing your request.',
+                        'message_detail' => 'Please contact POS IT Team for more info.',
+                        'details' => $e->getResponse()->getBody()->getContents()
+                    ];
                 }
             } else {
                 return [
@@ -549,8 +625,8 @@ class PosController extends Controller
         }
     }
 
-    function sendPreAcceptanceSingle($order){
-
+    function sendPreAcceptanceSingle($order)
+    {
         // Ensure you have a valid session token
         $bearerToken = Session::get('bearer_token');
         if (!$bearerToken) {
@@ -568,13 +644,15 @@ class PosController extends Controller
         ];
 
         $body = [
-            "subscriptionCode" => "ECON001", //need to confirm back
+            // "subscriptionCode" => "ECON001",
+            "subscriptionCode" => "qaily@mpm.edu.my", //need to confirm back
             "requireToPickup" => false, //need to confirm back
             "requireWebHook" => false, //need to confirm back
-            "accountNo" => 9999999999, //need to confirm back
+            // "accountNo" => 9999999999, //need to confirm back
+            "accountNo" => 4681526086,
             "callerName" => "SUB(PSM)",
             "callerPhone" => "0361261600",
-            "pickupLocationID" => ".",//Merchants Unique Register ID
+            "pickupLocationID" => ".", //Merchants Unique Register ID
             "pickupLocationName" => ".",
             "contactPerson" => ".",
             "phoneNo" => "0361261600",
@@ -647,7 +725,8 @@ class PosController extends Controller
         return true;
     }
 
-    public function generateExcel(Request $request, $type){
+    public function generateExcel(Request $request, $type)
+    {
 
         $orderIDs = array_filter($request->orderID, function ($value) {
             return !is_null($value);
@@ -660,17 +739,17 @@ class PosController extends Controller
             $id = Crypt::decrypt($value);
 
             $order = Order::where([
-                    "current_status" => $type,
-                    'id' => $id
-                ])
-                ->with('muetCalon','modCalon')
+                "current_status" => $type,
+                'id' => $id
+            ])
+                ->with('muetCalon', 'modCalon')
                 ->when($request->filled('startDate') || $request->filled('endDate'), function ($query) use ($request) {
                     $currentDate = Carbon::now()->format('Y-m-d H:i:s');
 
                     $startDate = Carbon::parse($request->startDate)->startOfDay()->format('Y-m-d H:i:s');
                     $endDate = $request->has('endDate') && !empty($request->endDate)
-                                ? Carbon::parse($request->endDate)->endOfDay()->format('Y-m-d H:i:s')
-                                : $currentDate;
+                        ? Carbon::parse($request->endDate)->endOfDay()->format('Y-m-d H:i:s')
+                        : $currentDate;
 
                     // Filter based on the date range
                     $query->whereBetween('created_at', [$startDate, $endDate]);
@@ -679,12 +758,12 @@ class PosController extends Controller
                     $textSearch = $request->textSearch;
                     $request->where(function ($query) use ($textSearch) {
                         $query->where('name', 'LIKE', '%' . $textSearch . '%')
-                        ->orWhere('unique_order_id', 'LIKE', '%' . $textSearch . '%')
-                        ->orWhere('type', 'LIKE', '%' . $textSearch . '%');
+                            ->orWhere('unique_order_id', 'LIKE', '%' . $textSearch . '%')
+                            ->orWhere('type', 'LIKE', '%' . $textSearch . '%');
                     });
                 })
                 ->when($request->filled('noTracking'), function ($query) use ($request) {
-                    if($request->noTracking){//true
+                    if ($request->noTracking) { //true
                         $query->where('tracking_number', "");
                     }
                 })
@@ -693,6 +772,8 @@ class PosController extends Controller
             // Merge the collected orders
             $orders = $orders->merge($order);
         }
+
+        $type = strtolower($type);
 
         // Return the Excel download with all collected orders
         return Excel::download(new OrdersExport($orders, $type), 'list_pos_' . $type . '.xlsx');
@@ -707,7 +788,7 @@ class PosController extends Controller
 
         foreach ($orders as $key => $order) {
 
-            if($order->muet_calon_id != null){
+            if ($order->muet_calon_id != null) {
                 $calon = $order->muetCalon;
             } else {
                 $calon = $order->modCalon;
@@ -716,7 +797,7 @@ class PosController extends Controller
             $arr[] = [
                 $order->created_at->format('d/m/Y H:i:s'),
                 $order->unique_order_id,
-                $order->type . " | Sesi ".$calon->sidang." | " . "Angka Giliran : " . $calon->index_number($calon)
+                $order->type . " | Sesi " . $calon->sidang . " | " . "Angka Giliran : " . $calon->index_number($calon)
             ];
         }
 
@@ -741,7 +822,8 @@ class PosController extends Controller
         return Excel::download($export, 'orders.xlsx');
     }
 
-    public function generateExcelPos(Request $request, $type){
+    public function generateExcelPos(Request $request, $type)
+    {
 
         $orderIDs = array_filter($request->orderID, function ($value) {
             return !is_null($value);
@@ -754,17 +836,17 @@ class PosController extends Controller
             $id = Crypt::decrypt($value);
 
             $order = Order::where([
-                    "current_status" => $type,
-                    'id' => $id
-                ])
-                ->with('muetCalon','modCalon')
+                "current_status" => $type,
+                'id' => $id
+            ])
+                ->with('muetCalon', 'modCalon')
                 ->when($request->filled('startDate') || $request->filled('endDate'), function ($query) use ($request) {
                     $currentDate = Carbon::now()->format('Y-m-d H:i:s');
 
                     $startDate = Carbon::parse($request->startDate)->startOfDay()->format('Y-m-d H:i:s');
                     $endDate = $request->has('endDate') && !empty($request->endDate)
-                                ? Carbon::parse($request->endDate)->endOfDay()->format('Y-m-d H:i:s')
-                                : $currentDate;
+                        ? Carbon::parse($request->endDate)->endOfDay()->format('Y-m-d H:i:s')
+                        : $currentDate;
 
                     // Filter based on the date range
                     $query->whereBetween('created_at', [$startDate, $endDate]);
@@ -773,12 +855,12 @@ class PosController extends Controller
                     $textSearch = $request->textSearch;
                     $request->where(function ($query) use ($textSearch) {
                         $query->where('name', 'LIKE', '%' . $textSearch . '%')
-                        ->orWhere('unique_order_id', 'LIKE', '%' . $textSearch . '%')
-                        ->orWhere('type', 'LIKE', '%' . $textSearch . '%');
+                            ->orWhere('unique_order_id', 'LIKE', '%' . $textSearch . '%')
+                            ->orWhere('type', 'LIKE', '%' . $textSearch . '%');
                     });
                 })
                 ->when($request->filled('noTracking'), function ($query) use ($request) {
-                    if($request->noTracking){//true
+                    if ($request->noTracking) { //true
                         $query->where('tracking_number', "");
                     }
                 })
@@ -792,7 +874,8 @@ class PosController extends Controller
         return Excel::download(new OrdersPosExport($orders, $type), 'list_pos_' . $type . '.xlsx');
     }
 
-    public function generateImportExcelPos(Request $request,$type){
+    public function generateImportExcelPos(Request $request, $type)
+    {
         $this->validate($request, [
             'file' => 'nullable|mimes:xls,xlsx'
         ]);
@@ -859,10 +942,9 @@ class PosController extends Controller
         return response()->json(['error' => 'Tiada fail yang disediakan.']);
     }
 
-    public function bulkDownloadConnote(Request $request){
-
-        // dd($request->toArray() ,$request->orderIds);
-        $connote_arr= [];
+    public function bulkDownloadConnote(Request $request)
+    {
+        $connote_arr = [];
         foreach ($request->orderIds as $key => $value) {
             if (empty($value))
                 continue;
@@ -884,58 +966,14 @@ class PosController extends Controller
             $order = Order::find($id);
             $connote_arr[] =  $order->consignment_note;
         }
-
-        self::processBulkPDFs($connote_arr);
-
-        return true;
-    }
-
-    function downloadPDFFromURL($pdfUrl, $tempDir)
-    {
-        $client = new Client();
-        $response = $client->request('GET', $pdfUrl);
-        $fileName = uniqid() . '.pdf'; // Generate unique filename
-        $filePath = $tempDir . '/' . $fileName;
-        file_put_contents($filePath, $response->getBody());
+        $filePath = self::processBulkPDFs($connote_arr);
         return $filePath;
-    }
-
-    function mergePDFs($pdfPaths, $outputFileName)
-    {
-        // $pdfMerger = new PdfMerger();
-
-        // foreach ($pdfPaths as $pdfPath) {
-        //     $pdfMerger->addPDF($pdfPath);
-        // }
-
-        // $outputFilePath = storage_path('app/public/') . $outputFileName . '.pdf';
-        // $pdfMerger->merge($outputFilePath);
-
-        // return $outputFilePath;
-
-        $pdf = new Fpdi();
-
-        foreach ($pdfPaths as $pdfPath) {
-            $pageCount = $pdf->setSourceFile($pdfPath);
-            for ($i = 1; $i <= $pageCount; $i++) {
-                $templateId = $pdf->importPage($i);
-                $size = $pdf->getTemplateSize($templateId);
-
-                $pdf->AddPage($size['orientation'], [$size['width'], $size['height']]);
-                $pdf->useTemplate($templateId);
-            }
-        }
-
-        $mergedPdfPath = storage_path('app/temp/merged_result.pdf');
-        $pdf->Output($mergedPdfPath, 'F');
-
-        return $mergedPdfPath;
     }
 
     function processBulkPDFs($pdfUrls)
     {
         // Temporary directory to store downloaded PDFs
-        $tempDir = storage_path('app/temp');
+        $tempDir = storage_path('app/public/temp');
         if (!file_exists($tempDir)) {
             mkdir($tempDir, 0777, true);
         }
@@ -944,20 +982,70 @@ class PosController extends Controller
         $pdfPaths = [];
         foreach ($pdfUrls as $pdfUrl) {
             $pdfPath = self::downloadPDFFromURL($pdfUrl, $tempDir);
-            $pdfPaths[] = $pdfPath;
+            if ($pdfPath) {
+                $pdfPaths[] = $pdfPath;
+            } else {
+                Log::error('Failed to download or validate PDF from: ' . $pdfUrl);
+            }
         }
 
+        if (empty($pdfPaths)) {
+            return response()->json(['error' => 'No valid PDFs to process.'], 400);
+        }
         // Merge downloaded PDFs
-        $outputFileName = 'merged_result_' . time();
-        $mergedPdfPath = self::mergePDFs($pdfPaths, $outputFileName);
+        $outputFileName = 'Bulk_Connote_' . date('d_m_Y_His');
+        self::mergePDFs($pdfPaths, $outputFileName);
 
-        // Clean up temporary files
-        foreach ($pdfPaths as $pdfPath) {
-            unlink($pdfPath);
-        }
-        rmdir($tempDir);
+        return asset('storage/temp/'.$outputFileName.'.pdf');
 
-        // Download the merged PDF
-        return response()->download($mergedPdfPath, 'Merged_Result.pdf')->deleteFileAfterSend(true);
     }
+
+    function mergePDFs($pdfPaths, $outputFileName)
+    {
+        $tempDir = storage_path('app/public//temp');
+        $mergedPdfPath = $tempDir . '/' . $outputFileName . '.pdf';
+
+        // command to run in local
+        // $pdftkPath = 'C:\\Program Files (x86)\\PDFtk\\bin\\pdftk.exe'; // Update this to your actual pdftk path
+        // $command = '"' . $pdftkPath . '" ' . implode(' ', array_map('escapeshellarg', $pdfPaths)) . ' cat output ' . escapeshellarg($mergedPdfPath);
+
+        // command to run in server
+        $pdftkPath = 'pdftk';
+        $command = $pdftkPath . ' ' . implode(' ', array_map('escapeshellarg', $pdfPaths)) . ' cat output ' . escapeshellarg($mergedPdfPath);
+
+        // Execute the command
+        exec($command, $output, $return_var);
+
+        // Log the output and return value
+        Log::info('Command output: ' . implode("\n", $output));
+        Log::info('Executing command: ' . $command);
+        Log::info('Return var: ' . $return_var);
+
+        // Check if PDFtk succeeded
+        if ($return_var !== 0) {
+            Log::error('PDFtk failed to merge PDFs: ' . implode("\n", $output));
+            return false;
+        }
+        return $outputFileName;
+    }
+
+    function downloadPDFFromURL($pdfUrl, $tempDir)
+    {
+        $client = new Client(['verify' => false]); // Disable SSL verification if necessary
+        $response = $client->request('GET', $pdfUrl);
+        $fileName = uniqid() . '.pdf';
+        $filePath = $tempDir . '/' . $fileName;
+
+        // Save the PDF content
+        file_put_contents($filePath, $response->getBody());
+
+        // Verify that the downloaded file is a valid PDF
+        if (!file_exists($filePath) || !mime_content_type($filePath) === 'application/pdf') {
+            Log::error('Invalid PDF file downloaded from: ' . $pdfUrl);
+            return null;
+        }
+
+        return $filePath;
+    }
+
 }

@@ -144,6 +144,7 @@
                                 <select name="status_mod" id="status_mod" class="form-control">
                                     <option value="">Please Select</option>
                                     <option value="SUCCESS">SUCCESS</option>
+                                    <option value="PENDING">PENDING</option>
                                     <option value="FAILED">FAILED</option>
                                 </select>
                             </div>
@@ -166,27 +167,32 @@
         <div class="col-lg-12">
             <div class="card rounded-0 bg-white mx-n4 mt-n4 border-top">
                 <div class="px-4">
+                    <div class="row p-0">
+                        <div class="col-xxl-12 align-self-center">
+                            <div class="float-start my-3">
+                                <button id="button-export-pdf-fin" target="_blank"  type="button" class="btn btn-soft-secondary waves-effect float-end mx-1">EXPORT PDF</button>
+                                <button id="button-export-xlsx-fin"  type="button" class="btn btn-soft-secondary waves-effect float-end mx-1">EXPORT XLSX</button>
+                            </div>
+                        </div>
+                    </div>
                     <div class="row">
                         <div class="col-xxl-12 align-self-center">
-                            <div class="py-4">
-                                <table id="financeModTable" class="table w-100 table-striped text-center dt-responsive nowrap dataTable"
+                            <table id="financeModTable" class="table w-100 table-striped text-center dt-responsive nowrap dataTable"
                                 style="border-collapse: collapse; border-spacing: 0; width: 100%;">
-                                    <thead>
-                                    <tr class="text-center bg-dark-subtle">
-                                        <th scope="col">TRANSACTION ID</th>
-                                        <th scope="col">RECEIPT NO.</th>
-                                        <th scope="col">DATE</th>
-                                        <th scope="col">CANDIDATE NAME</th>
-                                        <th scope="col">AMOUNT</th>
-                                        <th scope="col">STATUS</th>
-                                        <th scope="col">RECEIPT</th>
-                                        <th scope="col">ACTION</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                </table>
-
-                            </div>
+                                <thead>
+                                <tr class="text-center bg-dark-subtle">
+                                    <th scope="col">TRANSACTION ID</th>
+                                    <th scope="col">RECEIPT NO.</th>
+                                    <th scope="col">DATE</th>
+                                    <th scope="col">CANDIDATE NAME</th>
+                                    <th scope="col">AMOUNT</th>
+                                    <th scope="col">STATUS</th>
+                                    <th scope="col">RECEIPT</th>
+                                    <th scope="col">ACTION</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                            </table>
                         </div>
                     </div>
                 </div>

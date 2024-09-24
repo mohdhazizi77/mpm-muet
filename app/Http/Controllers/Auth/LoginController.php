@@ -23,7 +23,7 @@ class LoginController extends Controller
     |
     */
 
-//    use AuthenticatesUsers;
+    //    use AuthenticatesUsers;
 
     public function showLoginForm()
     {
@@ -39,7 +39,8 @@ class LoginController extends Controller
     {
         $user = Auth::user();
         // $user->hasRole('PENTADBIR')
-        if (in_array($user->getRolesNames()[0], array('PENTADBIR','BPCOM','PSM','FINANCE')) ) {
+
+        if (in_array($user->roles->pluck('name')->toArray()[0], array('PENTADBIR','BPCOM','PSM','FINANCE')) ) {
             return redirect()->route('admin.index');
         } elseif ($user->hasRole('CALON')) {
             return redirect()->route('candidate.index');

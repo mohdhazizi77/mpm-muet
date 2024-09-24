@@ -142,7 +142,8 @@ class AdminController extends Controller
         ];
     }
 
-    public function muetPieChart(){
+    public function muetPieChart()
+    {
         $courier = Courier::first();
         $rateCourier = $courier->rate;
 
@@ -175,7 +176,8 @@ class AdminController extends Controller
         return Payment::where('status','SUCCESS')->where('type', $type)->where('amount', $value)->count();
     }
 
-    public function modPieChart(){
+    public function modPieChart()
+    {
         $config = ConfigGeneral::first();
         $rateMpmPrint = $config->rate_mpmprint;
         $rateSelfPrint = $config->rate_selfprint;
@@ -198,7 +200,8 @@ class AdminController extends Controller
         return response()->json($data);
     }
 
-    public function lineChart(){
+    public function lineChart()
+    {
         $currentYear = now()->year;
 
         $muetData = Payment::selectRaw('MONTH(payment_date) as month, COUNT(*) as total')
@@ -233,7 +236,8 @@ class AdminController extends Controller
         ]);
     }
 
-    public function lineChartViewMuetMod(){
+    public function lineChartViewMuetMod()
+    {
         $currentYear = now()->year;
 
         $muetData = CandidateActivityLog::selectRaw('MONTH(created_at) as month, COUNT(*) as total')
@@ -268,7 +272,8 @@ class AdminController extends Controller
         ]);
     }
 
-    public function lineChartDownloadMuetMod(){
+    public function lineChartDownloadMuetMod()
+    {
         $currentYear = now()->year;
 
         $muetData = CandidateActivityLog::selectRaw('MONTH(created_at) as month, COUNT(*) as total')
@@ -301,5 +306,21 @@ class AdminController extends Controller
             'muet' => array_values($muetCounts),
             'mod' => array_values($modCounts),
         ]);
+    }
+
+    public function viewPullDB()
+    {
+        return view('modules.admin.administration.pull-db.index');
+    }
+
+    public function pullDatabase(Request $request)
+    {
+        sleep(5);
+
+        $data = [
+            'success' => true,
+        ];
+
+        return response()->json($data);
     }
 }

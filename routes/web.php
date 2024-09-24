@@ -53,10 +53,14 @@ Route::get('/', function () {
     }
 })->name('root');
 
+Route::get('/payment/getdata', [PaymentController::class, 'getpayment'])->name('candidate.getpayment');
+Route::post('/payment/getdata', [PaymentController::class, 'getpayment'])->name('candidate.callback');
+
+
 Auth::routes();
 
-Route::get('paymentstatus', [CandidateController::class, 'paymentstatus']);
-Route::post('paymentstatus', [CandidateController::class, 'paymentstatus']);
+// Route::get('paymentstatus', [CandidateController::class, 'paymentstatus']);
+// Route::post('paymentstatus', [CandidateController::class, 'paymentstatus']);
 
 Route::get('qrscan', [CandidateController::class, 'qrscan']);
 
@@ -77,7 +81,7 @@ Route::post('/candidate/logout', [CandidateAuthController::class, 'logout'])->na
 Route::get('/template', [HomeController::class, 'template']);
 
 //CALON
-Route::group(['middleware' => ['auth:candidate','role:CALON']], function () {
+Route::group(['middleware' => ['auth:candidate', 'role:CALON']], function () {
 
     Route::prefix('candidate')->group(function () {
         Route::get('/', [CandidateController::class, 'index'])->name('candidate.index');
@@ -95,10 +99,7 @@ Route::group(['middleware' => ['auth:candidate','role:CALON']], function () {
         Route::post('/track-shipping/ajax', [OrderController::class, 'getAjaxTrackShipping'])->name('order.getAjaxTrackShipping')->middleware('poslaju.token');
         Route::get('/muet-status/{id}', [CandidateController::class, 'muetstatus'])->name('candidate.muet-status');
         Route::post('/log-download', [CandidateController::class, 'logDownload'])->name('log.download');
-
     });
-    Route::get('/payment/getdata', [PaymentController::class, 'getpayment'])->name('candidate.getpayment');
-    Route::post('/payment/getdata', [PaymentController::class, 'callbackpayment'])->name('candidate.callback');
 });
 
 Route::group(['middleware' => ['role:PENTADBIR|BPKOM|PSM|FINANCE']], function () {
@@ -111,6 +112,11 @@ Route::group(['middleware' => ['role:PENTADBIR|BPKOM|PSM|FINANCE']], function ()
         Route::get('/dashboard-line-chart-view-muet-mod', [AdminController::class, 'lineChartViewMuetMod'])->name('admin.line_chart_view_muet_mod');
         Route::get('/dashboard-line-chart-download-muet-mod', [AdminController::class, 'lineChartDownloadMuetMod'])->name('admin.line_chart_download_muet_mod');
 
+        Route::get('/pull-db', [AdminController::class, 'viewPullDB'])->name('admin.pullDB');
+        Route::post('/pull-db/ajax', [AdminController::class, 'pullDatabase'])->name('admin.pullDB.ajax');
+
+        Route::get('/pos-management/tracking', [PosController::class, 'trackShipping'])->name('pos.tracking')->middleware('poslaju.token');
+        Route::post('/pos-management/tracking/ajax', [PosController::class, 'getAjaxTrackShipping'])->middleware('poslaju.token');
         Route::get('/pos-management/{type}', [PosController::class, 'index'])->middleware('poslaju.token');
         Route::get('/pos-management/{type}/getPosDetail', [PosController::class, 'getPosDetail']);
         Route::post('/pos-management/{type}/generateExcel', [PosController::class, 'generateExcel']);
@@ -133,6 +139,7 @@ Route::group(['middleware' => ['role:PENTADBIR|BPKOM|PSM|FINANCE']], function ()
         Route::post('/finance/{exam_type}/ajax', [FinanceController::class, 'getAjax'])->name('finance.ajax');
         Route::post('/finance/{exam_type}/data', [FinanceController::class, 'getData'])->name('finance.data');
         Route::get('/finance/{exam_type}/pdf', [FinanceController::class, 'generatePdf'])->name('finance.pdf');
+        Route::get('/finance/{exam_type}/excel', [FinanceController::class, 'generateExcel'])->name('finance.excel');
 
         Route::get('finance-statement', [FinanceStatementController::class, 'index'])->name('finance-statement.index');
         Route::get('finance-statement/download-pdf', [FinanceStatementController::class, 'downloadExcel'])->name('finance-statement.download_excel');
@@ -145,7 +152,6 @@ Route::group(['middleware' => ['role:PENTADBIR|BPKOM|PSM|FINANCE']], function ()
 
         Route::get('/general-setting', [GeneralSettingController::class, 'index'])->name('general_setting.index');
         Route::post('/general-setting/store', [GeneralSettingController::class, 'store'])->name('general_setting.store');
-
 
         Route::post('/courier/ajax', [CourierController::class, 'getAjax'])->name('courier.ajax');
         Route::post('/courier/store', [CourierController::class, 'store'])->name('courier.store');
@@ -167,6 +173,10 @@ Route::group(['middleware' => ['role:PENTADBIR|BPKOM|PSM|FINANCE']], function ()
         Route::post('/users/actived/{user}', [UserController::class, 'activated'])->name('users.activated');
         Route::post('/users/deactived/{user}', [UserController::class, 'deactived'])->name('users.deactived');
 
+        Route::get('/manage-candidate', [CandidateController::class, 'indexCandidate'])->name('admin.candidate.index');
+        Route::post('/manage-candidate/ajax', [CandidateController::class, 'ajaxCandidate'])->name('admin.candidate.ajax');
+        Route::post('/manage-candidate/update/{candidate}', [CandidateController::class, 'updateCandidate'])->name('admin.candidate.update');
+
         Route::resource('/audit-logs', AuditLogsController::class);
         Route::post('/audit-logs/ajax', [AuditLogsController::class, 'getAjax'])->name('audit-logs.ajax');
     });
@@ -186,7 +196,7 @@ Route::group(['middleware' => ['role:PENTADBIR|BPKOM|PSM|FINANCE']], function ()
     Route::post('/pos/bulkdownloadconnote', [PosController::class, 'bulkDownloadConnote'])->name('mpm.bulkdownloadconnote');
 });
 
-Route::get('users/verify-password/{id}', [UserController::class, 'verifyIndex'])->name('users.verify_index');
+Route::get('users/verify-email/{token}', [UserController::class, 'verifyIndex'])->name('users.verify_index');
 Route::post('users/verify-password/{id}/update', [UserController::class, 'updatePassword'])->name('users.verify_index_update');
 Route::post('users/verify-email', [UserController::class, 'verifyEmail'])->name('users.verify_email');
 
@@ -197,4 +207,3 @@ Route::post('/update-password/{id}', [App\Http\Controllers\HomeController::class
 // Route::get('{any}', [App\Http\Controllers\HomeController::class, 'index'])->name('index');
 
 Route::get('/verify/result/{id}', [CandidateController::class, 'verifyResult'])->name('verify.result');
-

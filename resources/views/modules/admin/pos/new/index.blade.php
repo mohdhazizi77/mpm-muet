@@ -81,7 +81,7 @@
                                         {{-- <th scope="col">#</th> --}}
                                         <th scope="col">DATE</th>
                                         <th scope="col">REFERENCE ID</th>
-                                        <th scope="col">DETAILS</th>
+                                        <th scope="col" style="text-align:left;">DETAILS</th>
                                         <th scope="col">ACTION</th>
                                     </tr>
                                     </thead>
@@ -93,6 +93,9 @@
                                 <div id="modalUpdatePos" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
                                     <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
                                         <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" style="position: absolute; top: 10px; right: 10px;"></button>
+                                            </div>
                                                 <div class="row mx-3">
                                                     <div class="col-xl-12">
                                                         <div class="row pt-3">
@@ -216,7 +219,7 @@
                                                 </div>
 
                                                 <div class="modal-footer ">
-                                                    <a href="javascript:void(0);" class="btn btn-link link-success fw-medium float-start" data-bs-dismiss="modal"><i class="ri-close-line me-1 align-middle"></i>Close</a>
+                                                    <a href="javascript:void(0);" class="btn btn-outline-danger link-danger fw-medium float-start" data-bs-dismiss="modal"><i class="ri-close-line me-1 align-middle"></i>Close</a>
                                                     <button type="button" class="btn btn-outline-warning float-end btn-cancel-pos">Cancel</button>
                                                     <button type="button" class="btn btn-outline-success float-end btn-approve-new">Approve</button>
                                                 </div>

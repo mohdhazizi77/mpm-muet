@@ -71,11 +71,13 @@
                         <label for="start-date" class="form-label">Status</label>
                         <select name="status_trx" id="status_trx" class="form-control">
                             <option value="">Please Select</option>
-                            <option value="FAILED">FAILED</option>
                             <option value="PAID">PAID</option>
                             <option value="NEW">NEW</option>
+                            <option value="CANCEL">CANCEL</option>
+                            <option value="PENDING">PENDING</option>
                             <option value="PROCESSING">PROCESSING</option>
                             <option value="COMPLETED">COMPLETED</option>
+                            <option value="FAILED">FAILED</option>
                             {{-- <option value="SUCCESS">SUCCESS</option> --}}
                             {{-- <option value="FAIL">FAIL</option> --}}
                         </select>
@@ -95,6 +97,7 @@
                                 <button id="button-export-pdf-trans" target="_blank"  type="button" class="btn btn-soft-secondary waves-effect float-end mx-1">EXPORT PDF</button>
                                 <button id="button-export-xlsx-trans"  type="button" class="btn btn-soft-secondary waves-effect float-end mx-1">EXPORT XLSX</button>
                             </div>
+                        </div>
                     </div>
 
                     <div class="row">
@@ -106,7 +109,7 @@
                                     style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                                     <thead>
                                     <tr class="text-center bg-dark-subtle">
-                                        <th scope="col">DATE CREATED</th>
+                                        <th scope="col">DATE</th>
                                         <th scope="col">REFERENCE ID</th>
                                         <th scope="col">CERTIFICATE TYPE</th>
                                         <th scope="col">TRANSACTION TYPE</th>

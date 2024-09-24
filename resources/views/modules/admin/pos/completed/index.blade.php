@@ -72,8 +72,8 @@
                                 <button id="button-export-xlsx" data-type="PROCESSING" type="button" class="btn btn-soft-secondary waves-effect float-end mx-1">EXPORT XLSX</button> --}}
                             </div>
                             <div class="float-end my-3">
-                                {{-- <button type="button" id="btnBulkConsignment" class="btn btn-soft-success waves-effect float-end mx-1">CONSIGNMENT NOTES</button> --}}
-                                {{-- <button type="button" id="btnBulkPrintProcessing" class="btn btn-soft-success waves-effect float-end ">PRINT CERTIFICATE</button> --}}
+                                <button type="button" id="btnBulkConsignment" class="btn btn-soft-success waves-effect float-end mx-1">PRINT CONSIGNMENT NOTES</button>
+                                <button type="button" id="btnBulkPrintProcessing" class="btn btn-soft-success waves-effect float-end ">PRINT CERTIFICATE</button>
                             </div>
                     </div>
                     <div class="row">
@@ -92,7 +92,7 @@
                                         <th scope="col"><input type="checkbox" class="form-check-input row-checkbox check-all"></th>
                                         <th scope="col">DATE</th>
                                         <th scope="col">REFERENCE ID</th>
-                                        <th scope="col">DETAILS</th>
+                                        <th scope="col" style="text-align:left;">DETAILS</th>
                                         <th scope="col">ACTION</th>
                                     </tr>
                                     </thead>

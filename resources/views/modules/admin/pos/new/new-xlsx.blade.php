@@ -14,6 +14,7 @@
             <th>Date</th>
             <th>Reference ID</th>
             <th>Detail</th>
+            <th>Name</th>
         </tr>
     </thead>
     <tbody style="text-align: center">
@@ -26,6 +27,7 @@
                 <td>{{ date('d/m/Y' , strtotime($order->created_at))}}</td>
                 <td>{{ $order->unique_order_id }}</td>
                 <td>{{ $order->type . " | Sesi " . $calon->sidang . " | Angka Giliran : " . $calon->index_number($calon) }}</td>
+                <td>{{ $calon->nama }}</td>
             </tr>
         @endforeach
     </tbody>

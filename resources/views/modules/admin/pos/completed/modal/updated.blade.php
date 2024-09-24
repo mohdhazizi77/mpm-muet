@@ -2,6 +2,9 @@
 <div class="modal fade modalUpdatePos" id="modalUpdatePos" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-xl">
         <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" style="position: absolute; top: 10px; right: 10px;"></button>
+            </div>
             <div class="container">
                 <div class="row mx-3">
                     <div class="col-xl-12">
