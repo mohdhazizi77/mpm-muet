@@ -2,7 +2,7 @@
 
 Dear {{ $order->name }},
 
-We have received your order with reference ID {{ $order->unique_order_id }}.. Your certificate will be processed in 3 working days and you will receive your certificate within 7 working days.
+We have received your order with reference ID {{ $order->unique_order_id }}.. Your certificate will be processed in 2 working days and you will receive your certificate within 7 working days.
 
 @component('mail::button', ['url' => config('app.url')])
 View Order
