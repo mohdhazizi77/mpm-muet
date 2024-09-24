@@ -78,6 +78,7 @@ class CandidateController extends Controller
                 $res = $muet->getOrder()
                     ->where('payment_status', 'SUCCESS')
                     ->where('payment_for', 'SELF_PRINT')
+                    ->orWhere('payment_for', 'MPM_PRINT')
                     ->where('created_at', '>=', $cutoffTime)
                     ->get()
                     ->toArray();
@@ -145,6 +146,10 @@ class CandidateController extends Controller
                 "is_selfPrintPaid"  => $is_selfPrintPaid,
                 "is_mpmPrintPaid"   => $is_mpmPrintPaid,
             ];
+        }
+
+        foreach ($cert_datas as $key => $value) {
+            $value['no'] = $key+1;
         }
 
         return datatables($cert_datas)->toJson();
@@ -291,7 +296,7 @@ class CandidateController extends Controller
 
         $cert = '';
         $user = Auth::user();
-        if ($result['year'] > 2021) {
+        if ($result['year'] >= 2021) {
             $scheme = [
                 "listening" => 90,
                 "speaking" => 90,
@@ -363,7 +368,7 @@ class CandidateController extends Controller
             // $pusat = $candidate->getPusat->first();
             $tarikh = $candidate->getTarikh;
             $result = $candidate->getResult($candidate);
-            if ($result['year'] > 2021) {
+            if ($result['year'] >= 2021) {
                 $scheme = [
                     "listening" => 90,
                     "speaking" => 90,
@@ -434,7 +439,7 @@ class CandidateController extends Controller
     //         $pusat = $candidate->getPusat->first();
     //         $tarikh = $candidate->getTarikh;
     //         $result = $candidate->getResult($candidate);
-    //         if ($result['year'] > 2021) {
+    //         if ($result['year'] >= 2021) {
     //             $scheme = [
     //                 "listening" => 90,
     //                 "speaking" => 90,
@@ -517,7 +522,7 @@ class CandidateController extends Controller
             // $pusat = $candidate->getPusat->first();
             $tarikh = $candidate->getTarikh;
             $result = $candidate->getResult($candidate);
-            if ($result['year'] > 2021) {
+            if ($result['year'] >= 2021) {
                 $scheme = [
                     "listening" => 90,
                     "speaking" => 90,
@@ -637,7 +642,7 @@ class CandidateController extends Controller
         $couriers = Courier::get();
 
         $result = $candidate->getResult($candidate);
-        if ($result['year'] > 2021) {
+        if ($result['year'] >= 2021) {
             $scheme = [
                 "listening" => 90,
                 "speaking" => 90,
@@ -674,6 +679,7 @@ class CandidateController extends Controller
             $res = $candidate->getOrder()
                 ->where('payment_status', 'SUCCESS')
                 ->where('payment_for', 'SELF_PRINT')
+                ->orWhere('payment_for', 'MPM_PRINT')
                 ->where('created_at', '>=', $cutoffTime)
                 ->get()
                 ->toArray();
@@ -834,7 +840,7 @@ class CandidateController extends Controller
         $result = $candidate->getResult($candidate);
         $cert = '';
         $user = Auth::user();
-        if ($result['year'] > 2021) {
+        if ($result['year'] >= 2021) {
             $scheme = [
                 "listening" => 90,
                 "speaking" => 90,
@@ -879,7 +885,7 @@ class CandidateController extends Controller
         // $pusat = $candidate->getPusat->first();
         $tarikh = $candidate->getTarikh;
         $result = $candidate->getResult($candidate);
-        if ($result['year'] > 2021) {
+        if ($result['year'] >= 2021) {
             $scheme = [
                 "listening" => 90,
                 "speaking" => 90,
