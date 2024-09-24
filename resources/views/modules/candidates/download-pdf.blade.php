@@ -154,22 +154,22 @@
 <body>
 
     <div id="page-1" style="padding-left: 10%; padding-right: 10%;page-break-after: always;">
-        {{-- <div class="row logo-container" style="text-align: center; padding-top: 90px"> --}}
-            {{-- <span style="padding-right: 10px">
-                <img style="width: 100px" src="{{ asset('build/images/jatanegara/JataNegara.png') }}" alt="Logo1">
+        <div class="row logo-container" style="text-align: center; padding-top: 90px">
+            <span style="padding-right: 10px">
+                {{-- <img style="width: 100px" src="{{ asset('build/images/jatanegara/JataNegara.png') }}" alt="Logo1"> --}}
                 <img style="width: 100px" src="data:image/jpg;base64,{{ $image1Data }}" alt="Logo1">
-            </span> --}}
-            {{-- <span>
-                <img style="width: 80px;height: auto;" src="{{ asset('build/images/logo-mpm-kuningpinang.jpg') }}"alt="Logo">
+            </span>
+            <span>
+                {{-- <img style="width: 80px;height: auto;" src="{{ asset('build/images/logo-mpm-kuningpinang.jpg') }}"alt="Logo"> --}}
                 <img style="width: 80px;height: auto;" src="data:image/jpg;base64,{{ $image2Data }}" alt="Logo">
-            </span> --}}
-        {{-- </div> --}}
-        <div id="title_session" style="text-align: center; padding-top: 9cm;">
-            {{-- <span style="font-size: 15pt; font-weight: bolder">MAJLIS PEPERIKSAAN MALAYSIA</span><br>
+            </span>
+        </div>
+        <div id="title_session" style="text-align: center; padding-top: 25px">
+            <span style="font-size: 15pt; font-weight: bolder">MAJLIS PEPERIKSAAN MALAYSIA</span><br>
             <span style="font-size: 12pt; font-weight: bold">MALAYSIAN EXAMINATIONS COUNCIL</span>
             <p style="font-size: 10pt">This is to certify that the below candidate has sat for the</p>
-            <span style="font-size: 12pt; font-weight: bolder">MALAYSIAN UNIVERSITY ENGLISH TEST</span><br> --}}
-            <span style="font-size: 12pt; font-weight: bolder">{{ Str::upper(str_replace("MUET ", "", $tarikh->sesi)) }}</span>
+            <span style="font-size: 12pt; font-weight: bolder">MALAYSIAN UNIVERSITY ENGLISH TEST <br>
+                {{ Str::upper(str_replace("MUET ", "", $tarikh->sesi)) }}</span>
             <p style="font-size: 10pt">and obtained the following score.</p>
         </div>
         {{-- <div id="session">
