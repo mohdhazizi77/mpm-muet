@@ -68,7 +68,7 @@ $(document).ready(function () {
             //     // Add index number
             //     $('td:eq(1)', row).html(index + 1);
             // },
-            dom: 'frtp',
+            // dom: 'frtp',
             pageLength: 10,
             order: [[0, "asc"]],
             // buttons: {
@@ -102,6 +102,8 @@ $(document).ready(function () {
             },
             searching: true,
             lengthChange: true,
+            lengthMenu: [ [10, 25, 50, 100, 500], [10, 25, 50, 100, 500] ], // Number of records per page
+            pageLength: 10, // Default number of records per page
             // scrollX: true,
             // initComplete: function(settings, json) {
             //     $('.dt-scroll-body thead').css('visibility', 'visible');
@@ -368,8 +370,10 @@ $(document).ready(function () {
                     visible: false,
                 },
             ],
-            dom: 'frtp',
+            // dom: 'frtp',
             pageLength: 10,
+            lengthMenu: [ [10, 25, 50, 100, 500], [10, 25, 50, 100, 500] ], // Number of records per page
+            pageLength: 10, // Default number of records per page
             // order: [[0, "asc"]],
             // buttons: {
             //     dom: {
@@ -633,8 +637,10 @@ $(document).ready(function () {
                 }
 
             ],
-            dom: 'frtp',
+            // dom: 'frtp',
             pageLength: 10,
+            lengthMenu: [ [10, 25, 50, 100, 500], [10, 25, 50, 100, 500] ], // Number of records per page
+            pageLength: 10, // Default number of records per page
             // order: [[0, "asc"]],
             // buttons: {
             //     dom: {
