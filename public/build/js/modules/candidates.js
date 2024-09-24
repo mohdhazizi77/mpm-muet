@@ -84,13 +84,8 @@ $(document).ready(function () {
 
                             }
                             buttonPrintMPM =
-<<<<<<< HEAD
-                            // href="/candidate/pos-result/'+data+'"
-                            '<a data-id='+data+' class="btn btn-soft-info waves-effect text-black mx-2 modalUpcoming modalPaymentMpm1" data-bs-toggle="modal" data-bs-target="#modalPaymentMpm1">' +
-=======
                                 // href="/candidate/pos-result/'+data+'"
                                 '<a data-id=' + data + ' class="btn btn-soft-info waves-effect text-black mx-2 modalUpcoming1 modalPaymentMpm" data-bs-toggle="modal" data-bs-target="#modalPaymentMpm">' +
->>>>>>> b94a9b365240862fed186848fe164e520095616b
                                 '<i class="ri-printer-line label-icon align-middle fs-16 me-2"></i> ' +
                                 'PRINTING BY MPM' +
                                 '</a> '
@@ -108,11 +103,7 @@ $(document).ready(function () {
                                 '</button>'
 
                             buttonPrintMPM =
-<<<<<<< HEAD
-                            '<button data-type="MPM_PRINT" type="button" data-id='+data+' class="btn btn-soft-info waves-effect text-black mx-2 modalUpcoming modalVerify1" data-bs-toggle="modal" data-bs-target="#'+modalMPM+'1">' +
-=======
                                 '<button data-type="MPM_PRINT" type="button" data-id=' + data + ' class="btn btn-soft-info waves-effect text-black mx-2 modalUpcoming1 modalVerify" data-bs-toggle="modal" data-bs-target="#' + modalMPM + '">' +
->>>>>>> b94a9b365240862fed186848fe164e520095616b
                                 '<i class="ri-printer-line label-icon align-middle fs-16 me-2"></i> ' +
                                 'PRINTING BY MPM' +
                                 '</button> '
@@ -387,11 +378,7 @@ $(document).ready(function () {
             $('.dt-search').show()
         }
 
-<<<<<<< HEAD
-        $(document).on('click', '#show_edit_modal', function(e) {
-=======
         $(document).on('click', '#show_edit_modal', function (e) {
->>>>>>> b94a9b365240862fed186848fe164e520095616b
             e.preventDefault();
 
             $('#name_text_edit').text('');
