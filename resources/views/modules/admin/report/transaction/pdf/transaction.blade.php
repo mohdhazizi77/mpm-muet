@@ -20,7 +20,8 @@
             <thead>
                 <tr style="border: 1px solid black; padding: 5px">
                     <th style="border: 1px solid black; padding: 5px">#</th>
-                    <th style="border: 1px solid black; padding: 5px">DATE</th>
+                    <th style="border: 1px solid black; padding: 5px">DATE CREATED</th>
+                    <th style="border: 1px solid black; padding: 5px">DATE COMPLETED</th>
                     <th style="border: 1px solid black; padding: 5px">TRANSACTION ID</th>
                     <th style="border: 1px solid black; padding: 5px">REFERENCE ID</th>
                     <th style="border: 1px solid black; padding: 5px">AMOUNT</th>
@@ -38,6 +39,7 @@
                         <tr style="border: 1px solid black; padding: 5px">
                             <td style="border: 1px solid black; padding: 5px">{{ $loop->iteration }}</td>
                             <td style="border: 1px solid black; padding: 5px">{{ date('d/m/Y' , strtotime($transaction->created_at)) }}</td>
+                            <td style="border: 1px solid black; padding: 5px">{{ $transaction->payment_for == 'SELF_PRINT' ? date('d/m/Y' , strtotime($transaction->completed_at)) : (!empty($transaction->completed_at) ? date('d/m/Y' , strtotime($transaction->completed_at)) : '-') }}</td>
                             <td style="border: 1px solid black; padding: 5px">{{ $transaction->unique_order_id ?? 'no record' }}</td>
                             <td style="border: 1px solid black; padding: 5px">{{ $transaction->payment_ref_no ?? 'no record' }}</td>
                             <td style="border: 1px solid black; padding: 5px">RM {{ $transaction->payment->amount ?? 'no record' }}</td>

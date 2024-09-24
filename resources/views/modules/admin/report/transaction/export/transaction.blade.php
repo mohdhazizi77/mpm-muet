@@ -2,7 +2,8 @@
     <thead>
         <tr>
             <th>#</th>
-            <th>DATE</th>
+            <th>DATE CREATED</th>
+            <th>DATE COMPLETED</th>
             <th>TRANSACTION ID</th>
             <th>REFERENCE ID</th>
             <th>AMOUNT</th>
@@ -18,6 +19,7 @@
             <tr>
                 <td>{{ $loop->iteration }}</td>
                 <td>{{ date('d/m/Y' , strtotime($transaction->created_at)) }}</td>
+                <td>{{ !empty($transaction->completed_at) ? date('d/m/Y' , strtotime($transaction->completed_at)) : date('d/m/Y' , strtotime($transaction->updated_at)) }}</td>
                 <td>{{ $transaction->unique_order_id ?? 'no record' }}</td>
                 <td>{{ $transaction->payment_ref_no ?? 'no record' }}</td>
                 <td>RM {{ $transaction->payment->amount ?? 'no record' }}</td>

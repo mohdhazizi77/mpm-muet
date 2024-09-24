@@ -89,7 +89,7 @@
                                                         <div class="mb-5">
                                                             <label for="indexNumber" class="form-label">Index Number</label>
                                                             {{-- <label for="indexNumber" class="form-label">Index Number</label> --}}
-                                                            <input type="text" class="form-control mb-2" id="indexNumber" placeholder="Enter your Index Number">
+                                                            <input type="text" class="form-control mb-2" id="indexNumber" placeholder="e.g. MD0000/0001" oninput="this.value = this.value.toUpperCase()">
                                                             <a class="text-decoration-none text-black-50 btnForgotIndexNumber">Forgot Index Number?</a>
                                                         </div>
                                                         <div class="clearfix">

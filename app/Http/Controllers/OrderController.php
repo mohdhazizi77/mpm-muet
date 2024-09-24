@@ -24,21 +24,22 @@ use DataTables;
 
 class OrderController extends Controller
 {
-    public function index($cryptId){
+    public function index($cryptId)
+    {
 
         return view('modules.candidates.order-history', compact([
             'cryptId'
         ]));
     }
 
-    public function getAjax(Request $request){
+    public function getAjax(Request $request)
+    {
         try {
             $string = Crypt::decrypt($request->candidate_id);
             $data = explode('-', $string);
             $id = $data[0];
             $exam_type = $data[1];
         } catch (Illuminate\Contracts\Encryption\DecryptException $e) {
-
         };
 
         if ($exam_type == "MUET") {
@@ -51,7 +52,7 @@ class OrderController extends Controller
         $datas = [];
         foreach ($orders as $key => $value) {
             $datas[] = [
-                'no' => $key+1,
+                'no' => $key + 1,
                 'uniqueOrderId' => $value->unique_order_id,
                 'orderDate' => $value->created_at->format('d-m-Y H:i:s'),
                 'orderFor' => $value->payment_for,
@@ -61,22 +62,21 @@ class OrderController extends Controller
             ];
         }
         return datatables($datas)->toJson();
-
     }
 
-    public function getAjaxTrackOrder(Request $request){
+    public function getAjaxTrackOrder(Request $request)
+    {
         try {
             $orderId = Crypt::decrypt($request->order_id);
         } catch (Illuminate\Contracts\Encryption\DecryptException $e) {
-
         };
 
-        $tracks = TrackingOrder::where('order_id',$orderId)->latest()->get();
+        $tracks = TrackingOrder::where('order_id', $orderId)->latest()->get();
 
         $datas = [];
         foreach ($tracks as $key => $value) {
             $datas[] = [
-                'no' => $key+1,
+                'no' => $key + 1,
                 'date' => $value->created_at->format('d-m-Y H:i:s'),
                 'detail' =>  $value->detail,
                 'status' =>  $value->status,
@@ -86,10 +86,10 @@ class OrderController extends Controller
         }
 
         return datatables($datas)->toJson();
-
     }
 
-    public function getAjaxTrackShipping(Request $request){
+    public function getAjaxTrackShipping(Request $request)
+    {
 
         $track_no = $request->trackNo;
 
@@ -99,10 +99,10 @@ class OrderController extends Controller
 
         try {
             $response = Http::withToken($bearerToken)
-                            ->get('https://gateway-usc.pos.com.my/staging/as2corporate/v2trackntracewebapijson/v1/api/Details', [
-                                'id' => $track_no,
-                                'Culture' => $culture,
-                            ]);
+                ->get('https://gateway-usc.pos.com.my/staging/as2corporate/v2trackntracewebapijson/v1/api/Details', [
+                    'id' => $track_no,
+                    'Culture' => $culture,
+                ]);
             if ($response->successful()) {
                 $data = [];
                 $response = json_decode($response->getBody()->getContents());
@@ -112,13 +112,12 @@ class OrderController extends Controller
                         continue;
                     }
                     $data[] = [
-                        'no' => $key+1,
+                        'no' => $key + 1,
                         'date' => $value->date,
                         'detail' => $value->process
                     ];
                 }
                 return datatables($data)->toJson();
-
             } else {
                 return response()->json(['error' => 'Failed to fetch data'], $response->status());
             }
@@ -127,16 +126,20 @@ class OrderController extends Controller
         }
     }
 
-    public function indexAdmin(){
+    public function indexAdmin()
+    {
         $user = Auth::User() ? Auth::User() : abort(403);
 
-        return view('modules.admin.report.transaction.index',
+        return view(
+            'modules.admin.report.transaction.index',
             compact([
                 'user',
-            ]));
+            ])
+        );
     }
 
-    public function getAjaxAdmin(Request $request){
+    public function getAjaxAdmin(Request $request)
+    {
         $transaction = Order::latest();
 
         // Get the current date in the desired format
@@ -147,8 +150,8 @@ class OrderController extends Controller
             // Convert startDate and endDate to Carbon instances
             $startDate = Carbon::parse($request->startDateTrx)->startOfDay()->format('Y-m-d H:i:s');
             $endDate = $request->has('endDateTrx') && !empty($request->endDateTrx)
-                        ? Carbon::parse($request->endDateTrx)->endOfDay()->format('Y-m-d H:i:s')
-                        : $currentDate;
+                ? Carbon::parse($request->endDateTrx)->endOfDay()->format('Y-m-d H:i:s')
+                : $currentDate;
 
             // Filter based on the date range
             $transaction->whereBetween('created_at', [$startDate, $endDate]);
@@ -181,18 +184,18 @@ class OrderController extends Controller
             case 'PSM':
                 // $transaction->where('type', 'MUET');
                 $transaction->when($request->filled('exam_type'), function ($query) use ($request) {
-                        return $query->where('type', $request->input('exam_type'));
-                    }, function ($query) {
-                        return $query->where('type', 'MUET');
-                    });
+                    return $query->where('type', $request->input('exam_type'));
+                }, function ($query) {
+                    return $query->where('type', 'MUET');
+                });
                 break;
             case 'BPKOM':
                 // $transaction->where('type', 'MOD');
                 $transaction->when($request->filled('exam_type'), function ($query) use ($request) {
-                        return $query->where('type', $request->input('exam_type'));
-                    }, function ($query) {
-                        return $query->where('type', 'MOD');
-                    });
+                    return $query->where('type', $request->input('exam_type'));
+                }, function ($query) {
+                    return $query->where('type', 'MOD');
+                });
                 break;
         }
 
@@ -201,6 +204,7 @@ class OrderController extends Controller
         $data = [];
         foreach ($transaction as $key => $value) {
             $data[] = [
+                'id'         => Crypt::encrypt($value->id),
                 "created_at" => $value->created_at->format('d/m/y H:i:s'),
                 "order_id" => $value->order_id,
                 "reference_id" => $value->unique_order_id,
@@ -252,26 +256,26 @@ class OrderController extends Controller
             case 'PSM':
                 // $transactions->where('type', 'MUET');
                 $transactions->when($request->filled('exam_type'), function ($query) use ($request) {
-                        return $query->where('type', $request->input('exam_type'));
-                    }, function ($query) {
-                        return $query->where('type', 'MUET');
-                    });
+                    return $query->where('type', $request->input('exam_type'));
+                }, function ($query) {
+                    return $query->where('type', 'MUET');
+                });
                 break;
             case 'BPKOM':
                 // $transactions->where('type', 'MOD');
                 $transactions->when($request->filled('exam_type'), function ($query) use ($request) {
-                        return $query->where('type', $request->input('exam_type'));
-                    }, function ($query) {
-                        return $query->where('type', 'MOD');
-                    });
+                    return $query->where('type', $request->input('exam_type'));
+                }, function ($query) {
+                    return $query->where('type', 'MOD');
+                });
                 break;
         }
 
-        if(filled($request->startDate) || filled($request->endDate)){
+        if (filled($request->startDate) || filled($request->endDate)) {
             $startDate = Carbon::parse($request->startDate)->startOfDay()->format('Y-m-d H:i:s');
             $endDate = $request->has('endDateTrx') && !empty($request->endDate)
-                        ? Carbon::parse($request->endDate)->endOfDay()->format('Y-m-d H:i:s')
-                        : $currentDate;
+                ? Carbon::parse($request->endDate)->endOfDay()->format('Y-m-d H:i:s')
+                : $currentDate;
 
             // Filter based on the date range
             $transactions->whereBetween('created_at', [$startDate, $endDate]);
@@ -289,12 +293,12 @@ class OrderController extends Controller
             $transactions->where('current_status', $request->status_trx);
         }
 
-        if(filled($request->textSearch)){
+        if (filled($request->textSearch)) {
             $textSearch = $request->textSearch;
             $transactions->where(function ($query) use ($textSearch) {
                 $query->where('unique_order_id', 'LIKE', '%' . $textSearch . '%');
-                    // Add more columns to search in if necessary
-                    // ->orWhere('ref_no', 'LIKE', '%' . $textSearch . '%');
+                // Add more columns to search in if necessary
+                // ->orWhere('ref_no', 'LIKE', '%' . $textSearch . '%');
             });
         }
 
@@ -314,25 +318,25 @@ class OrderController extends Controller
             case 'PSM':
                 // $transactions->where('type', 'MUET');
                 $transactions->when($request->filled('type'), function ($query) use ($request) {
-                        return $query->where('type', $request->input('type'));
-                    }, function ($query) {
-                        return $query->where('type', 'MUET');
-                    });
+                    return $query->where('type', $request->input('type'));
+                }, function ($query) {
+                    return $query->where('type', 'MUET');
+                });
                 break;
             case 'BPKOM':
                 // $transactions->where('type', 'MOD');
                 $transactions->when($request->filled('type'), function ($query) use ($request) {
-                        return $query->where('type', $request->input('type'));
-                    }, function ($query) {
-                        return $query->where('type', 'MOD');
-                    });
+                    return $query->where('type', $request->input('type'));
+                }, function ($query) {
+                    return $query->where('type', 'MOD');
+                });
                 break;
         }
-        if(filled($request->startDate) || filled($request->endDate)){
+        if (filled($request->startDate) || filled($request->endDate)) {
             $startDate = Carbon::parse($request->startDate)->startOfDay()->format('Y-m-d H:i:s');
             $endDate = $request->has('endDateTrx') && !empty($request->endDate)
-                        ? Carbon::parse($request->endDate)->endOfDay()->format('Y-m-d H:i:s')
-                        : $currentDate;
+                ? Carbon::parse($request->endDate)->endOfDay()->format('Y-m-d H:i:s')
+                : $currentDate;
 
             // Filter based on the date range
             $transactions->whereBetween('created_at', [$startDate, $endDate]);
@@ -350,19 +354,19 @@ class OrderController extends Controller
             $transactions->where('current_status', $request->status_trx);
         }
 
-        if(filled($request->textSearch)){
+        if (filled($request->textSearch)) {
             $textSearch = $request->textSearch;
             $transactions->where(function ($query) use ($textSearch) {
                 $query->where('unique_order_id', 'LIKE', '%' . $textSearch . '%');
-                    // Add more columns to search in if necessary
-                    // ->orWhere('ref_no', 'LIKE', '%' . $textSearch . '%');
+                // Add more columns to search in if necessary
+                // ->orWhere('ref_no', 'LIKE', '%' . $textSearch . '%');
             });
         }
 
         $transactions = $transactions->get();
 
         $pdf = PDF::loadView('modules.admin.report.transaction.pdf.transaction', ['transactions' => $transactions])
-                ->setPaper('a4', 'landscape');  // Set paper size to A4 and orientation to landscape
+            ->setPaper('a4', 'landscape');  // Set paper size to A4 and orientation to landscape
 
         return $pdf->stream('ListTransaction.pdf');
     }
@@ -377,7 +381,7 @@ class OrderController extends Controller
         // $token = 'a2aWmIGjPSVZ8F3OvS2BtppKM2j6TKvKXE7u8W7MwbkVyZjwZfSYdNP5ACem';
         // $secret_key = '1eafc1e9-df86-4c8c-a3de-291ada259ab0';
 
-        $url = ConfigMpmBayar::first()->url.'/api/payment/status';
+        $url = ConfigMpmBayar::first()->url . '/api/payment/status';
         $token = ConfigMpmBayar::first()->token;
         $secret_key = ConfigMpmBayar::first()->secret_key;
 
@@ -415,12 +419,23 @@ class OrderController extends Controller
         }
         if (!empty($output->data)) {
             curl_close($curl);
-            $order->update(
-                [
-                    'payment_status' => $output->data->txn_status,
-                    // 'current_status' => $output->data->txn_status,
-                    'payment_ref_no' => $output->data->ref_no,
-                ]);
+            if (in_array($output->data->txn_status, ['FAILED'])) {
+                $order->update(
+                    [
+                        'payment_status' => $output->data->txn_status,
+                        'current_status' => $output->data->txn_status,
+                        'payment_ref_no' => $output->data->ref_no,
+                    ]
+                );
+            }else{
+                $order->update(
+                    [
+                        'payment_status' => $output->data->txn_status,
+                        // 'current_status' => $output->data->txn_status,
+                        'payment_ref_no' => $output->data->ref_no,
+                    ]
+                );
+            }
 
             $cust_info = [
                 'full_name' => $output->data->full_name,
@@ -439,7 +454,8 @@ class OrderController extends Controller
                     'receipt_number' => $output->data->receipt_no,
                     'payment_for' => json_decode($output->data->extra_data)->pay_for,
                     'payment_date' => $output->data->txn_time,
-                ]);
+                ]
+            );
         } else {
             // echo "Payment Gateway tidak dapat disambung. Pastikan URL dan TOKEN adalah betul.";
             curl_close($curl);

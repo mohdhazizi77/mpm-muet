@@ -60,7 +60,7 @@ class OrderConfirmedNotification extends Notification
                     ->greeting('')  // Setting an empty greeting
                     ->subject('Transaction Confirmed - MPM MUET Certificate Online System')
                     ->line('Dear '.$this->order->name)
-                    ->line('We have received your order with reference ID '.$this->order->unique_order_id.'. Your certificate will be processed in 3 working days and you will receive your certificate within 7 working days.')
+                    ->line('We have received your order with reference ID '.$this->order->unique_order_id.'. Your certificate will be processed in 2 working days and you will receive your certificate within 7 working days.')
                     ->action('View Order', config('app.url'))
                     ->line('For any enquiries, kindly email us at sijil@mpm.edu.my.')
                     ->line('Thank you.');

@@ -277,7 +277,9 @@
                     <a href="javascript:void(0);" class="btn btn-link link-success fw-medium"
                        data-bs-dismiss="modal"><i class="ri-close-line me-1 align-middle"></i>
                         Close</a>
+                    @if(Route::currentRouteName() != 'transaction.index')
                     <a href='#' id="button-print-certificate-pdf" class="btn btn-outline-secondary float-end" target="_blank">Print Certificate</a>
+                    @endif
                     {{-- <button type="button" class="btn btn-outline-success float-end btn-approve-processing">Continue</button> --}}
                 </div>
             </div>

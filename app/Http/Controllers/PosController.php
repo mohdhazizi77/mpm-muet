@@ -41,6 +41,7 @@ use setasign\Fpdf\Fpdf;
 use DataTables;
 use stdClass;
 use TCPDF;
+use DateTime;
 
 class PosController extends Controller
 {
@@ -128,6 +129,7 @@ class PosController extends Controller
                 'order_time' => $order->updated_at->format('H:i:s'),
                 'consignment_note' => $order->consignment_note,
                 'details'    => $order->type . " | Session " . $calon->sidang . " Year " . $calon->tahun . " | Angka Giliran : " . $calon->index_number($calon),
+                'details'    => $order->type . " | " . str_replace('MUET','',$calon->getTarikh->sesi) . " | Angka Giliran : " . $calon->index_number($calon),
                 'index_number'    => $calon->index_number($calon),
                 'candidate_name' => $calon->nama,
                 'tracking_number' => (!empty($order->tracking_number) ? $order->tracking_number : ""),
@@ -286,6 +288,7 @@ class PosController extends Controller
                 $order->tracking_number = $connote['con_note'];
                 // $order->tracking_number = "ER".$order->unique_order_id."MY";
                 $order->current_status = "PROCESSING";
+                $order->approved_at = Carbon::now();
 
                 $tracking = new TrackingOrder();
                 $tracking->order_id = $order->id;
@@ -312,6 +315,7 @@ class PosController extends Controller
                 return response()->json($data);
 
             $order->current_status = "COMPLETED";
+            $order->completed_at = Carbon::now();
             $order->consignment_note = $preAcceptance->pdf;
 
             $tracking = new TrackingOrder();
@@ -457,29 +461,34 @@ class PosController extends Controller
                 // }
 
                 $preAcceptance = self::sendPreAcceptanceSingle($order); // return output or error
-                if (!$preAcceptance)
+
+                if (isset($preAcceptance->TransactionID)) {
+                    $order->consignment_note = $preAcceptance->pdf;
+                    $order->current_status = "COMPLETED";
+
+                    $tracking = new TrackingOrder();
+                    $tracking->order_id = $order->id;
+                    $tracking->detail = "Transaction completed and Certificate out for shipment";
+                    $tracking->status = "COMPLETED";
+                    $tracking->save();
+
+                    try {
+                        Notification::route('mail', $order->email)
+                            ->notify(new OrderCompletedNotification($order));
+                    } catch (\Exception $e) {
+                        \Log::error('Error sending email notification: ' . $e->getMessage());
+                    }
+
+                } else {
+                    $dataR = json_decode($preAcceptance->getContent(), true); // Pass true to get an associative array
+                    // Access the specific error message
+                    $data['error'] = $dataR['error'] ?? null;
+
                     return response()->json($data);
-
-                $order->consignment_note = $preAcceptance->pdf;
-                $order->current_status = "COMPLETED";
-
-                $tracking = new TrackingOrder();
-                $tracking->order_id = $order->id;
-                $tracking->detail = "Transaction completed and Certificate out for shipment";
-                $tracking->status = "COMPLETED";
-                $tracking->save();
-
-                try {
-                    Notification::route('mail', $order->email)
-                        ->notify(new OrderCompletedNotification($order));
-                } catch (\Exception $e) {
-                    \Log::error('Error sending email notification: ' . $e->getMessage());
                 }
 
-            } else {
-                // Default case
-                // You can add code here if needed
             }
+            
             $order->save();
         }
 
@@ -636,42 +645,48 @@ class PosController extends Controller
         $ConfigPoslaju = ConfigPoslaju::first();
 
         $client = new Client();
-        $url = $ConfigPoslaju->url . '/as2corporate/preacceptancessingle/v1/Tracking.PreAcceptance.WebApi/api/PreAcceptancesSingle';
+        $url = $ConfigPoslaju->url . '/as2corporate/preacceptancessingle/v1/Tracking.PreAcceptance.WebApi/api/PreAcceptancesSingle'; //fix domain from documentation
 
         $headers = [
             'Content-Type' => 'application/json',
             'Authorization' => 'Bearer ' . $bearerToken,
         ];
 
+        //pickup date tomorrow at 9; if friday or weekend set pickup on moday at 9 am
+        $next9AM = Carbon::now()->isWeekend() || Carbon::now()->isFriday()
+                ? Carbon::now()->next(Carbon::MONDAY)->format('Y-m-d')
+                : Carbon::tomorrow()->format('Y-m-d');
+
         $body = [
-            // "subscriptionCode" => "ECON001",
-            "subscriptionCode" => "qaily@mpm.edu.my", //need to confirm back
-            "requireToPickup" => false, //need to confirm back
+            // "subscriptionCode" => "qaily@mpm.edu.my",
+            // "accountNo" => 4681526086,
+
+            "subscriptionCode" => $ConfigPoslaju->subscriptionCode,
+            "requireToPickup" => true, //need to confirm back
             "requireWebHook" => false, //need to confirm back
-            // "accountNo" => 9999999999, //need to confirm back
-            "accountNo" => 4681526086,
-            "callerName" => "SUB(PSM)",
-            "callerPhone" => "0361261600",
-            "pickupLocationID" => ".", //Merchants Unique Register ID
-            "pickupLocationName" => ".",
-            "contactPerson" => ".",
-            "phoneNo" => "0361261600",
-            "pickupAddress" => "Majlis Peperiksaan Malaysia, Persiaran 1, Bandar Baru Selayang",
-            "pickupDistrict" => "Batu Caves",
-            "pickupProvince" => "Selangor",
+            "accountNo" => $ConfigPoslaju->accountNo, //need to confirm back
+            "callerName" => $ConfigPoslaju->callerName,
+            "callerPhone" => $ConfigPoslaju->callerPhone,
+            "pickupLocationID" => $ConfigPoslaju->pickupLocationID, //Merchants Unique Register ID ?
+            "pickupLocationName" => $ConfigPoslaju->pickupLocationName,
+            "contactPerson" => $ConfigPoslaju->contactPerson,
+            "phoneNo" => $ConfigPoslaju->phoneNo,
+            "pickupAddress" => $ConfigPoslaju->pickupAddress,
+            "pickupDistrict" => $ConfigPoslaju->pickupDistrict,
+            "pickupProvince" => $ConfigPoslaju->pickupProvince,
             "pickupCountry" => "MY",
             "pickupLocation" => "",
-            "pickupEmail" => "muet@mpm.edu.my",
-            "postCode" => 68100,
+            "pickupEmail" => $ConfigPoslaju->pickupEmail,
+            "postCode" => $ConfigPoslaju->postCode,
             "ItemType" => 2,
             "Amount" => "0",
             "totalQuantityToPickup" => 1,
             "totalWeight" => 0.5,
             "ConsignmentNoteNumber" => $order->tracking_number,
-            "CreatedDate" => "26052022: 11:47:21",
+            "CreatedDate" => Carbon::now()->format('Y-m-d H:i:s'),
             "PaymentType" => 2,
-            "readyToCollectAt" => "11:30 AM",
-            "closeAt" => "05:00 PM",
+            "readyToCollectAt" => self::convertTo12HourFormat($ConfigPoslaju->readyToCollectAt),
+            "closeAt" => self::convertTo12HourFormat($ConfigPoslaju->closeAt),
             "receiverName" => $order->name,
             "receiverID" => "",
             "receiverAddress" => $order->address1,
@@ -702,7 +717,7 @@ class PosController extends Controller
             "postalCode" => "",
             "currency" => "MYR",
             "countryCode" => "MY",
-            "pickupDate" => ""
+            "pickupDate" => $next9AM
         ];
 
         try {
@@ -1046,6 +1061,19 @@ class PosController extends Controller
         }
 
         return $filePath;
+    }
+
+    function convertTo12HourFormat($time) {
+        // Create a DateTime object from the given time string
+        $dateTime = DateTime::createFromFormat('H:i', $time);
+
+        // Check if the dateTime object was created successfully
+        if ($dateTime) {
+            // Return the time in 12-hour format with AM/PM
+            return $dateTime->format('h:i A');
+        }
+
+        return false; // Return false if conversion fails
     }
 
 }

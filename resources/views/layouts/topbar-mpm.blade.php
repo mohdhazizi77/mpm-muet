@@ -42,7 +42,7 @@
                                  alt="Header Avatar">
                             <span class="text-start ms-xl-2">
                                 <span class="d-none d-xl-inline-block ms-1 fw-semibold user-name-text">{{ strtoupper(Auth::user()->name)  }}</span>
-                                <span class="d-none d-xl-block ms-1 fs-13 user-name-sub-text">ADMIN</span>
+                                <span class="d-none d-xl-block ms-1 fs-13 user-name-sub-text">{{ strtoupper(Auth::user()->getRoleNames()[0])  }}</span>
                             </span>
                         </span>
                     </button>

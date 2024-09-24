@@ -63,6 +63,7 @@ class CandidateController extends Controller
         $candidate = Auth::User() ? Auth::User() : abort(403);
 
         $muets = $candidate->muetCalon;
+        // dd($muets);
         $mods = $candidate->modCalon;
 
 
@@ -77,10 +78,14 @@ class CandidateController extends Controller
 
                 $res = $muet->getOrder()
                     ->where('payment_status', 'SUCCESS')
-                    ->where('payment_for', 'SELF_PRINT')
+                    ->where(function ($query) {
+                        $query->where('payment_for', 'SELF_PRINT')
+                            ->orWhere('payment_for', 'MPM_PRINT');
+                    })
                     ->where('created_at', '>=', $cutoffTime)
                     ->get()
                     ->toArray();
+
                 $is_selfPrintPaid = count($res) > 0 ? true : false;
 
                 $res = $muet->getOrder->where('payment_status', 'SUCCESS')->where('payment_for', 'MPM_PRINT')->toArray();
@@ -291,7 +296,7 @@ class CandidateController extends Controller
 
         $cert = '';
         $user = Auth::user();
-        if ($result['year'] > 2021) {
+        if ($result['year'] >= 2021) {
             $scheme = [
                 "listening" => 90,
                 "speaking" => 90,
@@ -327,13 +332,12 @@ class CandidateController extends Controller
         AuditLog::create([
             // 'user_id' => Auth::guard('candidate')->id(),
             'candidate_id' => Auth::guard('candidate')->id(),
-            'activity' => 'View Result Index Number :'.$candidate->angka_giliran,
+            'activity' => 'View Result Index Number :' . $candidate->angka_giliran,
             'summary' => serialize(['View Result', $candidate, $result]),
             'device' => AuditLog::getDeviceDetail(),
         ]);
 
-        return view('modules.candidates.print-pdf', compact(['user','scheme','result','cryptId']));
-
+        return view('modules.candidates.print-pdf', compact(['user', 'scheme', 'result', 'cryptId']));
     }
 
     public function qrscan()
@@ -363,7 +367,7 @@ class CandidateController extends Controller
             // $pusat = $candidate->getPusat->first();
             $tarikh = $candidate->getTarikh;
             $result = $candidate->getResult($candidate);
-            if ($result['year'] > 2021) {
+            if ($result['year'] >= 2021) {
                 $scheme = [
                     "listening" => 90,
                     "speaking" => 90,
@@ -419,13 +423,12 @@ class CandidateController extends Controller
             AuditLog::create([
                 // 'user_id' => Auth::guard('candidate')->id(),
                 'candidate_id' => Auth::guard('candidate')->id(),
-                'activity' => 'Download Result Index Number :'.$candidate->angka_giliran,
+                'activity' => 'Download Result Index Number :' . $candidate->angka_giliran,
                 'summary' => serialize(['View Result', $candidate, $result]),
                 'device' => AuditLog::getDeviceDetail(),
             ]);
 
-            return $pdf->stream($result['index_number'].' '.$type.' RESULT.pdf');
-
+            return $pdf->stream($result['index_number'] . ' ' . $type . ' RESULT.pdf');
         } catch (Exception $e) {
             return back()->withError($e->getMessage());
         }
@@ -443,7 +446,7 @@ class CandidateController extends Controller
     //         $pusat = $candidate->getPusat->first();
     //         $tarikh = $candidate->getTarikh;
     //         $result = $candidate->getResult($candidate);
-    //         if ($result['year'] > 2021) {
+    //         if ($result['year'] >= 2021) {
     //             $scheme = [
     //                 "listening" => 90,
     //                 "speaking" => 90,
@@ -526,7 +529,7 @@ class CandidateController extends Controller
             // $pusat = $candidate->getPusat->first();
             $tarikh = $candidate->getTarikh;
             $result = $candidate->getResult($candidate);
-            if ($result['year'] > 2021) {
+            if ($result['year'] >= 2021) {
                 $scheme = [
                     "listening" => 90,
                     "speaking" => 90,
@@ -568,8 +571,8 @@ class CandidateController extends Controller
                 'image2Data' => config('base64_images.logoMPM'),
                 'image3Data' => config('base64_images.sign'),
             ])
-            ->setPaper('a4', 'portrait')
-            ->setOptions(['isRemoteEnabled' => true]);
+                ->setPaper('a4', 'portrait')
+                ->setOptions(['isRemoteEnabled' => true]);
 
             // try {
             //     AuditLog::create([
@@ -582,7 +585,7 @@ class CandidateController extends Controller
             //     Log::error($e);
             // }
 
-            return $pdf->download($result['index_number'].' '.$type.' RESULT.pdf');
+            return $pdf->download($result['index_number'] . ' ' . $type . ' RESULT.pdf');
             // return $pdf->stream($result['index_number'].' '.$type.' RESULT.pdf');
 
 
@@ -646,7 +649,7 @@ class CandidateController extends Controller
         $couriers = Courier::get();
 
         $result = $candidate->getResult($candidate);
-        if ($result['year'] > 2021) {
+        if ($result['year'] >= 2021) {
             $scheme = [
                 "listening" => 90,
                 "speaking" => 90,
@@ -683,6 +686,7 @@ class CandidateController extends Controller
             $res = $candidate->getOrder()
                 ->where('payment_status', 'SUCCESS')
                 ->where('payment_for', 'SELF_PRINT')
+                ->orWhere('payment_for', 'MPM_PRINT')
                 ->where('created_at', '>=', $cutoffTime)
                 ->get()
                 ->toArray();
@@ -843,7 +847,7 @@ class CandidateController extends Controller
         $result = $candidate->getResult($candidate);
         $cert = '';
         $user = Auth::user();
-        if ($result['year'] > 2021) {
+        if ($result['year'] >= 2021) {
             $scheme = [
                 "listening" => 90,
                 "speaking" => 90,
@@ -888,7 +892,7 @@ class CandidateController extends Controller
         // $pusat = $candidate->getPusat->first();
         $tarikh = $candidate->getTarikh;
         $result = $candidate->getResult($candidate);
-        if ($result['year'] > 2021) {
+        if ($result['year'] >= 2021) {
             $scheme = [
                 "listening" => 90,
                 "speaking" => 90,
@@ -936,7 +940,7 @@ class CandidateController extends Controller
         $pdfPath = storage_path('app/temp/' . $id . '.pdf');
         AuditLog::create([
             'user_id' => Auth::User()->id,
-            'activity' => 'Bulk Download Result Index Number :'.$candidate->angka_giliran,
+            'activity' => 'Bulk Download Result Index Number :' . $candidate->angka_giliran,
             'summary' => serialize(['View Result', $candidate, $result]),
             'device' => AuditLog::getDeviceDetail(),
         ]);
@@ -1037,22 +1041,21 @@ class CandidateController extends Controller
 
         // Return the DataTable response
         return DataTables::of($candidates)
-            ->addColumn('name', function($candidate) {
+            ->addColumn('name', function ($candidate) {
                 return $candidate->name;
             })
-            ->addColumn('nric', function($candidate) {
+            ->addColumn('nric', function ($candidate) {
                 return $candidate->identity_card_number;
             })
-            ->addColumn('action', function($candidate) {
-                return '<button type="button" class="btn btn-sm btn-info" id="show_edit_modal" data-id="'. $candidate->id .'">Action</button>';
+            ->addColumn('action', function ($candidate) {
+                return '<button type="button" class="btn btn-sm btn-info" id="show_edit_modal" data-id="' . $candidate->id . '">Action</button>';
             })
             ->toJson();
-
     }
 
 
 
-    public function updateCandidate(Request $request,Candidate $candidate)
+    public function updateCandidate(Request $request, Candidate $candidate)
     {
         // Old data
         $old = [

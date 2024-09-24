@@ -4,10 +4,9 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport"
-        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Result {{ $type }} {{ $result['index_number'] }}</title>
+    <title>Result {{ $type }} {{ $result["index_number"] }}</title>
 </head>
 <style>
     body {
@@ -62,7 +61,7 @@
     }
 
     #signature {
-        padding-top: 90px;
+        padding-top: 10px;
         line-height: 0.8;
     }
 
@@ -162,12 +161,12 @@
                 <img style="width: 80px;height: auto;" src="data:image/jpg;base64,{{ $image2Data }}" alt="Logo">
             </span> --}}
         </div>
-        <div id="title_session" style="text-align: center; padding-top: 25px">
-            <span style="font-size: 15pt; font-weight: bolder">MAJLIS PEPERIKSAAN MALAYSIA</span><br>
+        <div id="title_session" style="text-align: center; padding-top: 9cm;">
+            {{-- <span style="font-size: 15pt; font-weight: bolder">MAJLIS PEPERIKSAAN MALAYSIA</span><br>
             <span style="font-size: 12pt; font-weight: bold">MALAYSIAN EXAMINATIONS COUNCIL</span>
             <p style="font-size: 10pt">This is to certify that the below candidate has sat for the</p>
-            <span style="font-size: 12pt; font-weight: bolder">MALAYSIAN UNIVERSITY ENGLISH TEST <br>
-                {{ Str::upper(str_replace("MUET ", "", $tarikh->sesi)) }}</span>
+            <span style="font-size: 12pt; font-weight: bolder">MALAYSIAN UNIVERSITY ENGLISH TEST</span><br> --}}
+            <span style="font-size: 12pt; font-weight: bolder">{{ Str::upper(str_replace("MUET ", "", $tarikh->sesi)) }}</span>
             <p style="font-size: 10pt">and obtained the following score.</p>
         </div>
 
@@ -178,13 +177,12 @@
                 </tr>
                 <tr>
                     <td style="text-align: left">{{ $candidate->kp }}</td>
-                    <td style="text-align: right">{{ $result['index_number'] }}</td>
+                    <td style="text-align: right">{{ $result["index_number"] }}</td>
                 </tr>
             </table>
         </div>
         <div id="score">
-            <table
-                style="text-align: center; width: 105%; margin-left: -15px; margin-right: -15px; border-collapse: collapse;font-size: 10pt">
+            <table style="text-align: center; width: 105%; margin-left: -15px; margin-right: -15px; border-collapse: collapse;font-size: 10pt">
                 <tr>
                     <td style="border: 1px solid black;">Test Component</td>
                     <td style="border: 1px solid black;">Maximum Score</td>
@@ -192,38 +190,37 @@
                 </tr>
                 <tr>
                     <td style="border: 1px solid black; border-top: 0; border-bottom: 0;text-align: left;padding-left: 5px"> LISTENING</td>
-                    <td style="border: 1px solid black; border-top: 0; border-bottom: 0">{{ $scheme['listening'] }}</td>
-                    <td width="33%" style="border: 1px solid black; border-top: 0; border-bottom: 0"> {{ $result['listening'] }}</td>
+                    <td style="border: 1px solid black; border-top: 0; border-bottom: 0">{{ $scheme["listening"] }}</td>
+                    <td width="33%" style="border: 1px solid black; border-top: 0; border-bottom: 0"> {{ $result["listening"] }}</td>
                 </tr>
                 <tr>
                     <td style="border: 1px solid black; border-top: 0; border-bottom: 0;text-align: left;padding-left: 5px"> SPEAKING</td>
-                    <td style="border: 1px solid black; border-top: 0; border-bottom: 0">{{ $scheme['speaking'] }}</td>
-                    <td width="33%" style="border: 1px solid black; border-top: 0; border-bottom: 0"> {{ $result['speaking'] }}</td>
+                    <td style="border: 1px solid black; border-top: 0; border-bottom: 0">{{ $scheme["speaking"] }}</td>
+                    <td width="33%" style="border: 1px solid black; border-top: 0; border-bottom: 0"> {{ $result["speaking"] }}</td>
                 </tr>
                 <tr>
                     <td style="border: 1px solid black; border-top: 0; border-bottom: 0;text-align: left;padding-left: 5px"> READING</td>
-                    <td style="border: 1px solid black; border-top: 0; border-bottom: 0">{{ $scheme['reading'] }}</td>
-                    <td width="33%" style="border: 1px solid black; border-top: 0; border-bottom: 0"> {{ $result['reading'] }}</td>
+                    <td style="border: 1px solid black; border-top: 0; border-bottom: 0">{{ $scheme["reading"] }}</td>
+                    <td width="33%" style="border: 1px solid black; border-top: 0; border-bottom: 0"> {{ $result["reading"] }}</td>
                 </tr>
                 <tr>
                     <td style="border: 1px solid black; border-top: 0; border-bottom: 0;text-align: left;padding-left: 5px"> WRITING</td>
-                    <td style="border: 1px solid black; border-top: 0; border-bottom: 0">{{ $scheme['writing'] }}</td>
-                    <td width="33%" style="border: 1px solid black; border-top: 0; border-bottom: 0"> {{ $result['writing'] }}</td>
+                    <td style="border: 1px solid black; border-top: 0; border-bottom: 0">{{ $scheme["writing"] }}</td>
+                    <td width="33%" style="border: 1px solid black; border-top: 0; border-bottom: 0"> {{ $result["writing"] }}</td>
                 </tr>
                 <tr>
                     <th style="border: 1px solid black;text-align: left;padding-left: 5px">AGGREGATED SCORE</th>
-                    <th style="border: 1px solid black;">{{ $scheme['agg_score'] }}</th>
-                    <th width="33%" style="border: 1px solid black;">{{ $result['agg_score'] }}</th>
+                    <th style="border: 1px solid black;">{{ $scheme["agg_score"] }}</th>
+                    <th width="33%" style="border: 1px solid black;">{{ $result["agg_score"] }}</th>
                 </tr>
             </table>
         </div>
 
         <div id="band">
-            <table
-                style="text-align: center; width: 105%; margin-left: -15px; margin-right: -15px; border-collapse: collapse">
+            <table style="text-align: center; width: 105%; margin-left: -15px; margin-right: -15px; border-collapse: collapse">
                 <tr>
                     <th style="border: 1px solid black;text-align: left; padding-left: 5px">BAND ACHIEVED</th>
-                    <th width="33%" style="border: 1px solid black; background-color: white">{{ $result['band'] }}
+                    <th width="33%" style="border: 1px solid black; background-color: white">{{ $result["band"] }}
                     </th>
                 </tr>
             </table>
@@ -251,12 +248,12 @@
                                 <tr>
                                     <td style="font-size: 14px;">Date of issue</td>
                                     <td style="font-size: 14px;">:</td>
-                                    <td style="font-size: 14px;">{{ $result['issue_date'] }}</td>
+                                    <td style="font-size: 14px;">{{ $result["issue_date"] }}</td>
                                 </tr>
                                 <tr>
                                     <td style="font-size: 14px; font-weight: bold;">Date of expiry</td>
                                     <td style="font-size: 14px; font-weight: bold;">:</td>
-                                    <td style="font-size: 14px; font-weight: bold;">{{ $result['exp_date'] }}</td>
+                                    <td style="font-size: 14px; font-weight: bold;">{{ $result["exp_date"] }}</td>
                                 </tr>
                             </table>
                         </div>
@@ -276,7 +273,7 @@
         </div>
     </div>
 
-    {{-- @if ($result['year'] > 1999 && $result['year'] < 2008)
+    {{-- @if ($result["year"] > 1999 && $result["year"] < 2008)
         <div id="back-tahun-1999">
             <div id="table-title">
                 <table
