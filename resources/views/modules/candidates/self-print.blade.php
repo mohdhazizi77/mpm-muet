@@ -145,7 +145,7 @@
 @endsection
 @section('script')
 
-    <script src="{{URL::asset('build/js/pages/flag-input.init.js')}}"></script>
+    {{-- <script src="{{URL::asset('build/js/pages/flag-input.init.js')}}"></script> --}}
 
     <script>
         $(document).ready(function() {
@@ -155,6 +155,19 @@
                 $('#paymentForm').attr('action', '{{ route('candidate.makepayment') }}');
                 // Submit the form
                 $('#paymentForm').submit();
+            });
+
+            $('input[name="phone_num"]').on('change', function() {
+                // Get the current value of the input field
+                var phoneNumber = $(this).val();
+
+                // Check if the phone number starts with '0' and remove it
+                if (phoneNumber.startsWith('0')) {
+                    phoneNumber = phoneNumber.substring(1);
+                }
+
+                // Set the modified phone number back to the input field
+                $(this).val(phoneNumber);
             });
         });
     </script>

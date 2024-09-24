@@ -16,7 +16,7 @@ class PaymentRequest extends FormRequest
         $rules = [
             'name' => 'required',
             'nric' => 'required',
-            'phone_num' => 'required|max:11',
+            'phone_num' => 'required|min:10|max:11',
             'email' => 'required|email',
         ];
 
