@@ -461,7 +461,6 @@ class PosController extends Controller
                 // }
 
                 $preAcceptance = self::sendPreAcceptanceSingle($order); // return output or error
-                dd($preAcceptance);
                 if (!$preAcceptance)
                     return response()->json($data);
 
@@ -716,7 +715,6 @@ class PosController extends Controller
             "pickupDate" => $next9AM
         ];
 
-        dd($body, $ConfigPoslaju);
         try {
             $response = $client->post($url, [
                 'headers' => $headers,
