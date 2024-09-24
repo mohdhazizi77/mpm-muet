@@ -99,7 +99,7 @@ $(document).ready(function () {
                                 // '<a href="/candidate/'+data+'/printpdf" data-id='+data+' class="btn btn-soft-info waves-effect text-black mx-2 modalVerify">' +
                                 '<button data-type="SELF_PRINT" type="button" data-id=' + data + ' class="btn btn-soft-info waves-effect text-black mx-2 modalVerify" data-bs-toggle="modal" data-bs-target="#' + modalMPM + '">' +
                                 '<i class="ri-printer-line label-icon align-middle fs-16 me-2"></i>' +
-                                'PDF SELF PRINT4' +
+                                'PDF SELF PRINT' +
                                 '</button>'
 
                             buttonPrintMPM =
