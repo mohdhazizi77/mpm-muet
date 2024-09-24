@@ -639,42 +639,48 @@ class PosController extends Controller
         $ConfigPoslaju = ConfigPoslaju::first();
 
         $client = new Client();
-        $url = $ConfigPoslaju->url . '/as2corporate/preacceptancessingle/v1/Tracking.PreAcceptance.WebApi/api/PreAcceptancesSingle';
+        $url = $ConfigPoslaju->url . '/as2corporate/preacceptancessingle/v1/Tracking.PreAcceptance.WebApi/api/PreAcceptancesSingle'; //fix domain from documentation
 
         $headers = [
             'Content-Type' => 'application/json',
             'Authorization' => 'Bearer ' . $bearerToken,
         ];
 
+        //pickup date tomorrow at 9; if friday or weekend set pickup on moday at 9 am
+        $next9AM = Carbon\Carbon::now()->isWeekend() || Carbon\Carbon::now()->isFriday()
+                ? Carbon\Carbon::now()->next(Carbon\Carbon::MONDAY)
+                : Carbon\Carbon::tomorrow();
+
         $body = [
-            // "subscriptionCode" => "ECON001",
-            "subscriptionCode" => "qaily@mpm.edu.my", //need to confirm back
-            "requireToPickup" => false, //need to confirm back
+            // "subscriptionCode" => "qaily@mpm.edu.my",
+            // "accountNo" => 4681526086,
+
+            "subscriptionCode" => $ConfigPoslaju->subscriptionCode,
+            "requireToPickup" => true, //need to confirm back
             "requireWebHook" => false, //need to confirm back
-            // "accountNo" => 9999999999, //need to confirm back
-            "accountNo" => 4681526086,
-            "callerName" => "SUB(PSM)",
-            "callerPhone" => "0361261600",
-            "pickupLocationID" => ".", //Merchants Unique Register ID
-            "pickupLocationName" => ".",
-            "contactPerson" => ".",
-            "phoneNo" => "0361261600",
-            "pickupAddress" => "Majlis Peperiksaan Malaysia, Persiaran 1, Bandar Baru Selayang",
-            "pickupDistrict" => "Batu Caves",
-            "pickupProvince" => "Selangor",
+            "accountNo" => $ConfigPoslaju->accountNo, //need to confirm back
+            "callerName" => $ConfigPoslaju->callerName,
+            "callerPhone" => $ConfigPoslaju->callerPhone,
+            "pickupLocationID" => $ConfigPoslaju->pickupLocationID, //Merchants Unique Register ID ?
+            "pickupLocationName" => $ConfigPoslaju->pickupLocationName,
+            "contactPerson" => $ConfigPoslaju->contactPerson,
+            "phoneNo" => $ConfigPoslaju->phoneNo,
+            "pickupAddress" => $ConfigPoslaju->pickupAddress,
+            "pickupDistrict" => $ConfigPoslaju->pickupDistrict,
+            "pickupProvince" => $ConfigPoslaju->pickupProvince,
             "pickupCountry" => "MY",
             "pickupLocation" => "",
-            "pickupEmail" => "muet@mpm.edu.my",
-            "postCode" => 68100,
+            "pickupEmail" => $ConfigPoslaju->pickupEmail,
+            "postCode" => $ConfigPoslaju->postCode,
             "ItemType" => 2,
             "Amount" => "0",
             "totalQuantityToPickup" => 1,
             "totalWeight" => 0.5,
             "ConsignmentNoteNumber" => $order->tracking_number,
-            "CreatedDate" => "26052022: 11:47:21",
+            "CreatedDate" => Carbon::now()->format('Y-m-d H:i:s'),
             "PaymentType" => 2,
-            "readyToCollectAt" => "11:30 AM",
-            "closeAt" => "05:00 PM",
+            "readyToCollectAt" => $ConfigPoslaju->readyToCollectAt,
+            "closeAt" => $ConfigPoslaju->closeAt,
             "receiverName" => $order->name,
             "receiverID" => "",
             "receiverAddress" => $order->address1,
@@ -705,8 +711,9 @@ class PosController extends Controller
             "postalCode" => "",
             "currency" => "MYR",
             "countryCode" => "MY",
-            "pickupDate" => ""
+            "pickupDate" => $next9AM
         ];
+
 
         try {
             $response = $client->post($url, [

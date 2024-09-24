@@ -324,27 +324,10 @@ class PaymentController extends Controller
         if ($request->status == "SUCCESS") {
 
             $order->payment_status = 'SUCCESS';
-            // $order->current_status = 'SUCCESS';
-            // SELF_PRINT
-            // MPM_PRINT
+            // SELF_PRINT @ MPM_PRINT
             $data = json_decode($request->extra_data, 1);
 
             try {
-                // $payment = new Payment();
-                // $payment->order_id = $order->id;
-                // $payment->payment_date = $request->txn_time;
-                // $payment->method = $request->type;
-                // $payment->amount = $request->amount;
-                // $payment->status = $request->status;
-                // $payment->txn_id = $request->txn_id;
-                // $payment->ref_no = $request->ref_no;
-                // $payment->cust_info = serialize(array("full_name" => $request->full_name, "email" => $request->email, "phoneNum" => $request->phone));
-                // $payment->receipt = $request->receipt;
-                // $payment->receipt_number = $request->receipt_number;
-                // $payment->error_message = "";
-                // $payment->payment_for = $order->payment_for;
-                // $payment->type = $order->type;
-                // $payment->save();
                 sleep(3);
                 $payment = Payment::updateOrCreate(
                     ['ref_no' => $request->ref_no],
@@ -364,44 +347,12 @@ class PaymentController extends Controller
                     ]
                 );
 
-                // $payment = Payment::updateOrCreate(
-                //     [
-                //         'order_id' => $order->id,
-                //     ],
-                //     [
-                //         'payment_date' =>$request->txn_time,
-                //         'method' => $request->type,
-                //         'amount' => $request->amount,
-                //         'status' => $request->status,
-                //         'txn_id' => $request->txn_id,
-                //         'ref_no' => $request->ref_no,
-                //         'cust_info' => serialize(array("full_name"=>$request->full_name, "email"=>$request->email, "phoneNum"=>$request->phone)),
-                //         'receipt' => $request->receipt,
-                //         'receipt_number' =>$request->receipt_number,
-                //         'error_message' => "",
-                //         'payment_for' => $order->payment_for,
-                //         'type' => $order->type,
-                //     ]
-                // );
-
                 if ($order->payment_for == 'MPM_PRINT') {
-
-                    // $track = new TrackingOrder();
-                    // $track->order_id = $order->id;
-                    // $track->detail = 'Payment made';
-                    // $track->status = 'PAID';
-                    // $track->save();
 
                     TrackingOrder::firstOrCreate(
                         ['order_id' => $order->id, 'status' => 'PAID'],
                         ['detail' => 'Payment made']
                     );
-
-                    // $track = new TrackingOrder();
-                    // $track->order_id = $order->id;
-                    // $track->detail = 'Admin received order';
-                    // $track->status = 'NEW';
-                    // $track->save();
 
                     TrackingOrder::firstOrCreate(
                         ['order_id' => $order->id, 'status' => 'NEW'],
@@ -411,11 +362,6 @@ class PaymentController extends Controller
                     $order->current_status = 'NEW';
                 } elseif ($order->payment_for == 'SELF_PRINT') {
 
-                    // $track = new TrackingOrder();
-                    // $track->order_id = $order->id;
-                    // $track->detail = 'Payment made';
-                    // $track->status = 'PAID';
-                    // $track->save();
 
                     TrackingOrder::firstOrCreate(
                         ['order_id' => $order->id, 'status' => 'PAID'],
@@ -440,7 +386,6 @@ class PaymentController extends Controller
                     throw $e;
                 }
             }
-            // dd($order, $payment);
 
             //order received once payment success
             try {
