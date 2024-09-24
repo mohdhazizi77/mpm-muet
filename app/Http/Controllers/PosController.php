@@ -287,6 +287,7 @@ class PosController extends Controller
                 $order->tracking_number = $connote['con_note'];
                 // $order->tracking_number = "ER".$order->unique_order_id."MY";
                 $order->current_status = "PROCESSING";
+                $order->approved_at = Carbon::now();
 
                 $tracking = new TrackingOrder();
                 $tracking->order_id = $order->id;
@@ -313,6 +314,7 @@ class PosController extends Controller
                 return response()->json($data);
 
             $order->current_status = "COMPLETED";
+            $order->completed_at = Carbon::now();
             $order->consignment_note = $preAcceptance->pdf;
 
             $tracking = new TrackingOrder();

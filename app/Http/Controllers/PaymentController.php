@@ -152,7 +152,7 @@ class PaymentController extends Controller
         //sanitize name
         $name = preg_replace('/[^A-Za-z0-9 ]/', '', $request->name);
         $phone_num = '0' . $request->phone_num;
-        
+
         // $url = 'https://ebayar-lab.mpm.edu.my/api/payment/create';
         // $token = 'a2aWmIGjPSVZ8F3OvS2BtppKM2j6TKvKXE7u8W7MwbkVyZjwZfSYdNP5ACem';
         // $secret_key = '1eafc1e9-df86-4c8c-a3de-291ada259ab0';
@@ -423,6 +423,7 @@ class PaymentController extends Controller
                     );
 
                     $order->current_status = 'PAID';
+                    $order->completed_at = Carbon::now();
                 }
 
                 try {
