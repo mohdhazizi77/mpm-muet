@@ -461,6 +461,7 @@ class PosController extends Controller
                 // }
 
                 $preAcceptance = self::sendPreAcceptanceSingle($order); // return output or error
+                dd($preAcceptance);
                 $dataR = json_decode($preAcceptance->getContent(), true); // Pass true to get an associative array
 
                 if (isset($dataR['error'])){
