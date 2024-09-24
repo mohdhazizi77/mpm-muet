@@ -419,13 +419,23 @@ class OrderController extends Controller
         }
         if (!empty($output->data)) {
             curl_close($curl);
-            $order->update(
-                [
-                    'payment_status' => $output->data->txn_status,
-                    // 'current_status' => $output->data->txn_status,
-                    'payment_ref_no' => $output->data->ref_no,
-                ]
-            );
+            if (in_array($output->data->txn_status, ['FAILED'])) {
+                $order->update(
+                    [
+                        'payment_status' => $output->data->txn_status,
+                        'current_status' => $output->data->txn_status,
+                        'payment_ref_no' => $output->data->ref_no,
+                    ]
+                );
+            }else{
+                $order->update(
+                    [
+                        'payment_status' => $output->data->txn_status,
+                        // 'current_status' => $output->data->txn_status,
+                        'payment_ref_no' => $output->data->ref_no,
+                    ]
+                );
+            }
 
             $cust_info = [
                 'full_name' => $output->data->full_name,
