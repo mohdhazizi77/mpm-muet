@@ -26,6 +26,9 @@ class Order extends Model
         "mod_calon_id",
         "tracking_number",
         "consigment_note",
+        "approved_at",
+        "complete_at",
+        "consigment_note",
     ];
 
     public function certificate()
