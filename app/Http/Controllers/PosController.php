@@ -716,7 +716,7 @@ class PosController extends Controller
             "pickupDate" => $next9AM
         ];
 
-        dd($body);
+        dd($body, $ConfigPoslaju);
         try {
             $response = $client->post($url, [
                 'headers' => $headers,
