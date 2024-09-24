@@ -113,7 +113,7 @@ $(document).ready(function() {
             ],
             // dom: 'frtp',
             pageLength: 10,
-            order: [[0, "asc"]],
+            // order: [[0, "asc"]],
             buttons: {
                 dom: {
                     button: {
@@ -148,6 +148,20 @@ $(document).ready(function() {
             drawCallback: function() {
                 // Initialize tooltips after the table is drawn
                 $('[data-toggle="tooltip"]').tooltip();
+            },
+            columnDefs: [
+                {
+                    // Set first column to be the row number
+                    "targets": 0,
+                    "data": null,
+                    "defaultContent": "",
+                    "orderable": false // Disable sorting for this column
+                }
+            ],
+            order: [[1, 'asc']], // Order by the second column by default
+            rowCallback: function(row, data, index) {
+                // Display the row number in the first column
+                $('td:eq(0)', row).html(index + 1);
             }
         });
     }
@@ -173,14 +187,14 @@ $(document).ready(function() {
     $(document).on('click', '.modalVerify', function() {
         $('#indexNumber').val('')
         var certID = $(this).data('id');
-        console.log("Modal Verify Button Clicked");
+        // console.log("Modal Verify Button Clicked");
         var type = $(this).data('type');
-        console.log(type, certID);
+        // console.log(type, certID);
 
             $(document).off('click', '#verifyIndexNumber').on('click', '#verifyIndexNumber', function(){
             var indexNum = $('#indexNumber').val();
 
-            console.log(type, certID, indexNum);
+            // console.log(type, certID, indexNum);
 
             // Perform AJAX request to check the index number
             $.ajax({
@@ -194,14 +208,14 @@ $(document).ready(function() {
                 success: function(response) {
                     if (response.success) {
                         // If index number is valid, redirect or perform further actions
-                        console.log(response)
+                        // console.log(response)
                         if (type == "MPM_PRINT") {
                             window.location.href = '/candidate/pos-result/'+response.id;
                         }else{ //SELF_PRINT
                             window.location.href = '/candidate/view-result/'+response.id;
                         }
                     } else {
-                        console.log(response)
+                        // console.log(response)
 
                         // If index number is invalid, show SweetAlert error
                         Swal.fire({
@@ -236,6 +250,11 @@ $(document).ready(function() {
           });
     })
 
+    $('#indexNumber').on('keyup', function() {
+        // Get the value, convert it to uppercase, and set it back
+        var uppercaseValue = $(this).val().toUpperCase();
+        $(this).val(uppercaseValue);
+    });
 });
 
 $(document).ready(function() {
@@ -332,29 +351,15 @@ $(document).ready(function() {
                 { data: 'identity_card_number', name: 'identity_card_number' },
                 { data: 'action', name: 'action', orderable: false, searchable: false }
             ],
-            pageLength: 50,
+            pageLength: 10,
             order: [[0, "asc"]],
             responsive: true,
-            autoWidth: false,
-            searching: true,
-            lengthChange: false,
-
+            autoWidth: false
         });
 
-        // Add event listener to the search input field
-        // Add event listener to the search input field
-        $('#dt-search-0').on('input', function () {
-            var searchTerm = $(this).val();
-
-            // Clear any previous search
-            table.columns().search('');
-
-            // Search on column 1 (name) and column 2 (identity_card_number)
-            table
-                .column(1).search(searchTerm)  // Search in the "name" column
-                .column(2).search(searchTerm)  // Search in the "identity_card_number" column
-                .draw();                       // Redraw the DataTable
-        });
+        if ($('.dt-search').length) {
+            $('.dt-search').show()
+        }
 
         $(document).on('click', '#show_edit_modal', function(e) {
             e.preventDefault();
