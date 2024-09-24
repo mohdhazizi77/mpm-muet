@@ -319,7 +319,7 @@ class PaymentController extends Controller
             die("Hash tidak sah.");
         }
 
-        dd($request->toArray());
+        // dd($request->toArray());
         // add payment record
         if ($request->status == "SUCCESS") {
 
