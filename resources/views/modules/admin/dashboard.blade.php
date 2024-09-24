@@ -58,14 +58,14 @@
 @endsection
 @section('content')
 
-    @role('PENTADBIR')
+    @role('PENTADBIR|PSM|BPKOM')
         <div class="row">
             <div class="col-12">
                 <h5 class="text-decoration-underline mb-3 pb-1">Daily Activity Counts ({{ date('d/m/Y') }})</h5>
             </div>
         </div>
         <div class="row">
-
+            @role('PENTADBIR|PSM')
             <div class="col-xl-3 col-md-3">
                 <div class="card card-animate" style="background-color: #bce6ff">
                     <div class="card-body">
@@ -102,6 +102,8 @@
                     </div>
                 </div>
             </div>
+            @endrole
+            @role('PENTADBIR|BPKOM')
             <div class="col-xl-3 col-md-3">
                 <div class="card card-animate" style="background-color: #bce6ff">
                     <div class="card-body">
@@ -138,6 +140,7 @@
                     </div>
                 </div>
             </div>
+            @endrole
         </div>
         <div class="row">
             <div class="col">

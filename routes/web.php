@@ -118,7 +118,7 @@ Route::group(['middleware' => ['role:PENTADBIR|BPKOM|PSM|FINANCE']], function ()
         Route::get('/pos-management/tracking', [PosController::class, 'trackShipping'])->name('pos.tracking')->middleware('poslaju.token');
         Route::post('/pos-management/tracking/ajax', [PosController::class, 'getAjaxTrackShipping'])->middleware('poslaju.token');
         Route::get('/pos-management/{type}', [PosController::class, 'index'])->middleware('poslaju.token');
-        Route::get('/pos-management/{type}/getPosDetail', [PosController::class, 'getPosDetail']);
+        Route::get('/pos-management/{type}/getPosDetail', [PosController::class, 'getPosDetail'])->name('admin.pos-management.getPosDetail');
         Route::post('/pos-management/{type}/generateExcel', [PosController::class, 'generateExcel']);
         Route::post('/pos-management/{type}/generateExcelPos', [PosController::class, 'generateExcelPos']);
         Route::post('/pos-management/{type}/generateImportExcelPos', [PosController::class, 'generateImportExcelPos']);

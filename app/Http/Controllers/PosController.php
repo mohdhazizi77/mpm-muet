@@ -128,6 +128,7 @@ class PosController extends Controller
                 'order_time' => $order->updated_at->format('H:i:s'),
                 'consignment_note' => $order->consignment_note,
                 'details'    => $order->type . " | Session " . $calon->sidang . " Year " . $calon->tahun . " | Angka Giliran : " . $calon->index_number($calon),
+                'details'    => $order->type . " | " . str_replace('MUET','',$calon->getTarikh->sesi) . " | Angka Giliran : " . $calon->index_number($calon),
                 'index_number'    => $calon->index_number($calon),
                 'candidate_name' => $calon->nama,
                 'tracking_number' => (!empty($order->tracking_number) ? $order->tracking_number : ""),

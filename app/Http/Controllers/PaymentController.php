@@ -149,6 +149,10 @@ class PaymentController extends Controller
             dd($e);
         };
 
+        //sanitize name
+        $name = preg_replace('/[^A-Za-z0-9 ]/', '', $request->name);
+        $phone_num = '0' . $request->phone_num;
+        
         // $url = 'https://ebayar-lab.mpm.edu.my/api/payment/create';
         // $token = 'a2aWmIGjPSVZ8F3OvS2BtppKM2j6TKvKXE7u8W7MwbkVyZjwZfSYdNP5ACem';
         // $secret_key = '1eafc1e9-df86-4c8c-a3de-291ada259ab0';
@@ -164,8 +168,8 @@ class PaymentController extends Controller
         ];
 
         $data = [
-            "full_name" => $request->name,
-            "phone_number" => $request->phone_num,
+            "full_name" => $name,
+            "phone_number" => $phone_num,
             "email_address" => $request->email,
             "nric" => $request->nric,
             "extra_data" => json_encode($extra_data),
@@ -209,9 +213,9 @@ class PaymentController extends Controller
         $order->unique_order_id = self::generateOrderId($exam_type);
         $order->payment_ref_no = $output->ref_no;
         $order->candidate_id = Auth::User()->id;
-        $order->name = $request->name;
+        $order->name = $name;
         $order->email = $request->email;
-        $order->phone_num = $request->phone_num;
+        $order->phone_num = $phone_num;
         $order->payment_for = $request->pay_for;
         $order->address1 = $request->address;
         $order->postcode = $request->postcode;

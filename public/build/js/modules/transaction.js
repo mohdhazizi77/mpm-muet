@@ -1,6 +1,6 @@
-$(document).ready(function() {
+$(document).ready(function () {
 
-    if ($("#transactionTable").length>0) {
+    if ($("#transactionTable").length > 0) {
 
         var tableTrx = $('#transactionTable').DataTable({
             // dom: 'Bfrtip',
@@ -75,7 +75,7 @@ $(document).ready(function() {
                             '<span style="display: block; margin-bottom: 5px;">' + row.candidate_name + '</span>' +
                             '<span style="display: block; margin-bottom: 5px;">NRIC: ' + row.candidate_nric + '</span>' +
                             '<span style="display: block;">' + row.session + '</span>' +
-                        '</div>';
+                            '</div>';
 
                         return html;
                     }
@@ -123,6 +123,17 @@ $(document).ready(function() {
                         return html;
                     }
                 },
+                {
+                    data: 'id',
+                    class: 'text-center',
+                    orderable: false,
+                    searchable: false,
+                    render(data, type, row) {
+                        let btn = '';
+                        btn += '<button type="button" data-id="' + data + '" class="btn btn-info btn-icon waves-effect waves-light me-2 btn-update-pos"><i class="ri-information-line fs-22"></i></button>';
+                        return btn;
+                    }
+                },
                 // {
                 //     data: "ref_no",
                 //     orderable: true,
@@ -135,7 +146,7 @@ $(document).ready(function() {
             ],
             pageLength: 10,
             dom: '<"top"f>rt<"bottom d-flex justify-content-start"<"dataTables_paginate"p><"dataTables_length"l>><"clear">',
-            lengthMenu: [ [10, 25, 50, 100, -1], [10, 25, 50, 100, "All"] ],
+            lengthMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]],
             // order: [[0, "asc"]],
             // buttons: {
             //     dom: {
@@ -165,12 +176,12 @@ $(document).ready(function() {
                 // "infoFiltered": "(tapisan dari _MAX_ rekod)",
                 "processing": "Processing...",
                 // "search": "Carian:",
-                lengthMenu: '<select class="form-select form-select-md" style="margin-left: 10px">'+
-                    '<option value="10">10</option>'+
-                    '<option value="25">25</option>'+
-                    '<option value="50">50</option>'+
-                    '<option value="100">100</option>'+
-                    '<option value="-1">All</option>'+
+                lengthMenu: '<select class="form-select form-select-md" style="margin-left: 10px">' +
+                    '<option value="10">10</option>' +
+                    '<option value="25">25</option>' +
+                    '<option value="50">50</option>' +
+                    '<option value="100">100</option>' +
+                    '<option value="-1">All</option>' +
                     '</select>'
             },
             searching: false,
@@ -182,7 +193,7 @@ $(document).ready(function() {
     $('.btn-print-trx').removeClass('dt-button');
 
     //filter
-    $(document).on('click', '#filterBtnTrx', function (){
+    $(document).on('click', '#filterBtnTrx', function () {
         tableTrx.ajax.reload();
     })
 
@@ -191,7 +202,7 @@ $(document).ready(function() {
     // });
 
     //clear filter
-    $(document).on('click', '#resetBtnTrx', function (){
+    $(document).on('click', '#resetBtnTrx', function () {
         $('#start-date-trx').val('');
         $('#end-date-trx').val('');
         $('#text-search-trx').val('');
@@ -202,7 +213,7 @@ $(document).ready(function() {
         tableTrx.ajax.reload();
     })
 
-    $(document).on('click', '.btnCheckTrx', function(){
+    $(document).on('click', '.btnCheckTrx', function () {
 
         var ref_no = $(this).data('id')
 
@@ -215,7 +226,7 @@ $(document).ready(function() {
             url: './transaction/check',
             type: 'POST',
             data: postData,
-            beforeSend:function(){
+            beforeSend: function () {
                 Swal.fire({
                     title: 'Loading...', // Optional title for the alert
                     allowEscapeKey: false,  // Disables escape key closing the alert
@@ -226,7 +237,7 @@ $(document).ready(function() {
                     }
                 });
             },
-            success: function(response){
+            success: function (response) {
                 Swal.close()
                 if (response.success) {
 
@@ -243,14 +254,14 @@ $(document).ready(function() {
                     Swal.fire("Error!", response.message, "error");
                 }
             },
-            error: function(xhr, status, error){
+            error: function (xhr, status, error) {
                 // Handle error
                 Swal.fire("Error!", "Failed to update data.", "error");
             }
         });
     })
 
-    $(document).on('click', '#button-export-xlsx-trans', function (){
+    $(document).on('click', '#button-export-xlsx-trans', function () {
         const textSearch = $('#text-search-trx').val();
         const startDate = $('#start-date-trx').val();
         const endDate = $('#end-date-trx').val();
@@ -268,7 +279,7 @@ $(document).ready(function() {
         window.location.href = url;
     });
 
-    $(document).on('click', '#button-export-pdf-trans', function (){
+    $(document).on('click', '#button-export-pdf-trans', function () {
         const textSearch = $('#text-search-trx').val();
         const startDate = $('#start-date-trx').val();
         const endDate = $('#end-date-trx').val();

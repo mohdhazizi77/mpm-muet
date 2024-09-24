@@ -68,7 +68,7 @@ $(document).ready(function () {
             //     // Add index number
             //     $('td:eq(1)', row).html(index + 1);
             // },
-            dom: 'frtp',
+            // dom: 'frtp',
             pageLength: 10,
             order: [[0, "asc"]],
             // buttons: {
@@ -102,6 +102,8 @@ $(document).ready(function () {
             },
             searching: true,
             lengthChange: true,
+            lengthMenu: [ [10, 25, 50, 100, 500], [10, 25, 50, 100, 500] ], // Number of records per page
+            pageLength: 10, // Default number of records per page
             // scrollX: true,
             // initComplete: function(settings, json) {
             //     $('.dt-scroll-body thead').css('visibility', 'visible');
@@ -237,9 +239,13 @@ $(document).ready(function () {
 
     $(document).on('click', '.btn-update-pos', function () {
 
+        var url = './new/getPosDetail';
+        if ($("#url-view-order").length > 0) {
+            url = $("#url-view-order").val();
+        }
         var recordId = $(this).data('id');
         $.ajax({
-            url: './new/getPosDetail', // Replace with your endpoint
+            url: url, // Replace with your endpoint
             method: 'GET',
             data: { id: recordId },
             beforeSend: function () {
@@ -364,8 +370,10 @@ $(document).ready(function () {
                     visible: false,
                 },
             ],
-            dom: 'frtp',
+            // dom: 'frtp',
             pageLength: 10,
+            lengthMenu: [ [10, 25, 50, 100, 500], [10, 25, 50, 100, 500] ], // Number of records per page
+            pageLength: 10, // Default number of records per page
             // order: [[0, "asc"]],
             // buttons: {
             //     dom: {
@@ -629,8 +637,10 @@ $(document).ready(function () {
                 }
 
             ],
-            dom: 'frtp',
+            // dom: 'frtp',
             pageLength: 10,
+            lengthMenu: [ [10, 25, 50, 100, 500], [10, 25, 50, 100, 500] ], // Number of records per page
+            pageLength: 10, // Default number of records per page
             // order: [[0, "asc"]],
             // buttons: {
             //     dom: {
@@ -1517,7 +1527,7 @@ $(document).ready(function () {
                 "type": "POST",
                 "data": function (d) {
                     d._token = $('meta[name="csrf-token"]').attr('content'),
-                    d.trackNo = $('#trackingNo').val()
+                        d.trackNo = $('#trackingNo').val()
                 }
             },
             columns: [

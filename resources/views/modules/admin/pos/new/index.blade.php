@@ -220,7 +220,7 @@
 
                                                 <div class="modal-footer ">
                                                     <a href="javascript:void(0);" class="btn btn-outline-danger link-danger fw-medium float-start" data-bs-dismiss="modal"><i class="ri-close-line me-1 align-middle"></i>Close</a>
-                                                    <button type="button" class="btn btn-outline-warning float-end btn-cancel-pos">Cancel</button>
+                                                    {{-- <button type="button" class="btn btn-outline-warning float-end btn-cancel-pos">Cancel</button> --}}
                                                     <button type="button" class="btn btn-outline-success float-end btn-approve-new">Approve</button>
                                                 </div>
                                         </div><!-- /.modal-content -->

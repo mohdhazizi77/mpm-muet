@@ -104,7 +104,7 @@
                         <div class="col-xxl-12 align-self-center">
 
                             <div class="">
-
+                                <input type="hidden" id="url-view-order" value="{{ route('admin.pos-management.getPosDetail',['type' => 'new']) }}" />
                                 <table id="transactionTable" class="table w-100 table-striped text-center dt-responsive nowrap dataTable"
                                     style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                                     <thead>
@@ -115,6 +115,8 @@
                                         <th scope="col">TRANSACTION TYPE</th>
                                         <th scope="col">TRANSACTION DETAIL</th>
                                         <th scope="col">STATUS</th>
+                                        <th scope="col">ACTION</th>
+                                        
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -132,7 +134,7 @@
         </div>
         <!--end col-->
     </div>
-
+    @include('modules.admin.pos.completed.modal.updated')
 @endsection
 @section('script')
 

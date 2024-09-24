@@ -237,9 +237,13 @@ $(document).ready(function () {
 
     $(document).on('click', '.btn-update-pos', function () {
 
+        var url = './new/getPosDetail';
+        if ($("#url-view-order").length > 0) {
+            url = $("#url-view-order").val();
+        }
         var recordId = $(this).data('id');
         $.ajax({
-            url: './new/getPosDetail', // Replace with your endpoint
+            url: url, // Replace with your endpoint
             method: 'GET',
             data: { id: recordId },
             beforeSend: function () {
@@ -1517,7 +1521,7 @@ $(document).ready(function () {
                 "type": "POST",
                 "data": function (d) {
                     d._token = $('meta[name="csrf-token"]').attr('content'),
-                    d.trackNo = $('#trackingNo').val()
+                        d.trackNo = $('#trackingNo').val()
                 }
             },
             columns: [
