@@ -647,9 +647,9 @@ class PosController extends Controller
         ];
 
         //pickup date tomorrow at 9; if friday or weekend set pickup on moday at 9 am
-        $next9AM = Carbon\Carbon::now()->isWeekend() || Carbon\Carbon::now()->isFriday()
-                ? Carbon\Carbon::now()->next(Carbon\Carbon::MONDAY)
-                : Carbon\Carbon::tomorrow();
+        $next9AM = Carbon::now()->isWeekend() || Carbon::now()->isFriday()
+                ? Carbon::now()->next(Carbon::MONDAY)
+                : Carbon::tomorrow();
 
         $body = [
             // "subscriptionCode" => "qaily@mpm.edu.my",
