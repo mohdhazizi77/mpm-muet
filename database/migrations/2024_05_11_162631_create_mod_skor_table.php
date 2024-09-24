@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id();
             $table->integer('tahun');
             $table->integer('sidang');
-            $table->string('kp');
             $table->string('kodnegeri');
             $table->string('kodpusat');
             $table->string('nocalon');
