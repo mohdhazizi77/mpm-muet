@@ -461,28 +461,32 @@ class PosController extends Controller
                 // }
 
                 $preAcceptance = self::sendPreAcceptanceSingle($order); // return output or error
-                if (!$preAcceptance)
+
+                if (isset($preAcceptance->TransactionID)) {
+                    $order->consignment_note = $preAcceptance->pdf;
+                    $order->current_status = "COMPLETED";
+
+                    $tracking = new TrackingOrder();
+                    $tracking->order_id = $order->id;
+                    $tracking->detail = "Transaction completed and Certificate out for shipment";
+                    $tracking->status = "COMPLETED";
+                    $tracking->save();
+
+                    try {
+                        Notification::route('mail', $order->email)
+                            ->notify(new OrderCompletedNotification($order));
+                    } catch (\Exception $e) {
+                        \Log::error('Error sending email notification: ' . $e->getMessage());
+                    }
+
+                } else {
+                    $dataR = json_decode($preAcceptance->getContent(), true); // Pass true to get an associative array
+                    // Access the specific error message
+                    $data['error'] = $dataR['error'] ?? null;
+
                     return response()->json($data);
-
-                $order->consignment_note = $preAcceptance->pdf;
-                $order->current_status = "COMPLETED";
-
-                $tracking = new TrackingOrder();
-                $tracking->order_id = $order->id;
-                $tracking->detail = "Transaction completed and Certificate out for shipment";
-                $tracking->status = "COMPLETED";
-                $tracking->save();
-
-                try {
-                    Notification::route('mail', $order->email)
-                        ->notify(new OrderCompletedNotification($order));
-                } catch (\Exception $e) {
-                    \Log::error('Error sending email notification: ' . $e->getMessage());
                 }
 
-            } else {
-                // Default case
-                // You can add code here if needed
             }
             $order->save();
         }
