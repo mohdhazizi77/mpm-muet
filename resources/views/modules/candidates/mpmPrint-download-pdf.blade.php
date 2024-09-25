@@ -150,10 +150,10 @@
     }
 </style>
 
-<body>
+<body style="padding-top: 0; margin-top: 0;">
 
-    <div id="page-1" style="padding-left: 10%; padding-right: 10%;">
-        <div class="row logo-container" style="text-align: center; padding-top: 90px">
+    <div id="page-1" style="padding-left: 10%; padding-right: 10%; padding-top: 0; margin-top: 0;">
+        <div class="row logo-container" style="text-align: center; padding-top: 0; margin-top: 0;">
             {{-- <span style="padding-right: 10px">
                 <img style="width: 100px" src="data:image/jpg;base64,{{ $image1Data }}" alt="Logo1">
             </span>
@@ -161,7 +161,7 @@
                 <img style="width: 80px;height: auto;" src="data:image/jpg;base64,{{ $image2Data }}" alt="Logo">
             </span> --}}
         </div>
-        <div id="title_session" style="text-align: center; padding-top: 7cm;">
+        <div id="title_session" style="text-align: center; margin-top: 0; padding-top: 8cm;">
             {{-- <span style="font-size: 15pt; font-weight: bolder">MAJLIS PEPERIKSAAN MALAYSIA</span><br>
             <span style="font-size: 12pt; font-weight: bold">MALAYSIAN EXAMINATIONS COUNCIL</span>
             <p style="font-size: 10pt">This is to certify that the below candidate has sat for the</p>
@@ -251,9 +251,9 @@
                                     <td style="font-size: 10px;">{{ $result["issue_date"] }}</td>
                                 </tr>
                                 <tr>
-                                    <td style="font-size: 14px; font-weight: bold;">Date of expiry</td>
-                                    <td style="font-size: 14px; font-weight: bold;">:</td>
-                                    <td style="font-size: 14px; font-weight: bold;">{{ $result["exp_date"] }}</td>
+                                    <td style="font-size: 10px; font-weight: bold;">Date of expiry</td>
+                                    <td style="font-size: 10px; font-weight: bold;">:</td>
+                                    <td style="font-size: 10px; font-weight: bold;">{{ $result["exp_date"] }}</td>
                                 </tr>
                             </table>
                         </div>
