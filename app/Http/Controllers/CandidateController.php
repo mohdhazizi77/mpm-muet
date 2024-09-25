@@ -310,7 +310,7 @@ class CandidateController extends Controller
                 "speaking" => 45,
                 "reading" => 120,
                 "writing" => 90,
-                "agg_score" => 360,
+                "agg_score" => 300,
             ];
         } else { // lees than 2008
             $scheme = [
@@ -318,7 +318,7 @@ class CandidateController extends Controller
                 "speaking" => 45,
                 "reading" => 135,
                 "writing" => 75,
-                "agg_score" => 360,
+                "agg_score" => 300,
             ];
         }
 
@@ -381,7 +381,7 @@ class CandidateController extends Controller
                     "speaking" => 45,
                     "reading" => 120,
                     "writing" => 90,
-                    "agg_score" => 360,
+                    "agg_score" => 300,
                 ];
             } else { // lees than 2008
                 $scheme = [
@@ -389,7 +389,7 @@ class CandidateController extends Controller
                     "speaking" => 45,
                     "reading" => 135,
                     "writing" => 75,
-                    "agg_score" => 360,
+                    "agg_score" => 300,
                 ];
             }
 
@@ -451,7 +451,7 @@ class CandidateController extends Controller
     //                 "speaking" => 45,
     //                 "reading" => 120,
     //                 "writing" => 90,
-    //                 "agg_score" => 360,
+    //                 "agg_score" => 300,
     //             ];
     //         } else { // lees than 2008
     //             $scheme = [
@@ -459,7 +459,7 @@ class CandidateController extends Controller
     //                 "speaking" => 45,
     //                 "reading" => 135,
     //                 "writing" => 75,
-    //                 "agg_score" => 360,
+    //                 "agg_score" => 300,
     //             ];
     //         }
 
@@ -534,7 +534,7 @@ class CandidateController extends Controller
                     "speaking" => 45,
                     "reading" => 120,
                     "writing" => 90,
-                    "agg_score" => 360,
+                    "agg_score" => 300,
                 ];
             } else { // lees than 2008
                 $scheme = [
@@ -542,7 +542,7 @@ class CandidateController extends Controller
                     "speaking" => 45,
                     "reading" => 135,
                     "writing" => 75,
-                    "agg_score" => 360,
+                    "agg_score" => 300,
                 ];
             }
             $url = config('app.url') . '/verify/result/' . $cryptId; // Replace with your URL or data /verify/result/{id}
@@ -654,7 +654,7 @@ class CandidateController extends Controller
                 "speaking" => 45,
                 "reading" => 120,
                 "writing" => 90,
-                "agg_score" => 360,
+                "agg_score" => 300,
             ];
         } else { // lees than 2008
             $scheme = [
@@ -662,7 +662,7 @@ class CandidateController extends Controller
                 "speaking" => 45,
                 "reading" => 135,
                 "writing" => 75,
-                "agg_score" => 360,
+                "agg_score" => 300,
             ];
         }
 
@@ -852,7 +852,7 @@ class CandidateController extends Controller
                 "speaking" => 45,
                 "reading" => 120,
                 "writing" => 90,
-                "agg_score" => 360,
+                "agg_score" => 300,
             ];
         } else { // lees than 2008
             $scheme = [
@@ -860,7 +860,7 @@ class CandidateController extends Controller
                 "speaking" => 45,
                 "reading" => 135,
                 "writing" => 75,
-                "agg_score" => 360,
+                "agg_score" => 300,
             ];
         }
 
@@ -897,7 +897,7 @@ class CandidateController extends Controller
                 "speaking" => 45,
                 "reading" => 120,
                 "writing" => 90,
-                "agg_score" => 360,
+                "agg_score" => 300,
             ];
         } else { // lees than 2008
             $scheme = [
@@ -905,7 +905,7 @@ class CandidateController extends Controller
                 "speaking" => 45,
                 "reading" => 135,
                 "writing" => 75,
-                "agg_score" => 360,
+                "agg_score" => 300,
             ];
         }
 
