@@ -161,17 +161,17 @@
                 <img style="width: 80px;height: auto;" src="data:image/jpg;base64,{{ $image2Data }}" alt="Logo">
             </span> --}}
         </div>
-        <div id="title_session" style="text-align: center; padding-top: 9cm;">
+        <div id="title_session" style="text-align: center; padding-top: 7cm;">
             {{-- <span style="font-size: 15pt; font-weight: bolder">MAJLIS PEPERIKSAAN MALAYSIA</span><br>
             <span style="font-size: 12pt; font-weight: bold">MALAYSIAN EXAMINATIONS COUNCIL</span>
             <p style="font-size: 10pt">This is to certify that the below candidate has sat for the</p>
             <span style="font-size: 12pt; font-weight: bolder">MALAYSIAN UNIVERSITY ENGLISH TEST</span><br> --}}
-            <span style="font-size: 12pt; font-weight: bolder">{{ Str::upper(str_replace("MUET ", "", $tarikh->sesi)) }}</span>
-            <p style="font-size: 10pt">and obtained the following score.</p>
+            <span style="font-size: 16pt; font-weight: bolder">{{ Str::upper(str_replace("MUET ", "", $tarikh->sesi)) }}</span>
+            <p style="font-size: 12pt">and obtained the following score.</p>
         </div>
 
         <div id="student-details">
-            <table style="width: 105%; margin-left: -15px; margin-right: -15px; font-size:16pt">
+            <table style="width: 105%; margin-left: -15px; margin-right: -15px; font-size: 11pt;">
                 <tr>
                     <td>{{ strtoupper($candidate->nama) }}</td>
                 </tr>
@@ -182,7 +182,7 @@
             </table>
         </div>
         <div id="score">
-            <table style="text-align: center; width: 105%; margin-left: -15px; margin-right: -15px; border-collapse: collapse;font-size: 10pt">
+            <table style="text-align: center; width: 105%; margin-left: -15px; margin-right: -15px; border-collapse: collapse; font-size: 11pt;">
                 <tr>
                     <td style="border: 1px solid black;">Test Component</td>
                     <td style="border: 1px solid black;">Maximum Score</td>
@@ -219,8 +219,8 @@
         <div id="band">
             <table style="text-align: center; width: 105%; margin-left: -15px; margin-right: -15px; border-collapse: collapse">
                 <tr>
-                    <th style="border: 1px solid black;text-align: left; padding-left: 5px">BAND ACHIEVED</th>
-                    <th width="33%" style="border: 1px solid black; background-color: white">{{ $result["band"] }}
+                    <th style="font-size: 13pt; border: 1px solid black;text-align: left; padding-left: 5px">BAND ACHIEVED</th>
+                    <th width="33%" style="font-size: 13pt; border: 1px solid black; background-color: white">{{ $result["band"] }}
                     </th>
                 </tr>
             </table>
@@ -246,9 +246,9 @@
                         <div style="float: right;">
                             <table>
                                 <tr>
-                                    <td style="font-size: 14px;">Date of issue</td>
-                                    <td style="font-size: 14px;">:</td>
-                                    <td style="font-size: 14px;">{{ $result["issue_date"] }}</td>
+                                    <td style="font-size: 10px;">Date of issue</td>
+                                    <td style="font-size: 10px;">:</td>
+                                    <td style="font-size: 10px;">{{ $result["issue_date"] }}</td>
                                 </tr>
                                 <tr>
                                     <td style="font-size: 14px; font-weight: bold;">Date of expiry</td>
