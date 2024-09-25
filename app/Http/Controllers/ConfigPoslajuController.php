@@ -61,7 +61,7 @@ class ConfigPoslajuController extends Controller
         }
 
         $configPoslaju = ConfigPoslaju::updateOrCreate(
-            ['username' => $request->input('username')], // Unique field to identify the record
+            ['id' => 1], // Unique field to identify the record
             $request->all()
         );
 
