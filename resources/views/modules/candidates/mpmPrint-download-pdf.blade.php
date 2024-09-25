@@ -153,7 +153,7 @@
 <body>
 
     <div id="page-1" style="padding-left: 10%; padding-right: 10%;">
-        <div class="row logo-container" style="text-align: center; padding-top: 60px">
+        <div class="row logo-container" style="text-align: center; padding-top: 20px">
             {{-- <span style="padding-right: 10px">
                 <img style="width: 100px" src="data:image/jpg;base64,{{ $image1Data }}" alt="Logo1">
             </span>
@@ -161,7 +161,7 @@
                 <img style="width: 80px;height: auto;" src="data:image/jpg;base64,{{ $image2Data }}" alt="Logo">
             </span> --}}
         </div>
-        <div id="title_session" style="text-align: center; padding-top: 9cm;">
+        <div id="title_session" style="text-align: center; padding-top: 5cm;">
             {{-- <span style="font-size: 15pt; font-weight: bolder">MAJLIS PEPERIKSAAN MALAYSIA</span><br>
             <span style="font-size: 12pt; font-weight: bold">MALAYSIAN EXAMINATIONS COUNCIL</span>
             <p style="font-size: 10pt">This is to certify that the below candidate has sat for the</p>
