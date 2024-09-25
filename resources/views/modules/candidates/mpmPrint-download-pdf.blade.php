@@ -189,24 +189,24 @@
                     <td width="33%" style="border: 1px solid black;font-size:11pt !important;">Obtained Score</td>
                 </tr>
                 <tr>
-                    <td style="border: 1px solid black; border-top: 0; border-bottom: 0;text-align: left;padding-left: 5px;font-size:11pt !important;"> LISTENING</td>
-                    <td style="border: 1px solid black; border-top: 0; border-bottom: 0;font-size:11pt !important;">{{ $scheme["listening"] }}</td>
-                    <td width="33%" style="border: 1px solid black; border-top: 0; border-bottom: 0;font-size:11pt !important;"> {{ $result["listening"] }}</td>
+                    <td style="border: 1px solid black; border-top: 0; border-bottom: 0;text-align: left;padding-left: 5px;font-size:10pt !important;"> LISTENING</td>
+                    <td style="border: 1px solid black; border-top: 0; border-bottom: 0;font-size:10pt !important;">{{ $scheme["listening"] }}</td>
+                    <td width="33%" style="border: 1px solid black; border-top: 0; border-bottom: 0;font-size:10pt !important;"> {{ $result["listening"] }}</td>
                 </tr>
                 <tr>
-                    <td style="border: 1px solid black; border-top: 0; border-bottom: 0;text-align: left;padding-left: 5px;font-size:11pt !important;"> SPEAKING</td>
-                    <td style="border: 1px solid black; border-top: 0; border-bottom: 0;font-size:11pt !important;">{{ $scheme["speaking"] }}</td>
-                    <td width="33%" style="border: 1px solid black; border-top: 0; border-bottom: 0;font-size:11pt !important;"> {{ $result["speaking"] }}</td>
+                    <td style="border: 1px solid black; border-top: 0; border-bottom: 0;text-align: left;padding-left: 5px;font-size:10pt !important;"> SPEAKING</td>
+                    <td style="border: 1px solid black; border-top: 0; border-bottom: 0;font-size:10pt !important;">{{ $scheme["speaking"] }}</td>
+                    <td width="33%" style="border: 1px solid black; border-top: 0; border-bottom: 0;font-size:10pt !important;"> {{ $result["speaking"] }}</td>
                 </tr>
                 <tr>
-                    <td style="border: 1px solid black; border-top: 0; border-bottom: 0;text-align: left;padding-left: 5px;font-size:11pt !important;"> READING</td>
-                    <td style="border: 1px solid black; border-top: 0; border-bottom: 0;font-size:11pt !important;">{{ $scheme["reading"] }}</td>
-                    <td width="33%" style="border: 1px solid black; border-top: 0; border-bottom: 0;font-size:11pt !important;"> {{ $result["reading"] }}</td>
+                    <td style="border: 1px solid black; border-top: 0; border-bottom: 0;text-align: left;padding-left: 5px;font-size:10pt !important;"> READING</td>
+                    <td style="border: 1px solid black; border-top: 0; border-bottom: 0;font-size:10pt !important;">{{ $scheme["reading"] }}</td>
+                    <td width="33%" style="border: 1px solid black; border-top: 0; border-bottom: 0;font-size:10pt !important;"> {{ $result["reading"] }}</td>
                 </tr>
                 <tr>
-                    <td style="border: 1px solid black; border-top: 0; border-bottom: 0;text-align: left;padding-left: 5px;font-size:11pt !important;"> WRITING</td>
-                    <td style="border: 1px solid black; border-top: 0; border-bottom: 0;font-size:11pt !important;">{{ $scheme["writing"] }}</td>
-                    <td width="33%" style="border: 1px solid black; border-top: 0; border-bottom: 0;font-size:11pt !important;"> {{ $result["writing"] }}</td>
+                    <td style="border: 1px solid black; border-top: 0; border-bottom: 0;text-align: left;padding-left: 5px;font-size:10pt !important;"> WRITING</td>
+                    <td style="border: 1px solid black; border-top: 0; border-bottom: 0;font-size:10pt !important;">{{ $scheme["writing"] }}</td>
+                    <td width="33%" style="border: 1px solid black; border-top: 0; border-bottom: 0;font-size:10pt !important;"> {{ $result["writing"] }}</td>
                 </tr>
                 <tr>
                     <th style="border: 1px solid black;text-align: left;padding-left: 5px;font-size:11pt !important;">AGGREGATED SCORE</th>
