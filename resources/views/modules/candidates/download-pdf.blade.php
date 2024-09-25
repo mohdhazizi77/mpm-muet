@@ -279,7 +279,7 @@
                         </div>
                     </td>
                     <td style="text-align: right;">
-                        <div style="float: right;">
+                        <div style="float: right;margin-top:10px !important;">
                             <table>
                                 <tr>
                                     <td style="font-size: 10px;">Date of issue</td>
