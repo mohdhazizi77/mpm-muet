@@ -138,10 +138,11 @@ class MuetCalon extends Model
         else if (strpos($id, '+') !== false) {
             // return $number;
             $id = $id;
-        } else {
-            // Convert to float and format to one decimal place
-            $id = number_format((float)$id, 1);
         }
+        // else {
+        //     // Convert to float and format to one decimal place
+        //     $id = number_format((float)$id, 1);
+        // }
 
 
         return array_key_exists($id, $checkingArr) ? $checkingArr[$id] : $id;
