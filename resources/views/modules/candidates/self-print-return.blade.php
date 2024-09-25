@@ -32,6 +32,7 @@
                                                 TRANSACTION REFERENCE: {{ $order->unique_order_id }}
                                             </td>
                                         </tr>
+                                        @if($status == 'SUCCESS')
                                         <tr>
                                             <td colspan="2">
                                                 You may now view your certificate <a href="{{ route('candidate.downloadpdfCandidate', ['id' => $user?->id, 'type' => $order?->type]) }}">HERE</a> 
@@ -42,8 +43,8 @@
                                                 The certificate will be open within 1 day. For more info, kindly email us at
                                                 <a href="mailto:sijil@mpm.edu.my?subject=Order%20Inquiry&body=Please%20attach%20your%20transaction%20reference%20and%20payment%20receipt.">sijil@mpm.edu.my</a> and attach your transaction reference and payment receipt.
                                             </td>
-
                                         </tr>
+                                        @endif
                                     </table>
                                 </div>
                             </div>

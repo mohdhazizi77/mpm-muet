@@ -33,7 +33,7 @@
                                 </tr>
                                 <tr>
                                     <td colspan="2" style="text-align: left;">
-
+                                        @if($status == 'SUCCESS')
                                         Your certificate will be processed and will be shipped
                                         according to the shipping information given. An
                                         automated payment receipt will be sent to your
@@ -41,6 +41,8 @@
                                         <br>
                                         If you have not received your order after seven (7) working days, kindly email us at
                                         <a href="mailto:sijil@mpm.edu.my?subject=Order%20Inquiry&body=Please%20attach%20your%20transaction%20reference%20and%20payment%20receipt.">sijil@mpm.edu.my</a> and attach your transaction reference and payment receipt.
+
+                                        @endif
                                     </td>
                                 </tr>
 
