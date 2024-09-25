@@ -98,7 +98,7 @@
                                                 <div class="input-group" data-input-flag>
                                                     <button class="btn btn-light border" type="button" data-bs-toggle="dropdown" aria-expanded="false"><img src="{{URL::asset('build/images/flags/my.svg')}}" alt="flag img" height="20"
                                                                                                                                                             class="country-flagimg rounded"><span class="ms-2 country-codeno">+60</span></button>
-                                                    <input name="phone_num" type="text" value="{{ old('phone_num') }}" class="form-control rounded-end flag-input" value="" required placeholder="Enter your phone number" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');"/>
+                                                    <input name="phone_num" type="text" value="{{ old('phone_num') }}" class="form-control rounded-end flag-input" value="" required placeholder="Enter your phone number" oninput="this.value = this.value.replace(/[^0-9]/g, '');"/>
                                                     <div class="dropdown-menu w-100">
                                                         <div class="p-2 px-3 pt-1 searchlist-input">
                                                             <input type="text" class="form-control form-control-sm border search-countryList" placeholder="Search country name or country code..."/>
