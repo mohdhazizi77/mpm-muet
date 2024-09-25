@@ -398,6 +398,7 @@ class PaymentController extends Controller
         } else {
             // Payment failed
             $order->payment_status = 'FAILED';
+            $payment = Payment::where('ref_no', $request->ref_no)->first();
         }
 
         $order->save();
