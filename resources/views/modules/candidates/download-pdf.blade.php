@@ -217,9 +217,10 @@
                     <td width="33%" style="border: 1px solid black; border-top: 0; border-bottom: 0; font-size:10pt !important;"> {{ $result['writing'] }}</td>
                 </tr>
                 <tr>
-                    <th style="border: 1px solid black;text-align: left;padding-left: 5px">AGGREGATED SCORE</th>
-                    <th style="border: 1px solid black;">{{ $scheme['agg_score'] }}</th>
-                    <th width="33%" style="border: 1px solid black;">{{ $result['agg_score'] }}</th>
+                    <th style="border: 1px solid black;text-align: left;padding-left: 5px;font-size:10pt !important;">AGGREGATED SCORE</th>
+                    <th style="border: 1px solid black;font-size:10pt !important;">{{ $scheme['agg_score'] }}</th>
+                    <th width="33%" style="border: 1px solid black;font-size:10pt !important;">{{ $result['agg_score'] }}</th>
+                    
                 </tr>
             </table>
         </div>
@@ -273,9 +274,9 @@
                 <tr>
                     <td style="text-align: left">
                         <div style="line-height: 1.0;">
-                            <span style="font-weight: bold; font-size: 12pt;">ADNAN BIN HUSIN</span><br>
-                            <span style="font-size: 10pt;">Chief Executive</span><br>
-                            <span style="font-size: 10pt;">Malaysian Examinations Council</span>
+                            <span style="font-weight: bold; font-size: 12pt  !important;">ADNAN BIN HUSIN</span><br>
+                            <span style="font-size: 11pt !important;">Chief Executive</span><br>
+                            <span style="font-size: 11pt !important;">Malaysian Examinations Council</span>
                         </div>
                     </td>
                     <td style="text-align: right;">
