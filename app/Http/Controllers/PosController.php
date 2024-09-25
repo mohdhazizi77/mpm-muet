@@ -552,8 +552,9 @@ class PosController extends Controller
         $client = new Client();
         $ConfigPoslaju = ConfigPoslaju::first();
         try {
-            // Send a GET request
-            $response = $client->request('GET', $ConfigPoslaju->url . '/as01/gen-connote/v1/api/GConnote', [
+
+            $url = $ConfigPoslaju->url . '/as01/gen-connote/v1/api/GConnote';
+            $param = [
                 'query' => [
                     'numberOfItem' => count($orders),
                     'Prefix' => $ConfigPoslaju->Prefix,
@@ -565,11 +566,14 @@ class PosController extends Controller
                 'headers' => [
                     'Authorization' => 'Bearer ' . $bearerToken,
                 ]
-            ]);
+            ];
+
+            // Send a GET request
+            $response = $client->request('GET', $url , $param);
 
             // Output the response body
             $response = json_decode($response->getBody()->getContents());
-            dd($response);
+            dd($url, $$param, $response);
             if ($response->StatusCode == "01") {
                 return [
                     'success' => true,
