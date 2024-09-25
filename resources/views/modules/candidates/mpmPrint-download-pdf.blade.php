@@ -171,13 +171,13 @@
         </div>
 
         <div id="student-details">
-            <table style="width: 105%; margin-left: -15px; margin-right: -15px; font-size:11pt">
+            <table style="width: 105%; margin-left: -15px; margin-right: -15px; font-size:10pt">
                 <tr>
-                    <td style="font-size:11pt !important;">{{ strtoupper($candidate->nama) }}</td>
+                    <td style="font-size:10pt !important;">{{ strtoupper($candidate->nama) }}</td>
                 </tr>
                 <tr>
-                    <td style="text-align: left;font-size:11pt !important;">{{ $candidate->kp }}</td>
-                    <td style="text-align: right;font-size:11pt !important;">{{ $result["index_number"] }}</td>
+                    <td style="text-align: left;font-size:10pt !important;">{{ $candidate->kp }}</td>
+                    <td style="text-align: right;font-size:10pt !important;">{{ $result["index_number"] }}</td>
                 </tr>
             </table>
         </div>
