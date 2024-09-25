@@ -62,7 +62,7 @@
     }
 
     #signature {
-        padding-top: 90px;
+        padding-top: 10px;
         line-height: 0.8;
     }
 
@@ -154,7 +154,7 @@
 <body>
 
     <div id="page-1" style="padding-left: 10%; padding-right: 10%;page-break-after: always;">
-        <div class="row logo-container" style="text-align: center; padding-top: 90px">
+        <div class="row logo-container" style="text-align: center; padding-top: 40px">
             <span style="padding-right: 10px">
                 {{-- <img style="width: 100px" src="{{ asset('build/images/jatanegara/JataNegara.png') }}" alt="Logo1"> --}}
                 <img style="width: 100px" src="data:image/jpg;base64,{{ $image1Data }}" alt="Logo1">
@@ -164,26 +164,27 @@
                 <img style="width: 80px;height: auto;" src="data:image/jpg;base64,{{ $image2Data }}" alt="Logo">
             </span>
         </div>
-        <div id="title_session" style="text-align: center; padding-top: 25px">
+        <div id="title_session" style="text-align: center; padding-top: 5mm;">
             <span style="font-size: 15pt; font-weight: bolder">MAJLIS PEPERIKSAAN MALAYSIA</span><br>
             <span style="font-size: 12pt; font-weight: bold">MALAYSIAN EXAMINATIONS COUNCIL</span>
             <p style="font-size: 10pt">This is to certify that the below candidate has sat for the</p>
-            <span style="font-size: 16pt; font-weight: bolder">MALAYSIAN UNIVERSITY ENGLISH TEST <br>
-                {{ Str::upper(str_replace("MUET ", "", $tarikh->sesi)) }}</span>
-            <p style="font-size: 12pt">and obtained the following score.</p>
+            <span style="font-size: 16pt; font-weight: bolder">MALAYSIAN UNIVERSITY ENGLISH TEST</span><br>
+            <br>
+            <span style="font-size: 16pt; font-weight: bolder;">{{ Str::upper(str_replace("MUET ", "", $tarikh->sesi)) }}</span>
+            <p style="font-size: 12pt">and obtained the following score</p>
         </div>
         {{-- <div id="session">
         <p style="font-weight: bold; font-size: 22px; margin-bottom: 0.1em;">{{ $result['session'] }}</p>
         <p style="font-size: 17px">and obtained the following score</p>
         </div> --}}
         <div id="student-details">
-            <table style="width: 105%; margin-left: -15px; margin-right: -15px; font-size: 11pt;">
+            <table style="width: 105%; margin-left: -15px; margin-right: -15px; font-size: 10pt;">
                 <tr>
-                    <td>{{ strtoupper($candidate->nama) }}</td>
+                    <td style="font-size:10pt !important;">{{ strtoupper($candidate->nama) }}</td>
                 </tr>
                 <tr>
-                    <td style="text-align: left">{{ $candidate->kp }}</td>
-                    <td style="text-align: right">{{ $result['index_number'] }}</td>
+                    <td style="text-align: left; font-size:10pt !important;">{{ $candidate->kp }}</td>
+                    <td style="text-align: right; font-size:10pt !important;">{{ $result['index_number'] }}</td>
                 </tr>
             </table>
         </div>
@@ -191,29 +192,29 @@
             <table style="text-align: center; width: 105%; margin-left: -15px; margin-right: -15px; border-collapse: collapse; font-size: 11pt;">
                 {{-- <tr style="background-color: lightgrey;"> --}}
                 <tr>
-                    <td style="border: 1px solid black;">Test Component</td>
-                    <td style="border: 1px solid black;">Maximum Score</td>
-                    <td width="33%" style="border: 1px solid black;">Obtained Score</td>
+                    <td style="border: 1px solid black; font-size: 11pt !important;">Test Component</td>
+                    <td style="border: 1px solid black; font-size: 11pt !important;">Maximum Score</td>
+                    <td width="33%" style="border: 1px solid black; font-size: 11pt !important;">Obtained Score</td>
                 </tr>
                 <tr>
-                    <td style="border: 1px solid black; border-top: 0; border-bottom: 0;text-align: left;padding-left: 5px"> LISTENING</td>
-                    <td style="border: 1px solid black; border-top: 0; border-bottom: 0">{{ $scheme['listening'] }}</td>
-                    <td width="33%" style="border: 1px solid black; border-top: 0; border-bottom: 0"> {{ $result['listening'] }}</td>
+                    <td style="border: 1px solid black; border-top: 0; border-bottom: 0;text-align: left;padding-left: 5px; font-size:10pt !important;"> LISTENING</td>
+                    <td style="border: 1px solid black; border-top: 0; border-bottom: 0; font-size:10pt !important;">{{ $scheme['listening'] }}</td>
+                    <td width="33%" style="border: 1px solid black; border-top: 0; border-bottom: 0; font-size:10pt !important;"> {{ $result['listening'] }}</td>
                 </tr>
                 <tr>
-                    <td style="border: 1px solid black; border-top: 0; border-bottom: 0;text-align: left;padding-left: 5px"> SPEAKING</td>
-                    <td style="border: 1px solid black; border-top: 0; border-bottom: 0">{{ $scheme['speaking'] }}</td>
-                    <td width="33%" style="border: 1px solid black; border-top: 0; border-bottom: 0"> {{ $result['speaking'] }}</td>
+                    <td style="border: 1px solid black; border-top: 0; border-bottom: 0;text-align: left;padding-left: 5px; font-size:10pt !important;"> SPEAKING</td>
+                    <td style="border: 1px solid black; border-top: 0; border-bottom: 0; font-size:10pt !important;">{{ $scheme['speaking'] }}</td>
+                    <td width="33%" style="border: 1px solid black; border-top: 0; border-bottom: 0; font-size:10pt !important;"> {{ $result['speaking'] }}</td>
                 </tr>
                 <tr>
-                    <td style="border: 1px solid black; border-top: 0; border-bottom: 0;text-align: left;padding-left: 5px"> READING</td>
-                    <td style="border: 1px solid black; border-top: 0; border-bottom: 0">{{ $scheme['reading'] }}</td>
-                    <td width="33%" style="border: 1px solid black; border-top: 0; border-bottom: 0"> {{ $result['reading'] }}</td>
+                    <td style="border: 1px solid black; border-top: 0; border-bottom: 0;text-align: left;padding-left: 5px; font-size:10pt !important;"> READING</td>
+                    <td style="border: 1px solid black; border-top: 0; border-bottom: 0; font-size:10pt !important;">{{ $scheme['reading'] }}</td>
+                    <td width="33%" style="border: 1px solid black; border-top: 0; border-bottom: 0; font-size:10pt !important;"> {{ $result['reading'] }}</td>
                 </tr>
                 <tr>
-                    <td style="border: 1px solid black; border-top: 0; border-bottom: 0;text-align: left;padding-left: 5px"> WRITING</td>
-                    <td style="border: 1px solid black; border-top: 0; border-bottom: 0">{{ $scheme['writing'] }}</td>
-                    <td width="33%" style="border: 1px solid black; border-top: 0; border-bottom: 0"> {{ $result['writing'] }}</td>
+                    <td style="border: 1px solid black; border-top: 0; border-bottom: 0;text-align: left;padding-left: 5px; font-size:10pt !important;"> WRITING</td>
+                    <td style="border: 1px solid black; border-top: 0; border-bottom: 0; font-size:10pt !important;">{{ $scheme['writing'] }}</td>
+                    <td width="33%" style="border: 1px solid black; border-top: 0; border-bottom: 0; font-size:10pt !important;"> {{ $result['writing'] }}</td>
                 </tr>
                 <tr>
                     <th style="border: 1px solid black;text-align: left;padding-left: 5px">AGGREGATED SCORE</th>
@@ -227,8 +228,8 @@
             <table
                 style="text-align: center; width: 105%; margin-left: -15px; margin-right: -15px; border-collapse: collapse">
                 <tr>
-                    <th style="font-size: 13pt; border: 1px solid black;text-align: left; padding-left: 5px">BAND ACHIEVED</th>
-                    <th width="33%" style="font-size: 13pt; border: 1px solid black; background-color: white">{{ $result['band'] }}
+                    <th style="font-size: 13pt; border: 1px solid black;text-align: left; padding-left: 5px; font-size: 11pt !important;">BAND ACHIEVED</th>
+                    <th width="33%" style="font-size: 13pt; border: 1px solid black; background-color: white; font-size: 11pt !important;">{{ $result['band'] }}
                     </th>
                 </tr>
             </table>

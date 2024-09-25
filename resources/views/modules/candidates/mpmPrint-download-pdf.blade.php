@@ -167,7 +167,7 @@
             <p style="font-size: 10pt">This is to certify that the below candidate has sat for the</p>
             <span style="font-size: 12pt; font-weight: bolder">MALAYSIAN UNIVERSITY ENGLISH TEST</span><br> --}}
             <span style="font-size: 16pt; font-weight: bolder">{{ Str::upper(str_replace("MUET ", "", $tarikh->sesi)) }}</span>
-            <p style="font-size: 12pt">and obtained the following score.</p>
+            <p style="font-size: 12pt">and obtained the following score</p>
         </div>
 
         <div id="student-details">
@@ -219,8 +219,8 @@
         <div id="band">
             <table style="text-align: center; width: 105%; margin-left: -15px; margin-right: -15px; border-collapse: collapse">
                 <tr>
-                    <th style="border: 1px solid black;text-align: left; padding-left: 5px;font-size:11pt !important;">BAND ACHIEVED</th>
-                    <th width="33%" style="border: 1px solid black; background-color: white;font-size:11pt !important;">{{ $result["band"] }}
+                    <th style="border: 1px solid black;text-align: left; padding-left: 5px; font-size:11pt !important;">BAND ACHIEVED</th>
+                    <th width="33%" style="border: 1px solid black; background-color: white; font-size:11pt !important;">{{ $result["band"] }}
                     </th>
                 </tr>
             </table>
