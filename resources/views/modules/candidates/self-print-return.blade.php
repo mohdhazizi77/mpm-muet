@@ -17,7 +17,11 @@
                         <div class="row1">
                             <div class="col-xxl-6 align-self-center">
                                 <div class="py-3">
+                                    @if($status == 'SUCCESS')
                                     <h3 class="fw-bold">We have received your payment!</h3>
+                                    @else
+                                    <h3 class="fw-bold">Payment Failed!</h3>
+                                    @endif
                                     {{-- <h3 class="fw-bold">PAYMENT {{ $status }}!</h3> --}}
                                     <table class="table-borderless fs-16 mt-3" width="100%">
                                         <tr>
@@ -30,7 +34,7 @@
                                         </tr>
                                         <tr>
                                             <td colspan="2">
-                                                You may now view your certificate <a href="{{ route('candidate.downloadpdfCandidate', ['id' => $user?->id, 'type' => $order?->type]) }}">here</a> <— link ke PDF self print untuk sijil tu
+                                                You may now view your certificate <a href="{{ route('candidate.downloadpdfCandidate', ['id' => $user?->id, 'type' => $order?->type]) }}">HERE</a> 
                                             </td>
                                         </tr>
                                         <tr>
@@ -71,8 +75,8 @@
                                             <tr class="align-middle">
                                                 <th scope="row">1</th>
                                                 <td>{{ $order->created_at->format('d/m/y H:i:s') }}</td>
-                                                <td>User had  make payment</td>
-                                                <td><h5><span class="badge rounded-pill bg-info">{{ $order->current_status }}</span></h5></td>
+                                                <td>@if($status == 'SUCCESS') Paid @else Failed @endif</td>
+                                                <td><h5><span class="badge rounded-pill bg-info">{{ $order->payment_status }}</span></h5></td>
                                             </tr>
                                             </tbody>
                                         </table>

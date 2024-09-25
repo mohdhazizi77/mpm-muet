@@ -12,11 +12,15 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-12">
-                <div class="card rounded-0 {{ $status == 'SUCCESS' ? 'bg-success-subtle' : 'bg-danger' }}  mx-n4 mt-n4 border-top">
+                <div class="card rounded-0 {{ $status == 'SUCCESS' ? 'bg-success-subtle' : 'bg-warning' }}  mx-n4 mt-n4 border-top">
 
                     <div class="p-4">
                         <div class="row1">
+                            @if($status == 'SUCCESS')
                             <h3 class="fw-bold">We have received your payment!</h3>
+                            @else
+                            <h3 class="fw-bold">Payment Failed!</h3>
+                            @endif
                             {{-- <h3 class="fw-bold">PAYMENT {{ $status }}!</h3> --}}
                             <table class="table-borderless fs-16 mt-3" width="100%">
                                 <tr>
@@ -69,7 +73,7 @@
                                             <tr class="align-middle">
                                                 <th scope="row">1</th>
                                                 <td>{{ $order->created_at->format('d/m/y H:i:s') }}</td>
-                                                <td>User had make payment</td>
+                                                <td>@if($status == 'SUCCESS') Paid @else Failed @endif</td>
                                                 <td><h5><span class="badge rounded-pill bg-info">{{ $order->payment_status }}</span></h5></td>
                                             </tr>
                                             </tbody>
