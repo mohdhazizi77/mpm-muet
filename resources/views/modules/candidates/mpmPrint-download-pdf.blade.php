@@ -161,7 +161,7 @@
                 <img style="width: 80px;height: auto;" src="data:image/jpg;base64,{{ $image2Data }}" alt="Logo">
             </span> --}}
         </div>
-        <div id="title_session" style="text-align: center; margin-top: 0; padding-top: 8cm;">
+        <div id="title_session" style="text-align: center; margin-top: 0; padding-top: 9cm;">
             {{-- <span style="font-size: 15pt; font-weight: bolder">MAJLIS PEPERIKSAAN MALAYSIA</span><br>
             <span style="font-size: 12pt; font-weight: bold">MALAYSIAN EXAMINATIONS COUNCIL</span>
             <p style="font-size: 10pt">This is to certify that the below candidate has sat for the</p>
