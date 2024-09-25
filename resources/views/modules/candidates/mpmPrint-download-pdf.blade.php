@@ -153,7 +153,7 @@
 <body>
 
     <div id="page-1" style="padding-left: 10%; padding-right: 10%;">
-        <div class="row logo-container" style="text-align: center; padding-top: 20px">
+        <div class="row logo-container" style="text-align: center; padding-top: 10px">
             {{-- <span style="padding-right: 10px">
                 <img style="width: 100px" src="data:image/jpg;base64,{{ $image1Data }}" alt="Logo1">
             </span>
@@ -161,7 +161,7 @@
                 <img style="width: 80px;height: auto;" src="data:image/jpg;base64,{{ $image2Data }}" alt="Logo">
             </span> --}}
         </div>
-        <div id="title_session" style="text-align: center; padding-top: 5cm;">
+        <div id="title_session" style="text-align: center; padding-top: 7cm;">
             {{-- <span style="font-size: 15pt; font-weight: bolder">MAJLIS PEPERIKSAAN MALAYSIA</span><br>
             <span style="font-size: 12pt; font-weight: bold">MALAYSIAN EXAMINATIONS COUNCIL</span>
             <p style="font-size: 10pt">This is to certify that the below candidate has sat for the</p>
@@ -189,29 +189,29 @@
                     <td width="33%" style="border: 1px solid black;font-size:11pt !important;">Obtained Score</td>
                 </tr>
                 <tr>
-                    <td style="border: 1px solid black; border-top: 0; border-bottom: 0;text-align: left;padding-left: 5px"> LISTENING</td>
-                    <td style="border: 1px solid black; border-top: 0; border-bottom: 0">{{ $scheme["listening"] }}</td>
-                    <td width="33%" style="border: 1px solid black; border-top: 0; border-bottom: 0"> {{ $result["listening"] }}</td>
+                    <td style="border: 1px solid black; border-top: 0; border-bottom: 0;text-align: left;padding-left: 5px;font-size:11pt !important;"> LISTENING</td>
+                    <td style="border: 1px solid black; border-top: 0; border-bottom: 0;font-size:11pt !important;">{{ $scheme["listening"] }}</td>
+                    <td width="33%" style="border: 1px solid black; border-top: 0; border-bottom: 0;font-size:11pt !important;"> {{ $result["listening"] }}</td>
                 </tr>
                 <tr>
-                    <td style="border: 1px solid black; border-top: 0; border-bottom: 0;text-align: left;padding-left: 5px"> SPEAKING</td>
-                    <td style="border: 1px solid black; border-top: 0; border-bottom: 0">{{ $scheme["speaking"] }}</td>
-                    <td width="33%" style="border: 1px solid black; border-top: 0; border-bottom: 0"> {{ $result["speaking"] }}</td>
+                    <td style="border: 1px solid black; border-top: 0; border-bottom: 0;text-align: left;padding-left: 5px;font-size:11pt !important;"> SPEAKING</td>
+                    <td style="border: 1px solid black; border-top: 0; border-bottom: 0;font-size:11pt !important;">{{ $scheme["speaking"] }}</td>
+                    <td width="33%" style="border: 1px solid black; border-top: 0; border-bottom: 0;font-size:11pt !important;"> {{ $result["speaking"] }}</td>
                 </tr>
                 <tr>
-                    <td style="border: 1px solid black; border-top: 0; border-bottom: 0;text-align: left;padding-left: 5px"> READING</td>
-                    <td style="border: 1px solid black; border-top: 0; border-bottom: 0">{{ $scheme["reading"] }}</td>
-                    <td width="33%" style="border: 1px solid black; border-top: 0; border-bottom: 0"> {{ $result["reading"] }}</td>
+                    <td style="border: 1px solid black; border-top: 0; border-bottom: 0;text-align: left;padding-left: 5px;font-size:11pt !important;"> READING</td>
+                    <td style="border: 1px solid black; border-top: 0; border-bottom: 0;font-size:11pt !important;">{{ $scheme["reading"] }}</td>
+                    <td width="33%" style="border: 1px solid black; border-top: 0; border-bottom: 0;font-size:11pt !important;"> {{ $result["reading"] }}</td>
                 </tr>
                 <tr>
-                    <td style="border: 1px solid black; border-top: 0; border-bottom: 0;text-align: left;padding-left: 5px"> WRITING</td>
-                    <td style="border: 1px solid black; border-top: 0; border-bottom: 0">{{ $scheme["writing"] }}</td>
-                    <td width="33%" style="border: 1px solid black; border-top: 0; border-bottom: 0"> {{ $result["writing"] }}</td>
+                    <td style="border: 1px solid black; border-top: 0; border-bottom: 0;text-align: left;padding-left: 5px;font-size:11pt !important;"> WRITING</td>
+                    <td style="border: 1px solid black; border-top: 0; border-bottom: 0;font-size:11pt !important;">{{ $scheme["writing"] }}</td>
+                    <td width="33%" style="border: 1px solid black; border-top: 0; border-bottom: 0;font-size:11pt !important;"> {{ $result["writing"] }}</td>
                 </tr>
                 <tr>
-                    <th style="border: 1px solid black;text-align: left;padding-left: 5px">AGGREGATED SCORE</th>
-                    <th style="border: 1px solid black;">{{ $scheme["agg_score"] }}</th>
-                    <th width="33%" style="border: 1px solid black;">{{ $result["agg_score"] }}</th>
+                    <th style="border: 1px solid black;text-align: left;padding-left: 5px;font-size:11pt !important;">AGGREGATED SCORE</th>
+                    <th style="border: 1px solid black;font-size:11pt !important;">{{ $scheme["agg_score"] }}</th>
+                    <th width="33%" style="border: 1px solid black;font-size:11pt !important;">{{ $result["agg_score"] }}</th>
                 </tr>
             </table>
         </div>
@@ -219,7 +219,7 @@
         <div id="band">
             <table style="text-align: center; width: 105%; margin-left: -15px; margin-right: -15px; border-collapse: collapse">
                 <tr>
-                    <th style="border: 1px solid black;text-align: left; padding-left: 5px;font-size:13pt !important;">BAND ACHIEVED</th>
+                    <th style="border: 1px solid black;text-align: left; padding-left: 5px;font-size:11pt !important;">BAND ACHIEVED</th>
                     <th width="33%" style="border: 1px solid black; background-color: white;font-size:11pt !important;">{{ $result["band"] }}
                     </th>
                 </tr>
@@ -237,23 +237,23 @@
                 <tr>
                     <td style="text-align: left">
                         <div style="line-height: 1.0;">
-                            <span style="font-weight: bold; font-size: 12pt;">ADNAN BIN HUSIN</span><br>
-                            <span style="font-size: 10pt;">Chief Executive</span><br>
-                            <span style="font-size: 10pt;">Malaysian Examinations Council</span>
+                            <span style="font-weight: bold; font-size: 12pt  !important;">ADNAN BIN HUSIN</span><br>
+                            <span style="font-size: 11pt !important;">Chief Executive</span><br>
+                            <span style="font-size: 11pt !important;">Malaysian Examinations Council</span>
                         </div>
                     </td>
                     <td style="text-align: right;">
                         <div style="float: right;">
                             <table>
                                 <tr>
-                                    <td style="font-size: 14px;">Date of issue</td>
-                                    <td style="font-size: 14px;">:</td>
-                                    <td style="font-size: 14px;">{{ $result["issue_date"] }}</td>
+                                    <td style="font-size: 13px !important;">Date of issue</td>
+                                    <td style="font-size: 13px !important;">:</td>
+                                    <td style="font-size: 13px !important;">{{ $result["issue_date"] }}</td>
                                 </tr>
                                 <tr>
-                                    <td style="font-size: 14px; font-weight: bold;">Date of expiry</td>
-                                    <td style="font-size: 14px; font-weight: bold;">:</td>
-                                    <td style="font-size: 14px; font-weight: bold;">{{ $result["exp_date"] }}</td>
+                                    <td style="font-size: 13px !important; font-weight: bold;">Date of expiry</td>
+                                    <td style="font-size: 13px !important; font-weight: bold;">:</td>
+                                    <td style="font-size: 13px !important; font-weight: bold;">{{ $result["exp_date"] }}</td>
                                 </tr>
                             </table>
                         </div>
