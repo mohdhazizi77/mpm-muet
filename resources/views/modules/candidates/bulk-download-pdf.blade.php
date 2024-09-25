@@ -767,7 +767,7 @@
                         style="text-align: center; width: 100%; margin-left: -15px; margin-right: -15px; border-collapse: collapse">
                         <tr>
                             <th
-                                style="background-color: rgb(235, 180, 0);border: 1px solid black; text-align: center;padding: 7px; font-size: 10pt">
+                                style="background-color: rgb(235, 180, 0);border: 1px solid black; text-align: center;padding: 7px; font-size: 10pt !important;">
                                 MUET AND CEFR ALIGNMENT GLOBAL DESCRIPTIONS</th>
                         </tr>
                     </table>
