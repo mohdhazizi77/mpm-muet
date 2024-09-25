@@ -209,9 +209,9 @@
                     <td width="33%" style="border: 1px solid black; border-top: 0; border-bottom: 0;font-size:10pt !important;"> {{ $result["writing"] }}</td>
                 </tr>
                 <tr>
-                    <th style="border: 1px solid black;text-align: left;padding-left: 5px;font-size:11pt !important;">AGGREGATED SCORE</th>
-                    <th style="border: 1px solid black;font-size:11pt !important;">{{ $scheme["agg_score"] }}</th>
-                    <th width="33%" style="border: 1px solid black;font-size:11pt !important;">{{ $result["agg_score"] }}</th>
+                    <th style="border: 1px solid black;text-align: left;padding-left: 5px;font-size:10pt !important;">AGGREGATED SCORE</th>
+                    <th style="border: 1px solid black;font-size:10pt !important;">{{ $scheme["agg_score"] }}</th>
+                    <th width="33%" style="border: 1px solid black;font-size:10pt !important;">{{ $result["agg_score"] }}</th>
                 </tr>
             </table>
         </div>
