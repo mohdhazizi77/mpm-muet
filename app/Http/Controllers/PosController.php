@@ -282,7 +282,6 @@ class PosController extends Controller
         if ($type == 'new') {
 
             $connote = self::getConNote([$stringOrderID]); // return output or error
-            dd($connote);
             if ($connote['success']) { //true
 
                 $order->tracking_number = $connote['con_note'];
@@ -567,6 +566,7 @@ class PosController extends Controller
                     'Authorization' => 'Bearer ' . $bearerToken,
                 ]
             ]);
+            dd($response);
 
             // Output the response body
             $response = json_decode($response->getBody()->getContents());
