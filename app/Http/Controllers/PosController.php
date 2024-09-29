@@ -174,13 +174,16 @@ class PosController extends Controller
             return datatables([])->toJson();
         }
 
-        // Replace these with actual values or retrieve from config/environment
+        $ConfigPoslaju = ConfigPoslaju::first();
+
         $culture = 'EN';
         $bearerToken = Session::get('bearer_token');;
 
+        $url = $ConfigPoslaju->url . '/as2corporate/preacceptancessingle/v1/Tracking.PreAcceptance.WebApi/api/PreAcceptancesSingle'; //fix domain from documentation
+
         try {
             $response = Http::withToken($bearerToken)
-                            ->get('https://gateway-usc.pos.com.my/staging/as2corporate/v2trackntracewebapijson/v1/api/Details', [
+                            ->get($ConfigPoslaju->url . '/as2corporate/v2trackntracewebapijson/v1/api/Details', [
                                 'id' => $track_no,
                                 'Culture' => $culture,
                             ]);
