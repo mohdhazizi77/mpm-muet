@@ -16,6 +16,7 @@ use App\Exports\TransactionExport;
 use App\Models\Order;
 use App\Models\Payment;
 use App\Models\ConfigMpmBayar;
+use App\Models\ConfigPoslaju;
 
 use App\Models\TrackingOrder;
 use Carbon\Carbon;
