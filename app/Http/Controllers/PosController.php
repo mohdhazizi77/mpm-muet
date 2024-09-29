@@ -174,12 +174,12 @@ class PosController extends Controller
             return datatables([])->toJson();
         }
 
-        $ConfigPoslaju = ConfigPoslaju::first();
 
         $culture = 'EN';
         $bearerToken = Session::get('bearer_token');;
 
-        $url = $ConfigPoslaju->url . '/as2corporate/preacceptancessingle/v1/Tracking.PreAcceptance.WebApi/api/PreAcceptancesSingle'; //fix domain from documentation
+        $ConfigPoslaju = ConfigPoslaju::first();
+
 
         try {
             $response = Http::withToken($bearerToken)

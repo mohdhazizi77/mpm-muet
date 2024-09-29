@@ -92,14 +92,19 @@ class OrderController extends Controller
     {
 
         $track_no = $request->trackNo;
+        if (empty($track_no)) {
+            return datatables([])->toJson();
+        }
 
         // Replace these with actual values or retrieve from config/environment
         $culture = 'EN';
         $bearerToken = Session::get('bearer_token');;
 
+        $ConfigPoslaju = ConfigPoslaju::first();
+
         try {
             $response = Http::withToken($bearerToken)
-                ->get('https://gateway-usc.pos.com.my/staging/as2corporate/v2trackntracewebapijson/v1/api/Details', [
+                ->get($ConfigPoslaju->url . '/as2corporate/v2trackntracewebapijson/v1/api/Details', [
                     'id' => $track_no,
                     'Culture' => $culture,
                 ]);
