@@ -67,7 +67,7 @@ class CandidateController extends Controller
         $mods = $candidate->modCalon;
 
 
-        $cutoffTime = Carbon::now()->subDay(); // Get the current time and subtract 24 hours to get the cutoff time
+        $cutoffTime = Carbon::now()->subDay(2); // Get the current time and subtract 24 hours to get the cutoff time
         foreach ($muets as $key => $muet) {
 
             $is_more2year = self::checkYear($muet->getTarikh->tahun); //check cert if already 2 years
@@ -122,7 +122,10 @@ class CandidateController extends Controller
 
                 $res = $mod->getOrder()
                     ->where('payment_status', 'SUCCESS')
-                    ->where('payment_for', 'SELF_PRINT')
+                    ->where(function ($query) {
+                        $query->where('payment_for', 'SELF_PRINT')
+                            ->orWhere('payment_for', 'MPM_PRINT');
+                    })
                     ->where('created_at', '>=', $cutoffTime)
                     ->get()
                     ->toArray();

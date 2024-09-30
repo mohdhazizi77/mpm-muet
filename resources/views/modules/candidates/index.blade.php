@@ -116,7 +116,7 @@
                                                             <label class="" style="font-weight: 400">In order to view and print this certificate, you must pay <b>RM{{ number_format($config->rate_selfprint, 2) }}</b> to unlock this certificate.</label>
                                                         </div>
                                                         <div class="mb-3">
-                                                            <label class="" style="font-weight: 400">All certificates can be viewed and print within <b>24 hours</b> upon unlocked. You are advised to save the certificate in PDF format once your certificate is unlocked.</label>
+                                                            <label class="" style="font-weight: 400">All certificates can be viewed and print within <b>48 hours</b> upon unlocked. You are advised to save the certificate in PDF format once your certificate is unlocked.</label>
                                                         </div>
                                                         <div class="text-end">
                                                             <a href="#" class="btn btn-success btn-animation waves-effect waves-light" data-text="Agree and Proceed to Payment"><span>Agree and Proceed to Payment</span></a>
