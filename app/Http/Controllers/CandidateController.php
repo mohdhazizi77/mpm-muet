@@ -78,10 +78,11 @@ class CandidateController extends Controller
 
                 $res = $muet->getOrder()
                     ->where('payment_status', 'SUCCESS')
-                    ->where(function ($query) {
-                        $query->where('payment_for', 'SELF_PRINT');
-                            // ->orWhere('payment_for', 'MPM_PRINT');
-                    })
+                    // ->where(function ($query) {
+                    //     $query->where('payment_for', 'SELF_PRINT')
+                    //         ->orWhere('payment_for', 'MPM_PRINT');
+                    // })
+                    ->where('payment_for', 'SELF_PRINT')
                     ->where('created_at', '>=', $cutoffTime)
                     ->get()
                     ->toArray();
@@ -122,10 +123,7 @@ class CandidateController extends Controller
 
                 $res = $mod->getOrder()
                     ->where('payment_status', 'SUCCESS')
-                    ->where(function ($query) {
-                        $query->where('payment_for', 'SELF_PRINT')
-                            ->orWhere('payment_for', 'MPM_PRINT');
-                    })
+                    ->where('payment_for', 'SELF_PRINT')
                     ->where('created_at', '>=', $cutoffTime)
                     ->get()
                     ->toArray();
