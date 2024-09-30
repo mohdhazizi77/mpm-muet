@@ -79,8 +79,8 @@ class CandidateController extends Controller
                 $res = $muet->getOrder()
                     ->where('payment_status', 'SUCCESS')
                     ->where(function ($query) {
-                        $query->where('payment_for', 'SELF_PRINT')
-                            ->orWhere('payment_for', 'MPM_PRINT');
+                        $query->where('payment_for', 'SELF_PRINT');
+                            // ->orWhere('payment_for', 'MPM_PRINT');
                     })
                     ->where('created_at', '>=', $cutoffTime)
                     ->get()
