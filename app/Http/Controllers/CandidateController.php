@@ -132,7 +132,10 @@ class CandidateController extends Controller
                     ->toArray();
                 $is_selfPrintPaid = count($res) > 0 ? true : false;
 
-                $res = $mod->getOrder->where('payment_status', 'SUCCESS')->where('payment_for', 'MPM_PRINT')->toArray();
+                $res = $mod->getOrder->where('payment_status', 'SUCCESS')
+                        ->where('payment_for', 'MPM_PRINT')
+                        ->where('created_at', '>=', $cutoffTime)
+                        ->toArray();
                 $is_mpmPrintPaid = count($res) > 0 ? true : false;
             } else {
                 $res = $mod->getOrder->where('payment_status', 'SUCCESS')->where('payment_for', 'SELF_PRINT')->toArray();
@@ -680,8 +683,8 @@ class CandidateController extends Controller
         if ($is_more2year) {
             $res = $candidate->getOrder()
                 ->where('payment_status', 'SUCCESS')
-                ->where('payment_for', 'SELF_PRINT')
-                ->orWhere('payment_for', 'MPM_PRINT')
+                // ->where('payment_for', 'SELF_PRINT')
+                // ->orWhere('payment_for', 'MPM_PRINT')
                 ->where('created_at', '>=', $cutoffTime)
                 ->get()
                 ->toArray();
