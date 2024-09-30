@@ -89,7 +89,10 @@ class CandidateController extends Controller
 
                 $is_selfPrintPaid = count($res) > 0 ? true : false;
 
-                $res = $muet->getOrder->where('payment_status', 'SUCCESS')->where('payment_for', 'MPM_PRINT')->toArray();
+                $res = $muet->getOrder->where('payment_status', 'SUCCESS')
+                                    ->where('payment_for', 'MPM_PRINT')
+                                    ->where('created_at', '>=', $cutoffTime)
+                                    ->toArray();
                 $is_mpmPrintPaid = count($res) > 0 ? true : false;
             } else {
                 $res = $muet->getOrder->where('payment_status', 'SUCCESS')->where('payment_for', 'SELF_PRINT')->toArray();
