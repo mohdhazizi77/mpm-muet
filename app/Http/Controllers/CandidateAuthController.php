@@ -31,6 +31,8 @@ class CandidateAuthController extends Controller
         if (Auth::guard('candidate')->attempt($credentials)) {
 
             //check if current Auth::user already have role or not, if not assignRole('CALON')
+            // Retrieve the authenticated user
+            $user = Auth::guard('candidate')->user();
             if (!$user->hasRole('CALON')) {
                 $user->assignRole('CALON');
             }
