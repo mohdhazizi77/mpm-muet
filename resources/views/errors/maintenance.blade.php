@@ -27,12 +27,12 @@
                         <div class="col-lg-12">
                             <div class="text-center mt-sm-5 pt-4">
                                 <div class="mb-5 text-white-50">
-                                    <h1 class="display-5 coming-soon-text">Site is Under Maintenance</h1>
-                                    <p class="fs-14">Please check back in sometime</p>
-                                    <div class="mt-4 pt-2">
+                                    <h1 class="display-5 coming-soon-text">MUET Online Certificate System is now closed for maintenance.</h1>
+                                    <h3 class="">System will be up online on 2nd October 2024 at 3 p.m.</h3>
+                                    {{-- <div class="mt-4 pt-2">
                                         <a href="" class="btn btn-success"><i class="mdi mdi-home me-1"></i> Back
                                             to Home</a>
-                                    </div>
+                                    </div> --}}
                                 </div>
                                 <div class="row justify-content-center mb-5">
                                     <div class="col-xl-4 col-lg-8">
