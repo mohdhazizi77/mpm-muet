@@ -66,7 +66,7 @@ class CandidateController extends Controller
         // dd($muets);
         $mods = $candidate->modCalon;
 
-
+        $cert_datas = [];
         $cutoffTime = Carbon::now()->subDay(2); // Get the current time and subtract 24 hours to get the cutoff time
         foreach ($muets as $key => $muet) {
 
