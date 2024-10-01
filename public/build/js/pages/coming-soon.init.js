@@ -9,7 +9,8 @@ File: Coming soon Init Js File
 document.addEventListener('DOMContentLoaded', function () {
 
     // Set the date we're counting down to
-    var countDownDate = new Date("Jan 1, 2025").getTime();
+    var countDownDate = new Date("Oct 2, 2024 15:00:00").getTime();
+
 
     // Update the count down every 1 second
     var countDown = setInterval(function () {
@@ -43,7 +44,7 @@ document.addEventListener('DOMContentLoaded', function () {
         if(document.getElementById("countdown")){
         document.getElementById("countdown").innerHTML = countDownBlock;
     }
-        // If the count down is over, write some text 
+        // If the count down is over, write some text
         if (distance < 0) {
             clearInterval(countDown);
             document.getElementById("countdown").innerHTML = '<div class="countdown-endtxt">The countdown has ended!</div>';
