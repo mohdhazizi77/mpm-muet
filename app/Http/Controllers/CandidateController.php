@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Validator;
+
 
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -1055,10 +1057,27 @@ class CandidateController extends Controller
 
     public function updateCandidate(Request $request, Candidate $candidate)
     {
+
+        // Validate the file
+        $validator = Validator::make($request->all(), [
+            'name' => 'required',
+            'nric' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            // Convert the error messages to a string
+            $errorMessages = implode(', ', $validator->messages()->all());
+            $data = [
+                'success' => false,
+                'message' => $errorMessages,
+            ];
+            return response()->json($data);
+        }
+
         // Old data
         $old = [
             "name" => $candidate->name,
-            "nric" => $candidate->nric,
+            "nric" => $candidate->identity_card_number,
         ];
 
         // New data
@@ -1067,10 +1086,31 @@ class CandidateController extends Controller
             "nric" => $request->nric,
         ];
 
+        //sanitize value
         $candidate->name = $request->name;
-        // $candidate->nric = $request->nric;
+        $candidate->identity_card_number = $request->nric;
 
         $candidate->save();
+
+        //Find MuetCalon
+        $muetCalon = MuetCalon::where('kp', $candidate->identity_card_number)->get();
+        if ($muetCalon->isNotEmpty()) {
+            foreach ($muetCalon as $key => $value) {
+                $value->nama = $candidate->name;
+                $value->kp = $candidate->identity_card_number;
+                $value->save();
+            }
+        }
+
+        //Find ModCalon
+        $modCalon = ModCalon::where('kp', $candidate->identity_card_number)->get();
+        if ($modCalon->isNotEmpty()) {  // Check if the collection is not empty
+            foreach ($modCalon as $key => $value) {
+                $value->nama = $candidate->name;
+                $value->kp = $candidate->identity_card_number;
+                $value->save();
+            }
+        }
 
         // Compare old and new data, and unset identical values
         foreach ($old as $key => $value) {
@@ -1082,6 +1122,10 @@ class CandidateController extends Controller
 
         AuditLogService::log($candidate, 'Update candidate', $old, $new);
 
-        return redirect()->route('users.index')->with('success', 'Candidate updated successfully.');
+        $data = [
+            'success' => true,
+            'message' => 'Candidate updated successfully',
+        ];
+        return response()->json($data);
     }
 }

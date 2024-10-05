@@ -23,8 +23,8 @@
 
                         <div class="col-12">
                             <div class="mb-3">
-                                <label for="nric_edit" class="form-label">Identity Card Number</label>
-                                <input type="text" class="form-control" id="nric_edit" name="nric" required autocomplete="off" disabled>
+                                <label for="nric_edit" class="form-label">Identity Card Number tanpa -</label>
+                                <input type="text" class="form-control" id="nric_edit" name="nric" required autocomplete="off">
                                 <span class="text-danger" id="nric_text_edit"></span>
                             </div>
                         </div>

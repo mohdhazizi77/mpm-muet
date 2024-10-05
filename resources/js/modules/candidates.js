@@ -441,23 +441,43 @@ $(document).ready(function () {
                             });
                         },
                         success: function (response) {
+                            console.log(response)
                             Swal.close()
-                            $('#form_candidate_edit').removeClass('was-validated');
-                            Swal.fire({
-                                type: 'success',
-                                title: 'Berjaya',
-                                text: 'Candidate successfully updated!',
-                                customClass: {
-                                    popup: 'my-swal-popup',
-                                    confirmButton: 'my-swal-confirm',
-                                    cancelButton: 'my-swal-cancel',
-                                }
-                            }).then((result) => {
-                                if (result.value) {
-                                    $('#modal_edit').modal('hide');
-                                    $('#dt-candidate').DataTable().ajax.reload();
-                                }
-                            });
+                            if (response.success) {
+                                $('#form_candidate_edit').removeClass('was-validated');
+                                Swal.fire({
+                                    type: 'success',
+                                    title: 'Success',
+                                    text: 'Candidate successfully updated!',
+                                    customClass: {
+                                        popup: 'my-swal-popup',
+                                        confirmButton: 'my-swal-confirm',
+                                        cancelButton: 'my-swal-cancel',
+                                    }
+                                }).then((result) => {
+                                    if (result.value) {
+                                        $('#modal_edit').modal('hide');
+                                        $('#dt-candidate').DataTable().ajax.reload();
+                                    }
+                                });
+                            } else {
+                                Swal.fire({
+                                    type: 'warning',
+                                    title: 'Fail',
+                                    text: response.message,
+                                    customClass: {
+                                        popup: 'my-swal-popup',
+                                        confirmButton: 'my-swal-confirm',
+                                        cancelButton: 'my-swal-cancel',
+                                    }
+                                })
+                                // .then((result) => {
+                                //     if (result.value) {
+                                //         $('#modal_edit').modal('hide');
+                                //         $('#dt-candidate').DataTable().ajax.reload();
+                                //     }
+                                // });
+                            }
                         },
                         error: function (xhr, status, errors) {
                             $('#form_candidate_edit').addClass('was-validated');
