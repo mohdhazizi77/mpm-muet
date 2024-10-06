@@ -45,6 +45,9 @@
                                 </div>
                                 <div class="col" style="text-align: right">
                                     {{-- <button class="btn btn-soft-success waves-effect float-end" id="show_create_modal">NEW USER</button> --}}
+                                    <input type="text" id="search_term" placeholder="Search term">
+                                    <button class="btn btn-soft-success waves-effect " id="searchBtn">Search</button>
+                                    <button class="btn btn-soft-success waves-effect " id="resetBtn">Reset</button> <!-- Reset button -->
                                 </div>
                             </div>
 

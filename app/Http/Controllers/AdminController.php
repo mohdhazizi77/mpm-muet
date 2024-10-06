@@ -10,7 +10,19 @@ use App\Models\Payment;
 use App\Models\ConfigGeneral;
 use App\Models\Courier;
 use App\Models\CandidateActivityLog;
+
+use App\Models\Candidate;
+use App\Models\MuetCalon;
+use App\Models\MuetSkor;
+use App\Models\MuetTarikh;
+
+use App\Imports\SenaraiCalonExcelImport;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Hash;
+
+use Maatwebsite\Excel\Facades\Excel;
+
 
 
 class AdminController extends Controller
@@ -322,5 +334,326 @@ class AdminController extends Controller
         ];
 
         return response()->json($data);
+    }
+
+    public function indexUpload(){
+        return view('modules.admin.administration.upload.index');
+    }
+
+    public function upload(Request $request){
+
+        // Validate the file
+        $validator = Validator::make($request->all(), [
+            'examType' => 'required',
+            'excelFile' => 'required|file|mimes:xlsx,xls|max:2048',
+        ]);
+
+        if ($validator->fails()) {
+            return back()->withErrors($validator)->withInput();
+        }
+
+        $importedData = Excel::toArray(new SenaraiCalonExcelImport, $request->file('excelFile'));
+
+        // data must follow this column => tahun,sesi,namasesi,nama,kp,angkagiliran,tarikh_isu,tarikh_exp,listening,speaking,reading,writing,skor_agregat,band
+        $flag = true;
+        $flag_msg = '';
+        $processArray = [];
+
+        foreach ($importedData[0] as $key => $value) {
+
+            if ($key == 0)
+                continue;
+
+            if (empty($value[0]))
+                break;
+
+            //checking each column is correct data or not
+            $response = $this->checkingColumnExcel($value);
+
+            $value[14] = $response['flag'];
+            $value[15] = $response['flag_msg'];
+
+            $message = "";
+
+            if ($value[14]) {
+                if ($request->examType == "MUET") {
+                    $tahun = $value[0];
+                    $sidang = $value[1];
+                    $sesi = $value[2];
+                    $nama = $value[3];
+                    $kp = $value[4];
+                    $angka_giliran = $value[5];
+                    $tarikh_isu = $value[6];
+                    $tarikh_exp = $value[7];
+                    $listening = isset($value[8]) ? $value[8] : null;
+                    $speaking = isset($value[9]) ? $value[9] : null;
+                    $reading = isset($value[10]) ? $value[10] : null;
+                    $writing = isset($value[11]) ? $value[11] : null;
+                    $skor_agregat = $value[12];
+                    $band = $value[13];
+
+                    if (strpos($kp, '-') !== false) {
+                        $kp = str_replace('-', '', $kp);
+                    }
+
+                    $user = Candidate::updateOrCreate(
+                        [
+                            'identity_card_number' => $kp,
+                        ],
+                        [
+                            'name'     => $nama,
+                            'password' => Hash::make(123456),
+                        ]
+                    );
+
+                    if (!$user->hasRole('CALON')) {
+                        $user->assignRole('CALON');
+                    }
+
+
+                    if ($user->wasRecentlyCreated) {
+                        // The record was created
+                        $message .= "\nNew Candidate created.";
+                    } elseif ($user->wasChanged()) {
+                        // Get the updated columns
+                        $updatedColumns = $user->getChanges(); // This returns an array of changed attributes
+                        foreach ($updatedColumns as $column => $newValue) {
+                            if(in_array($column, ['password', 'updated_at']))
+                                continue;
+                            $message .= "\nData Candidate Updated ['$column' was updated to '$newValue']";
+                        }
+                    } else {
+                        // No changes were made because the values were the same
+                        $message .= "\nCandidate no changes";
+                    }
+
+                    $parts = explode("/", $angka_giliran);
+                    $part1 = $parts[0];
+                    $kodnegeri = substr($part1, 0, 2);
+                    $kodpusat = substr($part1, 2, 4);
+                    $part2 = $parts[1];
+                    $jcalon = substr($part2, 0, 1);
+                    $nocalon = substr($part2, 1, 3);
+
+                    $calon = MuetCalon::updateOrCreate(
+                        [
+                            'tahun'           => $tahun,
+                            'sidang'          => $sidang,
+                            'angka_giliran'   => $angka_giliran,
+                        ],
+                        [
+                            'nama'            => $nama,
+                            'kp'              => $kp,
+                            'kodnegeri'       => $kodnegeri,
+                            'kodpusat'        => $kodpusat,
+                            'jcalon'          => $jcalon,
+                            'nocalon'         => $nocalon,
+                            'alamat1'         => '-',
+                            'alamat2'         => '-',
+                            'poskod'          => '-',
+                            'bandar'          => '-',
+                            'negeri'          => '-',
+                            'skor_agregat'    => $skor_agregat,
+                            'band'            => $band,
+                        ]
+                    );
+
+                    if ($calon->wasRecentlyCreated) {
+                        // The record was created
+                        $message .= "\nNew Record MuetCalon created.";
+                    } elseif ($calon->wasChanged()) {
+                        // Get the updated columns
+                        $updatedColumns = $calon->getChanges(); // This returns an array of changed attributes
+                        foreach ($updatedColumns as $column => $newValue) {
+                            if(in_array($column, ['password', 'updated_at']))
+                                continue;
+
+                            $message .= "\nData MuetCalon Updated ['$column' was updated to '$newValue']";
+                        }
+                    } else {
+                        // No changes were made because the values were the same
+                        $message .= "\nMuetCalon no changes";
+                    }
+
+                    $result = [
+                        1 => $listening,
+                        2 => $speaking,
+                        3 => $reading,
+                        4 => $writing,
+                    ];
+
+                    foreach ($result as $key => $v) {
+                        $ms = MuetSkor::updateOrCreate(
+                            [
+                                'tahun'      => $tahun,
+                                'sidang'     => $sidang,
+                                'kodnegeri'  => $kodnegeri,
+                                'kodpusat'   => $kodpusat,
+                                'jcalon'     => $jcalon,
+                                'nocalon'    => $nocalon,
+                                'kodkts'     => $key,
+                            ],
+                            [
+                                'mkhbaru'    => $v,
+                            ]
+                        );
+
+                           if ($ms->wasRecentlyCreated) {
+                               // The record was created
+                               $message .= "\nNew Record MuetSkor created.[" . $key . "]";
+                           } elseif ($ms->wasChanged()) {
+                               // Get the updated columns
+                               $updatedColumns = $ms->getChanges(); // This returns an array of changed attributes
+                               foreach ($updatedColumns as $column => $newValue) {
+                                    if(in_array($column, ['password', 'updated_at']))
+                                    continue;
+                                    $message .= "\nData MuetSkor Updated ['$column' was updated to '$newValue']";
+                               }
+                           } else {
+                               // No changes were made because the values were the same
+                               $message .= "\nMuetSkor no changes";
+                           }
+                    }
+
+                    $mt = MuetTarikh::updateOrCreate(
+                        [
+                            'tahun' => $tahun,
+                            'sidang' => $sidang,
+                            'sesi'              => $sesi,
+                        ],
+                        [
+                            'tarikh_isu'        => $tarikh_isu,
+                            'tarikh_exp'        => $tarikh_exp,
+                        ]
+                    );
+
+                    if ($mt->wasRecentlyCreated) {
+                        // The record was created
+                        $message .= "\nNew Record MuetTarikh created.[" . $key . "]";
+                    } elseif ($mt->wasChanged()) {
+                        // Get the updated columns
+                        $updatedColumns = $mt->getChanges(); // This returns an array of changed attributes
+                        foreach ($updatedColumns as $column => $newValue) {
+                            if(in_array($column, ['password', 'updated_at']))
+                                continue;
+                            $message .= "\nData MuetTarikh Updated ['$column' was updated to '$newValue']";
+                        }
+                    } else {
+                        // No changes were made because the values were the same
+                        $message .= "\nMuetTarikh no changes";
+                    }
+
+                    // dd($message, $value);
+                    $value[15] .= $message;
+                } else if ($request->examType == "MOD"){
+
+                } else {
+                    $value[15] .= "\n Invalid Exam Type. No processes been done";
+                }
+            } else {
+
+            }
+            $processArray[] = $value;
+        }
+        // dd($processArray);
+        return view('modules.admin.administration.upload.finish', compact('processArray'));
+
+    }
+
+    private function checkingColumnExcel($row)
+    {
+        $flag = true; // By default is true, will set to false if any column doesn't follow the rules
+        $flag_msg = '';
+
+        // Checking each column with validation rules
+        // Column 0 => "tahun" (required, must be numeric)
+        if (empty($row[0]) || !is_numeric($row[0])) {
+            $flag = false;
+            $flag_msg .= "\nInvalid 'Tahun'. ";
+        }
+
+        // Column 1 => "sesi" (required, must be numeric)
+        if (empty($row[1]) || !is_numeric($row[1])) {
+            $flag = false;
+            $flag_msg .= "\nInvalid 'Sesi'. ";
+        }
+
+        // Column 2 => "nama sesi" (required)
+        if (empty($row[2])) {
+            $flag = false;
+            $flag_msg .= "\nInvalid 'Nama Sesi'. ";
+        }
+
+        // Column 3 => "nama" (required)
+        if (empty($row[3])) {
+            $flag = false;
+            $flag_msg .= "\nInvalid 'Nama'. ";
+        }
+
+        // Column 4 => "kp" (required)
+        if (empty($row[4])) {
+            $flag = false;
+            $flag_msg .= "\nInvalid 'KP'. ";
+        }
+
+        // Column 5 => "angka giliran" (required)
+        if (empty($row[5])) {
+            $flag = false;
+            $flag_msg .= "\nInvalid 'Angka Giliran'. ";
+        }
+
+        // Column 6 => "tarikh_isu" (required, must be a date)
+        if (empty($row[6])) {
+            $flag = false;
+            $flag_msg .= "\nInvalid 'Tarikh Isu'. ";
+        }
+
+        // Column 7 => "tarikh_exp" (required, must be a date)
+        if (empty($row[7])) {
+            $flag = false;
+            $flag_msg .= "\nInvalid 'Tarikh Exp'. ";
+        }
+
+        // Column 8 => "listening" (required, must be numeric)
+        if (empty($row[8]) || !is_numeric($row[8])) {
+            $flag = false;
+            $flag_msg .= "\nInvalid 'Listening'. ";
+        }
+
+        // Column 9 => "speaking" (required, must be numeric)
+        if (empty($row[9]) || !is_numeric($row[9])) {
+            $flag = false;
+            $flag_msg .= "\nInvalid 'Speaking'. ";
+        }
+
+        // Column 10 => "reading" (required, must be numeric)
+        if (empty($row[10]) || !is_numeric($row[10])) {
+            $flag = false;
+            $flag_msg .= "\nInvalid 'Reading'. ";
+        }
+
+        // Column 11 => "writing" (required, must be numeric)
+        if (empty($row[11]) || !is_numeric($row[11])) {
+            $flag = false;
+            $flag_msg .= "\nInvalid 'Writing'. ";
+        }
+
+        // Column 12 => "skor_agregat" (required, must be numeric)
+        if (empty($row[12]) || !is_numeric($row[12])) {
+            $flag = false;
+            $flag_msg .= "\nInvalid 'Skor Agregat'. ";
+        }
+
+        // Column 13 => "band" (required)
+        if (empty($row[13])) {
+            $flag = false;
+            $flag_msg .= "\nInvalid 'Band'. ";
+        }
+
+        // Return the result
+        return [
+            'flag' => $flag,
+            'flag_msg' => $flag_msg
+        ];
     }
 }

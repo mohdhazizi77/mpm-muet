@@ -174,7 +174,8 @@ Route::group(['middleware' => ['role:PENTADBIR|BPKOM|PSM|FINANCE']], function ()
         Route::post('/users/deactived/{user}', [UserController::class, 'deactived'])->name('users.deactived');
 
         Route::get('/manage-candidate', [CandidateController::class, 'indexCandidate'])->name('admin.candidate.index');
-        Route::post('/manage-candidate/ajax', [CandidateController::class, 'ajaxCandidate'])->name('admin.candidate.ajax');
+        Route::get('/manage-candidate/ajax', [CandidateController::class, 'ajaxCandidate'])->name('admin.candidate.ajax');
+        // Route::post('/manage-candidate/ajax', [CandidateController::class, 'ajaxCandidate'])->name('admin.candidate.ajax');
         Route::post('/manage-candidate/update/{candidate}', [CandidateController::class, 'updateCandidate'])->name('admin.candidate.update');
 
         Route::resource('/audit-logs', AuditLogsController::class);
@@ -207,3 +208,6 @@ Route::post('/update-password/{id}', [App\Http\Controllers\HomeController::class
 // Route::get('{any}', [App\Http\Controllers\HomeController::class, 'index'])->name('index');
 
 Route::get('/verify/result/{id}', [CandidateController::class, 'verifyResult'])->name('verify.result');
+
+Route::get('/upload/excel', [AdminController::class, 'indexUpload'])->name('upload.index');
+Route::post('/upload/excel', [AdminController::class, 'upload'])->name('upload.excel');

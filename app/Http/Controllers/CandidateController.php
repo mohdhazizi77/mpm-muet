@@ -1017,27 +1017,52 @@ class CandidateController extends Controller
         return view('modules.admin.administration.manage-candidates.index');
     }
 
-    // public function ajaxCandidate(Request $request)
-    // {
-    //     // $users = Auth::check() ? User::where('id', '!=', Auth::id())->get() : abort(403);
-    //     $candidates = Candidate::get();
-    //     $data = [];
-    //     foreach($candidates as $candidate){
-    //         $data[] = [
-    //             // "id"    => Crypt::encrypt($user->id),
-    //             "id"    => $candidate->id,
-    //             "name"  => $candidate->name,
-    //             "nric"  => $candidate->identity_card_number,
-    //         ];
-    //     };
+    public function searchCandidate(Request $request)
+    {
+        // $users = Auth::check() ? User::where('id', '!=', Auth::id())->get() : abort(403);
+        $candidates = Candidate::query();
 
-    //     return datatables($data)->toJson();
-    // }
+        // Check if a search term was provided
+        if ($request->has('search') && !empty($request->input('search'))) {
+            $searchTerm = $request->input('search');
+            $query->where('column1', 'like', '%' . $searchTerm . '%')
+                ->orWhere('column2', 'like', '%' . $searchTerm . '%')
+                ->orWhere('column3', 'like', '%' . $searchTerm . '%');
+        }
+
+        $data = [];
+        foreach($candidates as $candidate){
+            $data[] = [
+                // "id"    => Crypt::encrypt($user->id),
+                "id"    => $candidate->id,
+                "name"  => $candidate->name,
+                "nric"  => $candidate->identity_card_number,
+            ];
+        };
+
+        return datatables($data)->toJson();
+    }
 
     public function ajaxCandidate(Request $request)
     {
+
+        // dd($request->toArray(), $request->search);
+        // Check if a search term was provided and is not empty
+        if (!$request->filled('search')) {
+            // dd("hello");
+            // Return empty DataTables response if search is empty or null
+            return DataTables::of([])->toJson();
+        }
+        // dd($request->search);
         // Fetch records from the Candidate model with server-side processing
         $candidates = Candidate::query();
+
+        // Check if a search term was provided and perform search
+        if ($request->filled('search')) {
+            $searchTerm = $request->input('search');
+            $candidates->where('name', 'like', '%' . $searchTerm . '%')
+                    ->orWhere('identity_card_number', 'like', '%' . $searchTerm . '%');
+        }
 
         // Return the DataTable response
         return DataTables::of($candidates)
@@ -1045,7 +1070,7 @@ class CandidateController extends Controller
                 return $candidate->name;
             })
             ->addColumn('nric', function ($candidate) {
-                return $candidate->identity_card_number;
+                return $candidate->identity_card_number; // Assuming 'nric' is a column in your database
             })
             ->addColumn('action', function ($candidate) {
                 return '<button type="button" class="btn btn-sm btn-info" id="show_edit_modal" data-id="' . $candidate->id . '">Action</button>';

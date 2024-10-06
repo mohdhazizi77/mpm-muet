@@ -21,6 +21,7 @@ class MuetCalon extends Model
         'kodpusat',
         'jcalon',
         'nocalon',
+        'angka_giliran',
         'alamat1',
         'alamat2',
         'poskod',

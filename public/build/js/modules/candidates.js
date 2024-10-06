@@ -277,89 +277,14 @@ $(document).ready(function () {
 $(document).ready(function () {
     if ($('#dt-candidate').length) {
 
-        // var table = $('#dt-candidate').DataTable({
-        //     processing: true,
-        //     serverSide: true,
-        //     ajax: {
-        //         "url": "./manage-candidate/ajax",
-        //         "type": "POST",
-        //         "data": function (d) {
-        //             d._token = $('meta[name="csrf-token"]').attr('content');
-        //         }
-        //     },
-        //     columns: [
-        //         {
-        //             data: null,
-        //             orderable: false,
-        //             render: function(data, type, row, meta) {
-        //                 var pageInfo1 = table.page.info();
-        //                 var continuousRowNumber1 = pageInfo1.start + meta.row + 1;
-        //                 return continuousRowNumber1;
-        //             }
-        //         },
-        //         {
-        //             data: "name",
-        //             orderable: true,
-        //         },
-        //         {
-        //             data: "phoneNum",
-        //             orderable: false,
-        //         },
-        //         {
-        //             data: 'id',
-        //             class: 'text-center',
-        //             orderable: false,
-        //             searchable: false,
-        //             render(data, type, row) {
-        //                 let btn = '<button id="show_edit_modal" type="button" class="btn btn-sm btn-soft-info waves-effect text-black mx-2">' +
-        //                             ' <i class="ri-edit-line"></i>' +
-        //                             'EDIT' +
-        //                         '</button>';
-        //                 return btn;
-        //             }
-        //         }
-        //     ],
-        //     pageLength: 10,
-        //     order: [[0, "asc"]],
-        //     responsive: true, // Enable responsive mode
-        //     autoWidth: false,
-        //     buttons: {
-        //         dom: {
-        //             button: {
-        //                 tag: 'button',
-        //                 className: 'btn btn-sm'
-        //             }
-        //         },
-        //         buttons: [
-        //             {
-        //                 extend: "copyHtml5",
-        //                 text: "Salin",
-        //                 className: 'btn-secondary'
-        //             }
-        //         ],
-        //     },
-        //     // language: {
-        //     //     search: "Carian:",
-        //     //     zeroRecords: "Tiada rekod untuk dipaparkan.",
-        //     //     paginate: {
-        //     //         info: "Paparan _START_ / _END_ dari _TOTAL_ rekod",
-        //     //         infoEmpty: "Paparan 0 / 0 dari 0 rekod",
-        //     //         infoFiltered: "(tapisan dari _MAX_ rekod)",
-        //     //         processing: "Sila tunggu...",
-        //     //     }
-        //     // },
-        //     searching: true,
-        //     lengthChange: true,
-        // });
-
+        // Initialize the DataTable
         var table = $('#dt-candidate').DataTable({
             processing: true,
             serverSide: true,
             ajax: {
-                url: "./manage-candidate/ajax", // Change the URL to the appropriate route
-                type: "POST",
+                url: "./manage-candidate/ajax",
                 data: function (d) {
-                    d._token = $('meta[name="csrf-token"]').attr('content');
+                    d.search = $('#search_term').val(); // Capture the search term dynamically
                 }
             },
             columns: [
@@ -369,14 +294,41 @@ $(document).ready(function () {
                 { data: 'action', name: 'action', orderable: false, searchable: false }
             ],
             pageLength: 10,
+            lengthMenu: [[10], [10]], // Disable the entries per page dropdown by only allowing one option
             order: [[0, "asc"]],
             responsive: true,
-            autoWidth: false
+            autoWidth: false,
+            language: {
+                // "zeroRecords": "There are no records to display.",
+                // "paginate": {
+                // "info": "Display _START_ / _END_ of _TOTAL_ records",
+                // "infoEmpty": "Showing 0 to 0 of 0 entries",
+                // "infoFiltered": "(filter of _MAX_ record)",
+                "processing": "Processing...",
+                // "search": "Search:"
+            },
+            searching: false,
+            lengthChange: false,
+
         });
 
-        if ($('.dt-search').length) {
-            $('.dt-search').show()
-        }
+        // Search Button Click Event
+        $('#searchBtn').on('click', function () {
+            // Dynamically update the search term and reload the DataTable
+            table.ajax.reload();
+        });
+
+        // Reset Button Click Event
+        $('#resetBtn').on('click', function () {
+            $('#search_term').val(''); // Clear the search input field
+
+            // Reload the DataTable to reset it with no search term
+            table.ajax.reload();
+        });
+
+        // if ($('.dt-search').length) {
+        //     $('.dt-search').show()
+        // }
 
         $(document).on('click', '#show_edit_modal', function (e) {
             e.preventDefault();

@@ -9,6 +9,16 @@ class MuetSkor extends Model
 {
     use HasFactory;
     protected $table = 'muet_skor';
+    protected $fillable = [
+        'tahun',
+        'sidang',
+        'kodnegeri',
+        'kodpusat',
+        'jcalon',
+        'nocalon',
+        'kodkts',
+        'mkhbaru',
+    ];
 
     public function getNamaKertas(){
         return $this->hasOne('App\Models\Kodkts', 'kodkts');
