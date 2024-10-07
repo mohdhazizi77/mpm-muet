@@ -27,11 +27,14 @@
                                 <div class="col-12 align-self-center">
                                     <div class="py-3">
                                         <h3 class="fw-bold">PAYMENT {{ $payment->status }}!</h3>
-                                        <table class="table w-100 table-borderless fs-16 mt-3">
+                                        <table class="table w-100 table-borderless fs-14 mt-3">
                                             <tr>
                                                 {{-- <td class="fw-bold"> TRANSACTION REFERENCE ID : {{ empty($payment->txn_id) ? '' : $payment->txn_id }} </td> --}}
-                                                <td class="fw-bold"> TRANSACTION REFERENCE ID : {{ empty($order->unique_order_id) ? '' : $order->unique_order_id }} </td>
-                                                <td class="fw-bold" style="text-align: end"> PAYMENT REFERENCE ID  : {{ empty($payment->ref_no) ? $order->payment_ref_no : $payment->txn_id }}</td>
+                                                <td class="fw-bold p-0"> TRANSACTION <br class="d-md-none"> REFERENCE ID : <br class="d-md-none"> {{ empty($order->unique_order_id) ? '' : $order->unique_order_id }} </td>
+                                                <td class="fw-bold p-0" style="text-align: end"> PAYMENT <br class="d-md-none"> REFERENCE ID  : <br class="d-md-none"> {{ empty($payment->ref_no) ? $order->payment_ref_no : $payment->txn_id }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td></td>
                                             </tr>
                                            {{-- <tr>
                                                 <td></td>
@@ -44,11 +47,11 @@
                                             </tr> --}}
                                             @if ($payment->status == "SUCCESS")
                                                 <tr>
-                                                    <td colspan="2">An automated payment receipt already sent to your email. If not received payment receipt, click <a href="{{ $payment->receipt }}" target="_blank">here</a> </td>
+                                                    <td class="p-0" colspan="2">An automated payment receipt already sent to your email. If not received payment receipt, click <a href="{{ $payment->receipt }}" target="_blank">here</a> </td>
                                                 </tr>
                                             @elseif($payment->status == "PENDING")
                                                 <tr>
-                                                    <td colspan="2">Retry make payment <a href="https://ebayar-lab.mpm.edu.my/payments/{{ $order->payment_ref_no }}/gateway" target="_blank">here</a> </td>
+                                                    <td class="p-0" colspan="2">Retry make payment <a href="https://ebayar-lab.mpm.edu.my/payments/{{ $order->payment_ref_no }}/gateway" target="_blank">here</a> </td>
                                                 </tr>
                                             @elseif($payment->status == "FAILED")
 
@@ -67,10 +70,14 @@
             <div class="row">
                 <div class="col-lg-6">
                     <div class="card rounded-0 bg-white border-top p-4">
-                        <h4 class="">CERTIFICATE ORDER HISTORY</h4>
-                        <table id="trackOrderTable" data-id="{{ $cryptId }}" class="table table-striped text-center">
+                        <h5 class="">CERTIFICATE ORDER HISTORY</h5>
+                        <table id="trackOrderTable" data-id="{{ $cryptId }}"
+                         {{-- class="table table-striped text-center" --}}
+                         class="display responsive nowrap" style="width:100%"
+
+                         >
                             <thead>
-                            <tr class="text-center bg-dark-subtle">
+                            <tr class="text-center bg-dark-subtle fs-12">
                                 <th scope="col">#</th>
                                 <th scope="col">DATE UPDATED</th>
                                 <th scope="col">DESCRIPTION</th>
@@ -94,9 +101,12 @@
                 </div>
                 <div class="col-lg-6">
                     <div class="card rounded-0 bg-white border-top p-4">
-                        <h4 class="">TRACK ORDER</h4>
+                        <h5 class="">TRACK ORDER</h5>
                         <label for="" class="my-3">TRACKING NUMBER : {{ !empty($order->tracking_number) ? $order->tracking_number : '-' }}</label>
-                        <table id="trackShippingTable" data-id="{{ $cryptId }}" data-trackno="{{ $order->tracking_number }}" class="table table-striped text-center">
+                        <table id="trackShippingTable" data-id="{{ $cryptId }}" data-trackno="{{ $order->tracking_number }}"
+                            {{-- class="table table-striped text-center" --}}
+                            class="display responsive nowrap" style="width:100%"
+                            >
                             <thead>
                                 <tr class="text-center bg-dark-subtle">
                                     <th scope="col">#</th>
