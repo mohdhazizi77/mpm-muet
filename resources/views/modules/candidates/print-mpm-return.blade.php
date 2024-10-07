@@ -62,7 +62,8 @@
                                 <div class="col-xxl-12 align-self-center">
                                     <div class="py-4">
 
-                                        <table class="table table-striped text-center">
+                                        {{-- <table class="table table-striped text-center"> --}}
+                                        <table  class="display responsive nowrap" style="width:100%">
                                             <thead>
                                             <tr class="text-center bg-dark-subtle">
                                                 <th scope="col">NO.</th>
