@@ -9,7 +9,7 @@
 
 @section('content')
     <div class="container">
-        <div class="row">
+        {{-- <div class="row">
             <div class="col-lg-12">
                 <div class="card rounded-0 bg-success-subtle mx-n4 mt-n4 border-top">
                     <div class="px-4">
@@ -51,6 +51,44 @@
 
             </div>
             <!--end col-->
+        </div> --}}
+
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card rounded-0 bg-success-subtle mx-n4 mt-n2 border-top">
+                    <div class="px-4">
+                        <div class="row">
+                            @if(Session::has('error'))
+                                <div class="alert alert-danger mb-3">
+                                    {{ Session::get('error') }}
+                                </div>
+                            @endif
+                            <div class="col-xxl-6 align-self-center">
+                                <div class="py-3">
+                                    <h3 class="fw-bold fs-15">CANDIDATE'S DETAILS</h3>
+                                    <div style="overflow-x:auto;">
+                                        <table class="table-borderless fs-14 mt-2 fw-bold">
+                                            <tr>
+                                                <td width=40%>NAME</td>
+                                                <td class="px-2">:</td>
+                                                <td class="">{{ $user->name }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td width=40%>IDENTIFICATION CARD NUMBER</td>
+                                                <td class="px-2">:</td>
+                                                <td class="">{{ $user->identity_card_number }}</td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end card body -->
+                </div>
+                <!-- end card -->
+            </div>
+            <!--end col-->
         </div>
 
         <div class="row pt-3">
@@ -64,8 +102,8 @@
                                     <!-- Striped Rows -->
                                     <table class="table table-borderless text-center">
                                         <div class="clearfix">
-                                            <h4 class="py-2 fw-bold float-start">{{ $result['session'] }}</h4>
-                                            <h4 class="py-2 fw-bold float-end">{{ $result['index_number'] }}</h4>
+                                            <h5 class="py-2 fw-bold float-start">{{ $result['session'] }}</h5>
+                                            <h5 class="py-2 fw-bold float-end">{{ $result['index_number'] }}</h5>
                                         </div>
                                         <thead>
                                         <tr class="text-center bg-dark-subtle border-1 border-black">

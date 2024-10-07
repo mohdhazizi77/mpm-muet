@@ -18,6 +18,7 @@ $(document).ready(function() {
                 {
                     data: "no",
                     orderable: false,
+
                 },
                 {
                     data: "orderDate",
@@ -26,6 +27,7 @@ $(document).ready(function() {
                 {
                     data: "uniqueOrderId",
                     orderable: false,
+                    responsivePriority: 1
                 },
                 {
                     data: "orderFor",
@@ -38,6 +40,8 @@ $(document).ready(function() {
                         var html = '<span class="badge rounded-pill bg-'+row.color+'">'+data+'</span>';
                         return html;
                     },
+                    responsivePriority: 2
+
                     // render: function (data, type, row, meta) {
                     //     var html = '';
                     //      //'PAID', 'NEW', 'PROCESSING', 'COMPLETE' , 'CANCEL', 'FAIL'
@@ -90,8 +94,8 @@ $(document).ready(function() {
 
                         // if (row.status != "FAILED" ) {
                             var buttonCheckCert =
-                            '<a href="/candidate/muet-status/'+data+'" data-id='+data+' class="btn btn-soft-secondary waves-effect text-black mx-2">' +
-                                '<i class="ri-list-check-2 label-icon align-middle fs-16 me-2"></i>' +
+                            '<a href="/candidate/muet-status/'+data+'" data-id='+data+' class="btn fs-12 btn-soft-secondary waves-effect text-black mx-2">' +
+                                '<i class="ri-list-check-2 label-icon align-middle fs-12 me-2"></i>' +
                                 'CERTIFICATE STATUS' +
                             '</a>'
                         // }
@@ -99,6 +103,8 @@ $(document).ready(function() {
                         return buttonPrintPDF + buttonPrintMPM + buttonCheckCert;
 
                     },
+                    responsivePriority: 3
+
                     // className: ,
                 }
             ],

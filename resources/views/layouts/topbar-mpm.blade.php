@@ -23,13 +23,13 @@
                     </a>
                 </div>
 
-                {{--                <button type="button" class="btn btn-sm px-3 fs-16 header-item vertical-menu-btn topnav-hamburger" id="topnav-hamburger-icon">--}}
-                {{--                                    <span class="hamburger-icon">--}}
-                {{--                                        <span></span>--}}
-                {{--                                        <span></span>--}}
-                {{--                                        <span></span>--}}
-                {{--                                    </span>--}}
-                {{--                </button>--}}
+                <button type="button" class="btn btn-sm px-3 fs-16 header-item vertical-menu-btn topnav-hamburger" id="topnav-hamburger-icon">
+                    <span class="hamburger-icon">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </span>
+                </button>
 
             </div>
 
@@ -49,7 +49,7 @@
                     <div class="dropdown-menu dropdown-menu-end">
                         <!-- item-->
                         <a class="dropdown-item" href="{{ route('users.edit', auth()->user()->id) }}">
-                            <i class="mdi mdi-account-circle text-muted fs-16 align-middle me-1"></i> 
+                            <i class="mdi mdi-account-circle text-muted fs-16 align-middle me-1"></i>
                             <span class="align-middle">Profile</span>
                         </a>
                         <a class="dropdown-item " href="javascript:void();" onclick="event.preventDefault(); document.getElementById('logout-form').submit();"><i class="bx bx-power-off font-size-16 align-middle me-1"></i> <span

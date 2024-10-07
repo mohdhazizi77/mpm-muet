@@ -26,75 +26,31 @@
 @section('content')
 
     <div class="container">
+
         <div class="row">
             <div class="col-lg-12">
-
-                @if($status == 'FAILED')
-
-                    <div class="card rounded-0 {{ $status == 'SUCCESS' ? 'bg-success-subtle' : 'bg-danger' }}  mx-n4 mt-n4 border-top">
-                        <div class="px-4">
-                            <div class="row">
-                                <div class="col-xxl-6 align-self-center">
-                                    <div class="py-3">
-                                        <h3 class="fw-bold">PAYMENT {{ $status }}!</h3>
-                                        <table class="table-borderless fs-16 mt-3">
-                                            <tr>
-                                                <td class="fw-bold">
-                                                    TRANSACTION REFERENCE : {{ $txn_id }}
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>The payment was unsuccessful. Please try again or use another payment method.</td>
-                                            </tr>
-                                        </table>
-                                    </div>
-                                </div>
-                                {{--                        <div class="col-xxl-3 ms-auto">--}}
-                                {{--                            <div class="mb-n5 pb-1 faq-img d-none d-xxl-block">--}}
-                                {{--                                <img src="{{ URL::asset('build/images/faq-img.png') }}" alt="" class="img-fluid">--}}
-                                {{--                            </div>--}}
-                                {{--                        </div>--}}
-                            </div>
-                        </div>
-                        <!-- end card body -->
-                    </div>
-
-                    <br>
-
-                @endif
-
-                <div class="card rounded-0 bg-success-subtle mx-n4 mt-n4 border-top">
-                    @if(Session::has('error'))
-                        <div class="alert alert-danger mb-3">
-                            {{ Session::get('error') }}
-                        </div>
-                    @endif
+                <div class="card rounded-0 bg-success-subtle mx-n4 mt-n2 border-top">
                     <div class="px-4">
                         <div class="row">
+                            @if(Session::has('error'))
+                                <div class="alert alert-danger mb-3">
+                                    {{ Session::get('error') }}
+                                </div>
+                            @endif
                             <div class="col-xxl-6 align-self-center">
                                 <div class="py-3">
-                                    <h3 class="fw-bold">CANDIDATE'S DETAILS</h3>
+                                    <h3 class="fw-bold fs-15">CANDIDATE'S DETAILS</h3>
                                     <div style="overflow-x:auto;">
-                                        <table class="table-borderless fs-16 mt-3 fw-bold">
+                                        <table class="table-borderless fs-14 mt-2 fw-bold">
                                             <tr>
-                                                <td>NAME</td>
+                                                <td width=40%>NAME</td>
                                                 <td class="px-2">:</td>
-                                                <td class="d-none d-xxl-table-cell">{{ $user->name }}</td>
-                                            </tr>
-                                            <tr class="d-xxl-none">
-                                                <td colspan="3">
-                                                    {{ $user->name }}
-                                                </td>
+                                                <td class="">{{ $user->name }}</td>
                                             </tr>
                                             <tr>
-                                                <td>IDENTIFICATION CARD NUMBER</td>
+                                                <td width=40%>IDENTIFICATION CARD NUMBER</td>
                                                 <td class="px-2">:</td>
-                                                <td class="d-none d-xxl-table-cell">{{ $user->identity_card_number }}</td>
-                                            </tr>
-                                            <tr class="d-xxl-none">
-                                                <td colspan="3">
-                                                     {{ $user->identity_card_number }}
-                                                </td>
+                                                <td class="">{{ $user->identity_card_number }}</td>
                                             </tr>
                                         </table>
                                     </div>
@@ -105,7 +61,6 @@
                     <!-- end card body -->
                 </div>
                 <!-- end card -->
-
             </div>
             <!--end col-->
         </div>
@@ -120,8 +75,8 @@
                                 <div class="py-4">
                                     <table class="table table-borderless text-center">
                                         <div class="clearfix">
-                                            <h4 class="py-2 fw-bold float-start">{{ $result['session'] }}</h4>
-                                            <h4 class="py-2 fw-bold float-end">{{ $result['index_number'] }}</h4>
+                                            <h5 class="py-2 fw-bold float-start">{{ $result['session'] }}</h5>
+                                            <h5 class="py-2 fw-bold float-end">{{ $result['index_number'] }}</h5>
                                         </div>
                                         <thead>
                                         <tr class="text-center bg-dark-subtle border-1 border-black">
@@ -201,7 +156,7 @@
 
                     <div class="card-header bg-dark-subtle">
                         <div class="row">
-                            <div class="col-6">
+                            <div class="col-12">
                                 <h5 class="card-title mb-0 fs-20 fw-bolder">Shipping Information</h5>
                                 <p class="text-muted mb-0">All fields are mandatory</p>
                             </div>
@@ -219,13 +174,13 @@
                                         @csrf
 
                                         <div class="row">
-                                            <div class="col-6">
+                                            <div class="col-md-6 col-sm-12">
                                                 <div class="mb-3">
                                                     <label for="name" class="form-label">Name</label>
                                                     <input type="text" class="form-control" placeholder="Enter your name" name="name" readonly value="{{ $user->name }}">
                                                 </div>
                                             </div><!--end col-->
-                                            <div class="col-6">
+                                            <div class="col-md-6 col-sm-12">
                                                 <div class="mb-3">
                                                     <label for="icNumber" class="form-label">Identification Card Number</label>
                                                     <input type="text" class="form-control" placeholder="Enter your identification card number" id="icNumber" name="nric" readonly value="{{ $user->identity_card_number }}">
@@ -234,7 +189,7 @@
                                         </div><!--end row-->
 
                                         <div class="row">
-                                            <div class="col-6">
+                                            <div class="col-md-6 col-sm-12">
                                                 <label class="form-label">Phone Number</label>
                                                 <div class="input-group" data-input-flag>
                                                     <button class="btn btn-light border" type="button" data-bs-toggle="dropdown" aria-expanded="false"><img src="{{URL::asset('build/images/flags/my.svg')}}" alt="flag img" height="20"
@@ -249,7 +204,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col-6">
+                                            <div class="col-md-6 col-sm-12">
                                                 <div class="mb-3">
                                                     <label for="email" class="form-label">Email</label>
                                                     <input type="text" class="form-control" placeholder="Enter your email" value="{{ old('email') }}"  name="email">
@@ -270,21 +225,21 @@
 
                                         <div class="row">
 
-                                            <div class="col-4">
+                                            <div class="col-md-4">
                                                 <div class="mb-3">
                                                     <label for="postcode" class="form-label">Postcode</label>
                                                     <input type="text" class="form-control" placeholder="Enter your postcode" name="postcode" value="{{ old('postcode') }}">
                                                 </div>
                                             </div><!--end col-->
 
-                                            <div class="col-4">
+                                            <div class="col-md-4 col-sm-6">
                                                 <div class="mb-3">
                                                     <label for="city" class="form-label">City</label>
                                                     <input type="text" class="form-control" placeholder="Enter your city" name="city" value="{{ old('city') }}">
                                                 </div>
                                             </div><!--end col-->
 
-                                            <div class="col-4">
+                                            <div class="col-md-4 col-sm-6">
                                                 <div class="mb-3">
                                                     <label for="state" class="form-label">State</label>
                                                     <select class="form-select mb-3" aria-label="Default select example" name="state">
@@ -342,7 +297,7 @@
 
                     <div class="card-header bg-dark-subtle">
                         <div class="row">
-                            <div class="col-6">
+                            <div class="col-12">
                                 <h5 class="card-title mb-0 fs-20 fw-bolder">Order Information</h5>
                                 <p class="text-muted mb-0">Kindly verify your order information</p>
                             </div>
@@ -390,11 +345,18 @@
             <!--end col-->
         </div>
 
-        <div class="button-container">
-            <x-button.back></x-button.back>
-            <a id="button-payment" href="#" class="btn btn-soft-success btn-label btn-border waves-effect waves-light w-lg float-end">
-                <i class="ri-secure-payment-fill label-icon align-middle fs-16 me-2"></i>PROCEED TO PAYMENT
-            </a>
+        <div class="button-container row">
+            <!-- Back button: Stack vertically on small screens -->
+            <div class="col-12 col-md-auto mb-2 mb-md-0">
+                <x-button.back></x-button.back>
+            </div>
+
+            <!-- Payment button: Stack vertically on small screens -->
+            <div class="col-12 col-md-auto">
+                <a id="button-payment" href="#" class="btn btn-soft-success btn-label btn-border waves-effect waves-light w-100">
+                    <i class="ri-secure-payment-fill label-icon align-middle fs-16 me-2"></i>PROCEED TO PAYMENT
+                </a>
+            </div>
         </div>
     </div>
 @endsection

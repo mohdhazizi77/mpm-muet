@@ -11,23 +11,23 @@
 @section('content')
 
     <div class="container">
-        <div class="container-fluid">
+        {{-- <div class="container-fluid"> --}}
             <div class="row">
                 <div class="col-lg-12">
                     <div class="card rounded-0 bg-white mx-n4 mt-n4 border-top">
                         <div class="px-4">
                             <div class="py-4">
-                                <h2 class="mb-4">ORDER LIST</h2>
+                                <h4 class="mb-4">TRANSACTION LIST</h4>
                                 <!-- Striped Rows -->
-                                <table id="orderTable" data-id="{{ $cryptId }}" class="table w-100 table-striped text-center dt-responsive nowrap dataTable"
+                                <table id="orderTable" data-id="{{ $cryptId }}" class="table fs-12 w-100 table-striped text-center dt-responsive nowrap dataTable"
                                         style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                                     <thead>
                                         <tr class="text-center bg-dark-subtle">
                                             <th scope="col">#</th>
                                             <th scope="col">DATE CREATED</th>
-                                            <th scope="col">TRANSACTION REFERENCE ID</th>
-                                            <th scope="col">TRANSACTION TYPE</th>
-                                            <th scope="col">TRANSACTION STATUS</th>
+                                            <th scope="col">REFERENCE ID</th>
+                                            <th scope="col">TYPE</th>
+                                            <th scope="col">STATUS</th>
                                             <th scope="col">ACTION</th>
                                         </tr>
                                     </thead>
@@ -62,10 +62,10 @@
             <div class="row mt-4">
                 <div class="col-lg-12">
                     {{-- <x-button.back></x-button.back> --}}
-                    <a href="{{ route('candidate.index') }}" class="btn btn-soft-dark btn-label btn-border btn-outline-dark waves-effect waves-light w-lg float-start"><i class="ri-reply-fill label-icon align-middle fs-16 me-2"></i>BACK TO MAIN PAGE</a>
+                    <a href="{{ route('candidate.index') }}" class="btn btn-soft-dark fs-12 btn-label btn-border btn-outline-dark waves-effect waves-light w-lg float-start"><i class="ri-reply-fill label-icon align-middle fs-12 me-2"></i>BACK TO MAIN PAGE</a>
                 </div>
             </div>
-        </div>
+        {{-- </div> --}}
     </div>
 @endsection
 

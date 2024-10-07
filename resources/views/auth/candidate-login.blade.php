@@ -20,17 +20,18 @@
         <div class="auth-page-content">
             <div class="container">
                 <div class="row">
-                    <div class="col-lg-12">
-                        <div class="text-center mt-sm-3 mb-4 text-white-50">
+                    <div class="col-lg-12 col-sm-12">
+                        <div class="text-center mt-sm-3 mb-4 text1-white-50">
                             <div>
                                 <a href="index" class="d-inline-block auth-logo">
                                     <img src="{{ URL::asset('build/images/mpm-logo.png') }}" alt="" height="100">
                                 </a>
                             </div>
-                            <a href="index" class="d-inline-block auth-logo">
-                                <img src="{{ URL::asset('build/images/muet-text-long-black.png') }}" alt="" height="60">
-                            </a>
                         </div>
+                        <a href="index" class="text-center auth-logo">
+                            <img src="{{ URL::asset('build/images/muet-text-long-black.png') }}" alt="" height="60">
+                            {{-- <b><h1 style="font-size: 22pt;font-weight: bolder;color: black;">MALAYSIAN UNIVERSITY ENGLISH TEST</h1></b> --}}
+                        </a>
                     </div>
                 </div>
                 <!-- end row -->

@@ -65,8 +65,9 @@
                                     <img src="{{ URL::asset('build/images/mpm-logo.png') }}" alt="" height="100">
                                 </a>
                             </div>
-                            <a href="index" class="d-inline-block auth-logo">
+                            <a href="index" class="text-center auth-logo">
                                 <img src="{{ URL::asset('build/images/muet-text-long-black.png') }}" alt="" height="60">
+                                {{-- <b><h1 style="font-size: 22pt;font-weight: bolder;color: black;">MALAYSIAN UNIVERSITY ENGLISH TEST</h1></b> --}}
                             </a>
                         </div>
                     </div>

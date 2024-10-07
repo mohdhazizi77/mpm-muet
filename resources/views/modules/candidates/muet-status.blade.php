@@ -108,7 +108,7 @@
                             class="table display responsive nowrap" style="width:100%"
                             >
                             <thead>
-                                <tr class="text-center bg-dark-subtle">
+                                <tr class="text-center bg-dark-subtle fs-12">
                                     <th scope="col">#</th>
                                     <th scope="col">DATE AND TIME</th>
                                     <th scope="col">DETAIL</th>
@@ -156,8 +156,8 @@
         @endif
 
         <div>
-            <a href="{{ url()->previous() }}" class="btn btn-soft-dark btn-label btn-border btn-outline-dark waves-effect waves-light w-lg float-start">
-                <i class="ri-reply-fill label-icon align-middle fs-16 me-2"></i>BACK TO ORDER HISTORY
+            <a href="{{ url()->previous() }}" class="btn btn-soft-dark fs-12 btn-label btn-border btn-outline-dark waves-effect waves-light w-lg float-start">
+                <i class="ri-reply-fill label-icon align-middle fs-12 me-2"></i>BACK TO ORDER HISTORY
             </a>
         </div>
 

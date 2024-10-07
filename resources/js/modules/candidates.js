@@ -19,21 +19,35 @@ $(document).ready(function () {
                 //     render: ,
                 //     className: ,
                 // },
+                // {
+                //     data: "no",
+                //     orderable: false,
+                //     responsivePriority: 1
+                // },
                 {
-                    data: "no",
+                    data: null,
+                    // className: 'dt-control',  // Ensure the class for expand icon
                     orderable: false,
+                    defaultContent: '',
+                    responsivePriority: 1, // This column will always show the expand icon
+                    render: function(data, type,row,meta) {
+                        return '<i class="ri-add-circle-line d-md-none"></i>';
+                    }
                 },
                 {
                     data: "type",
                     orderable: false,
+                    responsivePriority: 2
                 },
                 {
                     data: "session",
                     orderable: false,
+                    responsivePriority: 3
                 },
                 {
                     data: "band",
                     orderable: false,
+                    responsivePriority: 4
                 },
                 {
                     data: "id",
@@ -49,83 +63,64 @@ $(document).ready(function () {
                         var modalPayment = 'modalPayment';
                         var modalPaymentMpm = 'modalPaymentMpm';
 
-                        // if (row.is_more2year && !row.is_selfPrintPaid) { //lebih 2 tahun and tak bayar lagi
-                        if (row.is_more2year) { //lebih 2 tahun and tak bayar lagi
+                        if (row.is_more2year) {
                             if (row.is_selfPrintPaid) {
                                 if (row.is_mpmPrintPaid) {
                                     buttonPrintPDF =
-                                        '<a href="/candidate/view-result/' + data + '" data-id=' + data + ' class="btn btn-success waves-effect text-black mx-2 printPdfButton modalVerify">' +
-                                        '<i class="ri-printer-line label-icon align-middle fs-16 me-2"></i>' +
+                                        '<a href="/candidate/view-result/' + data + '" data-id=' + data + ' class="btn btn-success fs-12 waves-effect text-black d-block d-md-inline-block mb-2 mx-md-2 printPdfButton modalVerify">' +
+                                        '<i class="ri-printer-line label-icon align-middle fs-12 me-2"></i>' +
                                         'PDF SELF PRINT' +
-                                        '</a>'
-                                }
-                                else {
+                                        '</a>';
+                                } else {
                                     buttonPrintPDF =
-                                        '<a href="/candidate/view-result/' + data + '" data-id=' + data + ' class="btn btn-soft-info waves-effect text-black mx-2 printPdfButton modalVerify">' +
-                                        '<i class="ri-printer-line label-icon align-middle fs-16 me-2"></i>' +
+                                        '<a href="/candidate/view-result/' + data + '" data-id=' + data + ' class="btn btn-soft-info fs-12 waves-effect text-black d-block d-md-inline-block mb-2 mx-md-2 printPdfButton modalVerify">' +
+                                        '<i class="ri-printer-line label-icon align-middle fs-12 me-2"></i>' +
                                         'PDF SELF PRINT' +
-                                        '</a>'
+                                        '</a>';
                                 }
                             } else {
                                 if (row.is_mpmPrintPaid) {
                                     buttonPrintPDF =
-                                        '<a href="/candidate/view-result/' + data + '" data-id=' + data + ' class="btn btn-success waves-effect text-black mx-2 printPdfButton modalVerify">' +
-                                        '<i class="ri-printer-line label-icon align-middle fs-16 me-2"></i>' +
+                                        '<a href="/candidate/view-result/' + data + '" data-id=' + data + ' class="btn btn-success fs-12 waves-effect text-black d-block d-md-inline-block mb-2 mx-md-2 printPdfButton modalVerify">' +
+                                        '<i class="ri-printer-line label-icon align-middle fs-12 me-2"></i>' +
                                         'PDF SELF PRINT' +
-                                        '</a>'
-                                }
-                                else {
+                                        '</a>';
+                                } else {
                                     buttonPrintPDF =
-                                        '<a data-id=' + data + ' class="btn btn-soft-info waves-effect text-black mx-2 ' + modalPayment + '" data-bs-toggle="modal" data-bs-target="#' + modalPayment + '">' +
-                                        '<i class="ri-printer-line label-icon align-middle fs-16 me-2"></i>' +
+                                        '<a data-id=' + data + ' class="btn btn-soft-info fs-12 waves-effect text-black d-block d-md-inline-block mb-2 mx-md-2 ' + modalPayment + '" data-bs-toggle="modal" data-bs-target="#' + modalPayment + '">' +
+                                        '<i class="ri-printer-line label-icon align-middle fs-12 me-2"></i>' +
                                         'PDF SELF PRINT' +
-                                        '</a>'
+                                        '</a>';
                                 }
-
                             }
                             buttonPrintMPM =
-                                // href="/candidate/pos-result/'+data+'"
-                                '<a data-id=' + data + ' class="btn btn-soft-info waves-effect text-black mx-2 modalUpcoming1 modalPaymentMpm" data-bs-toggle="modal" data-bs-target="#modalPaymentMpm">' +
-                                '<i class="ri-printer-line label-icon align-middle fs-16 me-2"></i> ' +
+                                '<a data-id=' + data + ' class="btn btn-soft-info fs-12 waves-effect text-black d-block d-md-inline-block mb-2 mx-md-2 modalUpcoming1 modalPaymentMpm" data-bs-toggle="modal" data-bs-target="#modalPaymentMpm">' +
+                                '<i class="ri-printer-line label-icon align-middle fs-12 me-2"></i> ' +
                                 'PRINTING BY MPM' +
-                                '</a> '
+                                '</a>';
                         } else {
                             buttonPrintPDF =
-                                // '<a data-id='+data+' class="btn btn-soft-info waves-effect text-black mx-2 modalVerify" data-bs-toggle="modal" data-bs-target="#1'+modalSelf+'">' +
-                                //     '<i class="ri-printer-line label-icon align-middle fs-16 me-2"></i>' +
-                                //     'PRINT PDF' +
-                                // '</a>'
-
-                                // '<a href="/candidate/'+data+'/printpdf" data-id='+data+' class="btn btn-soft-info waves-effect text-black mx-2 modalVerify">' +
-                                '<button data-type="SELF_PRINT" type="button" data-id=' + data + ' class="btn btn-soft-info waves-effect text-black mx-2 modalVerify" data-bs-toggle="modal" data-bs-target="#' + modalMPM + '">' +
-                                '<i class="ri-printer-line label-icon align-middle fs-16 me-2"></i>' +
+                                '<button data-type="SELF_PRINT" type="button" data-id=' + data + ' class="btn btn-soft-info fs-12 waves-effect text-black d-block d-md-inline-block mb-2 mx-md-2 modalVerify" data-bs-toggle="modal" data-bs-target="#' + modalMPM + '">' +
+                                '<i class="ri-printer-line label-icon align-middle fs-12 me-2"></i>' +
                                 'PDF SELF PRINT' +
-                                '</button>'
+                                '</button>';
 
                             buttonPrintMPM =
-                                '<button data-type="MPM_PRINT" type="button" data-id=' + data + ' class="btn btn-soft-info waves-effect text-black mx-2 modalUpcoming1 modalVerify" data-bs-toggle="modal" data-bs-target="#' + modalMPM + '">' +
-                                '<i class="ri-printer-line label-icon align-middle fs-16 me-2"></i> ' +
+                                '<button data-type="MPM_PRINT" type="button" data-id=' + data + ' class="btn btn-soft-info fs-12 waves-effect text-black d-block d-md-inline-block mb-2 mx-md-2 modalUpcoming1 modalVerify" data-bs-toggle="modal" data-bs-target="#' + modalMPM + '">' +
+                                '<i class="ri-printer-line label-icon align-middle fs-12 me-2"></i> ' +
                                 'PRINTING BY MPM' +
-                                '</button> '
-                            // '<a href="/candidate-printmpm" class="btn btn-soft-info waves-effect text-black mx-2 ">' +
-                            //     '<i class="ri-printer-line label-icon align-middle fs-16 me-2"></i> ' +
-                            //     'PRINTING BY MPM' +
-                            // '</a> '
-
+                                '</button>';
                         }
 
-                        // if (row.is_mpmPrintPaid || row.is_selfPrintPaid ) {
                         var buttonCheckCert =
-                            '<a href="/candidate/order/' + data + '" data-id=' + data + ' class="btn btn-soft-secondary waves-effect text-black mx-2">' +
-                            '<i class="ri-list-check-2 label-icon align-middle fs-16 me-2"></i>' +
+                            '<a href="/candidate/order/' + data + '" data-id=' + data + ' class="btn btn-soft-secondary fs-12 waves-effect text-black d-block d-md-inline-block mb-2 mx-md-2">' +
+                            '<i class="ri-list-check-2 label-icon align-middle fs-12 me-2"></i>' +
                             'ORDER HISTORY' +
-                            '</a>'
-                        // }
+                            '</a>';
 
                         return buttonPrintPDF + buttonPrintMPM + buttonCheckCert;
-
                     },
-                    // className: ,
+                    responsivePriority: 5
                 }
             ],
             // dom: 'frtp',
@@ -175,11 +170,22 @@ $(document).ready(function () {
                     "orderable": false // Disable sorting for this column
                 }
             ],
+            // columnDefs: [
+            //     {
+            //         targets: 0, // Place the expand icon in the first column
+            //         className: 'dt-control',
+            //         orderable: false,
+            //         data: null,
+            //         defaultContent: '<i class="ri-arrow-down-s-line"></i>', // Expand icon
+            //         responsivePriority: 1 // High priority to make sure it stays visible
+            //     }
+            // ],
             order: [[1, 'asc']], // Order by the second column by default
             rowCallback: function(row, data, index) {
                 // Display the row number in the first column
                 $('td:eq(0)', row).html(index + 1);
-            }
+            },
+            responsive: true,
         });
     }
 

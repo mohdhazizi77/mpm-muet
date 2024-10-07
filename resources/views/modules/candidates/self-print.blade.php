@@ -12,6 +12,38 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-12">
+                <div class="card rounded-0 bg-success-subtle mx-n4 mt-n2 border-top">
+                    <div class="px-4">
+                        <div class="row">
+                            <div class="col-xxl-6 align-self-center">
+                                <div class="py-3">
+                                    <h3 class="fw-bold fs-15">CANDIDATE'S DETAILS</h3>
+                                    <div style="overflow-x:auto;">
+                                        <table class="table-borderless fs-14 mt-2 fw-bold">
+                                            <tr>
+                                                <td width=40%>NAME</td>
+                                                <td class="px-2">:</td>
+                                                <td class="">{{ $candidate->nama }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td width=40%>IDENTIFICATION CARD NUMBER</td>
+                                                <td class="px-2">:</td>
+                                                <td class="">{{ $candidate->kp }}</td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end card body -->
+                </div>
+                <!-- end card -->
+            </div>
+            <!--end col-->
+        </div>
+        {{-- <div class="row">
+            <div class="col-lg-12">
                 <div class="card rounded-0 bg-success-subtle mx-n4 mt-n4 border-top">
                     @if(Session::has('error'))
                         <div class="alert alert-danger mb-3">
@@ -45,7 +77,7 @@
 
             </div>
             <!--end col-->
-        </div>
+        </div> --}}
         @if ($errors->any())
             <div class="alert alert-danger">
                 <ul>
@@ -61,7 +93,7 @@
 
                     <div class="card-header bg-dark-subtle">
                         <div class="row">
-                            <div class="col-6">
+                            <div class="col-12">
                                 <h5 class="card-title mb-0 fs-20 fw-bolder">Payment Information</h5>
                                 <p class="text-muted mb-0">Please fill all information below</p>
                             </div>
@@ -78,13 +110,13 @@
                                     <form id="paymentForm" method="POST" action="{{ route('candidate.makepayment') }}">
                                         @csrf
                                         <div class="row">
-                                            <div class="col-6">
+                                            <div class="col-md-6 col-sm-12">
                                                 <div class="mb-3">
                                                     <label for="name" class="form-label">Name</label>
                                                     <input type="text" class="form-control" placeholder="Enter your name" id="name" readonly  name="name" value="{{ $candidate->nama }}">
                                                 </div>
                                             </div><!--end col-->
-                                            <div class="col-6">
+                                            <div class="col-md-6 col-sm-12">
                                                 <div class="mb-3">
                                                     <label for="icNumber" class="form-label">Identification Card Number</label>
                                                     <input type="text" class="form-control" placeholder="Enter your identification card number" id="icNumber" name="nric" readonly  value="{{ $candidate->kp }}">
@@ -93,7 +125,7 @@
                                         </div><!--end row-->
 
                                         <div class="row">
-                                            <div class="col-6">
+                                            <div class="col-md-6 col-sm-12">
                                                 <label class="form-label">Phone Number</label>
                                                 <div class="input-group" data-input-flag>
                                                     <button class="btn btn-light border" type="button" data-bs-toggle="dropdown" aria-expanded="false"><img src="{{URL::asset('build/images/flags/my.svg')}}" alt="flag img" height="20"
@@ -107,7 +139,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col-6">
+                                            <div class="col-md-6 col-sm-12">
                                                 <div class="mb-3">
                                                     <label for="email" class="form-label">Email</label>
                                                     <input type="text" class="form-control" placeholder="Enter your email" value="{{ old('email') }}" name="email" id="email" required>
@@ -135,9 +167,16 @@
         <div>
 
             <x-button.back></x-button.back>
+            {{-- <a id="button-payment" href="#" class="btn btn-soft-success btn-label btn-border waves-effect waves-light w-lg float-end">
+            <i class="ri-secure-payment-fill label-icon align-middle fs-16 me-2"></i>PROCEED <br> TO PAYMENT</a> --}}
             <a id="button-payment" href="#" class="btn btn-soft-success btn-label btn-border waves-effect waves-light w-lg float-end">
-                <i class="ri-secure-payment-fill label-icon align-middle fs-16 me-2"></i>PROCEED TO PAYMENT</a>
-
+                <!-- Icon for small screens -->
+                <i class="ri-secure-payment-fill label-icon align-middle fs-16 me-2"></i>
+                PROCEED <br class="d-md-none">TO PAYMENT
+                <!-- Icon for larger screens -->
+                {{-- <i class="ri-secure-payment-fill label-icon align-middle fs-16 me-2 d-none d-md-inline"></i>
+                <span class="d-none d-md-inline">PROCEED TO PAYMENT</span> --}}
+            </a>
         </div>
 
 

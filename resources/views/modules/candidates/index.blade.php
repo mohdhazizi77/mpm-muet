@@ -6,6 +6,13 @@
 @section('css')
     <style>
     </style>
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/2.1.8/css/dataTables.dataTables.css">
+    <!-- RowReorder extension CSS -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/rowreorder/1.5.0/css/rowReorder.dataTables.css">
+    <!-- Responsive extension CSS -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/3.0.3/css/responsive.dataTables.css">
+
 @endsection
 
 @section('content')
@@ -13,33 +20,23 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-12">
-                <div class="card rounded-0 bg-success-subtle mx-n4 mt-n4 border-top">
+                <div class="card rounded-0 bg-success-subtle mx-n4 mt-n2 border-top">
                     <div class="px-4">
                         <div class="row">
                             <div class="col-xxl-6 align-self-center">
                                 <div class="py-3">
-                                    <h3 class="fw-bold">CANDIDATE'S DETAILS</h3>
+                                    <h3 class="fw-bold fs-15">CANDIDATE'S DETAILS</h3>
                                     <div style="overflow-x:auto;">
-                                        <table class="table-borderless fs-16 mt-3 fw-bold">
+                                        <table class="table-borderless fs-14 mt-2 fw-bold">
                                             <tr>
-                                                <td>NAME</td>
+                                                <td width=40%>NAME</td>
                                                 <td class="px-2">:</td>
-                                                <td class="d-none d-xxl-table-cell">{{ $user->name }}</td>
-                                            </tr>
-                                            <tr class="d-xxl-none">
-                                                <td colspan="3">
-                                                    {{ $user->name }}
-                                                </td>
+                                                <td class="">{{ $user->name }}</td>
                                             </tr>
                                             <tr>
-                                                <td>IDENTIFICATION CARD NUMBER</td>
+                                                <td width=40%>IDENTIFICATION CARD NUMBER</td>
                                                 <td class="px-2">:</td>
-                                                <td class="d-none d-xxl-table-cell">{{ $user->identity_card_number }}</td>
-                                            </tr>
-                                            <tr class="d-xxl-none">
-                                                <td colspan="3">
-                                                     {{ $user->identity_card_number }}
-                                                </td>
+                                                <td class="">{{ $user->identity_card_number }}</td>
                                             </tr>
                                         </table>
                                     </div>
@@ -61,8 +58,9 @@
                         <div class="row">
                             <div class="col-xxl-12 align-self-center">
                                 <div class="py-4">
-                                    <table id="candidatesTable" class="table w-100 table-striped text-center dt-responsive nowrap dataTable"
-                                        style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                                    {{-- <table id="candidatesTable" class="table w-100 table-striped text-center dt-responsive nowrap dataTable fs-14"
+                                        style="border-collapse: collapse; border-spacing: 0; width: 100%;"> --}}
+                                    <table id="candidatesTable">
                                         <thead>
                                             <tr class="text-center bg-dark-subtle">
                                                 <th scope="col">#</th>
@@ -169,5 +167,29 @@
 {{-- <script src="{{ asset('js/app.js') }}"></script> --}}
 
 {{-- <script src="{{ asset('build/js/datatables/pos-new.js') }}"></script> --}}
+
+<!-- DataTables CSS -->
+{{-- <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.5/css/jquery.dataTables.min.css"> --}}
+<!-- Responsive extension CSS -->
+{{-- <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/2.5.1/css/responsive.dataTables.min.css"> --}}
+
+<!-- jQuery -->
+{{-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> --}}
+<!-- DataTables JS -->
+{{-- <script type="text/javascript" src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script> --}}
+<!-- Responsive extension JS -->
+{{-- <script type="text/javascript" src="https://cdn.datatables.net/responsive/2.5.1/js/dataTables.responsive.min.js"></script> --}}
+
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+<!-- DataTables JS -->
+<script src="https://cdn.datatables.net/2.1.8/js/dataTables.js"></script>
+<!-- RowReorder JS -->
+<script src="https://cdn.datatables.net/rowreorder/1.5.0/js/dataTables.rowReorder.js"></script>
+<script src="https://cdn.datatables.net/rowreorder/1.5.0/js/rowReorder.dataTables.js"></script>
+<!-- Responsive extension JS -->
+<script src="https://cdn.datatables.net/responsive/3.0.3/js/dataTables.responsive.js"></script>
+<script src="https://cdn.datatables.net/responsive/3.0.3/js/responsive.dataTables.js"></script>
+
 
 @endsection

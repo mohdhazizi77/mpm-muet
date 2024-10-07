@@ -24,7 +24,7 @@
         </a>
     </div>
 
-    {{-- <div id="scrollbar"> --}}
+    <div id="scrollbar">
         <div class="container-fluid">
 
             {{-- <div id="two-column-menu"></div> --}}
@@ -161,7 +161,7 @@
             </ul>
         </div>
         <!-- Sidebar -->
-    {{-- </div> --}}
+    </div>
     <div class="sidebar-background"></div>
 </div>
 <!-- Left Sidebar End -->
