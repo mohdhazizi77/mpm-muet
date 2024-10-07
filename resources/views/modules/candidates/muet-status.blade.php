@@ -73,7 +73,7 @@
                         <h5 class="">CERTIFICATE ORDER HISTORY</h5>
                         <table id="trackOrderTable" data-id="{{ $cryptId }}"
                          {{-- class="table table-striped text-center" --}}
-                         class="display responsive nowrap" style="width:100%"
+                         class="table display responsive nowrap" style="width:100%"
 
                          >
                             <thead>
@@ -105,7 +105,7 @@
                         <label for="" class="my-3">TRACKING NUMBER : {{ !empty($order->tracking_number) ? $order->tracking_number : '-' }}</label>
                         <table id="trackShippingTable" data-id="{{ $cryptId }}" data-trackno="{{ $order->tracking_number }}"
                             {{-- class="table table-striped text-center" --}}
-                            class="display responsive nowrap" style="width:100%"
+                            class="table display responsive nowrap" style="width:100%"
                             >
                             <thead>
                                 <tr class="text-center bg-dark-subtle">
