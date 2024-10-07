@@ -208,6 +208,14 @@ class OrderController extends Controller
         // Retrieve the filtered results
         $transaction = $transaction->get();
         $data = [];
+        $session = '-'; // Default value
+        if ($value->muet_calon_id != null) {
+            if (isset($value->muetCalon->getTarikh->sesi)) {
+                $session = $value->muetCalon->getTarikh->sesi;
+            } elseif (isset($value->modCalon->getTarikh->sesi)) {
+                $session = $value->modCalon->getTarikh->sesi;
+            }
+        }
         foreach ($transaction as $key => $value) {
             $data[] = [
                 'id'         => Crypt::encrypt($value->id),
@@ -216,7 +224,7 @@ class OrderController extends Controller
                 "reference_id" => $value->unique_order_id,
                 "candidate_name" => $value->candidate->name,
                 "candidate_nric" => $value->candidate->identity_card_number,
-                "session" => $value->muet_calon_id != null ? $value->muetCalon->getTarikh->sesi : $value->modCalon->getTarikh->sesi,
+                "session" => $session,
                 "cert_type" => $value->type,
                 "txn_type" => $value->payment_for,
                 // "status" => $value->order?->payment_status,
