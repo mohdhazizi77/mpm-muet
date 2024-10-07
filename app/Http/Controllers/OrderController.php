@@ -209,14 +209,15 @@ class OrderController extends Controller
         $transaction = $transaction->get();
         $data = [];
         $session = '-'; // Default value
-        if ($value->muet_calon_id != null) {
-            if (isset($value->muetCalon->getTarikh->sesi)) {
-                $session = $value->muetCalon->getTarikh->sesi;
-            } elseif (isset($value->modCalon->getTarikh->sesi)) {
-                $session = $value->modCalon->getTarikh->sesi;
-            }
-        }
+
         foreach ($transaction as $key => $value) {
+            if ($value->muet_calon_id != null) {
+                if (isset($value->muetCalon->getTarikh->sesi)) {
+                    $session = $value->muetCalon->getTarikh->sesi;
+                } elseif (isset($value->modCalon->getTarikh->sesi)) {
+                    $session = $value->modCalon->getTarikh->sesi;
+                }
+            }
             $data[] = [
                 'id'         => Crypt::encrypt($value->id),
                 "created_at" => $value->created_at->format('d/m/y H:i:s'),
