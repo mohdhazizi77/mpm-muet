@@ -20,35 +20,36 @@
         <div class="card rounded-0 bg-white border-top px-2">
             <div class="p-4">
                 <div class="row mb-3">
-                    <div class="col-md-3">
+                    <div class="col-sm-6 col-md-4 col-lg-3 mt-2">
                         <label for="start-date" class="form-label">Start Date:</label>
                         <input type="date" id="start-date" class="form-control datepicker" placeholder="DD-MM-YYYY">
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-sm-6 col-md-4 col-lg-3 mt-2">
                         <label for="end-date" class="form-label">End Date:</label>
                         <input type="date" id="end-date" class="form-control datepicker" placeholder="DD-MM-YYYY" >
                     </div>
-                    <div class="col-md-3" style="align-content: end;">
-                            <button id="filterBtn" class="btn btn-primary">Filter</button>
-                            <button id="resetBtn" class="btn btn-secondary">Reset</button>
-                    </div>
-                    <div class="col-md-3">
+                    @role('PENTADBIR')
+                        {{-- <div class="row gy-1 mt-2"> --}}
+                            <div class="col-sm-6 col-md-4 col-lg-3 mt-2">
+                                <label for="exam_type" class="form-label">Exam type</label>
+                                <select name="exam_type" id="exam_type" class="form-control">
+                                    <option value="">Please Select</option>
+                                    <option value="MUET">MUET</option>
+                                    <option value="MOD">MOD</option>
+                                </select>
+                            </div>
+                        {{-- </div> --}}
+                    @endrole
+                    <div class="col-sm-6 col-md-4 col-lg-3 mt-2">
                         <label for="text-search" class="form-label">Text Search:</label>
                         <input type="text" id="text-search" class="form-control" placeholder="Enter text">
                     </div>
-                </div>
-                @role('PENTADBIR')
-                <div class="row gy-1 mt-2">
-                    <div class="col-md-3">
-                        <label for="exam_type" class="form-label">Exam type</label>
-                        <select name="exam_type" id="exam_type" class="form-control">
-                            <option value="">Please Select</option>
-                            <option value="MUET">MUET</option>
-                            <option value="MOD">MOD</option>
-                        </select>
+                    <div class="col-sm-6 col-md-6 col-lg-3 mt-3" style="align-content: end;">
+                        <button id="filterBtn" class="btn btn-primary">Filter</button>
+                        <button id="resetBtn" class="btn btn-secondary">Reset</button>
                     </div>
                 </div>
-                @endrole
+
             </div>
         </div>
     </div>
@@ -73,7 +74,8 @@
                         <div class="col-xxl-12 align-self-center">
 
                             <div class="py-1">
-                                <table id="posNewTable" data-type="NEW" class="table w-100 table-striped text-center dt-responsive nowrap dataTable"
+                                <table id="posNewTable" data-type="NEW" class="table w-100 table-striped dt-responsive nowrap dataTable"
+                                {{-- <table id="posNewTable" data-type="NEW" class="display nowrap" style="width:100%" --}}
                                     style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                                     <thead>
                                     <tr class="text-center bg-dark-subtle ">
@@ -104,7 +106,7 @@
 
                                                                     <div class="card-header bg-dark-subtle">
                                                                         <div class="row">
-                                                                            <div class="col-6">
+                                                                            <div class="col-12">
                                                                                 <h5 class="card-title mb-0 fs-20 fw-bolder">Candidate's Information</h5>
                                                                             </div>
                                                                         </div>
@@ -118,13 +120,13 @@
                                                                                     <form action="javascript:void(0);">
 
                                                                                         <div class="row">
-                                                                                            <div class="col-6">
+                                                                                            <div class="col-12 col-sm-6 col-md-6 col-lg-6">
                                                                                                 <div class="mb-3">
                                                                                                     <label for="name" class="form-label">Name</label>
                                                                                                     <input readonly type="text" class="form-control" placeholder="Enter your name" id="name" disabled value="">
                                                                                                 </div>
                                                                                             </div><!--end col-->
-                                                                                            <div class="col-6">
+                                                                                            <div class="col-12 col-sm-6 col-md-6 col-lg-6">
                                                                                                 <div class="mb-3">
                                                                                                     <label for="icNumber" class="form-label">Identification Card Number</label>
                                                                                                     <input readonly type="text" class="form-control" placeholder="Enter your identification card number" disabled id="nric" value="">

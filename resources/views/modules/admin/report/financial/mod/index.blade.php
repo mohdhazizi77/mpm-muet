@@ -114,32 +114,15 @@
 
                         {{-- Filter --}}
                         <div class="row gy-1">
-                            <div class="col-md-3">
+                            <div class="col-sm-6 col-md-4 col-lg-3 mt-2">
                                 <label for="start-date" class="form-label">Start Date:</label>
                                 <input type="date" id="start-date-fin-mod" class="form-control datepicker" placeholder="DD-MM-YYYY">
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-sm-6 col-md-4 col-lg-3 mt-2">
                                 <label for="end-date" class="form-label">End Date:</label>
                                 <input type="date" id="end-date-fin-mod" class="form-control datepicker" placeholder="DD-MM-YYYY">
                             </div>
-                            <div class="col-md-3" style="align-content: end;">
-                                <button id="filterBtnFinMod" class="btn btn-primary">Filter</button>
-                                <button id="resetBtnFinMod" class="btn btn-secondary">Reset</button>
-                            </div>
-                            <div class="col-md-3">
-                                <label for="text-search-fin-mod" class="form-label">Search:</label>
-                                <input type="text" id="text-search-fin-mod" class="form-control" placeholder="Enter id">
-                            </div>
-                        </div>
-
-                        <div class="row gy-1 mt-2">
-                            <div class="col-md-3">
-                                {{-- <label for="start-date" class="form-label">Exam type</label>
-                                <select name="exam_type_mod" id="exam_type_mod" class="form-control">
-                                    <option value="">Please Select</option>
-                                    <option value="MUET">MUET</option>
-                                    <option value="MOD">MOD</option>
-                                </select> --}}
+                            <div class="col-sm-6 col-md-4 col-lg-3 mt-2">
                                 <label for="start-date" class="form-label">Status</label>
                                 <select name="status_mod" id="status_mod" class="form-control">
                                     <option value="">Please Select</option>
@@ -148,13 +131,24 @@
                                     <option value="FAILED">FAILED</option>
                                 </select>
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-sm-6 col-md-4 col-lg-3 mt-2">
                                 <label for="end-date" class="form-label">Payment For</label>
                                 <select name="payment_for_mod" id="payment_for_mod" class="form-control">
                                     <option value="">Please Select</option>
                                     <option value="MPM_PRINT">MPM PRINT</option>
                                     <option value="SELF_PRINT">SELF PRINT</option>
                                 </select>
+                            </div>
+                            <div class="col-sm-6 col-md-4 col-lg-3 mt-2">
+                                <label for="text-search-fin-mod" class="form-label">Search:</label>
+                                <input type="text" id="text-search-fin-mod" class="form-control" placeholder="Enter id">
+                            </div>
+                        </div>
+
+                        <div class="row gy-1 mt-2">
+                            <div class="col-sm-6 col-md-4 col-lg-3 mt-2" style="align-content: end;">
+                                <button id="filterBtnFinMod" class="btn btn-primary">Filter</button>
+                                <button id="resetBtnFinMod" class="btn btn-secondary">Reset</button>
                             </div>
                         </div>
                     </div>
@@ -177,7 +171,7 @@
                     </div>
                     <div class="row">
                         <div class="col-xxl-12 align-self-center">
-                            <table id="financeModTable" class="table w-100 table-striped text-center dt-responsive nowrap dataTable"
+                            <table id="financeModTable" class="table w-100 table-striped dt-responsive nowrap dataTable"
                                 style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                                 <thead>
                                 <tr class="text-center bg-dark-subtle">

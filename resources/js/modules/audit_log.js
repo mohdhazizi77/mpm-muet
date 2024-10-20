@@ -78,6 +78,13 @@ $(document).ready(function() {
                     }
                 },
             ],
+            columnDefs: [
+                { responsivePriority: 1, targets: 2 }, // Example: First column with highest priority
+            ],
+            responsive: true,
+            rowReorder: {
+                selector: 'td:nth-child(2)'
+            },
             // pageLength: 50,
             // order: [[0, "asc"]],
             // buttons: {

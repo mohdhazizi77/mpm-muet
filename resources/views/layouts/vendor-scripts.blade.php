@@ -11,3 +11,8 @@
 <script src="{{ URL::asset('build/libs/sweetalert2/sweetalert2.js') }}"></script>
 @yield('script')
 @yield('script-bottom')
+
+{{-- boottrap --}}
+<script src="https://cdn.datatables.net/2.1.8/js/dataTables.js"></script>
+<script src="https://cdn.datatables.net/responsive/3.0.3/js/dataTables.responsive.js"></script>
+

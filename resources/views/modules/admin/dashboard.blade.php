@@ -66,7 +66,7 @@
         </div>
         <div class="row">
             @role('PENTADBIR|PSM')
-            <div class="col-xl-3 col-md-3">
+            <div class="col-xl-3 col-md-6">
                 <div class="card card-animate" style="background-color: #bce6ff">
                     <div class="card-body">
                         <div class="d-flex align-items-center">
@@ -84,7 +84,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-xl-3 col-md-3">
+            <div class="col-xl-3 col-md-6">
                 <div class="card card-animate" style="background-color: #bce6ff">
                     <div class="card-body">
                         <div class="d-flex align-items-center">
@@ -104,7 +104,7 @@
             </div>
             @endrole
             @role('PENTADBIR|BPKOM')
-            <div class="col-xl-3 col-md-3">
+            <div class="col-xl-3 col-md-6">
                 <div class="card card-animate" style="background-color: #bce6ff">
                     <div class="card-body">
                         <div class="d-flex align-items-center">
@@ -122,7 +122,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-xl-3 col-md-3">
+            <div class="col-xl-3 col-md-6">
                 <div class="card card-animate" style="background-color: #bce6ff">
                     <div class="card-body">
                         <div class="d-flex align-items-center">

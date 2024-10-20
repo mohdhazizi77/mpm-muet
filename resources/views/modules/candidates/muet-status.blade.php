@@ -128,7 +128,7 @@
                 <div class="col-lg-12">
                     <div class="card rounded-0 bg-white border-top p-4">
                         <h4 class="">CERTIFICATE ORDER HISTORY</h4>
-                        <table id="trackOrderTable" data-id="{{ $cryptId }}" class="table table-striped text-center">
+                        <table id="trackOrderTable" data-id="{{ $cryptId }}" class="table table-striped">
                             <thead>
                             <tr class="text-center bg-dark-subtle">
                                 <th scope="col">#</th>

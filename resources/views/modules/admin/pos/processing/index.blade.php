@@ -64,22 +64,37 @@
         <div class="card rounded-0 bg-white border-top px-3">
             <div class="p-4">
                 <div class="row mb-3">
-                    <div class="col-md-8">
+                    <div class="col-sm-6 col-md-4 col-lg-3 mt-2">
+                        <label for="start-date" class="form-label">Start Date:</label>
+                        <input type="date" id="start-date" class="form-control datepicker" placeholder="DD-MM-YYYY">
+                    </div>
+                    <div class="col-sm-6 col-md-4 col-lg-3 mt-2">
+                        <label for="end-date" class="form-label">End Date:</label>
+                        <input type="date" id="end-date" class="form-control datepicker" placeholder="DD-MM-YYYY">
+                    </div>
+                    @role('PENTADBIR')
+                    {{-- <div class="row gy-1 mt-2"> --}}
+                        <div class="col-sm-6 col-md-4 col-lg-3 mt-2">
+                            <label for="exam_type" class="form-label">Exam type</label>
+                            <select name="exam_type" id="exam_type" class="form-control">
+                                <option value="">Please Select</option>
+                                <option value="MUET">MUET</option>
+                                <option value="MOD">MOD</option>
+                            </select>
+                        </div>
+                    {{-- </div> --}}
+                    @endrole
+                    <div class="col-sm-6 col-md-4 col-lg-3 mt-2">
+                        <label for="text-search" class="form-label">Text Search:</label>
+                        <input type="text" id="text-search" class="form-control" placeholder="Enter text">
+                    </div>
+                    <div class="col-md-12">
                         <div class="row">
-                            <div class="col-md-6">
-                                <label for="start-date" class="form-label">Start Date:</label>
-                                <input type="date" id="start-date" class="form-control datepicker" placeholder="DD-MM-YYYY">
-                            </div>
-                            <div class="col-md-6">
-                                <label for="end-date" class="form-label">End Date:</label>
-                                <input type="date" id="end-date" class="form-control datepicker" placeholder="DD-MM-YYYY">
-                            </div>
                         </div>
                         <div class="row mt-3">
                             <div class="col-md-6">
                                 <input type="checkbox" class="btn-check" id="noTracking" value="0">
                                 <label id="noTrackingLabel" class="btn btn-outline-secondary material-shadow" for="noTracking">Get Orders Without Tracking</label>
-                                {{-- <label for="noTracking" style="margin-left: 10px">Record no Tracking Numbers</label> --}}
                             </div>
                             <div class="col-md-6 text-md-end mt-2 mt-md-0">
                                 <button id="filterBtn" class="btn btn-primary">Filter</button>
@@ -87,23 +102,8 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-3 mt-3 mt-md-0 offset-md-1">
-                        <label for="text-search" class="form-label">Text Search:</label>
-                        <input type="text" id="text-search" class="form-control" placeholder="Enter text">
-                    </div>
                 </div>
-                @role('PENTADBIR')
-                <div class="row gy-1 mt-2">
-                    <div class="col-md-3">
-                        <label for="exam_type" class="form-label">Exam type</label>
-                        <select name="exam_type" id="exam_type" class="form-control">
-                            <option value="">Please Select</option>
-                            <option value="MUET">MUET</option>
-                            <option value="MOD">MOD</option>
-                        </select>
-                    </div>
-                </div>
-                @endrole
+
             </div>
         </div>
     </div>
@@ -112,7 +112,7 @@
         <div class="col-lg-12">
             <div class="card rounded-0 bg-white mx-n4 mt-n4 border-top">
                 <div class="px-4">
-                    <div class="row">
+                    {{-- <div class="row">
                         <div class="col-xxl-12 align-self-center">
                             <div class="float-start my-3">
                                 <button id="button-import-pos-xlsx" type="button" class="btn btn-soft-secondary waves-effect float-end mx-1">IMPORT POS XLSX</button>
@@ -123,13 +123,29 @@
                                 <button type="button" id="btnBulkProcessing" class="btn btn-soft-success waves-effect float-end mx-1">COMPLETE</button>
                                 <button type="button" id="btnBulkPrintProcessing" class="btn btn-soft-success waves-effect float-end ">PRINT CERTIFICATE</button>
                             </div>
+                        </div>
+                    </div> --}}
+                    <div class="col-xxl-12 align-self-center">
+                        <div class="d-flex flex-wrap justify-content-between my-3">
+                            <!-- Left Buttons -->
+                            <div class="mb-2">
+                                <button id="button-import-pos-xlsx" type="button" class="btn btn-soft-secondary waves-effect mx-1">IMPORT POS XLSX</button>
+                                <button id="button-export-pos-xlsx" data-type="PROCESSING" type="button" class="btn btn-soft-secondary waves-effect mx-1">EXPORT POS XLSX</button>
+                                <button id="button-export-xlsx" data-type="PROCESSING" type="button" class="btn btn-soft-secondary waves-effect mx-1">EXPORT XLSX</button>
+                            </div>
+                            <!-- Right Buttons -->
+                            <div class="mb-2">
+                                <button type="button" id="btnBulkProcessing" class="btn btn-soft-success waves-effect mx-1">COMPLETE</button>
+                                <button type="button" id="btnBulkPrintProcessing" class="btn btn-soft-success waves-effect">PRINT CERTIFICATE</button>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="row">
 
                             <div class="py-1">
 
-                                <table id="posProcessTable" data-type="PROCESSING" class="table w-100 table-striped text-center dt-responsive nowrap dataTable"
+                                <table id="posProcessTable" data-type="PROCESSING" class="table w-100 table-striped dt-responsive nowrap dataTable"
                                 style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                                     <thead>
                                     <tr class="text-center bg-dark-subtle">
@@ -173,7 +189,7 @@
 
                                         <div class="card-header bg-dark-subtle">
                                             <div class="row">
-                                                <div class="col-6">
+                                                <div class="col-12">
                                                     <h5 class="card-title mb-0 fs-20 fw-bolder">Candidate's Information</h5>
                                                 </div>
                                             </div>
@@ -189,13 +205,13 @@
                                                         <form action="javascript:void(0);">
 
                                                             <div class="row">
-                                                                <div class="col-6">
+                                                                <div class="col-12 col-sm-6 col-md-6 col-lg-6">
                                                                     <div class="mb-3">
                                                                         <label for="name" class="form-label">Name</label>
                                                                         <input disabled type="text" class="form-control" placeholder="Enter your name" id="name" name="name" value="">
                                                                     </div>
                                                                 </div><!--end col-->
-                                                                <div class="col-6">
+                                                                <div class="col-12 col-sm-6 col-md-6 col-lg-6">
                                                                     <div class="mb-3">
                                                                         <label for="icNumber" class="form-label">Identification Card Number</label>
                                                                         <input disabled type="text" class="form-control" placeholder="Enter your identification card number" id="nric" name="nric" value="">
@@ -294,7 +310,7 @@
 
                                         <div class="card-header bg-dark-subtle">
                                             <div class="row">
-                                                <div class="col-6">
+                                                <div class="col-12">
                                                     <h5 class="card-title mb-0 fs-20 fw-bolder">Shipping Information</h5>
                                                 </div>
                                             </div>
@@ -310,13 +326,13 @@
                                                         <form action="javascript:void(0);">
 
                                                             <div class="row">
-                                                                <div class="col-6">
+                                                                <div class="col-12 col-sm-6 col-md-6 col-lg-6">
                                                                     <div class="mb-3">
                                                                         <label for="name" class="form-label">Name</label>
                                                                         <input type="text" class="form-control" placeholder="Enter your name" id="ship_name" name="ship_name" value="" required>
                                                                     </div>
                                                                 </div><!--end col-->
-                                                                <div class="col-6">
+                                                                <div class="col-12 col-sm-6 col-md-6 col-lg-6">
                                                                     <div class="mb-3">
                                                                         <label for="ship_phoneNum" class="form-label">Phone Number</label>
                                                                         <input type="text" class="form-control" placeholder="Enter your phone_number" id="ship_phoneNum" name="ship_phoneNum" value="" required>
@@ -343,7 +359,7 @@
                                                                         </div>
                                                                     </div>
                                                                 </div> --}}
-                                                                <div class="col-6">
+                                                                <div class="col-12 col-sm-6 col-md-6 col-lg-6">
                                                                     <div class="mb-3">
                                                                         <label for="email" class="form-label">Email</label>
                                                                         <input type="text" class="form-control" placeholder="Enter your email" id="ship_email" name="ship_email" value="" required>
@@ -364,21 +380,21 @@
 
                                                             <div class="row">
 
-                                                                <div class="col-4">
+                                                                <div class="col-12 col-sm-6 col-md-4 col-lg-4">
                                                                     <div class="mb-3">
                                                                         <label for="postcode" class="form-label">Postcode</label>
                                                                         <input type="text" class="form-control" placeholder="Enter your postcode" id="ship_postcode" name="ship_postcode" value="" required>
                                                                     </div>
                                                                 </div><!--end col-->
 
-                                                                <div class="col-4">
+                                                                <div class="col-12 col-sm-6 col-md-4 col-lg-4">
                                                                     <div class="mb-3">
                                                                         <label for="city" class="form-label">City</label>
                                                                         <input type="text" class="form-control" placeholder="Enter your city" id="ship_city" name="ship_city" value="" required>
                                                                     </div>
                                                                 </div><!--end col-->
 
-                                                                <div class="col-4">
+                                                                <div class="col-12 col-sm-6 col-md-4 col-lg-4">
                                                                     <div class="mb-3">
                                                                         <label for="state" class="form-label" >State</label>
                                                                         <select  class="form-select mb-3" id="ship_state" name="ship_state" required>
@@ -390,7 +406,7 @@
                                                                     </div>
                                                                 </div><!--end col-->
 
-                                                                <div class="col-4">
+                                                                <div class="col-12 col-sm-6 col-md-4 col-lg-4">
                                                                     <div class="mb-3">
                                                                         <label for="track_num" class="form-label">Tracking Number</label>
                                                                         <input type="text" class="form-control" placeholder="Enter tracking number" id="ship_trackNum" name="ship_trackNum" value=""  required>

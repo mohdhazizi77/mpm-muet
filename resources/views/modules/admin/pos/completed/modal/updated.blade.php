@@ -16,7 +16,7 @@
 
                                     <div class="card-header bg-dark-subtle">
                                         <div class="row">
-                                            <div class="col-6">
+                                            <div class="col-12">
                                                 <h5 class="card-title mb-0 fs-20 fw-bolder">Candidate's Information</h5>
                                             </div>
                                         </div>
@@ -32,13 +32,13 @@
                                                     <form action="javascript:void(0);">
 
                                                         <div class="row">
-                                                            <div class="col-6">
+                                                            <div class="col-12 col-sm-6 col-md-6 col-lg-6">
                                                                 <div class="mb-3">
                                                                     <label for="name" class="form-label">Name</label>
                                                                     <input disabled type="text" class="form-control" placeholder="Enter your name" id="name" name="name" value="">
                                                                 </div>
                                                             </div><!--end col-->
-                                                            <div class="col-6">
+                                                            <div class="col-12 col-sm-6 col-md-6 col-lg-6">
                                                                 <div class="mb-3">
                                                                     <label for="icNumber" class="form-label">Identification Card Number</label>
                                                                     <input disabled type="text" class="form-control" placeholder="Enter your identification card number" id="nric" name="nric" value="">
@@ -137,7 +137,7 @@
 
                                     <div class="card-header bg-dark-subtle">
                                         <div class="row">
-                                            <div class="col-6">
+                                            <div class="col-12">
                                                 <h5 class="card-title mb-0 fs-20 fw-bolder">Shipping Information</h5>
                                             </div>
                                         </div>
@@ -153,13 +153,13 @@
                                                     <form action="javascript:void(0);">
 
                                                         <div class="row">
-                                                            <div class="col-6">
+                                                            <div class="col-12 col-sm-6 col-md-6 col-lg-6">
                                                                 <div class="mb-3">
                                                                     <label for="name" class="form-label">Name</label>
                                                                     <input disabled type="text" class="form-control" placeholder="Enter your name" id="ship_name" name="ship_name" value="">
                                                                 </div>
                                                             </div><!--end col-->
-                                                            <div class="col-6">
+                                                            <div class="col-12 col-sm-6 col-md-6 col-lg-6">
                                                                 <div class="mb-3">
                                                                     <label for="ship_phoneNum" class="form-label">Phone Number</label>
                                                                     <input disabled type="text" class="form-control" placeholder="Enter your phone_number" id="ship_phoneNum" name="ship_phoneNum" value="">
@@ -186,7 +186,7 @@
                                                                     </div>
                                                                 </div>
                                                             </div> --}}
-                                                            <div class="col-6">
+                                                            <div class="col-12 col-sm-6 col-md-6 col-lg-6">
                                                                 <div class="mb-3">
                                                                     <label for="email" class="form-label">Email</label>
                                                                     <input disabled type="text" class="form-control" placeholder="Enter your email" id="ship_email" name="ship_email" value="">
@@ -207,21 +207,21 @@
 
                                                         <div class="row">
 
-                                                            <div class="col-4">
+                                                            <div class="col-12 col-sm-6 col-md-4 col-lg-4">
                                                                 <div class="mb-3">
                                                                     <label for="postcode" class="form-label">Postcode</label>
                                                                     <input disabled  type="text" class="form-control" placeholder="Enter your postcode" id="ship_postcode" name="ship_postcode" value="">
                                                                 </div>
                                                             </div><!--end col-->
 
-                                                            <div class="col-4">
+                                                            <div class="col-12 col-sm-6 col-md-4 col-lg-4">
                                                                 <div class="mb-3">
                                                                     <label for="city" class="form-label">City</label>
                                                                     <input disabled  type="text" class="form-control" placeholder="Enter your city" id="ship_city" name="ship_city" value="">
                                                                 </div>
                                                             </div><!--end col-->
 
-                                                            <div class="col-4">
+                                                            <div class="col-12 col-sm-6 col-md-4 col-lg-4">
                                                                 <div class="mb-3">
                                                                     <label for="state" class="form-label" >State</label>
                                                                     <select readonly class="form-select mb-3" id="ship_state" disabled name="ship_state">
@@ -233,14 +233,14 @@
                                                                 </div>
                                                             </div><!--end col-->
 
-                                                            <div class="col-4">
+                                                            <div class="col-12 col-sm-6 col-md-4 col-lg-4">
                                                                 <div class="mb-3">
                                                                     <label for="track_num" class="form-label">Tracking Number</label>
                                                                     <input type="text" class="form-control" placeholder="Enter tracking number" id="ship_trackNum" name="ship_trackNum" value="" disabled>
                                                                 </div>
                                                             </div><!--end col-->
 
-                                                            <div class="col-4">
+                                                            <div class="col-12 col-sm-6 col-md-4 col-lg-4">
                                                                 <div class="mb-3">
                                                                     <label for="track_remarks" class="form-label">Notes</label>
                                                                     <input type="text" class="form-control" placeholder="" id="ship_trackRemarks" name="ship_trackRemarks" value="" disabled>

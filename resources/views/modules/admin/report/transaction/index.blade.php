@@ -19,26 +19,20 @@
         <div class="card rounded-0 bg-white border-top px-2">
             <div class="p-4">
                 <div class="row mb-3">
-                    <div class="col-md-3">
+                    <div class="col-sm-6 col-md-4 col-lg-3 mt-2">
                         <label for="start-date" class="form-label">Start Date:</label>
                         <input type="date" id="start-date-trx" class="form-control datepicker" placeholder="DD-MM-YYYY">
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-sm-6 col-md-4 col-lg-3 mt-2">
                         <label for="end-date" class="form-label">End Date:</label>
                         <input type="date" id="end-date-trx" class="form-control datepicker" placeholder="DD-MM-YYYY">
                     </div>
-                    <div class="col-md-3" style="align-content: end;">
-                        <button id="filterBtnTrx" class="btn btn-primary">Filter</button>
-                        <button id="resetBtnTrx" class="btn btn-secondary">Reset</button>
-                    </div>
-                    <div class="col-md-3">
+
+                    <div class="col-sm-6 col-md-4 col-lg-3 mt-2">
                         <label for="text-search" class="form-label">Search:</label>
                         <input type="text" id="text-search-trx" class="form-control" placeholder="Enter text">
                     </div>
-                </div>
-
-                <div class="row gy-1 mt-2">
-                    <div class="col-md-3">
+                    <div class="col-sm-6 col-md-4 col-lg-3 mt-2">
                         <label for="start-date" class="form-label">Exam type</label>
                         <select name="exam_type" id="exam_type" class="form-control">
                             <option value="">Please Select</option>
@@ -52,11 +46,9 @@
                             <option value="MUET">MUET</option>
                             <option value="MOD">MOD</option>
                             @endrole
-
-
                         </select>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-sm-6 col-md-4 col-lg-3 mt-2">
                         <label for="end-date" class="form-label">Payment For</label>
                         <select name="payment_for" id="payment_for" class="form-control">
                             <option value="">Please Select</option>
@@ -64,10 +56,7 @@
                             <option value="SELF_PRINT">SELF PRINT</option>
                         </select>
                     </div>
-                </div>
-
-                <div class="row gy-1 mt-2">
-                    <div class="col-md-3">
+                    <div class="col-sm-6 col-md-4 col-lg-3 mt-2">
                         <label for="start-date" class="form-label">Status</label>
                         <select name="status_trx" id="status_trx" class="form-control">
                             <option value="">Please Select</option>
@@ -81,6 +70,13 @@
                             {{-- <option value="SUCCESS">SUCCESS</option> --}}
                             {{-- <option value="FAIL">FAIL</option> --}}
                         </select>
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="col-sm-6 col-md-4 col-lg-3 mt-2" style="align-content: end;">
+                        <button id="filterBtnTrx" class="btn btn-primary">Filter</button>
+                        <button id="resetBtnTrx" class="btn btn-secondary">Reset</button>
                     </div>
                 </div>
             </div>
@@ -105,7 +101,8 @@
 
                             <div class="">
                                 <input type="hidden" id="url-view-order" value="{{ route('admin.pos-management.getPosDetail',['type' => 'new']) }}" />
-                                <table id="transactionTable" class="table w-100 table-striped text-center dt-responsive nowrap dataTable"
+                                <table id="transactionTable" class="table w-100 table-striped dt-responsive nowrap dataTable"
+                                {{-- <table id="transactionTable" class="nowrap w-100" --}}
                                     style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                                     <thead>
                                     <tr class="text-center bg-dark-subtle">
@@ -116,7 +113,7 @@
                                         <th scope="col">TRANSACTION DETAIL</th>
                                         <th scope="col">STATUS</th>
                                         <th scope="col">ACTION</th>
-                                        
+
                                     </tr>
                                     </thead>
                                     <tbody>

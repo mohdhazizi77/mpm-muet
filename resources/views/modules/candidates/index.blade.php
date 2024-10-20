@@ -4,15 +4,6 @@
 @endsection
 
 @section('css')
-    <style>
-    </style>
-    <!-- DataTables CSS -->
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/2.1.8/css/dataTables.dataTables.css">
-    <!-- RowReorder extension CSS -->
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/rowreorder/1.5.0/css/rowReorder.dataTables.css">
-    <!-- Responsive extension CSS -->
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/3.0.3/css/responsive.dataTables.css">
-
 @endsection
 
 @section('content')
@@ -58,9 +49,9 @@
                         <div class="row">
                             <div class="col-xxl-12 align-self-center">
                                 <div class="py-4">
-                                    {{-- <table id="candidatesTable" class="table w-100 table-striped text-center dt-responsive nowrap dataTable fs-14"
-                                        style="border-collapse: collapse; border-spacing: 0; width: 100%;"> --}}
-                                    <table id="candidatesTable">
+                                    <table id="candidatesTable" class="table w-100 table-striped dt-responsive nowrap dataTable fs-14"
+                                        style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                                    {{-- <table id="candidatesTable"> --}}
                                         <thead>
                                             <tr class="text-center bg-dark-subtle">
                                                 <th scope="col">#</th>

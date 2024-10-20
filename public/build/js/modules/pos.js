@@ -3,7 +3,6 @@ $(document).ready(function () {
     if ($('#posNewTable').length) {
 
         var table = $('#posNewTable').DataTable({
-            // dom: '<"top"rt><"bottom"lp><"clear">', // Hides the built-in search bar
             processing: true,
             serverSide: true,
 
@@ -54,7 +53,7 @@ $(document).ready(function () {
                 },
                 {
                     data: 'id',
-                    class: 'text-center',
+                    // class: 'text-center',
                     orderable: false,
                     searchable: false,
                     render(data, type, row) {
@@ -64,33 +63,16 @@ $(document).ready(function () {
                     }
                 }
             ],
-            // rowCallback: function(row, data, index) {
-            //     // Add index number
-            //     $('td:eq(1)', row).html(index + 1);
-            // },
+            columnDefs: [
+                { responsivePriority: 1, targets: 2 }, // Example: First column with highest priority
+            ],
+            responsive: true,
+            rowReorder: {
+                selector: 'td:nth-child(2)'
+            },
             // dom: 'frtp',
             pageLength: 10,
             order: [[0, "asc"]],
-            // buttons: {
-            //     dom: {
-            //         button: {
-            //             tag: 'button',
-            //             className: 'btn btn-sm'
-            //         }
-            //     },
-            //     buttons: [
-            //         {
-            //             extend: "copyHtml5",
-            //             text: "Salin",
-            //             className: 'btn-secondary'
-            //         },
-            //         // {
-            //         //     extend: "csvHtml5",
-            //         //     text: "CSV",
-            //         //     className: 'btn-secondary'
-            //         // }
-            //     ],
-            // },
             language: {
                 // "zeroRecords": "Tiada rekod untuk dipaparkan.",
                 // "paginate": {
@@ -104,22 +86,6 @@ $(document).ready(function () {
             lengthChange: true,
             lengthMenu: [ [10, 25, 50, 100, 500], [10, 25, 50, 100, 500] ], // Number of records per page
             pageLength: 10, // Default number of records per page
-            // scrollX: true,
-            // initComplete: function(settings, json) {
-            //     $('.dt-scroll-body thead').css('visibility', 'visible');
-            //     $('.dt-scroll-head thead').css('visibility', 'collapse');
-
-            //     $(window).resize(function() {
-            //         var screenWidth = $(window).width();
-            //         if (screenWidth < 768) {
-            //             $('.dt-scroll-body thead').css('visibility', 'visible');
-            //             $('.dt-scroll-head thead').css('visibility', 'collapse');
-            //         } else {
-            //             $('.dt-scroll-body thead').css('visibility', 'visible');
-            //             $('.dt-scroll-head thead').css('visibility', 'collapse');
-            //         }
-            //     }).trigger('resize');
-            // }
         });
     }
 
@@ -354,7 +320,6 @@ $(document).ready(function () {
                 },
                 {
                     data: 'id',
-                    class: 'text-center',
                     orderable: false,
                     searchable: false,
                     render(data, type, row) {
@@ -370,31 +335,17 @@ $(document).ready(function () {
                     visible: false,
                 },
             ],
-            // dom: 'frtp',
+            columnDefs: [
+                { responsivePriority: 1, targets: 2 }, // Example: First column with highest priority
+            ],
+            responsive: true,
+            rowReorder: {
+                selector: 'td:nth-child(2)'
+            },
             pageLength: 10,
             lengthMenu: [ [10, 25, 50, 100, 500], [10, 25, 50, 100, 500] ], // Number of records per page
             pageLength: 10, // Default number of records per page
             // order: [[0, "asc"]],
-            // buttons: {
-            //     dom: {
-            //         button: {
-            //             tag: 'button',
-            //             className: 'btn btn-sm'
-            //         }
-            //     },
-            //     buttons: [
-            //         {
-            //             extend: "copyHtml5",
-            //             text: "Salin",
-            //             className: 'btn-secondary'
-            //         },
-            //         // {
-            //         //     extend: "csvHtml5",
-            //         //     text: "CSV",
-            //         //     className: 'btn-secondary'
-            //         // }
-            //     ],
-            // },
             language: {
                 // "zeroRecords": "Tiada rekod untuk dipaparkan.",
                 // "paginate": {
@@ -406,23 +357,6 @@ $(document).ready(function () {
             },
             searching: false,
             lengthChange: true,
-            // scrollX: true,
-            // initComplete: function(settings, json) {
-            //     $('.dt-scroll-body thead').css('visibility', 'visible');
-            //     $('.dt-scroll-head thead').css('visibility', 'collapse');
-
-            //     $(window).resize(function() {
-            //         var screenWidth = $(window).width();
-            //         if (screenWidth < 768) {
-            //             $('.dt-scroll-body thead').css('visibility', 'visible');
-            //             $('.dt-scroll-head thead').css('visibility', 'collapse');
-            //         } else {
-            //             $('.dt-scroll-body thead').css('visibility', 'visible');
-            //             $('.dt-scroll-head thead').css('visibility', 'collapse');
-            //         }
-            //     }).trigger('resize');
-            // },
-
         });
     }
 
@@ -625,7 +559,6 @@ $(document).ready(function () {
                 },
                 {
                     data: 'id',
-                    class: 'text-center',
                     orderable: false,
                     searchable: false,
                     render(data, type, row) {
@@ -637,6 +570,13 @@ $(document).ready(function () {
                 }
 
             ],
+            columnDefs: [
+                { responsivePriority: 1, targets: 2 }, // Example: First column with highest priority
+            ],
+            responsive: true,
+            rowReorder: {
+                selector: 'td:nth-child(2)'
+            },
             // dom: 'frtp',
             pageLength: 10,
             lengthMenu: [ [10, 25, 50, 100, 500], [10, 25, 50, 100, 500] ], // Number of records per page
@@ -1554,6 +1494,10 @@ $(document).ready(function () {
 
                 // },
             ],
+            responsive: true,
+            rowReorder: {
+                selector: 'td:nth-child(2)'
+            },
             pageLength: 10,
             // order: [[0, "asc"]],
             buttons: {

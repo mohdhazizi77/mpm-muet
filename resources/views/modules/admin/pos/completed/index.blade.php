@@ -27,35 +27,35 @@
         <div class="card rounded-0 bg-white border-top px-2">
             <div class="p-4">
                 <div class="row mb-3">
-                    <div class="col-md-3">
+                    <div class="col-sm-6 col-md-4 col-lg-3 mt-2">
                         <label for="start-date" class="form-label">Start Date:</label>
                         <input type="date" id="start-date" class="form-control datepicker" placeholder="DD-MM-YYYY">
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-sm-6 col-md-4 col-lg-3 mt-2">
                         <label for="end-date" class="form-label">End Date:</label>
                         <input type="date" id="end-date" class="form-control datepicker" placeholder="DD-MM-YYYY">
                     </div>
-                    <div class="col-md-3" style="align-content: end;">
-                            <button id="filterBtn" class="btn btn-primary">Filter</button>
-                            <button id="resetBtn" class="btn btn-secondary">Reset</button>
-                    </div>
-                    <div class="col-md-3">
+                    @role('PENTADBIR')
+                        <div class="col-sm-6 col-md-4 col-lg-3 mt-2">
+                            <label for="exam_type" class="form-label">Exam type</label>
+                            <select name="exam_type" id="exam_type" class="form-control">
+                                <option value="">Please Select</option>
+                                <option value="MUET">MUET</option>
+                                <option value="MOD">MOD</option>
+                            </select>
+                        </div>
+                    @endrole
+
+                    <div class="col-sm-6 col-md-4 col-lg-3 mt-2">
                         <label for="text-search" class="form-label">Text Search:</label>
                         <input type="text" id="text-search" class="form-control" placeholder="Enter text">
                     </div>
-                </div>
-                @role('PENTADBIR')
-                <div class="row gy-1 mt-2">
-                    <div class="col-md-3">
-                        <label for="exam_type" class="form-label">Exam type</label>
-                        <select name="exam_type" id="exam_type" class="form-control">
-                            <option value="">Please Select</option>
-                            <option value="MUET">MUET</option>
-                            <option value="MOD">MOD</option>
-                        </select>
+                    <div class="col-sm-6 col-md-4 col-lg-3 mt-2" style="align-content: end;">
+                        <button id="filterBtn" class="btn btn-primary">Filter</button>
+                        <button id="resetBtn" class="btn btn-secondary">Reset</button>
                     </div>
                 </div>
-                @endrole
+
             </div>
         </div>
     </div>
@@ -85,7 +85,7 @@
                                 <button type="button" class="btn btn-soft-success waves-effect float-end ">PRINT CERTIFICATE</button>
                             </div> --}}
                             <div class="py-1">
-                                <table id="posCompleteTable" data-type="COMPLETED" class="table w-100 table-striped text-center dt-responsive nowrap dataTable"
+                                <table id="posCompleteTable" data-type="COMPLETED" class="table w-100 table-striped dt-responsive nowrap dataTable"
                                 style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                                     <thead>
                                     <tr class="text-center bg-dark-subtle">

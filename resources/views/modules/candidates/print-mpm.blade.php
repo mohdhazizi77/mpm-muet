@@ -354,7 +354,7 @@
             <!-- Payment button: Stack vertically on small screens -->
             <div class="col-12 col-md-auto">
                 <a id="button-payment" href="#" class="btn btn-soft-success btn-label btn-border waves-effect waves-light w-100">
-                    <i class="ri-secure-payment-fill label-icon align-middle fs-16 me-2"></i>PROCEED TO PAYMENT
+                    <i class="ri-secure-payment-fill label-icon align-middle fs-16 me-2"></i>PROCEED <br class="d-md-none">TO PAYMENT
                 </a>
             </div>
         </div>

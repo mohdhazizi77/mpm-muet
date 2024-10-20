@@ -40,31 +40,31 @@
                 @method('POST')
 
                 <h5>Token</h5>
-                <div class="form-group col-6">
+                <div class="form-group col-md-6 col-sm-12">
                     <label for="url">URL</label>
                     <i class="ri-information-fill" data-toggle="tooltip" data-placement="top" title=""></i>
                     <input type="text" class="form-control" id="url" name="url" value="{{ $configPoslaju->url }}" required>
                 </div>
 
                 <div class="row mt-2">
-                    <div class="form-group col-6">
+                    <div class="form-group col-md-6 col-sm-12">
                         <label for="client_id">Client ID</label>
                         <input type="text" class="form-control" id="client_id" name="client_id" value="{{ $configPoslaju->client_id }}" required>
                     </div>
 
-                    <div class="form-group col-6">
+                    <div class="form-group col-md-6 col-sm-12">
                         <label for="client_secret">Client Secret</label>
                         <input type="text" class="form-control" id="client_secret" name="client_secret" value="{{ $configPoslaju->client_secret }}" required>
                     </div>
                 </div>
 
                 <div class="row mt-2">
-                    <div class="form-group col-6">
+                    <div class="form-group col-md-6 col-sm-12">
                         <label for="grant_type">Grant Type</label>
                         <input type="text" class="form-control" id="grant_type" name="grant_type" value="{{ $configPoslaju->grant_type }}" required>
                     </div>
 
-                    <div class="form-group col-6">
+                    <div class="form-group col-md-6 col-sm-12">
                         <label for="scope">Scope</label>
                         <input type="text" class="form-control" id="scope" name="scope" value="{{ $configPoslaju->scope }}" required>
                     </div>
@@ -137,29 +137,29 @@
                 </div>
 
                 <div class="row mt-2">
-                    <div class="form-group col-6">
+                    <div class="form-group col-md-6 col-sm-12">
                         <label for="callerName">Person In Charge Name</label>
                         <input type="text" class="form-control" id="callerName" name="callerName" value="{{ $configPoslaju->callerName }}" required>
                     </div>
 
-                    <div class="form-group col-6">
+                    <div class="form-group col-md-6 col-sm-12">
                         <label for="callerPhone">Person In Charge Phone</label>
                         <input type="text" class="form-control" id="callerPhone" name="callerPhone" value="{{ $configPoslaju->callerPhone }}" required>
                     </div>
                 </div>
 
                 <div class="row mt-2">
-                    <div class="form-group col-4">
+                    <div class="form-group col-md-4 col-sm-12">
                         <label for="contactPerson">Contact Person</label>
                         <input type="text" class="form-control" id="contactPerson" name="contactPerson" value="{{ $configPoslaju->contactPerson }}" required>
                     </div>
 
-                    <div class="form-group col-4">
+                    <div class="form-group col-md-4 col-sm-6">
                         <label for="phoneNo">Phone No</label>
                         <input type="text" class="form-control" id="phoneNo" name="phoneNo" value="{{ $configPoslaju->phoneNo }}" required>
                     </div>
 
-                    <div class="form-group col-4">
+                    <div class="form-group col-md-4 col-sm-6">
                         <label for="pickupEmail">Pickup Email</label>
                         <input type="email" class="form-control" id="pickupEmail" name="pickupEmail" value="{{ $configPoslaju->pickupEmail }}" required>
                     </div>
@@ -172,14 +172,14 @@
                         <input type="text" class="form-control" id="pickupLocationID" name="pickupLocationID" value="{{ $configPoslaju->pickupLocationID }}" required>
                     </div>
 
-                    <div class="form-group col-6">
+                    <div class="form-group col-md-6 col-sm-12">
                         <label for="pickupLocationName">Pickup Location Name</label>
                         <input type="text" class="form-control" id="pickupLocationName" name="pickupLocationName" value="{{ $configPoslaju->pickupLocationName }}" required>
                     </div>
                 </div>
 
                 <div class="row mt-2">
-                    <div class="form-group col-6">
+                    <div class="form-group col-md-6 col-sm-12">
                         <label for="pickupAddress">Pickup Address</label>
                         <input type="text" class="form-control" id="pickupAddress" name="pickupAddress" value="{{ $configPoslaju->pickupAddress }}" required>
                     </div>

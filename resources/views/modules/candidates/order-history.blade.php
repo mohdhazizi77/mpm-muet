@@ -19,7 +19,7 @@
                             <div class="py-4">
                                 <h4 class="mb-4">TRANSACTION LIST</h4>
                                 <!-- Striped Rows -->
-                                <table id="orderTable" data-id="{{ $cryptId }}" class="table fs-12 w-100 table-striped text-center dt-responsive nowrap dataTable"
+                                <table id="orderTable" data-id="{{ $cryptId }}" class="table fs-12 w-100 table-striped dt-responsive nowrap dataTable"
                                         style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                                     <thead>
                                         <tr class="text-center bg-dark-subtle">

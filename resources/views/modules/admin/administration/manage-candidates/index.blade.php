@@ -40,14 +40,17 @@
                     <div class="card-title">
                         <div class="card-label">
                             <div class="row">
-                                <div class="col" style="text-align: left; padding-top: 10px">
+                                <div class="col-md-6 col-sm-12 mt-2" style="text-align: left; padding-top: 10px">
                                     <h4>List Candidates</h4>
                                 </div>
-                                <div class="col" style="text-align: right">
+                                <div class="col-md-4 col-sm-12 mt-2" style="text-align: right">
                                     {{-- <button class="btn btn-soft-success waves-effect float-end" id="show_create_modal">NEW USER</button> --}}
-                                    <input type="text" id="search_term" placeholder="Search term">
-                                    <button class="btn btn-soft-success waves-effect " id="searchBtn">Search</button>
-                                    <button class="btn btn-soft-success waves-effect " id="resetBtn">Reset</button> <!-- Reset button -->
+                                    <input type="text" class="form-control" id="search_term" placeholder="Search term">
+
+                                </div>
+                                <div class="col-md-2 mt-2">
+                                    <button class="btn btn-success waves-effect " id="searchBtn">Search</button>
+                                    <button class="btn btn-info waves-effect " id="resetBtn">Reset</button>
                                 </div>
                             </div>
 
