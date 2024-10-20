@@ -6,6 +6,7 @@
     <meta charset="utf-8"/>
     <title>@yield('title') | MPM</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta content="Sistem Sijil MUET Online MPM | Portal Paparan Sijil Keputusan MUET dan Pembelian Sijil Keputusan MUET daripada MPM" name="description" />
     <meta name="csrf-token" content="{{ csrf_token() }}"/>
     <!-- App favicon -->
     {{-- <link rel="shortcut icon" href="{{ URL::asset('images/favicon.ico')}}">
@@ -30,7 +31,7 @@
 
 </head>
 
-<body>
+<body class="">
 
 <!-- Begin page -->
 <div id="layout-wrapper">
@@ -60,5 +61,4 @@
 
 @include('layouts.vendor-scripts')
 </body>
-
 </html>

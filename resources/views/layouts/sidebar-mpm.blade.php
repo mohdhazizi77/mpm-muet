@@ -1,7 +1,7 @@
 <!-- ========== App Menu ========== -->
 <div class="app-menu navbar-menu">
     <!-- LOGO -->
-    <div class="navbar-brand-box mt-2 mb-n3">
+    <div class="navbar-brand-box mt-2 mb-n3 d-block">
         <!-- Light Logo-->
         <a href="{{ route('admin.index') }}" class="logo logo-light">
             <span class="logo-sm">
@@ -12,7 +12,7 @@
             </span>
         </a>
     </div>
-    <div class="navbar-brand-box">
+    <div class="navbar-brand-box d-block">
         <!-- Light Logo-->
         <a href="{{ route('admin.index') }}" class="logo logo-light">
             <span class="logo-sm">

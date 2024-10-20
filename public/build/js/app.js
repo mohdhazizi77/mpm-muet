@@ -46,6 +46,24 @@ $(document).ready(function() {
         var dropdownMenu = new bootstrap.Dropdown(this);
         dropdownMenu.toggle();
     });
+
+    var $body = $('body');
+    var $sidebar = $('#sidebar');
+    var $sidebarToggleButton = $('#topnav-hamburger-icon');
+
+    // Toggle sidebar visibility on button click
+    $sidebarToggleButton.on('click', function() {
+        $body.addClass('vertical-sidebar-enable');
+    });
+
+    // Click outside the sidebar to hide it
+    $(document).on('click', function(event) {
+        // Check if the click is outside the sidebar and not on the hamburger button
+        if (!$sidebar.is(event.target) && !$sidebar.has(event.target).length &&
+            !$sidebarToggleButton.is(event.target) && !$sidebarToggleButton.has(event.target).length) {
+            $body.removeClass('vertical-sidebar-enable');
+        }
+    });
 });
 
 //template loading

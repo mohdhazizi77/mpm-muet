@@ -2,7 +2,7 @@ $(document).ready(function () {
 
     if ($("#candidatesTable").length > 0) {
 
-        $('#candidatesTable').DataTable({
+        var table = $('#candidatesTable').DataTable({
             processing: true,
             serverSide: true,
             ajax: {
@@ -187,6 +187,21 @@ $(document).ready(function () {
             },
             responsive: true,
         });
+
+
+        // Add row click handler to expand/collapse row
+        // $('#candidatesTable tbody').on('click', 'tr', function () {
+        //     var row = table.row(this);
+
+        //     if (row.child.isShown()) {
+        //         row.child.hide();
+        //         $(this).removeClass('shown');
+        //     } else {
+        //         row.child.show();
+        //         $(this).addClass('shown');
+        //     }
+        // });
+
     }
 
     $(document).on('click', '.modalPayment', function () {
