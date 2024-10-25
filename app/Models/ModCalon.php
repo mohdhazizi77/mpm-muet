@@ -10,6 +10,7 @@ class ModCalon extends Model
     use HasFactory;
     protected $table = 'mod_calon';
     protected $fillable = [
+        'angka_giliran',
         'tahun',
         'sidang',
         'nama',
@@ -28,27 +29,30 @@ class ModCalon extends Model
     ];
 
 
-    public function index_number($candidate){
+    public function index_number($candidate)
+    {
 
-        $value = $candidate->kodnegeri.$candidate->kodpusat."/".$candidate->jcalon.$candidate->nocalon;
+        $value = $candidate->kodnegeri . $candidate->kodpusat . "/" . $candidate->jcalon . $candidate->nocalon;
         return $value;
     }
 
-    public function getSkor(){
+    public function getSkor()
+    {
 
         return $this->hasMany('App\Models\ModSkor', 'kodnegeri', 'kodnegeri')
-                    ->where('tahun', $this->tahun)
-                    ->where('sidang', $this->sidang)
-                    ->where('kodpusat', $this->kodpusat)
-                    // ->where('nocalon', $this->nocalon)
-                    ->where('reg_id', $this->reg_id);
+            ->where('tahun', $this->tahun)
+            ->where('sidang', $this->sidang)
+            ->where('kodpusat', $this->kodpusat)
+            // ->where('nocalon', $this->nocalon)
+            ->where('reg_id', $this->reg_id);
     }
 
-    public function getPusat(){
-        return $this->hasMany('App\Models\ModPusat','tahun', 'tahun')
-                    ->where('sidang', $this->sidang)
-                    ->where('kodnegeri', $this->kodnegeri)
-                    ->where('kodpusat', $this->kodpusat);
+    public function getPusat()
+    {
+        return $this->hasMany('App\Models\ModPusat', 'tahun', 'tahun')
+            ->where('sidang', $this->sidang)
+            ->where('kodnegeri', $this->kodnegeri)
+            ->where('kodpusat', $this->kodpusat);
     }
 
     public function getTarikh()
@@ -61,13 +65,14 @@ class ModCalon extends Model
         return $this->hasMany('App\Models\Order', 'mod_calon_id', 'id');
     }
 
-    public function getResult($candidate){
+    public function getResult($candidate)
+    {
 
         $result = [];
         $result['year'] = $candidate->getTarikh->tahun;
         $result['session'] = $candidate->getTarikh->sesi . " " . $candidate->getTarikh->tahun;
         $result['session'] = $candidate->getTarikh->sesi;
-        $result['index_number'] = $candidate->kodnegeri . $candidate->kodpusat ."/". $candidate->reg_id;
+        $result['index_number'] = $candidate->kodnegeri . $candidate->kodpusat . "/" . $candidate->reg_id;
         foreach ($candidate->getSkor as $key => $value) {
             $result[$value->getKodKertasName($value->kodkts)] = self::checkingMarkah($value->skorbaru);
         }
@@ -79,7 +84,8 @@ class ModCalon extends Model
         return $result;
     }
 
-    static function checkingMarkah($id){
+    static function checkingMarkah($id)
+    {
 
         $checkingArr = [
             '-1' => 'ABSENT',
@@ -89,10 +95,11 @@ class ModCalon extends Model
             '-5' => 'NULLIFIED',
         ];
 
-        return array_key_exists($id, $checkingArr) ? $checkingArr[ $id ] : $id;
+        return array_key_exists($id, $checkingArr) ? $checkingArr[$id] : $id;
     }
 
-    static function checkingAggSkor($id){
+    static function checkingAggSkor($id)
+    {
 
         $checkingArr = [
             '-1' => 'NIL',
@@ -102,10 +109,11 @@ class ModCalon extends Model
             '-5' => 'NULLIFIED',
         ];
 
-        return array_key_exists($id, $checkingArr) ? $checkingArr[ $id ] : $id;
+        return array_key_exists($id, $checkingArr) ? $checkingArr[$id] : $id;
     }
 
-    static function checkingBand($id){
+    static function checkingBand($id)
+    {
 
         $checkingArr = [
             '-1' => '',
@@ -115,7 +123,6 @@ class ModCalon extends Model
             '-5' => 'NULLIFIED',
         ];
 
-        return array_key_exists($id, $checkingArr) ? $checkingArr[ $id ] : number_format((float)$id, 1);
+        return array_key_exists($id, $checkingArr) ? $checkingArr[$id] : number_format((float)$id, 1);
     }
-
 }

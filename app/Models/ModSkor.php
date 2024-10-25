@@ -10,11 +10,26 @@ class ModSkor extends Model
     use HasFactory;
     protected $table = 'mod_skor';
 
-    public function getNamaKertas(){
+    protected $fillable = [
+        'tahun',
+        'sidang',
+        'kodnegeri',
+        'kodpusat',
+        'reg_id',
+        'nocalon',
+        'nocalon',
+        'kodkts',
+        'skorbaru',
+    ];
+
+
+    public function getNamaKertas()
+    {
         return $this->hasOne('App\Models\Kodkts', 'kodkts');
     }
 
-    public function getKodKertasName($id = ''){
+    public function getKodKertasName($id = '')
+    {
         $arr = [
             '1' => 'listening',
             '2' => 'speaking',
@@ -24,5 +39,4 @@ class ModSkor extends Model
 
         return empty($id) ? $arr : $arr[$id];
     }
-
 }

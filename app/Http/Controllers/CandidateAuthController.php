@@ -28,6 +28,8 @@ class CandidateAuthController extends Controller
             'password' => 12345678
         ];
 
+
+        // dd($credentials, Auth::guard('candidate')->attempt($credentials));
         if (Auth::guard('candidate')->attempt($credentials)) {
 
             //check if current Auth::user already have role or not, if not assignRole('CALON')
@@ -53,11 +55,12 @@ class CandidateAuthController extends Controller
 
             // Authentication successful
             return redirect()->route('candidate.index');
-        }  else {
+        } else {
             //check from muetCalon or modCalon
             $muetCalon = MuetCalon::where('kp', $ic)->first();
             $modCalon = ModCalon::where('kp', $ic)->first();
 
+            // dd($muetCalon, $modCalon);
             if ($muetCalon || $modCalon) {
                 // create candiate record
                 $user = Candidate::firstOrCreate(
@@ -66,10 +69,9 @@ class CandidateAuthController extends Controller
                     ],
                     [
                         'name' => isset($muetCalon->nama) ? $muetCalon->nama : $modCalon->nama,
-                        'password'=> Hash::make(12345678),
+                        'password' => Hash::make(12345678),
                     ]
                 );
-
                 //asign role
                 $user->assignRole('CALON');
             }
