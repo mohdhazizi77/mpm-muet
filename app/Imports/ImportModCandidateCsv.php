@@ -137,7 +137,7 @@ class ImportModCandidateCsv implements ToModel, WithChunkReading, WithBatchInser
         ];
 
         foreach ($result as $key => $value) {
-            ModSkor::create([
+            ModSkor::updateOrCreate([
                 'tahun'      => $tahun,
                 'sidang'     => $sidang,
                 'kodnegeri'  => $kodnegeri,
