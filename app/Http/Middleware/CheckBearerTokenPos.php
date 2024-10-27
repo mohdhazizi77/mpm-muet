@@ -55,8 +55,11 @@ class CheckBearerTokenPos
     private function getNewToken()
     {
 
+        $ConfigPoslaju = ConfigPoslaju::first();
+
         try {
-            $url = "https://gateway-usc.pos.com.my/security/connect/token";
+            // $url = "https://gateway-usc.pos.com.my/security/connect/token";
+            $url = $ConfigPoslaju->url . "/oauth2/token";
             // $data = [
             //     'client_id' => "66712e0af304bd000e908bb5",
             //     'client_secret' => "1tG5mGMAvAzu5qyM59iqWE4lSQFmDohRhN/HuPusnoM=",
@@ -65,10 +68,10 @@ class CheckBearerTokenPos
             // ];
 
             $data = [
-                'client_id' => ConfigPoslaju::first()->client_id,
-                'client_secret' => ConfigPoslaju::first()->client_secret,
-                'grant_type' => ConfigPoslaju::first()->grant_type,
-                'scope' => ConfigPoslaju::first()->scope,
+                'client_id' => $ConfigPoslaju->client_id,
+                'client_secret' => $ConfigPoslaju->client_secret,
+                'grant_type' => $ConfigPoslaju->grant_type,
+                'scope' => $ConfigPoslaju->scope,
             ];
 
             $output = '';
