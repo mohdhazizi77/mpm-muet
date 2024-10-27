@@ -99,7 +99,7 @@ class OrderController extends Controller
 
         // Replace these with actual values or retrieve from config/environment
         $culture = 'EN';
-        $bearerToken = Session::get('bearer_token');;
+        $bearerToken = Session::get('bearer_token');
 
         $ConfigPoslaju = ConfigPoslaju::first();
 
