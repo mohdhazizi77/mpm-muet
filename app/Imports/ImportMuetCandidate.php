@@ -8,7 +8,8 @@ use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
 use Maatwebsite\Excel\Concerns\WithBatchInserts;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
-use Maatwebsite\Excel\Concerns\ShouldQueue;
+// use Maatwebsite\Excel\Concerns\ShouldQueue;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Maatwebsite\Excel\Concerns\SkipsEmptyRows;
 use App\Models\Candidate;
 use App\Models\MuetCalon;
@@ -20,17 +21,18 @@ class ImportMuetCandidate implements ToModel, WithChunkReading, WithBatchInserts
 {
     public function model(array $row)
     {
+        dd($row);
         $totalCount = count($rows);
         $processedCount = 0;
 
         foreach ($rows as $key => $row) {
             if ($key == 0)
-            // if ($key == 0 || $key == 1)
+                // if ($key == 0 || $key == 1)
                 continue;
 
             if ($row[7] == "ANGKA GILIRAN")
                 continue;
-            
+
             if (empty($row[0])) {
                 break;
             }

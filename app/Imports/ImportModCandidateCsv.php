@@ -30,23 +30,6 @@ class ImportModCandidateCsv implements ToModel, WithChunkReading, WithBatchInser
     public function model(array $row)
     {
         // dd($row);
-        // $totalCount = count($rows);
-        // $processedCount = 0;
-
-        // TAHUN	SIDANG	CID	NAMA_SESI	NAMA	KP	SEKOLAH/INSTITUSI	ANGKA_GILIRAN	TARIKH_ISU	TARIKH_EXPIRED	LISTENING	SPEAKING	READING	WRITING SKOR_AGREGAT BAND
-
-        // "tahun","sesi","namasesi","nama","kp","angkagiliran","tarikh_isu","tarikh_exp","listening","speaking","reading","writing","skor_agregat","band"
-        // "tahun0","sesi1","namasesi2","nama3","kp4","angkagiliran5","tarikh_isu6","tarikh_exp7","listening8","speaking9","reading10","writing11","skor_agregat12","band13"
-
-        // foreach ($rows as $key => $row) {
-        // if ($key == 0 || $key == 1)
-        //     continue;
-        // // if (empty($row[0]))
-
-        // // Break the loop if the first column is empty
-        // if (empty($row[0])) {
-        //     break;
-        // }
 
         $tahun          = $row['tahun'];
         $sidang         = $row['sesi'];
@@ -90,7 +73,7 @@ class ImportModCandidateCsv implements ToModel, WithChunkReading, WithBatchInser
         // Split the string by "/"
         $parts = explode("/", $angka_giliran);
         // echo(print_r($parts, 1));
-        Log::info(print_r($parts, 1));
+        // Log::info(print_r($parts, 1));
 
         // Process the first part
         $part1 = $parts[0];
@@ -145,6 +128,7 @@ class ImportModCandidateCsv implements ToModel, WithChunkReading, WithBatchInser
                 'reg_id'     => $reg_id,
                 'nocalon'    => $nocalon,
                 'kodkts'     => $key,
+            ], [
                 'skorbaru'    => $value,
             ]);
         }
