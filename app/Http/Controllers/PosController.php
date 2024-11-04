@@ -544,21 +544,21 @@ class PosController extends Controller
 
     function getConNote($orders)
     {
-
-        $configPoslaju = ConfigPoslaju::first(); // Fetch the ConfigPoslaju instance
-        dd($configPoslaju, $configPoslaju->tokenExists());
-        // Check if a valid token exists
-        if ($configPoslaju->tokenExists() && !$configPoslaju->tokenExpiredOrAboutToExpire()) {
-            $bearerToken = Session::get('bearer_token'); // Retrieve token from the session
-        } else {
-            // Get a new token if none exists or if the token is expired
-            $tokenResponse = $configPoslaju->getNewToken();
-            if (is_string($tokenResponse)) {
-                // Return error message if token retrieval failed
-                return response()->json(['error' => $tokenResponse], 500);
-            }
-            $bearerToken = $tokenResponse->access_token; // Retrieve the new token from the response
-        }
+        $bearerToken = ConfigPoslaju::getToken();
+        // $configPoslaju = ConfigPoslaju::first(); // Fetch the ConfigPoslaju instance
+        // dd($configPoslaju, $configPoslaju->tokenExists());
+        // // Check if a valid token exists
+        // if ($configPoslaju->tokenExists() && !$configPoslaju->tokenExpiredOrAboutToExpire()) {
+        //     $bearerToken = Session::get('bearer_token'); // Retrieve token from the session
+        // } else {
+        //     // Get a new token if none exists or if the token is expired
+        //     $tokenResponse = $configPoslaju->getNewToken();
+        //     if (is_string($tokenResponse)) {
+        //         // Return error message if token retrieval failed
+        //         return response()->json(['error' => $tokenResponse], 500);
+        //     }
+        //     $bearerToken = $tokenResponse->access_token; // Retrieve the new token from the response
+        // }
 
         // // Ensure you have a valid session token
         // $bearerToken = Session::get('bearer_token');

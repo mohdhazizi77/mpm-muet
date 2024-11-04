@@ -55,8 +55,7 @@ class ConfigPoslaju extends Model
         'totalQuantityToPickup' => 'integer',
     ];
 
-    private function tokenExists()
-    {
+    private function tokenExists(){
         return Session::has('bearer_token');
     }
 
@@ -128,5 +127,31 @@ class ConfigPoslaju extends Model
 
         // Check if token is expired or within 1 hour of expiration
         return Carbon::now()->greaterThanOrEqualTo($expiresAt->subHours(1));
+    }
+
+    public static function getToken()
+    {
+        // Fetch the ConfigPoslaju instance
+        $configPoslaju = ConfigPoslaju::first();
+
+        if (!$configPoslaju) {
+            return response()->json(['error' => 'ConfigPoslaju settings not found.'], 404);
+        }
+
+        // Check if a valid token exists
+        if ($configPoslaju->tokenExists() && !$configPoslaju->tokenExpiredOrAboutToExpire()) {
+            $bearerToken = Session::get('bearer_token'); // Retrieve token from the session
+        } else {
+            // Get a new token if none exists or if the token is expired
+            $tokenResponse = $configPoslaju->getNewToken();
+            if (is_string($tokenResponse)) {
+                // Return error message if token retrieval failed
+                return response()->json(['error' => $tokenResponse], 500);
+            }
+            $bearerToken = $tokenResponse->access_token; // Retrieve the new token from the response
+        }
+
+        // Return or use the token as needed
+        return response()->json(['token' => $bearerToken]);
     }
 }
