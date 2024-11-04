@@ -545,14 +545,14 @@ class PosController extends Controller
     function getConNote($orders)
     {
 
-        $configPoslaju = ConfigPoslaju::first(); // Fetch the ConfigPoslaju instance
+        // $configPoslaju = ConfigPoslaju::first(); // Fetch the ConfigPoslaju instance
 
         // Check if a valid token exists
-        if ($configPoslaju->tokenExists() && !$configPoslaju->tokenExpiredOrAboutToExpire()) {
+        if (ConfigPoslaju::tokenExists() && !ConfigPoslaju::tokenExpiredOrAboutToExpire()) {
             $bearerToken = Session::get('bearer_token'); // Retrieve token from the session
         } else {
             // Get a new token if none exists or if the token is expired
-            $tokenResponse = $configPoslaju->getNewToken();
+            $tokenResponse = ConfigPoslaju::getNewToken();
             if (is_string($tokenResponse)) {
                 // Return error message if token retrieval failed
                 return response()->json(['error' => $tokenResponse], 500);
