@@ -111,7 +111,7 @@ class ConfigPoslaju extends Model
                 Session::put('bearer_token', $token);
                 Session::put('bearer_token_expires_at', $expiresAt);
 
-                return $token;
+                return $output;
             } else {
                 error_log("Failed to connect to the POS API.");
                 return "An error occurred while processing your request. Please try again later.";
