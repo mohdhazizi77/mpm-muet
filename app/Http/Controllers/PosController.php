@@ -544,7 +544,7 @@ class PosController extends Controller
 
     function getConNote($orders)
     {
-        $bearerToken = ConfigPoslaju::getToken();
+        // $bearerToken = ConfigPoslaju::getToken();
         // $configPoslaju = ConfigPoslaju::first(); // Fetch the ConfigPoslaju instance
         // dd($configPoslaju, $configPoslaju->tokenExists());
         // // Check if a valid token exists
@@ -561,7 +561,7 @@ class PosController extends Controller
         // }
 
         // // Ensure you have a valid session token
-        // $bearerToken = Session::get('bearer_token');
+        $bearerToken = Session::get('bearer_token');
         // if (!$bearerToken) {
         //     die('Bearer token is not available in the session.');
         // }
