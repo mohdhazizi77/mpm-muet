@@ -49,7 +49,6 @@ class PosController extends Controller
     {
 
         $test = ConfigPoslaju::getToken(); //store token into session
-        dd($test);
         if (!in_array($type, ['new', 'processing', 'completed'])) {
             abort(404);
         }
