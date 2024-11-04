@@ -85,7 +85,7 @@ class ConfigPoslaju extends Model
             curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 0);
             $output = curl_exec($curl);
             $output = json_decode($output);
-
+            return $output;
             if (curl_errno($curl)) {
                 error_log("cURL error: " . curl_error($curl));
                 curl_close($curl);
