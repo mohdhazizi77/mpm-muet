@@ -48,7 +48,7 @@ class AuditLogsController extends Controller
     public function getAjax()
     {
         // Retrieve only 100 records per page using pagination
-        $logs = AuditLog::latest()->paginate(5000);
+        $logs = AuditLog::latest()->paginate(1000);
 
         $data = [];
         foreach ($logs as $key => $log) {
