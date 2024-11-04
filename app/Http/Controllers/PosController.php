@@ -566,7 +566,7 @@ class PosController extends Controller
             die('Bearer token is not available in the session.');
         }
 
-        dd($bearerToken);
+        // dd($bearerToken);
 
         // Create a new Guzzle HTTP client
         $client = new Client();
