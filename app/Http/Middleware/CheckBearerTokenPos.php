@@ -65,7 +65,7 @@ class CheckBearerTokenPos
                 'client_id' => $ConfigPoslaju->client_id,
                 'client_secret' => $ConfigPoslaju->client_secret,
                 'grant_type' => $ConfigPoslaju->grant_type,
-                'scope' => $ConfigPoslaju->scope,
+                // 'scope' => $ConfigPoslaju->scope,
             ];
 
             $output = '';
