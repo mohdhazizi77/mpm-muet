@@ -65,8 +65,8 @@ class ConfigPoslajuController extends Controller
         //     $request->all()
         // );
 
-        $configPoslaju = ConfigPoslaju::query()->update($request->all());
-
+        // $configPoslaju = ConfigPoslaju::query()->update($request->all());
+        $configPoslaju = ConfigPoslaju::query()->update($request->except(['_token', '_method']));
         return redirect()->back()
                          ->with('success', 'Update successful')
                          ->with('configPoslaju', $configPoslaju);
