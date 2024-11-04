@@ -60,6 +60,7 @@ class CheckBearerTokenPos
         try {
             // $url = "https://gateway-usc.pos.com.my/security/connect/token";
             $url = $ConfigPoslaju->url . "/oauth2/token";
+            $url = "https://api-dev.pos.com.my/oauth2/token";
             // $data = [
             //     'client_id' => "66712e0af304bd000e908bb5",
             //     'client_secret' => "1tG5mGMAvAzu5qyM59iqWE4lSQFmDohRhN/HuPusnoM=",
