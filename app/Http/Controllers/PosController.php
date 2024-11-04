@@ -47,6 +47,9 @@ class PosController extends Controller
 {
     public function index($type)
     {
+
+        ConfigPoslaju::getToken(); //store token into session
+
         if (!in_array($type, ['new', 'processing', 'completed'])) {
             abort(404);
         }
@@ -544,8 +547,6 @@ class PosController extends Controller
 
     function getConNote($orders)
     {
-        ConfigPoslaju::getToken();
-
         // Ensure you have a valid session token
         $bearerToken = Session::get('bearer_token');
         if (!$bearerToken) {
