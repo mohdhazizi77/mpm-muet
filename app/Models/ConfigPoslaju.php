@@ -90,6 +90,7 @@ class ConfigPoslaju extends Model
 
             $output = curl_exec($curl);
             // return [$url, $data, $output];
+            return $url;
             if (curl_errno($curl)) {
                 error_log("cURL error: " . curl_error($curl));
                 curl_close($curl);
