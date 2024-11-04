@@ -21,7 +21,7 @@ class CheckBearerTokenPos
     public function handle($request, Closure $next)
     {
         $this->getNewToken();
-
+        dd($this->getNewToken());
         // Check if the token exists in the session
         if (!$this->tokenExists()) {
             // Token doesn't exist, get a new one
