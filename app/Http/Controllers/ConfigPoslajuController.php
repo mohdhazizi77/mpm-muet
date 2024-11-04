@@ -60,10 +60,12 @@ class ConfigPoslajuController extends Controller
                              ->with('error', 'Validation Error');
         }
 
-        $configPoslaju = ConfigPoslaju::updateOrCreate(
-            ['id' => 1], // Unique field to identify the record
-            $request->all()
-        );
+        // $configPoslaju = ConfigPoslaju::updateOrCreate(
+        //     ['id' => 1], // Unique field to identify the record
+        //     $request->all()
+        // );
+
+        $configPoslaju = ConfigPoslaju::query()->update($request->all());
 
         return redirect()->back()
                          ->with('success', 'Update successful')
