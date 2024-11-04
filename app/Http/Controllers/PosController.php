@@ -191,6 +191,7 @@ class PosController extends Controller
                             ]);
             if ($response->successful()) {
                 $data = [];
+                dd($response);
                 $response = json_decode($response->getBody()->getContents());
                 foreach ($response as $key => $value) {
 
