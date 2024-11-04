@@ -191,8 +191,8 @@ class PosController extends Controller
                             ]);
             if ($response->successful()) {
                 $data = [];
-                dd($response);
                 $response = json_decode($response->getBody()->getContents());
+                dd($response);
                 foreach ($response as $key => $value) {
 
                     if ($value->type == "Invalid Request/Empty Connote") {
