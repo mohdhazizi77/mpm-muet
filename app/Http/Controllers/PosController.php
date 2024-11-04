@@ -547,6 +547,7 @@ class PosController extends Controller
 
         // Ensure you have a valid session token
         $bearerToken = Session::get('bearer_token');
+        dd($bearerToken);
         if (!$bearerToken) {
             die('Bearer token is not available in the session.');
         }
