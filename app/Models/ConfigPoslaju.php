@@ -89,7 +89,6 @@ class ConfigPoslaju extends Model
             curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 0);
 
             $output = curl_exec($curl);
-            return $output;
             if (curl_errno($curl)) {
                 error_log("cURL error: " . curl_error($curl));
                 curl_close($curl);
@@ -112,7 +111,7 @@ class ConfigPoslaju extends Model
                 Session::put('bearer_token', $token);
                 Session::put('bearer_token_expires_at', $expiresAt);
 
-                return $output;
+                return $token;
             } else {
                 error_log("Failed to connect to the POS API.");
                 return "An error occurred while processing your request. Please try again later.";
