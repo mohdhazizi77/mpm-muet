@@ -55,17 +55,23 @@ class ConfigPoslaju extends Model
         'totalQuantityToPickup' => 'integer',
     ];
 
-    private function tokenExists(){
+    public function tokenExists() // Changed to public
+    {
         return Session::has('bearer_token');
     }
 
-    private function getNewToken()
+    public function tokenExpiredOrAboutToExpire() // Changed to public
+    {
+        $expiresAt = Session::get('bearer_token_expires_at', Carbon::now()->subSecond());
+        return Carbon::now()->greaterThanOrEqualTo($expiresAt->subHours(1));
+    }
+
+    public function getNewToken() // Changed to public
     {
         $ConfigPoslaju = ConfigPoslaju::first();
 
         try {
             $url = $ConfigPoslaju->url . "/oauth2/token";
-
             $data = [
                 'client_id' => $ConfigPoslaju->client_id,
                 'client_secret' => $ConfigPoslaju->client_secret,
@@ -76,16 +82,14 @@ class ConfigPoslaju extends Model
             $curl = curl_init();
             curl_setopt($curl, CURLOPT_URL, $url);
             curl_setopt($curl, CURLOPT_POST, 1);
-            curl_setopt($curl, CURLOPT_HTTPHEADER, array(
-                'Accept: application/json',
-            ));
-            curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+            curl_setopt($curl, CURLOPT_HTTPHEADER, ['Accept: application/json']);
+            curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
             curl_setopt($curl, CURLOPT_POSTFIELDS, http_build_query($data));
             curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, 0);
             curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 0);
+
             $output = curl_exec($curl);
-            $output = json_decode($output);
-            return $output;
+
             if (curl_errno($curl)) {
                 error_log("cURL error: " . curl_error($curl));
                 curl_close($curl);
@@ -93,16 +97,16 @@ class ConfigPoslaju extends Model
             }
 
             $http_status = curl_getinfo($curl, CURLINFO_HTTP_CODE);
-
             if ($http_status != 200) {
                 error_log("HTTP Status Code: " . $http_status);
                 curl_close($curl);
                 return "An error occurred with the POS API. Please try again later.";
             }
 
-            if (!empty($output)) {
-                curl_close($curl);
+            curl_close($curl);
+            $output = json_decode($output);
 
+            if (!empty($output) && isset($output->access_token)) {
                 $token = $output->access_token;
                 $expiresAt = now()->addSeconds($output->expires_in);
                 Session::put('bearer_token', $token);
@@ -111,7 +115,6 @@ class ConfigPoslaju extends Model
                 return $output;
             } else {
                 error_log("Failed to connect to the POS API.");
-                curl_close($curl);
                 return "An error occurred while processing your request. Please try again later.";
             }
 
@@ -121,37 +124,24 @@ class ConfigPoslaju extends Model
         }
     }
 
-    private function tokenExpiredOrAboutToExpire()
-    {
-        $expiresAt = Session::get('bearer_token_expires_at', Carbon::now()->subSecond());
-
-        // Check if token is expired or within 1 hour of expiration
-        return Carbon::now()->greaterThanOrEqualTo($expiresAt->subHours(1));
-    }
-
     public static function getToken()
     {
-        // Fetch the ConfigPoslaju instance
         $configPoslaju = ConfigPoslaju::first();
 
         if (!$configPoslaju) {
             return response()->json(['error' => 'ConfigPoslaju settings not found.'], 404);
         }
 
-        // Check if a valid token exists
         if ($configPoslaju->tokenExists() && !$configPoslaju->tokenExpiredOrAboutToExpire()) {
-            $bearerToken = Session::get('bearer_token'); // Retrieve token from the session
+            $bearerToken = Session::get('bearer_token');
         } else {
-            // Get a new token if none exists or if the token is expired
             $tokenResponse = $configPoslaju->getNewToken();
             if (is_string($tokenResponse)) {
-                // Return error message if token retrieval failed
                 return response()->json(['error' => $tokenResponse], 500);
             }
-            $bearerToken = $tokenResponse->access_token; // Retrieve the new token from the response
+            $bearerToken = $tokenResponse->access_token;
         }
 
-        // Return or use the token as needed
         return response()->json(['token' => $bearerToken]);
     }
 }
