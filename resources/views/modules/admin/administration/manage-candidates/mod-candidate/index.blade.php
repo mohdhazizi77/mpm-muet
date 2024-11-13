@@ -24,7 +24,7 @@
             Administration
         @endslot
         @slot('title')
-            Manage Candidates
+            Manage Candidates (Muet On Demand)
         @endslot
     @endcomponent
 
@@ -45,12 +45,12 @@
                                 </div>
                                 <div class="col-md-4 col-sm-12 mt-2" style="text-align: right">
                                     {{-- <button class="btn btn-soft-success waves-effect float-end" id="show_create_modal">NEW USER</button> --}}
-                                    <input type="text" class="form-control" id="search_term" placeholder="Search term">
+                                    <input type="text" class="form-control" id="search_term_mod" placeholder="Search term">
 
                                 </div>
                                 <div class="col-md-2 mt-2">
-                                    <button class="btn btn-success waves-effect " id="searchBtn">Search</button>
-                                    <button class="btn btn-info waves-effect " id="resetBtn">Reset</button>
+                                    <button class="btn btn-success waves-effect " id="searchBtnMod">Search</button>
+                                    <button class="btn btn-info waves-effect " id="resetBtnMod">Reset</button>
                                 </div>
                             </div>
 
@@ -63,7 +63,7 @@
                             <div class="py-2">
 
                                 {{-- <table id="dt-user" class="table w-100 table-striped text-center dt-responsive nowrap dataTable" style="border-collapse: collapse; border-spacing: 0; width: 100%;"> --}}
-                                <table id="dt-candidate" class="table table-sm table-striped text-center" style="border-collapse: collapse; border-spacing: 0;">
+                                <table id="dt-candidate-mod" class="table table-sm table-striped text-center" style="border-collapse: collapse; border-spacing: 0;">
                                     <thead>
                                         <tr class="text-center bg-dark-subtle">
                                             <th width=5%>NO.</th>
@@ -91,7 +91,7 @@
             <!--end col-->
 
             {{-- @include('modules.admin.administration.users.modal.create') --}}
-            @include('modules.admin.administration.manage-candidates.modal.edit')
+            @include('modules.admin.administration.manage-candidates.mod-candidate.modal.edit')
         </div>
     </div>
 

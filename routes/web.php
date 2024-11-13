@@ -173,8 +173,11 @@ Route::group(['middleware' => ['role:PENTADBIR|BPKOM|PSM|FINANCE']], function ()
         Route::post('/users/actived/{user}', [UserController::class, 'activated'])->name('users.activated');
         Route::post('/users/deactived/{user}', [UserController::class, 'deactived'])->name('users.deactived');
 
+        Route::post('/manage-candidate-mod/update/{candidate}', [CandidateController::class, 'updateModCandidate'])->name('admin.mod_candidate.update');
         Route::get('/manage-candidate', [CandidateController::class, 'indexCandidate'])->name('admin.candidate.index');
         Route::get('/manage-candidate/ajax', [CandidateController::class, 'ajaxCandidate'])->name('admin.candidate.ajax');
+        Route::get('/manage-mod-candidate', [CandidateController::class, 'indexModCandidate'])->name('admin.mod_candidate.index');
+        Route::get('/manage-mod-candidate/ajax', [CandidateController::class, 'ajaxModCandidate'])->name('admin.mod_candidate.ajax');
         // Route::post('/manage-candidate/ajax', [CandidateController::class, 'ajaxCandidate'])->name('admin.candidate.ajax');
         Route::post('/manage-candidate/update/{candidate}', [CandidateController::class, 'updateCandidate'])->name('admin.candidate.update');
 

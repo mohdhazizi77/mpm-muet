@@ -4,7 +4,7 @@
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
             <div class="modal-header modal-header-form">
-                <h5 class="modal-title" id="myLargeModalLabel">Edit Candidate</h5>
+                <h5 class="modal-title" id="myLargeModalLabel">Edit Candidate Mod</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -78,7 +78,7 @@
                         <button type="button" class="btn btn-soft-dark waves-effect waves-light mr-1" data-bs-dismiss="modal">
                             Back
                         </button>
-                        <button type="button" id="submit" class="btn btn-soft-primary waves-effect waves-light">
+                        <button type="button" id="submitMod" class="btn btn-soft-primary waves-effect waves-light">
                             Update
                         </button>
                     </div>

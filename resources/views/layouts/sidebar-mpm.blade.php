@@ -145,6 +145,9 @@
                                     <a href="{{ route('admin.candidate.index') }}" class="nav-link {{ request()->is('admin/manage-candidate') ? 'active' : '' }}">Muet Candidates</a>
                                 </li>
                                 <li class="nav-item">
+                                    <a href="{{ route('admin.mod_candidate.index') }}" class="nav-link {{ request()->is('admin/manage-mod-candidate') ? 'active' : '' }}">MOD Candidates</a>
+                                </li>
+                                <li class="nav-item">
                                     <a href="{{ route('admin.pullDB') }}" class="nav-link {{ request()->is('admin/pull-db') ? 'active' : '' }}">Pull DB Candidates</a>
                                 </li>
                                 <li class="nav-item">
