@@ -17,7 +17,10 @@ use App\Models\MuetSkor;
 use App\Models\MuetTarikh;
 
 use App\Imports\SenaraiCalonExcelImport;
+use App\Jobs\ImportCandidateDBJob;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Bus;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
 
@@ -39,20 +42,20 @@ class AdminController extends Controller
         $order = Order::get();
         $payment = Payment::get();
 
-        $orderNewMUET = $order->where('current_status','NEW')->where('type', 'MUET')->where('payment_for', 'MPM_PRINT')->where('payment_status', 'SUCCESS')->count();
-        $orderProcessingMUET = $order->where('current_status','PROCESSING')->where('type', 'MUET')->where('payment_for', 'MPM_PRINT')->where('payment_status', 'SUCCESS')->count();
-        $orderCompleteMUET = $order->where('current_status','COMPLETED')->where('type', 'MUET')->where('payment_for', 'MPM_PRINT')->where('payment_status', 'SUCCESS')->count();
+        $orderNewMUET = $order->where('current_status', 'NEW')->where('type', 'MUET')->where('payment_for', 'MPM_PRINT')->where('payment_status', 'SUCCESS')->count();
+        $orderProcessingMUET = $order->where('current_status', 'PROCESSING')->where('type', 'MUET')->where('payment_for', 'MPM_PRINT')->where('payment_status', 'SUCCESS')->count();
+        $orderCompleteMUET = $order->where('current_status', 'COMPLETED')->where('type', 'MUET')->where('payment_for', 'MPM_PRINT')->where('payment_status', 'SUCCESS')->count();
 
-        $orderNewMOD = $order->where('current_status','NEW')->where('type', 'MOD')->where('payment_for', 'MPM_PRINT')->where('payment_status', 'SUCCESS')->count();
-        $orderProcessingMOD = $order->where('current_status','PROCESSING')->where('type', 'MOD')->where('payment_for', 'MPM_PRINT')->where('payment_status', 'SUCCESS')->count();
-        $orderCompleteMOD = $order->where('current_status','COMPLETED')->where('type', 'MOD')->where('payment_for', 'MPM_PRINT')->where('payment_status', 'SUCCESS')->count();
+        $orderNewMOD = $order->where('current_status', 'NEW')->where('type', 'MOD')->where('payment_for', 'MPM_PRINT')->where('payment_status', 'SUCCESS')->count();
+        $orderProcessingMOD = $order->where('current_status', 'PROCESSING')->where('type', 'MOD')->where('payment_for', 'MPM_PRINT')->where('payment_status', 'SUCCESS')->count();
+        $orderCompleteMOD = $order->where('current_status', 'COMPLETED')->where('type', 'MOD')->where('payment_for', 'MPM_PRINT')->where('payment_status', 'SUCCESS')->count();
 
-        $totalMUET_mpmprint = $payment->where('status', 'SUCCESS')->where('amount','=', $rateMpmPrint)->where('type', 'MUET')->sum('amount');
-        $totalMUET_selfprint = $payment->where('status', 'SUCCESS')->where('amount','=', $rateSelfPrint)->where('type', 'MUET')->sum('amount');
+        $totalMUET_mpmprint = $payment->where('status', 'SUCCESS')->where('amount', '=', $rateMpmPrint)->where('type', 'MUET')->sum('amount');
+        $totalMUET_selfprint = $payment->where('status', 'SUCCESS')->where('amount', '=', $rateSelfPrint)->where('type', 'MUET')->sum('amount');
         $totalMUET   = $totalMUET_mpmprint + $totalMUET_selfprint;
 
-        $totalMOD_mpmprint = $payment->where('status', 'SUCCESS')->where('amount','=', $rateMpmPrint)->where('type', 'MOD')->sum('amount');
-        $totalMOD_selfprint = $payment->where('status', 'SUCCESS')->where('amount','=', $rateSelfPrint)->where('type', 'MOD')->sum('amount');
+        $totalMOD_mpmprint = $payment->where('status', 'SUCCESS')->where('amount', '=', $rateMpmPrint)->where('type', 'MOD')->sum('amount');
+        $totalMOD_selfprint = $payment->where('status', 'SUCCESS')->where('amount', '=', $rateSelfPrint)->where('type', 'MOD')->sum('amount');
         $totalMOD   = $totalMOD_mpmprint + $totalMOD_selfprint;
 
         $count = [
@@ -73,10 +76,16 @@ class AdminController extends Controller
         $dailyCounts = $this->getDailyActivityCounts();
         // $monthlyCounts = $this->getMonthlyActivityCounts();
         // dd($dailyCounts);
-        return view('modules.admin.dashboard',
+        return view(
+            'modules.admin.dashboard',
             compact([
-                'user','count','rateMpmPrint', 'rateSelfPrint', 'dailyCounts'
-            ]));
+                'user',
+                'count',
+                'rateMpmPrint',
+                'rateSelfPrint',
+                'dailyCounts'
+            ])
+        );
     }
 
     public function getDailyActivityCounts()
@@ -164,8 +173,8 @@ class AdminController extends Controller
         $rateSelfPrint = $config->rate_selfprint;
 
         $muetLabels = [
-            'RM '.$rateMpmPrint => $rateMpmPrint,
-            'RM '.$rateSelfPrint => $rateSelfPrint
+            'RM ' . $rateMpmPrint => $rateMpmPrint,
+            'RM ' . $rateSelfPrint => $rateSelfPrint
         ];
 
         $data = [];
@@ -185,7 +194,7 @@ class AdminController extends Controller
 
     private function getMuetCountByLabel($value, $type)
     {
-        return Payment::where('status','SUCCESS')->where('type', $type)->where('amount', $value)->count();
+        return Payment::where('status', 'SUCCESS')->where('type', $type)->where('amount', $value)->count();
     }
 
     public function modPieChart()
@@ -195,8 +204,8 @@ class AdminController extends Controller
         $rateSelfPrint = $config->rate_selfprint;
 
         $muetLabels = [
-            'RM '.$rateMpmPrint => $rateMpmPrint,
-            'RM '.$rateSelfPrint => $rateSelfPrint
+            'RM ' . $rateMpmPrint => $rateMpmPrint,
+            'RM ' . $rateSelfPrint => $rateSelfPrint
         ];
 
         $data = [];
@@ -322,26 +331,97 @@ class AdminController extends Controller
 
     public function viewPullDB()
     {
-        return view('modules.admin.administration.pull-db.index');
+        //get db batch
+        $batch = DB::table('job_batches')->where('name', 'PullDBImport')->where('pending_jobs', 1)->whereNull('finished_at')->count();
+        return view('modules.admin.administration.pull-db.index', compact('batch'));
     }
 
     public function pullDatabase(Request $request)
     {
-        sleep(5);
+        $data = [];
+        $table = 'muet_resultn_devsijil';
+        if (!empty($request->type)) {
+            $results = DB::connection('pull-' . strtolower($request->type))->table($table);
 
-        $data = [
-            'success' => true,
-        ];
+            if (!empty($request->year)) {
+                $results = $results->where('tahun', $request->year);
+            }
+            if (!empty($request->session)) {
+                $results = $results->where('sesi', $request->session);
+            }
+            $results = $results->get();
 
-        return response()->json($data);
+            // $results = DB::connection('pull-muet')->table($table)->get();
+            foreach ($results as $row) {
+                if (strtolower($request->type) == 'muet') {
+                    $data[] = [
+                        "muet_id" => $row->muet_id,
+                        "tahun" => $row->tahun,
+                        "sesi" => $row->sesi,
+                        "namasesi" => $row->namasesi,
+                        "nama" => $row->nama,
+                        "kp" => $row->kp,
+                        "indexNo" => $row->indexNo,
+                        "tarikh_isu" => $row->tarikh_isu,
+                        "tarikh_exp" => $row->tarikh_exp,
+                        "listening" => $row->listening,
+                        "speaking" => $row->speaking,
+                        "reading" => $row->reading,
+                        "writing" => $row->writing,
+                        "agg_score" => $row->agg_score,
+                        "band" => $row->band,
+                        "sch_code" => null,
+                        "statusflag" => null,
+                        "status" => $row->status,
+                        "tarload" => $row->tarload ?? null,
+                        "uploaddt" => $row->tarload,
+                    ];
+                } elseif (strtolower($request->type) == 'mod') {
+                    $data[] = [
+                        "muet_id" => $row->muet_id,
+                        "tahun" => $row->tahun,
+                        "sesi" => $row->sesi,
+                        "namasesi" => $row->namasesi,
+                        "nama" => $row->nama,
+                        "kp" => $row->kp,
+                        "indexNo" => $row->indexNo,
+                        "tarikh_isu" => $row->tarikh_isu,
+                        "tarikh_exp" => $row->tarikh_exp,
+                        "listening" => $row->listening,
+                        "speaking" => $row->speaking,
+                        "reading" => $row->reading,
+                        "writing" => $row->writing,
+                        "agg_score" => $row->agg_score,
+                        "band" => $row->band,
+                        "sch_code" => '',
+                        "statusflag" => 0,
+                        "status" => $row->status,
+                        "uploaddt" => $row->uploaddt,
+                        "tarload" => $row->uploaddt ?? null,
+                    ];
+                }
+            }
+        }
+        return datatables($data)->toJson();
+    }
+    public function pullDatabaseImport(Request $request)
+    {
+        //call batch queue
+        $batch = Bus::batch([
+            new ImportCandidateDBJob($request->year, $request->session, $request->type),
+        ])->name('PullDBImport')->dispatch();
+
+        //return json
+        return response()->json($batch);
     }
 
-    public function indexUpload(){
+    public function indexUpload()
+    {
         return view('modules.admin.administration.upload.index');
     }
 
-    public function upload(Request $request){
-
+    public function upload(Request $request)
+    {
         // Validate the file
         $validator = Validator::make($request->all(), [
             'examType' => 'required',
@@ -351,9 +431,7 @@ class AdminController extends Controller
         if ($validator->fails()) {
             return back()->withErrors($validator)->withInput();
         }
-
         $importedData = Excel::toArray(new SenaraiCalonExcelImport, $request->file('excelFile'));
-
         // data must follow this column => tahun,sesi,namasesi,nama,kp,angkagiliran,tarikh_isu,tarikh_exp,listening,speaking,reading,writing,skor_agregat,band
         $flag = true;
         $flag_msg = '';
@@ -418,7 +496,7 @@ class AdminController extends Controller
                         // Get the updated columns
                         $updatedColumns = $user->getChanges(); // This returns an array of changed attributes
                         foreach ($updatedColumns as $column => $newValue) {
-                            if(in_array($column, ['password', 'updated_at']))
+                            if (in_array($column, ['password', 'updated_at']))
                                 continue;
                             $message .= "\nData Candidate Updated ['$column' was updated to '$newValue']";
                         }
@@ -465,7 +543,7 @@ class AdminController extends Controller
                         // Get the updated columns
                         $updatedColumns = $calon->getChanges(); // This returns an array of changed attributes
                         foreach ($updatedColumns as $column => $newValue) {
-                            if(in_array($column, ['password', 'updated_at']))
+                            if (in_array($column, ['password', 'updated_at']))
                                 continue;
 
                             $message .= "\nData MuetCalon Updated ['$column' was updated to '$newValue']";
@@ -498,21 +576,21 @@ class AdminController extends Controller
                             ]
                         );
 
-                           if ($ms->wasRecentlyCreated) {
-                               // The record was created
-                               $message .= "\nNew Record MuetSkor created.[" . $key . "]";
-                           } elseif ($ms->wasChanged()) {
-                               // Get the updated columns
-                               $updatedColumns = $ms->getChanges(); // This returns an array of changed attributes
-                               foreach ($updatedColumns as $column => $newValue) {
-                                    if(in_array($column, ['password', 'updated_at']))
+                        if ($ms->wasRecentlyCreated) {
+                            // The record was created
+                            $message .= "\nNew Record MuetSkor created.[" . $key . "]";
+                        } elseif ($ms->wasChanged()) {
+                            // Get the updated columns
+                            $updatedColumns = $ms->getChanges(); // This returns an array of changed attributes
+                            foreach ($updatedColumns as $column => $newValue) {
+                                if (in_array($column, ['password', 'updated_at']))
                                     continue;
-                                    $message .= "\nData MuetSkor Updated ['$column' was updated to '$newValue']";
-                               }
-                           } else {
-                               // No changes were made because the values were the same
-                               $message .= "\nMuetSkor no changes";
-                           }
+                                $message .= "\nData MuetSkor Updated ['$column' was updated to '$newValue']";
+                            }
+                        } else {
+                            // No changes were made because the values were the same
+                            $message .= "\nMuetSkor no changes";
+                        }
                     }
 
                     $mt = MuetTarikh::updateOrCreate(
@@ -534,7 +612,7 @@ class AdminController extends Controller
                         // Get the updated columns
                         $updatedColumns = $mt->getChanges(); // This returns an array of changed attributes
                         foreach ($updatedColumns as $column => $newValue) {
-                            if(in_array($column, ['password', 'updated_at']))
+                            if (in_array($column, ['password', 'updated_at']))
                                 continue;
                             $message .= "\nData MuetTarikh Updated ['$column' was updated to '$newValue']";
                         }
@@ -545,19 +623,16 @@ class AdminController extends Controller
 
                     // dd($message, $value);
                     $value[15] .= $message;
-                } else if ($request->examType == "MOD"){
-
+                } else if ($request->examType == "MOD") {
                 } else {
                     $value[15] .= "\n Invalid Exam Type. No processes been done";
                 }
             } else {
-
             }
             $processArray[] = $value;
         }
         // dd($processArray);
         return view('modules.admin.administration.upload.finish', compact('processArray'));
-
     }
 
     private function checkingColumnExcel($row)

@@ -45,7 +45,7 @@
                                 </div>
                                 <div class="col-md-4 col-sm-12 mt-2" style="text-align: right">
                                     {{-- <button class="btn btn-soft-success waves-effect float-end" id="show_create_modal">NEW USER</button> --}}
-                                    <input type="text" class="form-control" id="search_term_mod" placeholder="Search term">
+                                    <input type="text" class="form-control" id="search_term_mod" placeholder="Enter NRIC, Name">
 
                                 </div>
                                 <div class="col-md-2 mt-2">
@@ -69,9 +69,9 @@
                                             <th width=5%>NO.</th>
                                             <th width=30%>NAME</th>
                                             <th width=15%>NRIC</th>
-                                            <th width=15%>ANGKA GILIRAN</th>
-                                            <th width=15%>SESI</th>
-                                            <th width=15%>TAHUN</th>
+                                            <th width=15%>INDEX NUMBER</th>
+                                            <th width=15%>SESSION</th>
+                                            <th width=15%>YEAR</th>
                                             <th>ACTION</th>
                                         </tr>
                                     </thead>

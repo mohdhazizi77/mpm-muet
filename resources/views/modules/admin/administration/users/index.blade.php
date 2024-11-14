@@ -1,6 +1,6 @@
 @extends('layouts.master-mpm')
 @section('title')
-    POS Management
+    Users Management
 @endsection
 @section('css')
     {{-- <!-- DataTables --> --}}

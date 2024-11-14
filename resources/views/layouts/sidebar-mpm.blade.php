@@ -124,6 +124,7 @@
                     {{ request()->is('admin/config-mpmbayar') ? 'show' : '' }}
                     {{ request()->is('admin/users')  ? 'show' : '' }}
                     {{ request()->is('admin/manage-candidate') ? 'show' : '' }}
+                    {{ request()->is('admin/manage-mod-candidate') ? 'show' : '' }}
                     {{ request()->is('admin/pull-db') ? 'show' : '' }}
                     {{ request()->is('admin/audit-logs') ? 'show' : '' }}
                     " id="Administration">
