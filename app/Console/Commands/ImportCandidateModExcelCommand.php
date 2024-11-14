@@ -36,7 +36,7 @@ class ImportCandidateModExcelCommand extends Command
         // Excel::import(new ImportModCandidateCsv, resource_path('excel/importExcelFiles/MOD/mod-september-I-2024.csv'));
         // Excel::import(new ImportModCandidateCsv, resource_path('excel/importExcelFiles/MOD/mod-september-II-2024.csv'));
         // dd('test');
-        Excel::import(new ImportModCandidateCsv, resource_path('excel/importExcelFiles/MOD/MOD-MEX-OKTOBER-2024.csv'));
+        Excel::import(new ImportModCandidateCsv, resource_path('excel/importExcelFiles/MOD/MOD-OKTOBER-2024-787-calon.csv'));
 
 
         $this->info('Script completed successfully. everything looks good. [' . date('Y-m-d H:i:s') . ']');
