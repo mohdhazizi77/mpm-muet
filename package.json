@@ -19,11 +19,11 @@
         "postcss": "^8.3.5",
         "postcss-import": "^14.0.1",
         "resolve-url-loader": "^5.0.0",
-        "rimraf": "^5.0.1",
+        "rimraf": "^5.0.10",
         "rtlcss": "^3.0.0",
         "sass": "^1.32.11",
         "sass-loader": "^11.0.1",
-        "vite": "^4.1.4",
+        "vite": "^4.5.5",
         "vite-plugin-static-copy": "^0.13.0"
     },
     "dependencies": {

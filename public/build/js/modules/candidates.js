@@ -305,13 +305,16 @@ $(document).ready(function () {
             ajax: {
                 url: "./manage-candidate/ajax",
                 data: function (d) {
-                    d.search = $('#search_term').val(); // Capture the search term dynamically
+                    d.search = $('#search_term').val();
                 }
             },
             columns: [
                 { data: 'id', name: 'id' },
                 { data: 'name', name: 'name' },
-                { data: 'identity_card_number', name: 'identity_card_number' },
+                { data: 'nric', name: 'nric' },
+                { data: 'angka_giliran', name: 'angka_giliran' },
+                { data: 'sidang', name: 'sidang' },
+                { data: 'tahun', name: 'tahun' },
                 { data: 'action', name: 'action', orderable: false, searchable: false }
             ],
             pageLength: 10,
@@ -354,18 +357,41 @@ $(document).ready(function () {
         $(document).on('click', '#show_edit_modal', function (e) {
             e.preventDefault();
 
+            // Clear any previous validation errors or data
             $('#name_text_edit').text('');
             $('#nric_text_edit').text('');
             $('#form_candidate_edit').removeClass('was-validated');
 
+            // Fetch the data for the clicked row
             var rowData = table.row($(this).parents('tr')).data();
+            console.log("Row Data:", rowData); // Log the raw data
+
+            // Populate the form fields
             $('#form_candidate_edit [name="id"]').val(rowData.id);
             $('#form_candidate_edit [name="name"]').val(decodeHTMLEntities(rowData.name));
             $('#form_candidate_edit [name="nric"]').val(rowData.nric);
 
-            $('#modal_edit').modal('show');
-        })
+            // Prefill the score fields
+            var mkhbaru = rowData.mkhbaru ? rowData.mkhbaru.split(',') : [];  // Split string into array
 
+            if (Array.isArray(mkhbaru) && mkhbaru.length >= 4) {
+                $('#form_candidate_edit [name="listening_score"]').val(mkhbaru[0].trim()); // Listening score
+                $('#form_candidate_edit [name="speaking_score"]').val(mkhbaru[1].trim());  // Speaking score
+                $('#form_candidate_edit [name="reading_score"]').val(mkhbaru[2].trim());   // Reading score
+                $('#form_candidate_edit [name="writing_score"]').val(mkhbaru[3].trim());   // Writing score
+            } else {
+                console.error("Invalid mkhbaru data: ", mkhbaru);
+            }
+
+            // Populate the aggregated score and band fields
+            $('#form_candidate_edit [name="aggregated_score"]').val(rowData.skor_agregat);  // Set Aggregated Score
+            $('#form_candidate_edit [name="band_achieved"]').val(rowData.band);  // Set Band
+
+            // Show the modal with the filled data
+            $('#modal_edit').modal('show');
+        });
+
+        // Helper function to decode HTML entities
         function decodeHTMLEntities(text) {
             var textarea = document.createElement('textarea');
             textarea.innerHTML = text;
@@ -378,16 +404,28 @@ $(document).ready(function () {
 
             const id = $('#id').val();
 
+            // Get the values from the editable score fields
+            var listeningScore = $('#listening-score').val();
+            var speakingScore = $('#speaking-score').val();
+            var readingScore = $('#reading-score').val();
+            var writingScore = $('#writing-score').val();
+            var aggregatedScore = $('#aggregated-score').val();
+            var bandAchieved = $('#band-achieved').val();
+
+            // Ensure the scores are filled correctly
+            formData.append('listening_score', listeningScore);
+            formData.append('speaking_score', speakingScore);
+            formData.append('reading_score', readingScore);
+            formData.append('writing_score', writingScore);
+            formData.append('aggregated_score', aggregatedScore);
+            formData.append('band_achieved', bandAchieved);
+
+            // Show confirmation before submission
             Swal.fire({
                 icon: 'warning',
                 title: 'Are you sure?',
                 text: 'Candidates will be updated!',
-                customClass: {
-                    popup: 'my-swal-popup',
-                    confirmButton: 'my-swal-confirm',
-                    cancelButton: 'my-swal-cancel',
-                },
-                showCancelButton: true, // Show the cancel button
+                showCancelButton: true,
                 confirmButtonText: 'Ya',
                 cancelButtonText: 'Tidak'
             }).then((result) => {
@@ -403,70 +441,248 @@ $(document).ready(function () {
                         },
                         beforeSend: function () {
                             Swal.fire({
-                                title: 'Loading...', // Optional title for the alert
-                                allowEscapeKey: false, // Disables escape key closing the alert
-                                allowOutsideClick: false, // Disables outside click closing the alert
-                                showConfirmButton: false, // Hides the "Confirm" button
+                                title: 'Loading...',
+                                allowEscapeKey: false,
+                                allowOutsideClick: false,
+                                showConfirmButton: false,
                                 didOpen: () => {
-                                    Swal.showLoading(Swal
-                                        .getDenyButton()); // Show loading indicator on the Deny button
+                                    Swal.showLoading(Swal.getDenyButton());
                                 }
                             });
                         },
                         success: function (response) {
-                            console.log(response)
                             Swal.close()
                             if (response.success) {
                                 $('#form_candidate_edit').removeClass('was-validated');
                                 Swal.fire({
-                                    type: 'success',
+                                    icon: 'success',
                                     title: 'Success',
-                                    text: 'Candidate successfully updated!',
-                                    customClass: {
-                                        popup: 'my-swal-popup',
-                                        confirmButton: 'my-swal-confirm',
-                                        cancelButton: 'my-swal-cancel',
-                                    }
+                                    text: 'Candidate successfully updated!'
                                 }).then((result) => {
                                     if (result.value) {
                                         $('#modal_edit').modal('hide');
+
+                                        // Redraw the DataTable
                                         $('#dt-candidate').DataTable().ajax.reload();
                                     }
                                 });
                             } else {
                                 Swal.fire({
-                                    type: 'warning',
+                                    icon: 'warning',
                                     title: 'Fail',
-                                    text: response.message,
-                                    customClass: {
-                                        popup: 'my-swal-popup',
-                                        confirmButton: 'my-swal-confirm',
-                                        cancelButton: 'my-swal-cancel',
-                                    }
-                                })
-                                // .then((result) => {
-                                //     if (result.value) {
-                                //         $('#modal_edit').modal('hide');
-                                //         $('#dt-candidate').DataTable().ajax.reload();
-                                //     }
-                                // });
+                                    text: response.message
+                                });
                             }
                         },
-                        error: function (xhr, status, errors) {
+                        error: function (xhr) {
                             $('#form_candidate_edit').addClass('was-validated');
                             if (xhr.responseJSON && xhr.responseJSON.errors) {
-                                $('#name_text_edit').text(xhr.responseJSON.errors && xhr.responseJSON.errors.name ? xhr.responseJSON.errors.name[0] : '');
-                                $('#nric_text_edit').text(xhr.responseJSON.errors && xhr.responseJSON.errors.nric ? xhr.responseJSON.errors.nric[0] : '');
-
+                                $('#name_text_edit').text(xhr.responseJSON.errors.name || '');
+                                $('#nric_text_edit').text(xhr.responseJSON.errors.nric || '');
                                 Swal.fire({
                                     icon: "error",
                                     title: 'Gagal',
-                                    text: xhr.responseJSON.message,
-                                    customClass: {
-                                        popup: 'my-swal-popup',
-                                        confirmButton: 'my-swal-confirm',
-                                        cancelButton: 'my-swal-cancel',
+                                    text: xhr.responseJSON.message
+                                });
+                            }
+                        }
+                    });
+                }
+            });
+        });
+
+    }
+})
+
+//MUET ON DEMAND (MOD)
+$(document).ready(function () {
+    if ($('#dt-candidate-mod').length) {
+
+        // Initialize the DataTable
+        var table = $('#dt-candidate-mod').DataTable({
+            processing: true,
+            serverSide: true,
+            ajax: {
+                url: "./manage-mod-candidate/ajax",
+                data: function (d) {
+                    d.search = $('#search_term_mod').val();
+                }
+            },
+            columns: [
+                { data: 'id', name: 'id' },
+                { data: 'name', name: 'name' },
+                { data: 'nric', name: 'nric' },
+                { data: 'angka_giliran', name: 'angka_giliran' },
+                { data: 'sidang', name: 'sidang' },
+                { data: 'tahun', name: 'tahun' },
+                { data: 'action', name: 'action', orderable: false, searchable: false }
+            ],
+            pageLength: 10,
+            lengthMenu: [[10], [10]], // Disable the entries per page dropdown by only allowing one option
+            order: [[0, "asc"]],
+            responsive: true,
+            autoWidth: false,
+            language: {
+                // "zeroRecords": "There are no records to display.",
+                // "paginate": {
+                // "info": "Display _START_ / _END_ of _TOTAL_ records",
+                // "infoEmpty": "Showing 0 to 0 of 0 entries",
+                // "infoFiltered": "(filter of _MAX_ record)",
+                "processing": "Processing...",
+                // "search": "Search:"
+            },
+            searching: false,
+            lengthChange: false,
+
+        });
+
+        // Search Button Click Event
+        $('#searchBtnMod').on('click', function () {
+            // Dynamically update the search term and reload the DataTable
+            table.ajax.reload();
+        });
+
+        // Reset Button Click Event
+        $('#resetBtnMod').on('click', function () {
+            $('#search_term_mod').val(''); // Clear the search input field
+
+            // Reload the DataTable to reset it with no search term
+            table.ajax.reload();
+        });
+
+        // if ($('.dt-search').length) {
+        //     $('.dt-search').show()
+        // }
+
+        $(document).on('click', '#show_edit_modal', function (e) {
+            e.preventDefault();
+
+            // Clear any previous validation errors or data
+            $('#name_text_edit').text('');
+            $('#nric_text_edit').text('');
+            $('#form_candidate_edit').removeClass('was-validated');
+
+            // Fetch the data for the clicked row
+            var rowData = table.row($(this).parents('tr')).data();
+            console.log("Row Data:", rowData); // Log the raw data
+
+            // Populate the form fields
+            $('#form_candidate_edit [name="id"]').val(rowData.id);
+            $('#form_candidate_edit [name="name"]').val(decodeHTMLEntities(rowData.name));
+            $('#form_candidate_edit [name="nric"]').val(rowData.nric);
+
+            // Prefill the score fields
+            var skorbaru = rowData.skorbaru ? rowData.skorbaru.split(',') : [];  // Split string into array
+
+            if (Array.isArray(skorbaru) && skorbaru.length >= 4) {
+                $('#form_candidate_edit [name="listening_score"]').val(skorbaru[0].trim()); // Listening score
+                $('#form_candidate_edit [name="speaking_score"]').val(skorbaru[1].trim());  // Speaking score
+                $('#form_candidate_edit [name="reading_score"]').val(skorbaru[2].trim());   // Reading score
+                $('#form_candidate_edit [name="writing_score"]').val(skorbaru[3].trim());   // Writing score
+            } else {
+                console.error("Invalid skorbaru data: ", skorbaru);
+            }
+
+            // Populate the aggregated score and band fields
+            $('#form_candidate_edit [name="aggregated_score"]').val(rowData.skor_agregat);  // Set Aggregated Score
+            $('#form_candidate_edit [name="band_achieved"]').val(rowData.band);  // Set Band
+
+            // Show the modal with the filled data
+            $('#modal_edit').modal('show');
+        });
+
+        // Helper function to decode HTML entities
+        function decodeHTMLEntities(text) {
+            var textarea = document.createElement('textarea');
+            textarea.innerHTML = text;
+            return textarea.value;
+        }
+
+        $(document).on('click', '#submitMod', function (e) {
+            var csrfToken = $('meta[name="csrf-token"]').attr('content');
+            var formData = new FormData($('#form_candidate_edit')[0]);
+
+            const id = $('#id').val();
+
+            // Get the values from the editable score fields
+            var listeningScore = $('#listening-score').val();
+            var speakingScore = $('#speaking-score').val();
+            var readingScore = $('#reading-score').val();
+            var writingScore = $('#writing-score').val();
+            var aggregatedScore = $('#aggregated-score').val();
+            var bandAchieved = $('#band-achieved').val();
+
+            // Ensure the scores are filled correctly
+            formData.append('listening_score', listeningScore);
+            formData.append('speaking_score', speakingScore);
+            formData.append('reading_score', readingScore);
+            formData.append('writing_score', writingScore);
+            formData.append('aggregated_score', aggregatedScore);
+            formData.append('band_achieved', bandAchieved);
+
+            // Show confirmation before submission
+            Swal.fire({
+                icon: 'warning',
+                title: 'Are you sure?',
+                text: 'Candidates will be updated!',
+                showCancelButton: true,
+                confirmButtonText: 'Ya',
+                cancelButtonText: 'Tidak'
+            }).then((result) => {
+                if (result.value) {
+                    $.ajax({
+                        url: './manage-candidate-mod/update/' + id,
+                        method: 'POST',
+                        data: formData,
+                        processData: false,
+                        contentType: false,
+                        headers: {
+                            'X-CSRF-TOKEN': csrfToken
+                        },
+                        beforeSend: function () {
+                            Swal.fire({
+                                title: 'Loading...',
+                                allowEscapeKey: false,
+                                allowOutsideClick: false,
+                                showConfirmButton: false,
+                                didOpen: () => {
+                                    Swal.showLoading(Swal.getDenyButton());
+                                }
+                            });
+                        },
+                        success: function (response) {
+                            Swal.close();
+                            if (response.success) {
+                                $('#form_candidate_edit').removeClass('was-validated');
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Success',
+                                    text: 'Candidate successfully updated!'
+                                }).then((result) => {
+                                    if (result.value) {
+                                        $('#modal_edit').modal('hide');
+
+                                        // Redraw the DataTable
+                                        $('#dt-candidate-mod').DataTable().ajax.reload();
                                     }
+                                });
+                            } else {
+                                Swal.fire({
+                                    icon: 'warning',
+                                    title: 'Fail',
+                                    text: response.message
+                                });
+                            }
+                        },
+                        error: function (xhr) {
+                            $('#form_candidate_edit').addClass('was-validated');
+                            if (xhr.responseJSON && xhr.responseJSON.errors) {
+                                $('#name_text_edit').text(xhr.responseJSON.errors.name || '');
+                                $('#nric_text_edit').text(xhr.responseJSON.errors.nric || '');
+                                Swal.fire({
+                                    icon: "error",
+                                    title: 'Gagal',
+                                    text: xhr.responseJSON.message
                                 });
                             }
                         }
