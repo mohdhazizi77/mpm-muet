@@ -60,8 +60,8 @@ class Candidate extends Authenticatable
     }
 
     // Optional: If you need to hash passwords
-    public function setPasswordAttribute($value)
-    {
-        $this->attributes['password'] = bcrypt($value);
-    }
+    // public function setPasswordAttribute($value)
+    // {
+    //     $this->attributes['password'] = bcrypt($value);
+    // }
 }
