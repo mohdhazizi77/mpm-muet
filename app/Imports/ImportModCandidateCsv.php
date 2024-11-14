@@ -29,6 +29,7 @@ class ImportModCandidateCsv implements ToModel, WithChunkReading, WithBatchInser
 {
     public function model(array $row)
     {
+        Log::info(print_r($row, 1));
         // dd($row);
 
         $tahun          = $row['tahun'];
