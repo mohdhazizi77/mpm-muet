@@ -22,7 +22,8 @@ class PaymentRequest extends FormRequest
 
         if ($this->pay_for == 'MPM_PRINT') {
             $rules['address'] = 'required';
-            $rules['postcode'] = 'required|integer|max:99999';
+            // $rules['postcode'] = 'required|integer|max:99999';
+            $rules['postcode'] = 'required|digits:5';
             $rules['city'] = 'required|min:3';
             $rules['state'] = 'required|max:5';
             $rules['courier'] = 'required';
