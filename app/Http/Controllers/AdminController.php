@@ -339,15 +339,20 @@ class AdminController extends Controller
     public function pullDatabase(Request $request)
     {
         $data = [];
-        $table = 'muet_resultn_devsijil';
+        // $table = 'muet_resultn_devsijil';
+        $table = 'muet_resultn';
+        // dd($table);
         if (!empty($request->type)) {
             $results = DB::connection('pull-' . strtolower($request->type))->table($table);
 
             if (!empty($request->year)) {
                 $results = $results->where('tahun', $request->year);
             }
-            if (!empty($request->session)) {
+            if (!empty($request->session) && strtolower($request->type) == 'muet') {
                 $results = $results->where('sesi', $request->session);
+            } elseif (!empty($request->session) && strtolower($request->type) == 'mod') {
+                $monthName = date('F', mktime(0, 0, 0, $request->session, 1));
+                $results = $results->where('namasesi', 'like', '%' . $monthName . '%');
             }
             $results = $results->get();
 

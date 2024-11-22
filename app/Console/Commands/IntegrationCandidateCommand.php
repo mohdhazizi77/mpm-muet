@@ -28,7 +28,8 @@ class IntegrationCandidateCommand extends Command
     {
         //connect mysql-muet-integration 
         $connection = 'mysql-muet-integration';
-        $table = 'muet_resultn_devsijil';
+        // $table = 'muet_resultn_devsijil';
+        $table = 'muet_resultn';
         $result = DB::connection($connection)->table($table)->limit(1)->get();
         dd($result);
     }
