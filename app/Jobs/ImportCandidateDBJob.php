@@ -45,7 +45,8 @@ class ImportCandidateDBJob implements ShouldQueue
             // Determine if the batch has been cancelled...
             return;
         }
-        $table = 'muet_resultn_devsijil';
+        // $table = 'muet_resultn_devsijil';
+        $table = 'muet_resultn';
         $results = DB::connection('pull-' . strtolower($this->type))->table($table);
         $results = $results->where('tahun', $this->year)
             ->where('sesi', $this->session)

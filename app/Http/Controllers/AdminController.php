@@ -406,7 +406,6 @@ class AdminController extends Controller
     }
     public function pullDatabaseImport(Request $request)
     {
-        //call batch queue
         $batch = Bus::batch([
             new ImportCandidateDBJob($request->year, $request->session, $request->type),
         ])->name('PullDBImport')->dispatch();
