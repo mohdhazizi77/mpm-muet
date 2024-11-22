@@ -1390,11 +1390,10 @@ class CandidateController extends Controller
         if ($validator->fails()) {
             // Convert the error messages to a string
             $errorMessages = implode(', ', $validator->messages()->all());
-            $data = [
+            return response()->json([
                 'success' => false,
                 'message' => $errorMessages,
-            ];
-            return response()->json($data);
+            ]);
         }
 
         // Old data (for audit log comparison)
@@ -1415,12 +1414,12 @@ class CandidateController extends Controller
             "band_achieved" => $request->band_achieved,
         ];
 
-        // Sanitize and update the candidate data
+        // Update candidate basic details
         $candidate->name = $request->name;
         $candidate->identity_card_number = $request->nric;
         $candidate->save();
 
-        // Update the MUET Calon and MUET Skor tables using the joined query
+        // Update MUET Calon table
         $muetCalon = MuetCalon::where('kp', $candidate->identity_card_number)->first();
         if ($muetCalon) {
             $muetCalon->nama = $candidate->name;
@@ -1430,24 +1429,30 @@ class CandidateController extends Controller
             $muetCalon->save();
         }
 
-        // Updating the MUET Skor table with the new obtained scores
-        $muetSkor = MuetSkor::where('tahun', $muetCalon->tahun)
-            ->where('sidang', $muetCalon->sidang)
-            ->where('jcalon', $muetCalon->jcalon)
-            ->where('nocalon', $muetCalon->nocalon)
-            ->where('kodnegeri', $muetCalon->kodnegeri)
-            ->where('kodpusat', $muetCalon->kodpusat)
-            ->first();
+        // Update MUET Skor table
+        if ($muetCalon) {
+            $kodktsMapping = [
+                1 => $request->listening_score,
+                2 => $request->speaking_score,
+                3 => $request->reading_score,
+                4 => $request->writing_score,
+            ];
 
-        if ($muetSkor) {
-            // Update scores in the MuetSkor table
-            $muetSkor->mkhbaru = implode(',', [
-                $request->listening_score,
-                $request->speaking_score,
-                $request->reading_score,
-                $request->writing_score
-            ]);
-            $muetSkor->save();
+            foreach ($kodktsMapping as $kodkts => $score) {
+                $muetSkor = MuetSkor::where('tahun', $muetCalon->tahun)
+                    ->where('sidang', $muetCalon->sidang)
+                    ->where('jcalon', $muetCalon->jcalon)
+                    ->where('nocalon', $muetCalon->nocalon)
+                    ->where('kodnegeri', $muetCalon->kodnegeri)
+                    ->where('kodpusat', $muetCalon->kodpusat)
+                    ->where('kodkts', $kodkts)
+                    ->first();
+
+                if ($muetSkor) {
+                    $muetSkor->mkhbaru = $score;
+                    $muetSkor->save();
+                }
+            }
         }
 
         // Compare old and new data, and unset identical values
@@ -1462,12 +1467,12 @@ class CandidateController extends Controller
         AuditLogService::log($candidate, 'Update candidate', $old, $new);
 
         // Return success message
-        $data = [
+        return response()->json([
             'success' => true,
             'message' => 'Candidate updated successfully',
-        ];
-        return response()->json($data);
+        ]);
     }
+
 
     public function updateModCandidate(Request $request, Candidate $candidate)
     {
@@ -1486,20 +1491,16 @@ class CandidateController extends Controller
         if ($validator->fails()) {
             // Convert error messages to a string
             $errorMessages = implode(', ', $validator->messages()->all());
-            $data = [
+            return response()->json([
                 'success' => false,
                 'message' => $errorMessages,
-            ];
-            return response()->json($data);
+            ]);
         }
 
         // Old data (for audit log comparison)
         $old = [
             "name" => $candidate->name,
             "nric" => $candidate->identity_card_number,
-            // "aggregated_score" => $candidate->modCalon->skor_agregat ?? null,
-            // "band_achieved" => $candidate->modCalon->band ?? null,
-            // "scores" => $candidate->modSkor->skorbaru ?? null,
         ];
 
         // New data to be compared with old for auditing
@@ -1531,18 +1532,30 @@ class CandidateController extends Controller
             $modCalon->save();
         }
 
-        // Update modSkor table
-        $modSkor = modSkor::where('tahun', $modCalon->tahun)
-            ->where('sidang', $modCalon->sidang)
-            ->where('reg_id', $modCalon->reg_id)
-            ->where('nocalon', $modCalon->nocalon)
-            ->where('kodnegeri', $modCalon->kodnegeri)
-            ->where('kodpusat', $modCalon->kodpusat)
-            ->first();
+        // Update modSkor table for each skill based on kodkts
+        if ($modCalon) {
+            $kodktsMapping = [
+                1 => $request->listening_score,
+                2 => $request->speaking_score,
+                3 => $request->reading_score,
+                4 => $request->writing_score,
+            ];
 
-        if ($modSkor) {
-            $modSkor->skorbaru = $new["scores"];
-            $modSkor->save();
+            foreach ($kodktsMapping as $kodkts => $score) {
+                $modSkor = modSkor::where('tahun', $modCalon->tahun)
+                    ->where('sidang', $modCalon->sidang)
+                    ->where('reg_id', $modCalon->reg_id)
+                    ->where('nocalon', $modCalon->nocalon)
+                    ->where('kodnegeri', $modCalon->kodnegeri)
+                    ->where('kodpusat', $modCalon->kodpusat)
+                    ->where('kodkts', $kodkts)
+                    ->first();
+
+                if ($modSkor) {
+                    $modSkor->skorbaru = $score;
+                    $modSkor->save();
+                }
+            }
         }
 
         // Compare old and new data and unset identical values for audit logging
@@ -1557,11 +1570,9 @@ class CandidateController extends Controller
         AuditLogService::log($candidate, 'Update candidate', $old, $new);
 
         // Return success message
-        $data = [
+        return response()->json([
             'success' => true,
             'message' => 'Candidate updated successfully',
-        ];
-        return response()->json($data);
-}
-
+        ]);
+    }
 }
