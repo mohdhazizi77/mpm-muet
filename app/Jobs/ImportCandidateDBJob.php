@@ -48,9 +48,16 @@ class ImportCandidateDBJob implements ShouldQueue
         // $table = 'muet_resultn_devsijil';
         $table = 'muet_resultn';
         $results = DB::connection('pull-' . strtolower($this->type))->table($table);
-        $results = $results->where('tahun', $this->year)
-            ->where('sesi', $this->session)
-            ->get();
+        $results = $results->where('tahun', $this->year);
+        if (!empty($this->session) && strtolower($this->type) == 'muet') {
+            $results = $results->where('sesi', $request->session);
+        } elseif (!empty($this->session) && strtolower($this->type) == 'mod') {
+            $monthName = date('F', mktime(0, 0, 0, $this->session, 1));
+            $results = $results->where('namasesi', 'like', '%' . $monthName . '%');
+        }
+        // ->where('sesi', $this->session)
+
+        $results = $results->get();
         // Log::info("Importing " . $this->type . " Candidates: " . json_encode($results));
         foreach ($results as $row) {
             if (strtolower($this->type) == 'mod') {
