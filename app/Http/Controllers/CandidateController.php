@@ -92,9 +92,9 @@ class CandidateController extends Controller
                 $is_selfPrintPaid = count($res) > 0 ? true : false;
 
                 $res = $muet->getOrder->where('payment_status', 'SUCCESS')
-                                    ->where('payment_for', 'MPM_PRINT')
-                                    ->where('created_at', '>=', $cutoffTime)
-                                    ->toArray();
+                    ->where('payment_for', 'MPM_PRINT')
+                    ->where('created_at', '>=', $cutoffTime)
+                    ->toArray();
                 $is_mpmPrintPaid = count($res) > 0 ? true : false;
             } else {
                 $res = $muet->getOrder->where('payment_status', 'SUCCESS')->where('payment_for', 'SELF_PRINT')->toArray();
@@ -111,7 +111,7 @@ class CandidateController extends Controller
                 "type"              => 'MUET',
                 "year"              => $muet->tahun,
                 "session"           => str_replace('MUET ', '', $muet->getTarikh->sesi),
-                "band"              => "Band " . self::formatNumber($muet->band),
+                "band"              => "Band " . self::formatNumber($muet->band, $muet->tahun),
                 "is_more2year"      => $is_more2year,
                 "is_selfPrintPaid"  => $is_selfPrintPaid,
                 "is_mpmPrintPaid"   => $is_mpmPrintPaid,
@@ -135,9 +135,9 @@ class CandidateController extends Controller
                 $is_selfPrintPaid = count($res) > 0 ? true : false;
 
                 $res = $mod->getOrder->where('payment_status', 'SUCCESS')
-                        ->where('payment_for', 'MPM_PRINT')
-                        ->where('created_at', '>=', $cutoffTime)
-                        ->toArray();
+                    ->where('payment_for', 'MPM_PRINT')
+                    ->where('created_at', '>=', $cutoffTime)
+                    ->toArray();
                 $is_mpmPrintPaid = count($res) > 0 ? true : false;
             } else {
                 $res = $mod->getOrder->where('payment_status', 'SUCCESS')->where('payment_for', 'SELF_PRINT')->toArray();
@@ -164,7 +164,7 @@ class CandidateController extends Controller
         return datatables($cert_datas)->toJson();
     }
 
-    function formatNumber($number)
+    function formatNumber($number, $year = null)
     {
         // List of disallowed values
         $disallowed = ["-1", "-2", "-3", "-4", "-5", "X"];
@@ -179,6 +179,9 @@ class CandidateController extends Controller
             return $number;
         }
 
+        if ($year <= 2020) {
+            return $number;
+        }
         // Convert to float and format to one decimal place
         $formattedNumber = number_format((float)$number, 1);
 
@@ -1037,7 +1040,7 @@ class CandidateController extends Controller
         }
 
         $data = [];
-        foreach($candidates as $candidate){
+        foreach ($candidates as $candidate) {
             $data[] = [
                 // "id"    => Crypt::encrypt($user->id),
                 "id"    => $candidate->id,

@@ -77,7 +77,7 @@ class ModCalon extends Model
             $result[$value->getKodKertasName($value->kodkts)] = self::checkingMarkah($value->skorbaru);
         }
         $result['agg_score'] = self::checkingAggSkor($candidate->skor_agregat);
-        $result['band'] = self::checkingBand($candidate->band);
+        $result['band'] = self::checkingBand($candidate->band, $candidate->getTarikh->tahun);
         $result['issue_date'] = $candidate->getTarikh->tarikh_isu; //$candidate->getTarikh->tarikh_isu;
         $result['exp_date'] = $candidate->getTarikh->tarikh_exp; //$candidate->getTarikh->tarikh_exp;
         // dd($result);
@@ -112,7 +112,7 @@ class ModCalon extends Model
         return array_key_exists($id, $checkingArr) ? $checkingArr[$id] : $id;
     }
 
-    static function checkingBand($id)
+    static function checkingBand($id, $tahun)
     {
 
         $checkingArr = [
@@ -123,6 +123,11 @@ class ModCalon extends Model
             '-5' => 'NULLIFIED',
         ];
 
-        return array_key_exists($id, $checkingArr) ? $checkingArr[$id] : number_format((float)$id, 1);
+        if ((int)$tahun <= 2020) {
+            $band = $id;
+        } else {
+            $band = number_format((float)$id, 1);
+        }
+        return array_key_exists($id, $checkingArr) ? $checkingArr[$id] : $band;
     }
 }
