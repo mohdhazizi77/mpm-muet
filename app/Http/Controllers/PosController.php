@@ -577,6 +577,7 @@ class PosController extends Controller
 
             // Output the response body
             $response = json_decode($response->getBody()->getContents());
+            dd($url,$param,$response);
             if ($response->StatusCode == "01") {
                 return [
                     'success' => true,
