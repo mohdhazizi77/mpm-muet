@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\ConfigPoslaju;
+use App\Models\AuditLog;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class ConfigPoslajuController extends Controller
@@ -66,7 +68,48 @@ class ConfigPoslajuController extends Controller
         // );
 
         // $configPoslaju = ConfigPoslaju::query()->update($request->all());
-        $configPoslaju = ConfigPoslaju::query()->update($request->except(['_token', '_method']));
+        // $configPoslaju = ConfigPoslaju::query()->update($request->except(['_token', '_method']));
+
+        // // Create audit log
+        // AuditLog::create([
+        //     'user_id' => Auth::id(),
+        //     'activity' => $oldData ? 'Update PosLaju config' : 'Create PosLaju config',
+        //     'summary' => serialize($changes),
+        //     'device' => AuditLog::getDeviceDetail(),
+        // ]);
+
+        // Get existing configuration
+        $oldConfig = ConfigPoslaju::first();
+
+        // Get validated data
+        $newData = $validator->validated();
+
+        // Update configuration
+        $configPoslaju = ConfigPoslaju::query()->update($newData);
+
+        // Track only changed fields
+        $changes = [];
+        if ($oldConfig) {
+            foreach ($newData as $key => $value) {
+                if ($oldConfig[$key] != $value) {
+                    $changes[$key] = [
+                        'from' => $oldConfig[$key],
+                        'to' => $value
+                    ];
+                }
+            }
+        }
+
+        // Only create audit log if there are changes
+        if (!empty($changes)) {
+            AuditLog::create([
+                'user_id' => Auth::id(),
+                'activity' => 'Update PosLaju config',
+                'summary' => serialize($changes),
+                'device' => AuditLog::getDeviceDetail(),
+            ]);
+        }
+
         return redirect()->back()
                          ->with('success', 'Update successful')
                          ->with('configPoslaju', $configPoslaju);
