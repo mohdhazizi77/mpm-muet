@@ -586,7 +586,7 @@ class PosController extends Controller
                 return [
                     'success' => false,
                     'message' => $response->Message,
-                    'message_detail' => '',
+                    'message_detail' => $response,
                 ];
             }
         } catch (ConnectException $e) {
