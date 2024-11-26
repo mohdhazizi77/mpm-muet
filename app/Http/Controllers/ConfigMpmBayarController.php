@@ -55,8 +55,8 @@ class ConfigMpmBayarController extends Controller
             ['id' => $request->id],
             [
                 'url' => $request->url,
-                'token' => encrypt($request->token), // Encrypt sensitive data
-                'secret_key' => encrypt($request->secret_key),
+                'token' => $request->token, // Encrypt sensitive data
+                'secret_key' => $request->secret_key,
             ]
         );
 
