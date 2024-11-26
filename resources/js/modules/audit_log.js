@@ -73,6 +73,8 @@ $(document).ready(function() {
                                 });
                                 html += '</ul>';
                             }
+                        } else {
+                            console.log(data)
                         }
                         return html;
                     }

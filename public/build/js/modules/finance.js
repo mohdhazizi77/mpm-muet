@@ -486,7 +486,7 @@ $(document).ready(function() {
             // const exam_type     = $('#exam_type').val();
             const exam_type     = 'mod';
             const payment_for   = $('#payment_for_mod').val();
-            const status   = $('#status_muet').val();
+            const status   = $('#status_mod').val();
 
             const url = `./mod/pdf?textSearch=${encodeURIComponent(textSearch)}
             &startDate=${encodeURIComponent(startDate)}
