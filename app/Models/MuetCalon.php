@@ -146,7 +146,7 @@ class MuetCalon extends Model
         // }
 
         if ((int)$tahun <= 2020) {
-            $band = $id;
+            $band = (int)$id;
         } else {
             $band = number_format((float)$id, 1);
         }
