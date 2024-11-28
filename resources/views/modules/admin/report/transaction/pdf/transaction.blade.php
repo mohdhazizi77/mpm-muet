@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>Rekod Transaksi Sistem</title>
     <style>
         body, table {
             font-size: 11pt;
@@ -14,7 +14,7 @@
 <body>
     <div>
         <div style="text-align: center;padding-bottom: 10px">
-            <label for="" style="font-size: 15pt;font-weight: bolder">Transaction List</label>
+            <label for="" style="font-size: 15pt;font-weight: bolder">Rekod Transaksi Sistem</label>
         </div>
         <table width="100%" style="border-collapse: collapse">
             <thead>
