@@ -283,7 +283,7 @@ class FinanceController extends Controller
                     ->latest()
                     ->get();
 
-        // dd($request->toArray(), $payments);
+        dd($request->toArray(), $payments);
 
 
         if($request->exam_type == 'mod'){
