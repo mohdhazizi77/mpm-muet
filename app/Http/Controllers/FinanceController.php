@@ -294,7 +294,7 @@ class FinanceController extends Controller
                 $payments->where('status', 'like', "%{$request->status}%");
             }
 
-            return $payments->latest()->get();
+            $payments =  $payments->latest()->get();
 
         } catch (\Exception $e) {
             \Log::error('Payment query error: ' . $e->getMessage());
