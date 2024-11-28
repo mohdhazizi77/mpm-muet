@@ -338,6 +338,13 @@ class AdminController extends Controller
 
     public function pullDatabase(Request $request)
     {
+
+        //pagination datatable with start and length
+        $start = $request->input('start');
+        $length = $request->input('length');
+        $search = $request->input('search.value');
+
+
         $data = [];
         // $table = 'muet_resultn_devsijil';
         $table = 'muet_resultn';
@@ -354,7 +361,12 @@ class AdminController extends Controller
                 $monthName = date('F', mktime(0, 0, 0, $request->session, 1));
                 $results = $results->where('namasesi', 'like', '%' . $monthName . '%');
             }
-            $results = $results->get();
+            $results2 = $results->get();
+
+            //show results by pagination start and length
+            $results = $results2->slice($start, $length);
+            // dd($results);
+
 
             // $results = DB::connection('pull-muet')->table($table)->get();
             foreach ($results as $row) {
@@ -407,7 +419,16 @@ class AdminController extends Controller
                 }
             }
         }
-        return datatables($data)->toJson();
+
+        //datatable json
+        return response()->json([
+            "draw" => $request->input('draw'),
+            "recordsTotal" => count($results2),
+            "recordsFiltered" => count($results2),
+            "data" => $data
+        ]);
+
+        // return datatables($data)->toJson();
     }
     public function pullDatabaseImport(Request $request)
     {
