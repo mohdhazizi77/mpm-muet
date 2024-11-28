@@ -253,7 +253,6 @@ class FinanceController extends Controller
     }
 
     public function generatePdf(Request $request){
-        dd($request->toArray());
         $payments = Payment::when($request->filled('exam_type_select'), function ($query) use ($request) {
                         return $query->where('type', $request->input('exam_type_select'));
                     }, function ($query) use ($request){
@@ -283,6 +282,9 @@ class FinanceController extends Controller
                     ->when($request->filled('status'), fn($query) => $query->where('status', 'like', "%{$request->input('status')}%"))
                     ->latest()
                     ->get();
+                    
+        dd($request->toArray(), $payments);
+
 
         if($request->exam_type == 'mod'){
             $pdf = Pdf::loadView('modules.admin.report.financial.mod.pdf', ['payments' => $payments]);
