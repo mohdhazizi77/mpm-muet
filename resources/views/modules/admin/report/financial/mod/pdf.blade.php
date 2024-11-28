@@ -4,12 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Senarai Transaksi Mod</title>
+    <title>Senarai Kewangan Mod</title>
 </head>
 <body>
     <div>
         <div style="text-align: center;padding-bottom: 10px">
-            <label for="" style="font-size: 18pt;font-weight: bolder">Senarai Transaksi Mod</label>
+            <label for="" style="font-size: 18pt;font-weight: bolder">Senarai Kewangan Mod</label>
         </div>
         <table width="100%" style="border-collapse: collapse">
             <thead>
@@ -31,7 +31,7 @@
                                 <td style="border: 1px solid black; padding: 5px">{{ $loop->iteration }}</td>
                                 <td style="border: 1px solid black; padding: 5px">{{ $payment->txn_id  ?? 'No Record' }}</td>
                                 <td style="border: 1px solid black; padding: 5px">{{ $payment->receipt_number  ?? 'No Record' }}</td>
-                                <td style="border: 1px solid black; padding: 5px">{{ date('d/m/Y' , strtotime($payment->payment_date)) }}</td>
+                                <td style="border: 1px solid black; padding: 5px">{{ $payment->payment_date ? date('d/m/Y', strtotime($payment->payment_date)) : 'No Record' }}</td>
                                 <td style="border: 1px solid black; padding: 5px">{{ $payment->order?->candidate?->name  ?? 'No Record' }}</td>
                                 <td style="border: 1px solid black; padding: 5px">{{ $payment->amount  ?? 'No Record' }}</td>
                                 <td style="border: 1px solid black; padding: 5px">{{ $payment->status  ?? 'No Record' }}</td>
