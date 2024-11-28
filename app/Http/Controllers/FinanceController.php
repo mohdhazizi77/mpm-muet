@@ -252,65 +252,112 @@ class FinanceController extends Controller
         ];
     }
 
-    public function generatePdf(Request $request){
+    // public function generatePdf(Request $request){
+    //     $payments = Payment::when($request->filled('exam_type_select'), function ($query) use ($request) {
+    //                     return $query->where('type', $request->input('exam_type_select'));
+    //                 }, function ($query) use ($request){
+    //                     return $query->where('type', strtoupper($request->exam_type));
+    //                 })
+    //                 ->when($request->filled('payment_for'), function ($query) use ($request) {
+    //                     return $query->where('payment_for', 'like', "%{$request->input('payment_for')}%");
+    //                 })
+    //                 ->when($request->filled('startDate') || $request->filled('endDate'), function ($query) use ($request) {
+    //                     $currentDate = Carbon::now()->format('Y-m-d H:i:s');
+
+    //                     $startDate = Carbon::parse($request->startDate)->startOfDay()->format('Y-m-d H:i:s');
+    //                     $endDate = $request->has('endDate') && !empty($request->endDate)
+    //                                 ? Carbon::parse($request->endDate)->endOfDay()->format('Y-m-d H:i:s')
+    //                                 : $currentDate;
+
+    //                     // Filter based on the date range
+    //                     $query->whereBetween('payment_date', [$startDate, $endDate]);
+    //                 })
+    //                 ->when($request->filled('textSearch'), function ($query) use ($request) {
+    //                     $textSearch = $request->textSearch;
+    //                     $request->where(function ($query) use ($textSearch) {
+    //                         $query->where('txn_id', 'LIKE', '%' . $textSearch . '%')
+    //                             ->orWhere('ref_no', 'LIKE', '%' . $textSearch . '%');
+    //                     });
+    //                 })
+    //                 ->when($request->filled('status'), fn($query) => $query->where('status', 'like', "%{$request->input('status')}%"))
+    //                 ->latest()
+    //                 ->get();
+
+    //     dd($request->toArray(), $payments);
+
+
+    //     if($request->exam_type == 'mod'){
+    //         $pdf = Pdf::loadView('modules.admin.report.financial.mod.pdf', ['payments' => $payments]);
+
+    //     }else{
+    //         $pdf = Pdf::loadView('modules.admin.report.financial.muet.pdf', ['payments' => $payments]);
+    //     }
+
+    //     return $pdf->download('List_finance_' . $request->exam_type . '.pdf');
+    // }
+
+    public function generatePdf(Request $request)
+{
+    try {
         $payments = Payment::query();
 
-        try {
-            // Exam type filter
-            if ($request->filled('exam_type_select')) {
-                $payments->where('type', $request->exam_type_select);
-            } elseif ($request->exam_type) {
-                $payments->where('type', strtoupper($request->exam_type));
-            }
-
-            // Payment for filter
-            if ($request->filled('payment_for')) {
-                $payments->where('payment_for', 'like', "%{$request->payment_for}%");
-            }
-
-            // Date range filter
-            if ($request->filled('startDate') || $request->filled('endDate')) {
-                $startDate = $request->filled('startDate')
-                    ? Carbon::parse($request->startDate)->startOfDay()
-                    : Carbon::now()->startOfDay();
-
-                $endDate = $request->filled('endDate')
-                    ? Carbon::parse($request->endDate)->endOfDay()
-                    : Carbon::now()->endOfDay();
-
-                $payments->whereBetween('payment_date', [$startDate, $endDate]);
-            }
-
-            // Text search filter
-            if ($request->filled('textSearch')) {
-                $payments->where(function($query) use ($request) {
-                    $query->where('txn_id', 'like', "%{$request->textSearch}%")
-                        ->orWhere('ref_no', 'like', "%{$request->textSearch}%");
-                });
-            }
-
-            // Status filter
-            if ($request->filled('status')) {
-                $payments->where('status', 'like', "%{$request->status}%");
-            }
-
-            $payments =  $payments->latest()->get();
-
-        } catch (\Exception $e) {
-            \Log::error('Payment query error: ' . $e->getMessage());
-            return collect([]);
+        // Exam type filter
+        if ($request->filled('exam_type_select')) {
+            $payments->where('type', $request->exam_type_select);
+        } elseif ($request->exam_type) {
+            $payments->where('type', strtoupper($request->exam_type));
         }
 
-
-        if($request->exam_type == 'mod'){
-            $pdf = Pdf::loadView('modules.admin.report.financial.mod.pdf', ['payments' => $payments]);
-
-        }else{
-            $pdf = Pdf::loadView('modules.admin.report.financial.muet.pdf', ['payments' => $payments]);
+        // Payment for filter
+        if ($request->filled('payment_for')) {
+            $payments->where('payment_for', 'like', "%{$request->payment_for}%");
         }
+
+        // Date range filter
+        if ($request->filled('startDate') || $request->filled('endDate')) {
+            $startDate = Carbon::parse($request->startDate)->startOfDay();
+            $endDate = $request->filled('endDate') ?
+                Carbon::parse($request->endDate)->endOfDay() :
+                Carbon::now()->endOfDay();
+
+            $payments->whereBetween('payment_date', [$startDate, $endDate]);
+        }
+
+        // Text search
+        if ($request->filled('textSearch')) {
+            $payments->where(function($query) use ($request) {
+                $query->where('txn_id', 'like', "%{$request->textSearch}%")
+                      ->orWhere('ref_no', 'like', "%{$request->textSearch}%");
+            });
+        }
+
+        // Status filter
+        if ($request->filled('status')) {
+            $payments->where('status', 'like', "%{$request->status}%");
+        }
+
+        $results = $payments->latest()->get();
+
+        $view = $request->exam_type == 'mod' ?
+            'modules.admin.report.financial.mod.pdf' :
+            'modules.admin.report.financial.muet.pdf';
+
+        $pdf = PDF::loadView($view, ['payments' => $results])
+            ->setPaper('a4', 'landscape')
+            ->setOptions([
+                'isHtml5ParserEnabled' => true,
+                'isRemoteEnabled' => true,
+                'defaultFont' => 'sans-serif',
+                'chroot' => public_path('fonts')
+            ]);
 
         return $pdf->download('List_finance_' . $request->exam_type . '.pdf');
+
+    } catch (\Exception $e) {
+        \Log::error('PDF generation error: ' . $e->getMessage());
+        return response()->json(['error' => 'Failed to generate PDF'], 500);
     }
+}
 
     public function generateExcel(Request $request){
 
