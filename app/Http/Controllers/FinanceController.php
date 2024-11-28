@@ -281,7 +281,7 @@ class FinanceController extends Controller
                     })
                     ->when($request->filled('status'), fn($query) => $query->where('status', 'like', "%{$request->input('status')}%"))
                     ->latest()
-                    ->limit(100)
+                    ->limit(1000)
                     ->get();
 
         // dd($request->toArray(), $payments);
