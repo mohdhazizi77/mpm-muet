@@ -253,6 +253,7 @@ class FinanceController extends Controller
     }
 
     public function generatePdf(Request $request){
+        dd($request->toArray());
         $payments = Payment::when($request->filled('exam_type_select'), function ($query) use ($request) {
                         return $query->where('type', $request->input('exam_type_select'));
                     }, function ($query) use ($request){
