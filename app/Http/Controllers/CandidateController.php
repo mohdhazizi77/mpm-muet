@@ -1425,7 +1425,7 @@ class CandidateController extends Controller
         $candidate->save();
 
         // Update MUET Calon table
-        $muetCalon = MuetCalon::where('kp', $candidate->identity_card_number)->first();
+        $muetCalon = MuetCalon::where('kp', $old_nric)->first();
         if ($muetCalon) {
             $muetCalon->nama = $candidate->name;
             $muetCalon->kp = $candidate->identity_card_number;
@@ -1435,11 +1435,18 @@ class CandidateController extends Controller
         }
 
         // Update remaining MUET Calon table
-        MuetCalon::where('kp', $candidate->identity_card_number)
-        ->update([
-            'nama'  => $candidate->name,
-            'kp'    => $candidate->identity_card_number
-        ]);
+        MuetCalon::where('kp', $old_nric)
+            ->update([
+                'nama'  => $candidate->name,
+                'kp'    => $candidate->identity_card_number
+            ]);
+
+        // Update remaining MOD Calon table
+        ModCalon::where('kp', $old_nric)
+            ->update([
+                'nama'  => $candidate->name,
+                'kp'    => $candidate->identity_card_number
+            ]);
 
 
         // Update MUET Skor table
