@@ -282,8 +282,8 @@ class FinanceController extends Controller
                     ->when($request->filled('status'), fn($query) => $query->where('status', 'like', "%{$request->input('status')}%"))
                     ->latest()
                     ->get();
-                    
-        dd($request->toArray(), $payments);
+
+        // dd($request->toArray(), $payments);
 
 
         if($request->exam_type == 'mod'){
@@ -293,7 +293,7 @@ class FinanceController extends Controller
             $pdf = Pdf::loadView('modules.admin.report.financial.muet.pdf', ['payments' => $payments]);
         }
 
-        return $pdf->stream('List_finance_' . $request->exam_type . '.pdf');
+        return $pdf->download('List_finance_' . $request->exam_type . '.pdf');
     }
 
     public function generateExcel(Request $request){
