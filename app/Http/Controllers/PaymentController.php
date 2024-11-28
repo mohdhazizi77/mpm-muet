@@ -231,13 +231,6 @@ class PaymentController extends Controller
 
         $order->save();
 
-        try {
-            Notification::route('mail', $order->email)
-                ->notify(new OrderConfirmedNotificationSelfPrint($order));
-        } catch (\Exception $e) {
-            \Log::error('Error sending email notification: ' . $e->getMessage());
-        }
-        
         // Store the order ID in the session
         Session::put('payment_ref_no', $order->payment_ref_no);
 
