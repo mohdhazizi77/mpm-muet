@@ -344,7 +344,8 @@ class FinanceController extends Controller
         $tempData = [];
         $payments->latest()->chunk(100, function($records) use (&$tempData) {
             foreach ($records as $record) {
-                $tempData[] = $record->toArray();
+                // $tempData[] = $record->toArray();
+                $tempData[] = $record->get();
             }
         });
 
