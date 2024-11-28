@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Exports\TransactionExport;
 use App\Notifications\OrderReceivedNotification;
 use App\Notifications\OrderConfirmedNotification;
+use App\Notifications\OrderConfirmedNotificationSelfPrint;
 
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Session;
@@ -360,6 +361,14 @@ class PaymentController extends Controller
                     );
 
                     $order->current_status = 'NEW';
+
+                    try {
+                        Notification::route('mail', $order->email)
+                            ->notify(new OrderConfirmedNotification($order));
+                    } catch (\Exception $e) {
+                        \Log::error('Error sending email notification: ' . $e->getMessage());
+                    }
+
                 } elseif ($order->payment_for == 'SELF_PRINT') {
 
 
@@ -370,13 +379,13 @@ class PaymentController extends Controller
 
                     $order->current_status = 'PAID';
                     $order->completed_at = Carbon::now();
-                }
 
-                try {
-                    Notification::route('mail', $order->email)
-                        ->notify(new OrderConfirmedNotification($order));
-                } catch (\Exception $e) {
-                    \Log::error('Error sending email notification: ' . $e->getMessage());
+                    try {
+                        Notification::route('mail', $order->email)
+                            ->notify(new OrderConfirmedNotificationSelfPrint($order));
+                    } catch (\Exception $e) {
+                        \Log::error('Error sending email notification: ' . $e->getMessage());
+                    }
                 }
 
             } catch (\Illuminate\Database\QueryException $e) {
