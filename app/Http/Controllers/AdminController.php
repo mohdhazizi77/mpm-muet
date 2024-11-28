@@ -418,15 +418,21 @@ class AdminController extends Controller
                     ];
                 }
             }
+            return response()->json([
+                "draw" => $request->input('draw'),
+                "recordsTotal" => count($results2),
+                "recordsFiltered" => count($results2),
+                "data" => $data
+            ]);
         }
 
-        //datatable json
         return response()->json([
             "draw" => $request->input('draw'),
-            "recordsTotal" => count($results2),
-            "recordsFiltered" => count($results2),
-            "data" => $data
+            "recordsTotal" => 0,
+            "recordsFiltered" => 0,
+            "data" => []
         ]);
+
 
         // return datatables($data)->toJson();
     }
