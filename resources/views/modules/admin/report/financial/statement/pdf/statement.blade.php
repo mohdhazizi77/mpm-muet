@@ -4,12 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Penyata Kewangan Bulan {{ date('m' , strtotime($payments->first()->payment_date)) }} Tahun {{ date('yyyy' , strtotime($payments->first()->payment_date)) }}</title>
+    <title>Penyata Kewangan Bulan {{ date('m' , strtotime($payments->first()->payment_date)) }} Tahun {{ date('Y' , strtotime($payments->first()->payment_date)) }}</title>
 </head>
 <body>
     <div>
         <div style="text-align: center;padding-bottom: 10px">
-            <label for="" style="font-size: 18pt;font-weight: bolder">Penyata Kewangan Bulan {{ date('m' , strtotime($payments->first()->payment_date)) }} Tahun {{ date('yyyy' , strtotime($payments->first()->payment_date)) }}</label>
+            <label for="" style="font-size: 18pt;font-weight: bolder">Penyata Kewangan Bulan {{ date('m' , strtotime($payments->first()->payment_date)) }} Tahun {{ date('Y' , strtotime($payments->first()->payment_date)) }}</label>
         </div>
         <table width="100%" style="border-collapse: collapse">
             <thead>
