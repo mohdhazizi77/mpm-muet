@@ -281,7 +281,7 @@ class FinanceController extends Controller
                     })
                     ->when($request->filled('status'), fn($query) => $query->where('status', 'like', "%{$request->input('status')}%"))
                     ->latest()
-                    ->limit(50)
+                    ->limit(100)
                     ->get();
 
         // dd($request->toArray(), $payments);
@@ -294,7 +294,7 @@ class FinanceController extends Controller
             $pdf = Pdf::loadView('modules.admin.report.financial.muet.pdf', ['payments' => $payments]);
         }
 
-        return $pdf->download('List_finance_' . $request->exam_type . '.pdf');
+        return $pdf->stream('List_finance_' . $request->exam_type . '.pdf');
     }
 
     public function generateExcel(Request $request){
