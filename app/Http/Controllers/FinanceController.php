@@ -348,6 +348,7 @@ class FinanceController extends Controller
             }
         });
 
+        dd($tempData);
         $pdf = PDF::loadView($view, ['payments' => collect($tempData)])
             ->setPaper('a4', 'landscape')
             ->setOptions([
