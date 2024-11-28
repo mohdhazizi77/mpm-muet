@@ -1405,6 +1405,8 @@ class CandidateController extends Controller
             "nric" => $candidate->identity_card_number,
         ];
 
+        $old_nric = $candidate->identity_card_number;
+
         // New data
         $new = [
             "name" => $request->name,
@@ -1431,6 +1433,14 @@ class CandidateController extends Controller
             $muetCalon->band = $request->band_achieved;
             $muetCalon->save();
         }
+
+        // Update remaining MUET Calon table
+        MuetCalon::where('kp', $candidate->identity_card_number)
+        ->update([
+            'nama'  => $candidate->name,
+            'kp'    => $candidate->identity_card_number
+        ]);
+
 
         // Update MUET Skor table
         if ($muetCalon) {
