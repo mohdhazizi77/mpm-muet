@@ -1523,6 +1523,8 @@ class CandidateController extends Controller
             "nric" => $candidate->identity_card_number,
         ];
 
+        $old_nric = $candidate->identity_card_number;
+
         // New data to be compared with old for auditing
         $new = [
             "name" => $request->name,
@@ -1543,7 +1545,7 @@ class CandidateController extends Controller
         $candidate->save();
 
         // Update modCalon table
-        $modCalon = modCalon::where('kp', $candidate->identity_card_number)->first();
+        $modCalon = modCalon::where('kp',$old_nric)->first();
         if ($modCalon) {
             $modCalon->nama = $candidate->name;
             $modCalon->kp = $candidate->identity_card_number;
@@ -1551,6 +1553,20 @@ class CandidateController extends Controller
             $modCalon->band = $request->band_achieved;
             $modCalon->save();
         }
+
+        // Update remaining MUET Calon table
+        MuetCalon::where('kp', $old_nric)
+            ->update([
+                'nama'  => $candidate->name,
+                'kp'    => $candidate->identity_card_number
+            ]);
+
+        // Update remaining MOD Calon table
+        ModCalon::where('kp', $old_nric)
+            ->update([
+                'nama'  => $candidate->name,
+                'kp'    => $candidate->identity_card_number
+            ]);
 
         // Update modSkor table for each skill based on kodkts
         if ($modCalon) {
