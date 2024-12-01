@@ -323,7 +323,7 @@ class PosController extends Controller
                 $data = [
                     'success' => false,
                     'message' => $preAcceptance->original['error'],
-                    'message_detail' => $preAcceptance->original['error'],
+                    'message_detail' => $preAcceptance->original,
                 ];
                 // dd($preAcceptance->data, json_decode($preAcceptance->data));
                 return response()->json($data);
