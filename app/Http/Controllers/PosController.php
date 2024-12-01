@@ -318,7 +318,6 @@ class PosController extends Controller
             if (!$preAcceptance)
                 return response()->json($data);
 
-            // dd($preAcceptance);
             $successPreAccept = isset($preAcceptance->TransactionID) ? true : false;
 
             if(!$successPreAccept){ //bad request
@@ -499,9 +498,9 @@ class PosController extends Controller
                 } else {
                     $dataR = json_decode($preAcceptance->getContent(), true); // Pass true to get an associative array
                     // Access the specific error message
-                    $data['error'] = $dataR['error'] ?? null;
+                    $data[$order->tracking_number]['error'] = $dataR['error'] ?? null;
 
-                    return response()->json($data);
+                    // return response()->json($data);
                 }
 
             }
