@@ -415,7 +415,12 @@ $(document).ready(function () {
                         } else {
                             console.log(response);
                             // Swal.fire("Error!", "Failed to update data.", "error");
-                            Swal.fire("Error!", response.message, "error");
+                            Swal.fire(
+                                "Error!",
+                                response.message.replace(/\n/g, '<br>'),
+                                // response.message,
+                                "error"
+                            );
 
                         }
                     },
