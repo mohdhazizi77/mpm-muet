@@ -307,7 +307,8 @@ class CandidateController extends Controller
         $result = $candidate->getResult($candidate);
 
         $cert = '';
-        $user = Auth::user();
+        $user = $candidate;
+        // $user = Auth::user();
         if ($result['year'] >= 2021) {
             $scheme = [
                 "listening" => 90,
@@ -335,19 +336,32 @@ class CandidateController extends Controller
         }
 
         // Log result view activity
-        CandidateActivityLog::create([
-            'candidate_id' => Auth::guard('candidate')->id(),
-            'activity_type' => 'view_result',
-            'type'          => $type
-        ]);
+        if (Auth::guard('candidate')->user()) {
+            CandidateActivityLog::create([
+                'candidate_id' => Auth::guard('candidate')->user()->id,
+                'activity_type' => 'view_result',
+                'type' => $type
+            ]);
+        }
 
-        AuditLog::create([
-            // 'user_id' => Auth::guard('candidate')->id(),
-            'candidate_id' => Auth::guard('candidate')->id(),
-            'activity' => 'View Result Index Number :' . $candidate->angka_giliran,
-            'summary' => serialize(['View Result', $candidate, $result]),
-            'device' => AuditLog::getDeviceDetail(),
-        ]);
+        if (Auth::guard('candidate')->user()) {
+            AuditLog::create([
+                // 'user_id' => Auth::guard('candidate')->id(),
+                'candidate_id' => Auth::guard('candidate')->id(),
+                'activity' => 'View Result Index Number :' . $candidate->angka_giliran,
+                'summary' => serialize(['View Result', $candidate, $result]),
+                'device' => AuditLog::getDeviceDetail(),
+            ]);
+        } else {
+            AuditLog::create([
+                'user_id' => Auth::User()->id,
+                // 'candidate_id' => Auth::guard('candidate')->id(),
+                'activity' => 'View Result Index Number :' . $candidate->angka_giliran,
+                'summary' => serialize(['View Result', $candidate, $result]),
+                'device' => AuditLog::getDeviceDetail(),
+            ]);
+        }
+
 
         return view('modules.candidates.print-pdf', compact(['user', 'scheme', 'result', 'cryptId']));
     }
@@ -1005,12 +1019,14 @@ class CandidateController extends Controller
 
         $candidateId = Auth::guard('candidate')->id();
 
-        // Log the download activity
-        CandidateActivityLog::create([
-            'candidate_id' => $candidateId,
-            'activity_type' => 'download_result',
-            'type' => $type
-        ]);
+        if ($candidateId) {
+            // Log the download activity
+            CandidateActivityLog::create([
+                'candidate_id' => $candidateId,
+                'activity_type' => 'download_result',
+                'type' => $type
+            ]);
+        }
 
         return response()->json(['status' => 'success']);
     }
@@ -1052,147 +1068,146 @@ class CandidateController extends Controller
         return datatables($data)->toJson();
     }
 
-    // public function ajaxCandidate(Request $request)
-    // {
-
-    //     // dd($request->toArray(), $request->search);
-    //     // Check if a search term was provided and is not empty
-    //     if (!$request->filled('search')) {
-    //         // dd("hello");
-    //         // Return empty DataTables response if search is empty or null
-    //         return DataTables::of([])->toJson();
-    //     }
-    //     // dd($request->search);
-    //     // Fetch records from the Candidate model with server-side processing
-    //     $candidates = Candidate::query();
-
-    //     // Check if a search term was provided and perform search
-    //     if ($request->filled('search')) {
-    //         $searchTerm = $request->input('search');
-    //         $candidates->where('name', 'like', '%' . $searchTerm . '%')
-    //                 ->orWhere('identity_card_number', 'like', '%' . $searchTerm . '%');
-    //     }
-
-    //     // Return the DataTable response
-    //     return DataTables::of($candidates)
-    //         ->addColumn('name', function ($candidate) {
-    //             return $candidate->name;
-    //         })
-    //         ->addColumn('nric', function ($candidate) {
-    //             return $candidate->identity_card_number; // Assuming 'nric' is a column in your database
-    //         })
-    //         ->addColumn('action', function ($candidate) {
-    //             return '<button type="button" class="btn btn-sm btn-info" id="show_edit_modal" data-id="' . $candidate->id . '">Action</button>';
-    //         })
-    //         ->toJson();
-    // }
-
     public function ajaxCandidate(Request $request)
     {
         // Check if a search term was provided and is not empty
         if (!$request->filled('search')) {
+            // Return empty DataTables response if search is empty or null
             return DataTables::of([])->toJson();
         }
+        // Fetch records from the Candidate model with server-side processing
+        $candidates = Candidate::query();
 
-        // Fetch records from the Candidate model with joins to muet_calon and muet_skor
-        $candidates = Candidate::query()
-            ->join('muet_calon', function ($join) {
-                $join->on('candidates.name', '=', 'muet_calon.nama')
-                    ->on('candidates.identity_card_number', '=', 'muet_calon.kp');
-            })
-            ->join('muet_skor', function ($join) {
-                $join->on('muet_calon.tahun', '=', 'muet_skor.tahun')
-                    ->on('muet_calon.sidang', '=', 'muet_skor.sidang')
-                    ->on('muet_calon.jcalon', '=', 'muet_skor.jcalon')
-                    ->on('muet_calon.nocalon', '=', 'muet_skor.nocalon')
-                    ->on('muet_calon.kodnegeri', '=', 'muet_skor.kodnegeri')
-                    ->on('muet_calon.kodpusat', '=', 'muet_skor.kodpusat');
-            })
-            ->select(
-                'candidates.id',
-                'candidates.name',
-                'candidates.identity_card_number',
-                'muet_calon.angka_giliran',
-                'muet_calon.sidang',
-                'muet_calon.tahun',
-                'muet_skor.kodkts',
-                'muet_skor.mkhbaru',
-                'muet_calon.skor_agregat',
-                'muet_calon.band'
-            );
-
-        // Apply search filtering if needed
+        // Check if a search term was provided and perform search
         if ($request->filled('search')) {
             $searchTerm = $request->input('search');
-            $candidates->where(function ($query) use ($searchTerm) {
-                $query->where('candidates.name', 'like', '%' . $searchTerm . '%')
-                    ->orWhere('candidates.identity_card_number', 'like', '%' . $searchTerm . '%')
-                    ->orWhere('muet_calon.nama', 'like', '%' . $searchTerm . '%')
-                    ->orWhere('muet_calon.kp', 'like', '%' . $searchTerm . '%');
-            });
+            $candidates->where('name', 'like', '%' . $searchTerm . '%')
+                    ->orWhere('identity_card_number', 'like', '%' . $searchTerm . '%');
         }
 
-        // Fetch and group candidates by id
-        $candidates = $candidates->get()->groupBy('id')->map(function ($rows) {
-            $firstRow = $rows->first();
-
-            // Group kodkts and mkhbaru into associative arrays
-            $kodkts = [];
-            $mkhbaru = [];
-
-            foreach ($rows as $row) {
-                $kodkts[] = $row->kodkts;
-                $mkhbaru[] = $row->mkhbaru;
-            }
-
-            // Ensure the arrays are correctly aligned
-            return [
-                'id' => $firstRow->id,
-                'name' => $firstRow->name,
-                'nric' => $firstRow->identity_card_number,
-                'angka_giliran' => $firstRow->angka_giliran,
-                'sidang' => $firstRow->sidang,
-                'tahun' => $firstRow->tahun,
-                'kodkts' => $kodkts,
-                'mkhbaru' => $mkhbaru,
-                'skor_agregat' => $firstRow->skor_agregat,
-                'band' => $firstRow->band
-            ];
-        })->values();
-
+        // Return the DataTable response
         return DataTables::of($candidates)
             ->addColumn('name', function ($candidate) {
-                return $candidate['name'];
+                return $candidate->name;
             })
             ->addColumn('nric', function ($candidate) {
-                return $candidate['nric'];
-            })
-            ->addColumn('angka_giliran', function ($candidate) {
-                return $candidate['angka_giliran'];
-            })
-            ->addColumn('sidang', function ($candidate) {
-                return $candidate['sidang'];
-            })
-            ->addColumn('tahun', function ($candidate) {
-                return $candidate['tahun'];
-            })
-            ->addColumn('kodkts', function ($candidate) {
-                return implode(', ', $candidate['kodkts']);
-            })
-            ->addColumn('mkhbaru', function ($candidate) {
-                return implode(', ', $candidate['mkhbaru']);
-            })
-            ->addColumn('skor_agregat', function ($candidate) {
-                return $candidate['skor_agregat'];
-            })
-            ->addColumn('band', function ($candidate) {
-                return $candidate['band'];
+                return $candidate->identity_card_number; // Assuming 'nric' is a column in your database
             })
             ->addColumn('action', function ($candidate) {
-                return '<button type="button" class="btn btn-sm btn-info" id="show_edit_modal" data-id="' . $candidate['id'] . '">Action</button>';
+                // return '<button type="button" class="btn btn-sm btn-info" id="show_edit_modal" data-id="' . $candidate->id . '">Action</button>';
+                $btnUpdate = '<button type="button" class="btn btn-sm btn-info" id="show_edit_modal" data-id="' . $candidate->id . '">Action</button>';
+                $btnView = '<a href="' . route('admin.candidate.listCert', $candidate->id) . '" class="btn btn-sm btn-info" id="view_cert" data-id="' . $candidate->id . '">View Cert</a>';
+                return $btnUpdate . ' ' . $btnView;
             })
             ->toJson();
     }
+
+    // public function ajaxCandidate(Request $request)
+    // {
+    //     // Check if a search term was provided and is not empty
+    //     if (!$request->filled('search')) {
+    //         return DataTables::of([])->toJson();
+    //     }
+
+    //     // Fetch records from the Candidate model with joins to muet_calon and muet_skor
+    //     $candidates = Candidate::query()
+    //         ->join('muet_calon', function ($join) {
+    //             $join->on('candidates.name', '=', 'muet_calon.nama')
+    //                 ->on('candidates.identity_card_number', '=', 'muet_calon.kp');
+    //         })
+    //         ->join('muet_skor', function ($join) {
+    //             $join->on('muet_calon.tahun', '=', 'muet_skor.tahun')
+    //                 ->on('muet_calon.sidang', '=', 'muet_skor.sidang')
+    //                 ->on('muet_calon.jcalon', '=', 'muet_skor.jcalon')
+    //                 ->on('muet_calon.nocalon', '=', 'muet_skor.nocalon')
+    //                 ->on('muet_calon.kodnegeri', '=', 'muet_skor.kodnegeri')
+    //                 ->on('muet_calon.kodpusat', '=', 'muet_skor.kodpusat');
+    //         })
+    //         ->select(
+    //             'candidates.id',
+    //             'candidates.name',
+    //             'candidates.identity_card_number',
+    //             'muet_calon.angka_giliran',
+    //             'muet_calon.sidang',
+    //             'muet_calon.tahun',
+    //             'muet_skor.kodkts',
+    //             'muet_skor.mkhbaru',
+    //             'muet_calon.skor_agregat',
+    //             'muet_calon.band'
+    //         );
+
+    //     // Apply search filtering if needed
+    //     if ($request->filled('search')) {
+    //         $searchTerm = $request->input('search');
+    //         $candidates->where(function ($query) use ($searchTerm) {
+    //             $query->where('candidates.name', 'like', '%' . $searchTerm . '%')
+    //                 ->orWhere('candidates.identity_card_number', 'like', '%' . $searchTerm . '%')
+    //                 ->orWhere('muet_calon.nama', 'like', '%' . $searchTerm . '%')
+    //                 ->orWhere('muet_calon.kp', 'like', '%' . $searchTerm . '%');
+    //         });
+    //     }
+
+    //     // Fetch and group candidates by id
+    //     $candidates = $candidates->get()->groupBy('id')->map(function ($rows) {
+    //         $firstRow = $rows->first();
+
+    //         // Group kodkts and mkhbaru into associative arrays
+    //         $kodkts = [];
+    //         $mkhbaru = [];
+
+    //         foreach ($rows as $row) {
+    //             $kodkts[] = $row->kodkts;
+    //             $mkhbaru[] = $row->mkhbaru;
+    //         }
+
+    //         // Ensure the arrays are correctly aligned
+    //         return [
+    //             'id' => $firstRow->id,
+    //             'name' => $firstRow->name,
+    //             'nric' => $firstRow->identity_card_number,
+    //             'angka_giliran' => $firstRow->angka_giliran,
+    //             'sidang' => $firstRow->sidang,
+    //             'tahun' => $firstRow->tahun,
+    //             'kodkts' => $kodkts,
+    //             'mkhbaru' => $mkhbaru,
+    //             'skor_agregat' => $firstRow->skor_agregat,
+    //             'band' => $firstRow->band
+    //         ];
+    //     })->values();
+
+    //     return DataTables::of($candidates)
+    //         ->addColumn('name', function ($candidate) {
+    //             return $candidate['name'];
+    //         })
+    //         ->addColumn('nric', function ($candidate) {
+    //             return $candidate['nric'];
+    //         })
+    //         ->addColumn('angka_giliran', function ($candidate) {
+    //             return $candidate['angka_giliran'];
+    //         })
+    //         ->addColumn('sidang', function ($candidate) {
+    //             return $candidate['sidang'];
+    //         })
+    //         ->addColumn('tahun', function ($candidate) {
+    //             return $candidate['tahun'];
+    //         })
+    //         ->addColumn('kodkts', function ($candidate) {
+    //             return implode(', ', $candidate['kodkts']);
+    //         })
+    //         ->addColumn('mkhbaru', function ($candidate) {
+    //             return implode(', ', $candidate['mkhbaru']);
+    //         })
+    //         ->addColumn('skor_agregat', function ($candidate) {
+    //             return $candidate['skor_agregat'];
+    //         })
+    //         ->addColumn('band', function ($candidate) {
+    //             return $candidate['band'];
+    //         })
+    //         ->addColumn('action', function ($candidate) {
+    //             return '<button type="button" class="btn btn-sm btn-info" id="show_edit_modal" data-id="' . $candidate['id'] . '">Action</button>';
+    //         })
+    //         ->toJson();
+    // }
 
     public function ajaxModCandidate(Request $request)
     {
@@ -1302,86 +1317,94 @@ class CandidateController extends Controller
             ->toJson();
     }
 
-    // public function updateCandidate(Request $request, Candidate $candidate)
-    // {
-
-    //     // Validate the file
-    //     $validator = Validator::make($request->all(), [
-    //         'name' => 'required',
-    //         'nric' => 'required',
-    //     ]);
-
-    //     if ($validator->fails()) {
-    //         // Convert the error messages to a string
-    //         $errorMessages = implode(', ', $validator->messages()->all());
-    //         $data = [
-    //             'success' => false,
-    //             'message' => $errorMessages,
-    //         ];
-    //         return response()->json($data);
-    //     }
-
-    //     // Old data
-    //     $old = [
-    //         "name" => $candidate->name,
-    //         "nric" => $candidate->identity_card_number,
-    //     ];
-
-    //     // New data
-    //     $new = [
-    //         "name" => $request->name,
-    //         "nric" => $request->nric,
-    //     ];
-
-    //     //sanitize value
-    //     $candidate->name = $request->name;
-    //     $candidate->identity_card_number = $request->nric;
-
-    //     $candidate->save();
-
-    //     //Find MuetCalon
-    //     $muetCalon = MuetCalon::where('kp', $candidate->identity_card_number)->get();
-    //     if ($muetCalon->isNotEmpty()) {
-    //         foreach ($muetCalon as $key => $value) {
-    //             $value->nama = $candidate->name;
-    //             $value->kp = $candidate->identity_card_number;
-    //             $value->save();
-    //         }
-    //     }
-
-    //     //Find ModCalon
-    //     $modCalon = ModCalon::where('kp', $candidate->identity_card_number)->get();
-    //     if ($modCalon->isNotEmpty()) {  // Check if the collection is not empty
-    //         foreach ($modCalon as $key => $value) {
-    //             $value->nama = $candidate->name;
-    //             $value->kp = $candidate->identity_card_number;
-    //             $value->save();
-    //         }
-    //     }
-
-    //     // Compare old and new data, and unset identical values
-    //     foreach ($old as $key => $value) {
-    //         if ($old[$key] === $new[$key]) {
-    //             unset($old[$key]);
-    //             unset($new[$key]);
-    //         }
-    //     }
-
-    //     AuditLogService::log($candidate, 'Update candidate', $old, $new);
-
-    //     $data = [
-    //         'success' => true,
-    //         'message' => 'Candidate updated successfully',
-    //     ];
-    //     return response()->json($data);
-    // }
-
     public function updateCandidate(Request $request, Candidate $candidate)
     {
-        // Validate the required fields
+
+        // Validate the file
         $validator = Validator::make($request->all(), [
             'name' => 'required',
             'nric' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            // Convert the error messages to a string
+            $errorMessages = implode(', ', $validator->messages()->all());
+            $data = [
+                'success' => false,
+                'message' => $errorMessages,
+            ];
+            return response()->json($data);
+        }
+
+        // Old data
+        $old = [
+            "name" => $candidate->name,
+            "nric" => $candidate->identity_card_number,
+        ];
+
+        // New data
+        $new = [
+            "name" => $request->name,
+            "nric" => $request->nric,
+        ];
+
+        //sanitize value
+        $candidate->name = $request->name;
+        $candidate->identity_card_number = $request->nric;
+
+        $candidate->save();
+
+        //Find MuetCalon
+        $muetCalon = MuetCalon::where('kp', $candidate->identity_card_number)->get();
+        if ($muetCalon->isNotEmpty()) {
+            foreach ($muetCalon as $key => $value) {
+                $value->nama = $candidate->name;
+                $value->kp = $candidate->identity_card_number;
+                $value->save();
+            }
+        }
+
+        //Find ModCalon
+        $modCalon = ModCalon::where('kp', $candidate->identity_card_number)->get();
+        if ($modCalon->isNotEmpty()) {  // Check if the collection is not empty
+            foreach ($modCalon as $key => $value) {
+                $value->nama = $candidate->name;
+                $value->kp = $candidate->identity_card_number;
+                $value->save();
+            }
+        }
+
+        // Compare old and new data, and unset identical values
+        foreach ($old as $key => $value) {
+            if ($old[$key] === $new[$key]) {
+                unset($old[$key]);
+                unset($new[$key]);
+            }
+        }
+
+        AuditLogService::log($candidate, 'Update candidate', $old, $new);
+
+        $data = [
+            'success' => true,
+            'message' => 'Candidate updated successfully',
+        ];
+        return response()->json($data);
+    }
+
+    public function updateCert(Request $request, $id)
+    {
+        try {
+            $certID = Crypt::decrypt($id);
+        } catch (Illuminate\Contracts\Encryption\DecryptException $e) {
+        }
+
+        $value = explode('-', $certID);
+        $certID = $value[0];
+        $type = $value[1];
+        // dd($certID, $type);
+
+        // Validate the required fields
+        $validator = Validator::make($request->all(), [
             'listening_score' => 'required|numeric',
             'speaking_score' => 'required|numeric',
             'reading_score' => 'required|numeric',
@@ -1399,72 +1422,26 @@ class CandidateController extends Controller
             ]);
         }
 
-        // Old data (for audit log comparison)
-        $old = [
-            "name" => $candidate->name,
-            "nric" => $candidate->identity_card_number,
-        ];
+        if ($type == "MUET") {
+            $candidate = MuetCalon::find($certID);
+            $candidate->skor_agregat = $request->aggregated_score;
+            $candidate->band = $request->band_achieved;
+            $candidate->save();
 
-        $old_nric = $candidate->identity_card_number;
-
-        // New data
-        $new = [
-            "name" => $request->name,
-            "nric" => $request->nric,
-            "listening_score" => $request->listening_score,
-            "speaking_score" => $request->speaking_score,
-            "reading_score" => $request->reading_score,
-            "writing_score" => $request->writing_score,
-            "aggregated_score" => $request->aggregated_score,
-            "band_achieved" => $request->band_achieved,
-        ];
-
-        // Update candidate basic details
-        $candidate->name = $request->name;
-        $candidate->identity_card_number = $request->nric;
-        $candidate->save();
-
-        // Update MUET Calon table
-        $muetCalon = MuetCalon::where('kp', $old_nric)->first();
-        if ($muetCalon) {
-            $muetCalon->nama = $candidate->name;
-            $muetCalon->kp = $candidate->identity_card_number;
-            $muetCalon->skor_agregat = $request->aggregated_score;
-            $muetCalon->band = $request->band_achieved;
-            $muetCalon->save();
-        }
-
-        // Update remaining MUET Calon table
-        MuetCalon::where('kp', $old_nric)
-            ->update([
-                'nama'  => $candidate->name,
-                'kp'    => $candidate->identity_card_number
-            ]);
-
-        // Update remaining MOD Calon table
-        ModCalon::where('kp', $old_nric)
-            ->update([
-                'nama'  => $candidate->name,
-                'kp'    => $candidate->identity_card_number
-            ]);
-
-
-        // Update MUET Skor table
-        if ($muetCalon) {
             $kodktsMapping = [
-                1 => $request->listening_score,
-                2 => $request->speaking_score,
-                3 => $request->reading_score,
-                4 => $request->writing_score,
-            ];
+                            1 => $request->listening_score,
+                            2 => $request->speaking_score,
+                            3 => $request->reading_score,
+                            4 => $request->writing_score,
+                        ];
 
             foreach ($kodktsMapping as $kodkts => $score) {
-                $muetSkor = MuetSkor::where('tahun', $muetCalon->tahun)
-                    ->where('sidang', $muetCalon->sidang)
-                    ->where('jcalon', $muetCalon->jcalon)
-                    ->where('nocalon', $muetCalon->nocalon)
-                    ->where('kodnegeri', $muetCalon->kodnegeri)
-                    ->where('kodpusat', $muetCalon->kodpusat)
+                $muetSkor = MuetSkor::where('tahun', $candidate->tahun)
+                    ->where('sidang', $candidate->sidang)
+                    ->where('jcalon', $candidate->jcalon)
+                    ->where('nocalon', $candidate->nocalon)
+                    ->where('kodnegeri', $candidate->kodnegeri)
+                    ->where('kodpusat', $candidate->kodpusat)
                     ->where('kodkts', $kodkts)
                     ->first();
 
@@ -1473,103 +1450,12 @@ class CandidateController extends Controller
                     $muetSkor->save();
                 }
             }
-        }
+        } else {
+            $candidate = ModCalon::find($certID);
+            $candidate->skor_agregat = $request->aggregated_score;
+            $candidate->band = $request->band_achieved;
+            $candidate->save();
 
-        // Compare old and new data, and unset identical values
-        foreach ($old as $key => $value) {
-            if ($old[$key] === $new[$key]) {
-                unset($old[$key]);
-                unset($new[$key]);
-            }
-        }
-
-        // Log the changes in the AuditLog
-        AuditLogService::log($candidate, 'Update candidate', $old, $new);
-
-        // Return success message
-        return response()->json([
-            'success' => true,
-            'message' => 'Candidate updated successfully',
-        ]);
-    }
-
-
-    public function updateModCandidate(Request $request, Candidate $candidate)
-    {
-        // Validate the required fields
-        $validator = Validator::make($request->all(), [
-            'name' => 'required',
-            'nric' => 'required',
-            'listening_score' => 'required|numeric',
-            'speaking_score' => 'required|numeric',
-            'reading_score' => 'required|numeric',
-            'writing_score' => 'required|numeric',
-            'aggregated_score' => 'required|numeric',
-            'band_achieved' => 'required|string',
-        ]);
-
-        if ($validator->fails()) {
-            // Convert error messages to a string
-            $errorMessages = implode(', ', $validator->messages()->all());
-            return response()->json([
-                'success' => false,
-                'message' => $errorMessages,
-            ]);
-        }
-
-        // Old data (for audit log comparison)
-        $old = [
-            "name" => $candidate->name,
-            "nric" => $candidate->identity_card_number,
-        ];
-
-        $old_nric = $candidate->identity_card_number;
-
-        // New data to be compared with old for auditing
-        $new = [
-            "name" => $request->name,
-            "nric" => $request->nric,
-            "aggregated_score" => $request->aggregated_score,
-            "band_achieved" => $request->band_achieved,
-            "scores" => implode(',', [
-                $request->listening_score,
-                $request->speaking_score,
-                $request->reading_score,
-                $request->writing_score
-            ])
-        ];
-
-        // Update the candidate's basic information
-        $candidate->name = $request->name;
-        $candidate->identity_card_number = $request->nric;
-        $candidate->save();
-
-        // Update modCalon table
-        $modCalon = modCalon::where('kp',$old_nric)->first();
-        if ($modCalon) {
-            $modCalon->nama = $candidate->name;
-            $modCalon->kp = $candidate->identity_card_number;
-            $modCalon->skor_agregat = $request->aggregated_score;
-            $modCalon->band = $request->band_achieved;
-            $modCalon->save();
-        }
-
-        // Update remaining MUET Calon table
-        MuetCalon::where('kp', $old_nric)
-            ->update([
-                'nama'  => $candidate->name,
-                'kp'    => $candidate->identity_card_number
-            ]);
-
-        // Update remaining MOD Calon table
-        ModCalon::where('kp', $old_nric)
-            ->update([
-                'nama'  => $candidate->name,
-                'kp'    => $candidate->identity_card_number
-            ]);
-
-        // Update modSkor table for each skill based on kodkts
-        if ($modCalon) {
             $kodktsMapping = [
                 1 => $request->listening_score,
                 2 => $request->speaking_score,
@@ -1578,37 +1464,344 @@ class CandidateController extends Controller
             ];
 
             foreach ($kodktsMapping as $kodkts => $score) {
-                $modSkor = modSkor::where('tahun', $modCalon->tahun)
-                    ->where('sidang', $modCalon->sidang)
-                    ->where('reg_id', $modCalon->reg_id)
-                    ->where('nocalon', $modCalon->nocalon)
-                    ->where('kodnegeri', $modCalon->kodnegeri)
-                    ->where('kodpusat', $modCalon->kodpusat)
+                $muetSkor = ModSkor::where('tahun', $candidate->tahun)
+                    ->where('sidang', $candidate->sidang)
+                    ->where('reg_id', $candidate->reg_id)
+                    ->where('nocalon', $candidate->nocalon)
+                    ->where('kodnegeri', $candidate->kodnegeri)
+                    ->where('kodpusat', $candidate->kodpusat)
                     ->where('kodkts', $kodkts)
                     ->first();
 
-                if ($modSkor) {
-                    $modSkor->skorbaru = $score;
-                    $modSkor->save();
+                if ($muetSkor) {
+                    $muetSkor->skorbaru = $score;
+                    $muetSkor->save();
                 }
             }
+
         }
 
-        // Compare old and new data and unset identical values for audit logging
-        foreach ($old as $key => $value) {
-            if ($old[$key] === $new[$key]) {
-                unset($old[$key]);
-                unset($new[$key]);
-            }
-        }
-
-        // Log the changes in the AuditLog
-        AuditLogService::log($candidate, 'Update candidate', $old, $new);
 
         // Return success message
         return response()->json([
             'success' => true,
             'message' => 'Candidate updated successfully',
         ]);
+    }
+
+    // public function updateCandidate(Request $request, Candidate $candidate)
+    // {
+    //     // Validate the required fields
+    //     $validator = Validator::make($request->all(), [
+    //         'name' => 'required',
+    //         'nric' => 'required',
+    //         'listening_score' => 'required|numeric',
+    //         'speaking_score' => 'required|numeric',
+    //         'reading_score' => 'required|numeric',
+    //         'writing_score' => 'required|numeric',
+    //         'aggregated_score' => 'required|numeric',
+    //         'band_achieved' => 'required|string',
+    //     ]);
+
+    //     if ($validator->fails()) {
+    //         // Convert the error messages to a string
+    //         $errorMessages = implode(', ', $validator->messages()->all());
+    //         return response()->json([
+    //             'success' => false,
+    //             'message' => $errorMessages,
+    //         ]);
+    //     }
+
+    //     // Old data (for audit log comparison)
+    //     $old = [
+    //         "name" => $candidate->name,
+    //         "nric" => $candidate->identity_card_number,
+    //     ];
+
+    //     $old_nric = $candidate->identity_card_number;
+
+    //     // New data
+    //     $new = [
+    //         "name" => $request->name,
+    //         "nric" => $request->nric,
+    //         "listening_score" => $request->listening_score,
+    //         "speaking_score" => $request->speaking_score,
+    //         "reading_score" => $request->reading_score,
+    //         "writing_score" => $request->writing_score,
+    //         "aggregated_score" => $request->aggregated_score,
+    //         "band_achieved" => $request->band_achieved,
+    //     ];
+
+    //     // Update candidate basic details
+    //     $candidate->name = $request->name;
+    //     $candidate->identity_card_number = $request->nric;
+    //     $candidate->save();
+
+    //     // Update MUET Calon table
+    //     $muetCalon = MuetCalon::where('kp', $old_nric)->first();
+    //     if ($muetCalon) {
+    //         $muetCalon->nama = $candidate->name;
+    //         $muetCalon->kp = $candidate->identity_card_number;
+    //         $muetCalon->skor_agregat = $request->aggregated_score;
+    //         $muetCalon->band = $request->band_achieved;
+    //         $muetCalon->save();
+    //     }
+
+    //     // Update remaining MUET Calon table
+    //     MuetCalon::where('kp', $old_nric)
+    //         ->update([
+    //             'nama'  => $candidate->name,
+    //             'kp'    => $candidate->identity_card_number
+    //         ]);
+
+    //     // Update remaining MOD Calon table
+    //     ModCalon::where('kp', $old_nric)
+    //         ->update([
+    //             'nama'  => $candidate->name,
+    //             'kp'    => $candidate->identity_card_number
+    //         ]);
+
+
+    //     // Update MUET Skor table
+    //     if ($muetCalon) {
+    //         $kodktsMapping = [
+    //             1 => $request->listening_score,
+    //             2 => $request->speaking_score,
+    //             3 => $request->reading_score,
+    //             4 => $request->writing_score,
+    //         ];
+
+    //         foreach ($kodktsMapping as $kodkts => $score) {
+    //             $muetSkor = MuetSkor::where('tahun', $muetCalon->tahun)
+    //                 ->where('sidang', $muetCalon->sidang)
+    //                 ->where('jcalon', $muetCalon->jcalon)
+    //                 ->where('nocalon', $muetCalon->nocalon)
+    //                 ->where('kodnegeri', $muetCalon->kodnegeri)
+    //                 ->where('kodpusat', $muetCalon->kodpusat)
+    //                 ->where('kodkts', $kodkts)
+    //                 ->first();
+
+    //             if ($muetSkor) {
+    //                 $muetSkor->mkhbaru = $score;
+    //                 $muetSkor->save();
+    //             }
+    //         }
+    //     }
+
+    //     // Compare old and new data, and unset identical values
+    //     foreach ($old as $key => $value) {
+    //         if ($old[$key] === $new[$key]) {
+    //             unset($old[$key]);
+    //             unset($new[$key]);
+    //         }
+    //     }
+
+    //     // Log the changes in the AuditLog
+    //     AuditLogService::log($candidate, 'Update candidate', $old, $new);
+
+    //     // Return success message
+    //     return response()->json([
+    //         'success' => true,
+    //         'message' => 'Candidate updated successfully',
+    //     ]);
+    // }
+
+
+    // public function updateModCandidate(Request $request, Candidate $candidate)
+    // {
+    //     // Validate the required fields
+    //     $validator = Validator::make($request->all(), [
+    //         'name' => 'required',
+    //         'nric' => 'required',
+    //         'listening_score' => 'required|numeric',
+    //         'speaking_score' => 'required|numeric',
+    //         'reading_score' => 'required|numeric',
+    //         'writing_score' => 'required|numeric',
+    //         'aggregated_score' => 'required|numeric',
+    //         'band_achieved' => 'required|string',
+    //     ]);
+
+    //     if ($validator->fails()) {
+    //         // Convert error messages to a string
+    //         $errorMessages = implode(', ', $validator->messages()->all());
+    //         return response()->json([
+    //             'success' => false,
+    //             'message' => $errorMessages,
+    //         ]);
+    //     }
+
+    //     // Old data (for audit log comparison)
+    //     $old = [
+    //         "name" => $candidate->name,
+    //         "nric" => $candidate->identity_card_number,
+    //     ];
+
+    //     $old_nric = $candidate->identity_card_number;
+
+    //     // New data to be compared with old for auditing
+    //     $new = [
+    //         "name" => $request->name,
+    //         "nric" => $request->nric,
+    //         "aggregated_score" => $request->aggregated_score,
+    //         "band_achieved" => $request->band_achieved,
+    //         "scores" => implode(',', [
+    //             $request->listening_score,
+    //             $request->speaking_score,
+    //             $request->reading_score,
+    //             $request->writing_score
+    //         ])
+    //     ];
+
+    //     // Update the candidate's basic information
+    //     $candidate->name = $request->name;
+    //     $candidate->identity_card_number = $request->nric;
+    //     $candidate->save();
+
+    //     // Update modCalon table
+    //     $modCalon = modCalon::where('kp',$old_nric)->first();
+    //     if ($modCalon) {
+    //         $modCalon->nama = $candidate->name;
+    //         $modCalon->kp = $candidate->identity_card_number;
+    //         $modCalon->skor_agregat = $request->aggregated_score;
+    //         $modCalon->band = $request->band_achieved;
+    //         $modCalon->save();
+    //     }
+
+    //     // Update remaining MUET Calon table
+    //     MuetCalon::where('kp', $old_nric)
+    //         ->update([
+    //             'nama'  => $candidate->name,
+    //             'kp'    => $candidate->identity_card_number
+    //         ]);
+
+    //     // Update remaining MOD Calon table
+    //     ModCalon::where('kp', $old_nric)
+    //         ->update([
+    //             'nama'  => $candidate->name,
+    //             'kp'    => $candidate->identity_card_number
+    //         ]);
+
+    //     // Update modSkor table for each skill based on kodkts
+    //     if ($modCalon) {
+    //         $kodktsMapping = [
+    //             1 => $request->listening_score,
+    //             2 => $request->speaking_score,
+    //             3 => $request->reading_score,
+    //             4 => $request->writing_score,
+    //         ];
+
+    //         foreach ($kodktsMapping as $kodkts => $score) {
+    //             $modSkor = modSkor::where('tahun', $modCalon->tahun)
+    //                 ->where('sidang', $modCalon->sidang)
+    //                 ->where('reg_id', $modCalon->reg_id)
+    //                 ->where('nocalon', $modCalon->nocalon)
+    //                 ->where('kodnegeri', $modCalon->kodnegeri)
+    //                 ->where('kodpusat', $modCalon->kodpusat)
+    //                 ->where('kodkts', $kodkts)
+    //                 ->first();
+
+    //             if ($modSkor) {
+    //                 $modSkor->skorbaru = $score;
+    //                 $modSkor->save();
+    //             }
+    //         }
+    //     }
+
+    //     // Compare old and new data and unset identical values for audit logging
+    //     foreach ($old as $key => $value) {
+    //         if ($old[$key] === $new[$key]) {
+    //             unset($old[$key]);
+    //             unset($new[$key]);
+    //         }
+    //     }
+
+    //     // Log the changes in the AuditLog
+    //     AuditLogService::log($candidate, 'Update candidate', $old, $new);
+
+    //     // Return success message
+    //     return response()->json([
+    //         'success' => true,
+    //         'message' => 'Candidate updated successfully',
+    //     ]);
+    // }
+
+    public function listCert(Request $request, $candidate_id){
+        $candidate = Candidate::find($candidate_id);
+
+        if (!$candidate) {
+            dd("candidate not found");
+        }
+
+        return view(
+            'modules.admin.administration.manage-candidates.listCertificate',
+            compact([
+                'candidate',
+            ])
+        );
+    }
+
+    public function ajaxGetCert(Request $request){
+        $candidate = Candidate::find($request->candidate_id);
+
+        if (!$candidate) {
+            dd("Candidate not found");
+        }
+
+        $muets = $candidate->muetCalon;
+        $mods = $candidate->modCalon;
+
+        foreach ($muets as $key => $muet) {
+            $skor = $muet->getSkor;
+
+            $kodkts = [];
+            $mkhbaru = [];
+
+            foreach ($skor as $row) {
+                $kodkts[] = $row->kodkts;
+                $mkhbaru[] = $row->mkhbaru;
+            }
+            $cert_datas[] = [
+                "no"                => ++$key,
+                "id"                => Crypt::encrypt($muet->id . "-MUET"), // xxx-MUET or xxx-MOD
+                "type"              => 'MUET',
+                "year"              => $muet->tahun,
+                "session"           => str_replace('MUET ', '', $muet->getTarikh->sesi),
+                "angkaGiliran"      => $muet->angka_giliran,
+                "band"              => "Band " . self::formatNumber($muet->band, $muet->tahun),
+                'kodkts'            => $kodkts,
+                'mkhbaru'           => $mkhbaru,
+                'skor_agregat'      => $muet->skor_agregat,
+                'band'              => $muet->band,
+                'downloadUrl'       => route('candidate.downloadpdf', ['id' => Crypt::encrypt($muet->id . "-MUET")])
+            ];
+        }
+
+        foreach ($mods as $key => $mod) {
+            $skor = $mod->getSkor;
+            $kodkts = [];
+            $mkhbaru = [];
+
+            foreach ($skor as $row) {
+                $kodkts[] = $row->kodkts;
+                $mkhbaru[] = $row->skorbaru;
+            }
+
+            $cert_datas[] = [
+                "no"                => ++$key,
+                "id"                => Crypt::encrypt($mod->id . "-MOD"), // xxx-MUET or xxx-MOD
+                "type"              => 'MOD',
+                "year"              => $mod->tahun,
+                "session"           => str_replace('MOD ', '', $mod->getTarikh->sesi),
+                "angkaGiliran"      => $mod->angka_giliran,
+                "band"              => "Band " . $mod->band,
+                'kodkts'            => $kodkts,
+                'mkhbaru'           => $mkhbaru,
+                'skor_agregat'      => $mod->skor_agregat,
+                'band'              => $mod->band,
+                'downloadUrl'       => route('candidate.downloadpdf', ['id' => Crypt::encrypt($mod->id . "-MOD")])
+            ];
+        }
+
+        return datatables($cert_datas)->toJson();
     }
 }

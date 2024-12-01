@@ -123,7 +123,7 @@
                     {{ request()->is('admin/config-poslaju') ? 'show' : '' }}
                     {{ request()->is('admin/config-mpmbayar') ? 'show' : '' }}
                     {{ request()->is('admin/users')  ? 'show' : '' }}
-                    {{ request()->is('admin/manage-candidate') ? 'show' : '' }}
+                    {{ request()->is('admin/manage-candidate*') ? 'show' : '' }}
                     {{ request()->is('admin/manage-mod-candidate') ? 'show' : '' }}
                     {{ request()->is('admin/pull-db') ? 'show' : '' }}
                     {{ request()->is('admin/audit-logs') ? 'show' : '' }}
@@ -143,11 +143,11 @@
                                     <a href="{{ route('users.index') }}" class="nav-link {{ request()->is('admin/users') ? 'active' : '' }}" >Users and Access</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="{{ route('admin.candidate.index') }}" class="nav-link {{ request()->is('admin/manage-candidate') ? 'active' : '' }}">Muet Candidates</a>
+                                    <a href="{{ route('admin.candidate.index') }}" class="nav-link {{ request()->is('admin/manage-candidate*') ? 'active' : '' }}">Candidates</a>
                                 </li>
-                                <li class="nav-item">
+                                {{-- <li class="nav-item">
                                     <a href="{{ route('admin.mod_candidate.index') }}" class="nav-link {{ request()->is('admin/manage-mod-candidate') ? 'active' : '' }}">MOD Candidates</a>
-                                </li>
+                                </li> --}}
                                 <li class="nav-item">
                                     <a href="{{ route('admin.pullDB') }}" class="nav-link {{ request()->is('admin/pull-db') ? 'active' : '' }}">Pull DB Candidates</a>
                                 </li>

@@ -81,7 +81,9 @@ Route::post('/candidate/logout', [CandidateAuthController::class, 'logout'])->na
 Route::get('/template', [HomeController::class, 'template']);
 
 //CALON
-Route::group(['middleware' => ['auth:candidate', 'role:CALON']], function () {
+// Route::group(['middleware' => ['auth:candidate','auth:web', 'role:CALON|PENTADBIR']], function () {
+// Route::group(['middleware' => ['role:CALON|PENTADBIR']], function () {
+Route::group(['middleware' => ['role:CALON|PENTADBIR', 'auth:web,candidate']], function () {
 
     Route::prefix('candidate')->group(function () {
         Route::get('/', [CandidateController::class, 'index'])->name('candidate.index');
@@ -176,10 +178,14 @@ Route::group(['middleware' => ['role:PENTADBIR|BPKOM|PSM|FINANCE']], function ()
 
         Route::get('/manage-candidate', [CandidateController::class, 'indexCandidate'])->name('admin.candidate.index');
         Route::get('/manage-candidate/ajax', [CandidateController::class, 'ajaxCandidate'])->name('admin.candidate.ajax');
+        Route::get('/manage-candidate/listCert/{candidate_id}', [CandidateController::class, 'listCert'])->name('admin.candidate.listCert');
+        Route::post('/manage-candidate/listCert/ajax', [CandidateController::class, 'ajaxGetCert'])->name('admin.candidate.ajaxGetCert');
         Route::get('/manage-mod-candidate', [CandidateController::class, 'indexModCandidate'])->name('admin.mod_candidate.index');
         Route::get('/manage-mod-candidate/ajax', [CandidateController::class, 'ajaxModCandidate'])->name('admin.mod_candidate.ajax');
         // Route::post('/manage-candidate/ajax', [CandidateController::class, 'ajaxCandidate'])->name('admin.candidate.ajax');
-        Route::post('/manage-candidate/update/{candidate}', [CandidateController::class, 'updateCandidate'])->name('admin.candidate.update');
+        // Route::post('/manage-candidate/update/{candidate}', [CandidateController::class, 'updateCandidate'])->name('admin.candidate.update');
+        Route::post('/manage-candidate/update/{id}', [CandidateController::class, 'updateCandidate'])->name('admin.candidate.update');
+        Route::post('/manage-candidate/updateCert/{id}', [CandidateController::class, 'updateCert'])->name('admin.candidate.updateCert');
         Route::post('/manage-candidate-mod/update/{candidate}', [CandidateController::class, 'updateModCandidate'])->name('admin.mod_candidate.update');
 
         Route::resource('/audit-logs', AuditLogsController::class);

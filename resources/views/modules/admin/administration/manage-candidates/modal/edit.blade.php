@@ -11,22 +11,22 @@
                 <form id="form_candidate_edit" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="row py-4">
-                        <div class="col-12">
+                        <input type="text" id="id" name="id" hidden>
+                        {{-- <div class="col-12">
                             <div class="mb-3">
                                 <label for="name_edit" class="form-label">Name</label>
                                 <input type="text" class="form-control" id="name" name="name" required>
-                                <input type="text" id="id" name="id" hidden>
                                 <span class="text-danger" id="name_text_edit"></span>
                             </div>
-                        </div>
+                        </div> --}}
 
-                        <div class="col-12">
+                        {{-- <div class="col-12">
                             <div class="mb-3">
                                 <label for="nric_edit" class="form-label">Identity Card Number tanpa -</label>
                                 <input type="text" class="form-control" id="nric_edit" name="nric" required autocomplete="off">
                                 <span class="text-danger" id="nric_text_edit"></span>
                             </div>
-                        </div>
+                        </div> --}}
 
                         <!-- Editable Score Fields -->
                         <div class="col-3">

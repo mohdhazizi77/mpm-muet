@@ -71,12 +71,12 @@
                                             <tr>
                                                 <td width=40%>NAME</td>
                                                 <td class="px-2">:</td>
-                                                <td class="">{{ $user->name }}</td>
+                                                <td class="">{{ $user->nama }}</td>
                                             </tr>
                                             <tr>
                                                 <td width=40%>IDENTIFICATION CARD NUMBER</td>
                                                 <td class="px-2">:</td>
-                                                <td class="">{{ $user->identity_card_number }}</td>
+                                                <td class="">{{ $user->kp }}</td>
                                             </tr>
                                         </table>
                                     </div>
@@ -169,6 +169,10 @@
         <div>
 
             <x-button.back></x-button.back>
+            {{-- <a href="{{ url()->previous() }}" class="btn btn-soft-dark btn-label btn-border btn-outline-dark waves-effect waves-light w-lg float-start">
+                <i class="ri-reply-fill label-icon align-middle fs-16 me-2"></i>
+                Back
+            </a> --}}
             <a id="button-download"  data-download-url="{{ route('candidate.downloadpdf', ['id' => $cryptId]) }}" target="_blank" class="btn btn-soft-success btn-label btn-border waves-effect waves-light w-lg float-end">
                 <i class="ri-file-download-line label-icon align-middle fs-16 me-2"></i>DOWNLOAD
             </a>

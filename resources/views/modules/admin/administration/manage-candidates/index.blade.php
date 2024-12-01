@@ -67,12 +67,12 @@
                                     <thead>
                                         <tr class="text-center bg-dark-subtle">
                                             <th width=5%>NO.</th>
-                                            <th width=30%>NAME</th>
-                                            <th width=15%>NRIC</th>
-                                            <th width=15%>INDEX NO</th>
-                                            <th width=15%>SESSION</th>
-                                            <th width=15%>YEAR</th>
-                                            <th>ACTION</th>
+                                            <th>NAME</th>
+                                            <th width=20%>NRIC</th>
+                                            {{-- <th width=15%>INDEX NO</th> --}}
+                                            {{-- <th width=15%>SESSION</th> --}}
+                                            {{-- <th width=15%>YEAR</th> --}}
+                                            <th width=20%>ACTION</th>
                                         </tr>
                                     </thead>
                                     <tbody>
