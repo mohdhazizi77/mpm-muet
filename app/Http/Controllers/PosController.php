@@ -317,7 +317,14 @@ class PosController extends Controller
             $preAcceptance = self::sendPreAcceptanceSingle($order); // return output or error
             if (!$preAcceptance)
                 return response()->json($data);
-            dd(json_decode($preAcceptance), $preAcceptance, $preAcceptance->statusCode);
+
+            $data = [
+                'success' => false,
+                'message' => $connote['message'],
+                'message_detail' => $connote['message_detail'],
+            ];
+
+            dd(json_decode($preAcceptance), $preAcceptance, $preAcceptance['statusCode']);
             if($preAcceptance->statusCode != 200){
                 dd($preAcceptance->data, json_decode($preAcceptance->data));
             }
