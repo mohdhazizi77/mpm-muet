@@ -318,11 +318,11 @@ class PosController extends Controller
             if (!$preAcceptance)
                 return response()->json($data);
 
-            $data = [
-                'success' => false,
-                'message' => $connote['message'],
-                'message_detail' => $connote['message_detail'],
-            ];
+            // $data = [
+            //     'success' => false,
+            //     'message' => $connote['message'],
+            //     'message_detail' => $connote['message_detail'],
+            // ];
 
             dd(json_decode($preAcceptance), $preAcceptance, $preAcceptance['statusCode']);
             if($preAcceptance->statusCode != 200){
