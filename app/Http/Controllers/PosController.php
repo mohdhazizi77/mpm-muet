@@ -324,7 +324,7 @@ class PosController extends Controller
             //     'message_detail' => $connote['message_detail'],
             // ];
 
-            dd($response->getStatusCode(), $preAcceptance, $preAcceptance->original);
+            dd($preAcceptance->getStatusCode(), $preAcceptance, $preAcceptance->original);
             if($preAcceptance->statusCode != 200){
                 dd($preAcceptance->data, json_decode($preAcceptance->data));
             }
