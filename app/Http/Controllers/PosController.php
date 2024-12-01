@@ -507,9 +507,8 @@ class PosController extends Controller
             $order->save();
         }
 
-        $data = [
-            'success' => true
-        ];
+        $data['success'] = true;
+
 
         return response()->json($data);
     }
