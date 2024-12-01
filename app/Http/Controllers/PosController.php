@@ -315,9 +315,12 @@ class PosController extends Controller
             }
 
             $preAcceptance = self::sendPreAcceptanceSingle($order); // return output or error
-            dd($preAcceptance);
             if (!$preAcceptance)
                 return response()->json($data);
+
+            if($preAcceptance->statusCode != 200){
+                dd($preAcceptance->data, json_decode($preAcceptance->data));
+            }
 
             $order->current_status = "COMPLETED";
             $order->completed_at = Carbon::now();
