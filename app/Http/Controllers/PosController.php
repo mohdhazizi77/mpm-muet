@@ -178,7 +178,7 @@ class PosController extends Controller
 
 
         $culture = 'EN';
-        $bearerToken = Session::get('bearer_token');;
+        $bearerToken = Session::get('bearer_token');
 
         $ConfigPoslaju = ConfigPoslaju::first();
 
@@ -200,7 +200,8 @@ class PosController extends Controller
                     $data[] = [
                         'no' => $key+1,
                         'date' => $value->date,
-                        'detail' => $value->process
+                        'detail' => $value->process,
+                        'type' => $value->type
                     ];
                 }
                 return datatables($data)->toJson();
