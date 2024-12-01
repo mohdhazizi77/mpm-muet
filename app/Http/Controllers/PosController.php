@@ -409,9 +409,9 @@ class PosController extends Controller
     {
         // dd($request->toArray());
 
+        $countError = 0;
+        $errorMessage = '';
         foreach ($request->orderID as $key => $value) {
-            $countError = 0;
-            $errorMessage = '';
             if (empty($value))
                 continue;
 
