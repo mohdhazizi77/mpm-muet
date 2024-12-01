@@ -16,7 +16,7 @@ class ProcessCompletedOrdersCommand extends Command
 {
     protected $signature = 'mpm:process-completed-orders';
 
-    protected $description = 'Process completed orders that have passed 2 days and with pos status and delivery success';
+    protected $description = 'Process completed orders that alredy delivery success. Change order status from COMPLETED to DELIVERED';
 
     public function handle()
     {
