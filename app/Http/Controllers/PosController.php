@@ -411,6 +411,7 @@ class PosController extends Controller
 
         foreach ($request->orderID as $key => $value) {
             $countError = 0;
+            $errorMessage = '';
             if (empty($value))
                 continue;
 
@@ -502,7 +503,7 @@ class PosController extends Controller
                     // Access the specific error message
                     $data[$order->unique_order_id]['error'] = $dataR['error'] ?? null;
 
-                    $errorMessage = $order->unique_order_id . " : " . $dataR['error'] ?? null . "\n";
+                    $errorMessage .= $order->unique_order_id . " : " . $dataR['error'] ?? null . "\n";
                     // return response()->json($data);
                     $countError++;
                 }
