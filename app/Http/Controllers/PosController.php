@@ -513,6 +513,7 @@ class PosController extends Controller
         $data['success'] = true;
         if ($countError > 0) {
             $data['success'] = false;
+            $data['message'] = "ada error";
         }
 
 
