@@ -67,7 +67,7 @@
                             <option value="PROCESSING">PROCESSING</option>
                             <option value="COMPLETED">COMPLETED</option>
                             <option value="FAILED">FAILED</option>
-                            {{-- <option value="SUCCESS">SUCCESS</option> --}}
+                            <option value="DELIVERED">DELIVERED</option>
                             {{-- <option value="FAIL">FAIL</option> --}}
                         </select>
                     </div>
