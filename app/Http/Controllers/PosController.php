@@ -471,8 +471,8 @@ class PosController extends Controller
                 //bulk update checking no tracking number not process
                 if (empty($order->tracking_number)){
                     $data[$order->unique_order_id]['error'] = "Empty tracking number";
-                }
                     continue;
+                }
 
                 // if ($order->tracking_number !== $request->ship_trackNum) {
                 //     $order->tracking_number = $request->ship_trackNum;
