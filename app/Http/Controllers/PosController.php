@@ -469,7 +469,9 @@ class PosController extends Controller
             } elseif ($type == 'processing') {
 
                 //bulk update checking no tracking number not process
-                if (empty($order->tracking_number))
+                if (empty($order->tracking_number)){
+                    $data[$order->unique_order_id]['error'] = "Empty tracking number";
+                }
                     continue;
 
                 // if ($order->tracking_number !== $request->ship_trackNum) {
@@ -498,7 +500,7 @@ class PosController extends Controller
                 } else {
                     $dataR = json_decode($preAcceptance->getContent(), true); // Pass true to get an associative array
                     // Access the specific error message
-                    $data[$order->tracking_number]['error'] = $dataR['error'] ?? null;
+                    $data[$order->unique_order_id]['error'] = $dataR['error'] ?? null;
 
                     // return response()->json($data);
                 }
