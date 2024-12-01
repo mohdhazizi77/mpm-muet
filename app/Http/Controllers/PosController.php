@@ -502,6 +502,7 @@ class PosController extends Controller
                     // Access the specific error message
                     $data[$order->unique_order_id]['error'] = $dataR['error'] ?? null;
 
+                    $errorMessage = $order->unique_order_id . " : " . $dataR['error'] ?? null . "\n";
                     // return response()->json($data);
                     $countError++;
                 }
@@ -513,7 +514,7 @@ class PosController extends Controller
         $data['success'] = true;
         if ($countError > 0) {
             $data['success'] = false;
-            $data['message'] = "ada error";
+            $data['message'] = $errorMessage;
         }
 
 
