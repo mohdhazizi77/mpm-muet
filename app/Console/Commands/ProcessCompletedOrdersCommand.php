@@ -24,9 +24,7 @@ class ProcessCompletedOrdersCommand extends Command
             ->whereNotNull('tracking_number')
             ->get();
 
-        $url = ConfigMpmBayar::first()->url.'/api/payment/status';
-        $token = ConfigMpmBayar::first()->token;
-        $secret_key = ConfigMpmBayar::first()->secret_key;
+        $this->info( count($ordersToUpdate) . ' of completed orders.');
 
         $culture = 'EN';
         // ConfigPoslaju::getToken(); //store token into session
