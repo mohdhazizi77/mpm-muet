@@ -410,7 +410,7 @@ class PosController extends Controller
         // dd($request->toArray());
 
         foreach ($request->orderID as $key => $value) {
-
+            $countError = 0;
             if (empty($value))
                 continue;
 
@@ -503,6 +503,7 @@ class PosController extends Controller
                     $data[$order->unique_order_id]['error'] = $dataR['error'] ?? null;
 
                     // return response()->json($data);
+                    $countError++;
                 }
 
             }
@@ -510,6 +511,9 @@ class PosController extends Controller
         }
 
         $data['success'] = true;
+        if ($countError > 0) {
+            $data['success'] = false;
+        }
 
 
         return response()->json($data);
