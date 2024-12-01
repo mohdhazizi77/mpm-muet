@@ -142,6 +142,6 @@ class ConfigPoslaju extends Model
             $bearerToken = $tokenResponse->access_token;
         }
 
-        return response()->json(['token' => $bearerToken]);
+        return $bearerToken;
     }
 }
