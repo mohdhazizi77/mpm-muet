@@ -318,8 +318,7 @@ class PosController extends Controller
             if (!$preAcceptance)
                 return response()->json($data);
 
-            dd($preAcceptance);
-            if($preAcceptance->getStatusCode() != 200){
+            if($preAcceptance->getStatusCode() == 400){ //bad request
                 $data = [
                     'success' => false,
                     'message' => $preAcceptance->original['error'],
