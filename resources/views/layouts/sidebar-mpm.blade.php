@@ -151,8 +151,25 @@
                                 <li class="nav-item">
                                     <a href="{{ route('admin.pullDB') }}" class="nav-link {{ request()->is('admin/pull-db') ? 'active' : '' }}">Pull DB Candidates</a>
                                 </li>
+                                {{-- <li class="nav-item">
+                                    <a href="{{ route('audit-logs.index', ['userType' => 'Admin']) }}" class="nav-link {{ request()->is('admin/audit-logs*') ? 'active' : '' }}">Audit Logs [ADMIN]</a>
+                                </li>
                                 <li class="nav-item">
-                                    <a href="{{ route('audit-logs.index') }}" class="nav-link {{ request()->is('admin/audit-logs') ? 'active' : '' }}">Audit Logs</a>
+                                    <a href="{{ route('audit-logs.index', ['userType' => 'Candidate']) }}" class="nav-link {{ request()->is('admin/audit-logs') ? 'active' : '' }}">Audit Logs [CANDIDATE]</a>
+                                </li> --}}
+                                <li class="nav-item">
+                                    <a href="#auditLogMenu" class="nav-link {{ request()->is('admin/audit-logs*') ? 'active' : '' }}" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="auditLogMenu">Audit Logs
+                                    </a>
+                                    <div class="collapse menu-dropdown show" id="auditLogMenu">
+                                        <ul class="nav nav-sm flex-column">
+                                            <li class="nav-item">
+                                                <a href="{{ route('audit-logs.index', ['userType' => 'Admin']) }}" class="nav-link {{ request()->is('admin/audit-logs?userType=Admin') ? 'active' : '' }}">Admin</a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a href="{{ route('audit-logs.index', ['userType' => 'Candidate']) }}" class="nav-link {{ request()->is('admin/audit-logs?userType=Candidate') ? 'active' : '' }}">Candidate</a>
+                                            </li>
+                                        </ul>
+                                    </div>
                                 </li>
                             @endrole
 

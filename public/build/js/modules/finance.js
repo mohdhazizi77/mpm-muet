@@ -233,9 +233,9 @@ $(document).ready(function() {
             window.location.href = url;
         });
 
+        $('.dt-search').hide();
     }
 
-    $('.dt-search').hide();
 
     $('.btn-excel-fin-muet').removeClass('dt-button');
     $('.btn-print-fin-muet').removeClass('dt-button');
@@ -517,9 +517,10 @@ $(document).ready(function() {
 
             window.location.href = url;
         });
+        
+        $('.dt-search').hide();
     }
 
-    $('.dt-search').hide();
 
     $('.btn-excel-fin-mod').removeClass('dt-button');
     $('.btn-print-fin-mod').removeClass('dt-button');

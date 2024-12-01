@@ -37,7 +37,7 @@
                                 {{-- <table id="posNewTable" data-type="NEW" class="table w-100 table-striped dt-responsive nowrap dataTable" --}}
 
                                 <table id="dt-auditLog" class="table table-sm w-100 table-striped dt-responsive nowrap dataTable"
-                                    style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                                    style="border-collapse: collapse; border-spacing: 0; width: 100%;" data-type="{{ $type }}">
                                     <thead>
                                     <tr class="text-center bg-dark-subtle">
                                         <th scope="col">NO.</th>
