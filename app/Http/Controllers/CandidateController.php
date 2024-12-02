@@ -1317,8 +1317,15 @@ class CandidateController extends Controller
             ->toJson();
     }
 
-    public function updateCandidate(Request $request, Candidate $candidate)
+    public function updateCandidate(Request $request)
     {
+
+        // dd($request->toArray());
+
+        $candidate = Candidate::find($request->id);
+
+        $oldName = $candidate->name;
+        $oldIC = $candidate->identity_card_number;
 
         // Validate the file
         $validator = Validator::make($request->all(), [
@@ -1355,7 +1362,7 @@ class CandidateController extends Controller
         $candidate->save();
 
         //Find MuetCalon
-        $muetCalon = MuetCalon::where('kp', $candidate->identity_card_number)->get();
+        $muetCalon = MuetCalon::where('kp', $oldIC)->get();
         if ($muetCalon->isNotEmpty()) {
             foreach ($muetCalon as $key => $value) {
                 $value->nama = $candidate->name;
@@ -1365,7 +1372,7 @@ class CandidateController extends Controller
         }
 
         //Find ModCalon
-        $modCalon = ModCalon::where('kp', $candidate->identity_card_number)->get();
+        $modCalon = ModCalon::where('kp', $oldIC)->get();
         if ($modCalon->isNotEmpty()) {  // Check if the collection is not empty
             foreach ($modCalon as $key => $value) {
                 $value->nama = $candidate->name;
@@ -1742,7 +1749,7 @@ class CandidateController extends Controller
 
     public function ajaxGetCert(Request $request){
         $candidate = Candidate::find($request->candidate_id);
-
+        $cert_datas = [];
         if (!$candidate) {
             dd("Candidate not found");
         }
