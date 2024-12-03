@@ -361,6 +361,8 @@ class AdminController extends Controller
                 $monthName = date('F', mktime(0, 0, 0, $request->session, 1));
                 $results = $results->where('namasesi', 'like', '%' . $monthName . '%');
             }
+            //based on $start, $length and $search
+            $results = $results->skip($start)->take($length);
             $results2 = $results->get();
 
             //show results by pagination start and length
