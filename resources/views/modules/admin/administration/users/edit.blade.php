@@ -31,6 +31,16 @@
             </ul>
         </div>
     @endif
+    @if (session('success'))
+        <div id="successMessage" class="alert alert-success">
+            {{ session('success') }}
+        </div>
+    @endif
+    @if (session('error'))
+        <div id="successMessage" class="alert alert-danger">
+            {{ session('error') }}
+        </div>
+    @endif
     <div class="row py-4">
         <div class="col-lg-12">
             <div class="card rounded-0 bg-white mx-n4 mt-n4 border-top">
@@ -62,26 +72,52 @@
 
                             <div class="col-6">
                                 <label for="role" class="form-label">Role</label>
-                                <select name="role" id="" class="form-control">
+                                <select name="role" id="" class="form-control" disabled>
                                     @foreach ($role as $role)
                                         <option value="{{ $role->name }}" {{ ($user->getRoleNames()[0] == $role->name) ? "selected" : "" }} >{{ $role->name }}</option>
                                     @endforeach
                                 </select>
+                                <input type="hidden" name="role" value="{{ $user->getRoleNames()[0] }}">
                             </div>
 
                             <div class="col-6">
                                 <label for="role" class="form-label">Status</label>
-                                <select name="status" id="" class="form-control">
+                                <select name="status1" id="" class="form-control" disabled>
                                     <option value=""></option>
                                     @foreach (array('Active', 'Inactive' ) as $k => $v)
-                                        <option value={{ $k }} {{ ($user->is_deleted == $k) ? "selected" : "" }} >{{ $v }}</option>   
+                                        <option value={{ $k }} {{ ($user->is_deleted == $k) ? "selected" : "" }} >{{ $v }}</option>
                                     @endforeach
-                                </select>                        
+                                </select>
+                                <input type="hidden" name="status" value="{{ $user->is_deleted }}">
+                            </div>
+
+                            <div class="col-12 mt-2">
+                                <div class="form-group">
+                                    <label for="new-password">New Password</label>
+                                    <input type="password" class="form-control" id="new-password" name="newPassword" placeholder="Enter new password">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="confirm-password">Confirm Password</label>
+                                    <input type="password" class="form-control" id="confirm-password" placeholder="Confirm password">
+                                </div>
+                                <div class="text-danger" id="password-error" style="display:none;">
+                                    Password and confirm password do not match.
+                                </div>
+                                <div id="password-requirements" class="text-muted small mt-1">
+                                    Your password must:
+                                    <ul>
+                                      <li>Be at least 8 characters long</li>
+                                      <li>Contain at least one uppercase letter</li>
+                                      <li>Contain at least one lowercase letter</li>
+                                      <li>Contain at least one number</li>
+                                    </ul>
+                                </div>
                             </div>
 
                         </div><!--end row-->
 
-                        
+
                         <div class="row">
                             <div class="col-xxl-12 align-self-center">
                                 <div class="float-start my-3">
@@ -110,6 +146,7 @@
 
 
                 $(document).ready(function () {
+
 
                     $('#button-export-xlsx').on('click', function (e) {
 

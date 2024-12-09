@@ -62,9 +62,9 @@ class UserController extends Controller
             $data[] = [
                 // "id"    => Crypt::encrypt($user->id),
                 "id"    => $user->id,
-                "role"  => $user->getRoleNames()[0],
-                "name"  => $user->name,
-                "email" => $user->email,
+                "role"  => $user->getRoleNames()[0] ?? '-',
+                "name"  => $user->name ?? '-',
+                "email" => $user->email ?? '-',
                 "status" => $user->is_deleted,
                 "phoneNum" => empty($user->phone_num) ? "Not Available"  : $user->phone_num,
             ];
@@ -86,11 +86,11 @@ class UserController extends Controller
 
     public function edit($id){
 
-        // try {
-        //     $id = Crypt::decrypt($id);
-        // } catch (Exception $e) {
-
-        // }
+        try {
+            $id = Crypt::decrypt($id);
+        } catch (Exception $e) {
+            return redirect()->back()->with('error', 'User Id is not valid');
+        }
 
         $user = User::findOrFail($id);
         $role = Role::where('name', '!=', 'CALON')->get();
@@ -175,6 +175,9 @@ class UserController extends Controller
         $user->name = $request->name;
         $user->email = $request->email;
         $user->phone_num = $request->phonenumber;
+        if (isset($request->newPassword) && !empty($request->newPassword) ) {
+            $user->password = Hash::make($request->newPassword);
+        }
         $user->is_deleted = $request->status;
         $user->save();
 
@@ -188,7 +191,8 @@ class UserController extends Controller
 
         AuditLogService::log($user, 'Update', $old, $new);
 
-        return redirect()->route('users.index')->with('success', 'User updated successfully.');
+        return redirect()->back()->with('success', 'Data updated successfully');
+        // return redirect()->route('users.index')->with('success', 'User updated successfully.');
     }
 
     public function activated(Request $request,User $user)

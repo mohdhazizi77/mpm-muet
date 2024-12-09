@@ -197,7 +197,7 @@ $(document).ready(function() {
             searching: true,
             lengthChange: true,
         });
-        
+
         $('#show_create_modal').on('click', function() {
             $('#modal_create').modal('show');
             $('.name').val('');
@@ -461,6 +461,54 @@ $(document).ready(function() {
         })
     }
 
+    $('#new-password').on('keyup', function() {
+        validatePasswords();
+    });
+
+    // Bind the change event for the confirm password input
+    $('#confirm-password').on('keyup', function() {
+        validatePasswords();
+    });
+
+    // Function to validate the passwords
+    function validatePasswords() {
+        var newPassword = $('#new-password').val();
+        var confirmPassword = $('#confirm-password').val();
+        var passwordErrorDiv = $('#password-error');
+
+        // Password requirements
+        var passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
+        var isLengthValid = newPassword.length >= 8;
+        var hasLowercase = /[a-z]/.test(newPassword);
+        var hasUppercase = /[A-Z]/.test(newPassword);
+        var hasNumber = /\d/.test(newPassword);
+
+        if (newPassword === '' && confirmPassword === '') {
+            // Both fields are blank, enable the submit button
+            passwordErrorDiv.hide();
+            $('button[type="submit"]').prop('disabled', false);
+          } else if (newPassword !== confirmPassword) {
+            passwordErrorDiv.text("Passwords do not match.").show();
+            $('button[type="submit"]').prop('disabled', true);
+          } else if (!isLengthValid) {
+            passwordErrorDiv.text("Password must be at least 8 characters long.").show();
+            $('button[type="submit"]').prop('disabled', true);
+          } else if (!hasLowercase) {
+            passwordErrorDiv.text("Password must contain at least one lowercase letter.").show();
+            $('button[type="submit"]').prop('disabled', true);
+          } else if (!hasUppercase) {
+            passwordErrorDiv.text("Password must contain at least one uppercase letter.").show();
+            $('button[type="submit"]').prop('disabled', true);
+          } else if (!hasNumber) {
+            passwordErrorDiv.text("Password must contain at least one number.").show();
+            $('button[type="submit"]').prop('disabled', true);
+          } else {
+            passwordErrorDiv.hide();
+            $('button[type="submit"]').prop('disabled', false);
+          }
+
+        $('button[type="submit"]').prop('disabled', passwordErrorDiv.is(':visible'));
+    }
 
 });
 
