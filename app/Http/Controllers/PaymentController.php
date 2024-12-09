@@ -722,7 +722,7 @@ class PaymentController extends Controller
             $prefix = "MOD";
         }
 
-        $suffix = substr(md5(uniqid()), 0, 8); // Generate a unique prefix
+        $suffix = substr(md5(uniqid()), 0, 12); // Generate a unique prefix
 
         return $prefix . '-' . $suffix;
     }
