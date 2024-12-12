@@ -493,11 +493,7 @@ class AdminController extends Controller
 
         //return json
         // return response()->json($batch);
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Importing data from ' . $request->type . ' database. Please wait...',
-            'batch' => $batch->id
-        ]);
+        return redirect()->route('admin.pullDB')->with('success', 'Importing data from ' . strtoupper($request->type) . ' database has been started.');
     }
 
     public function indexUpload()

@@ -117,9 +117,10 @@ Import Candidates DB Muet & MOD
                                     @if($batch > 0)
 
                                     @else
+                                    @if(!empty($request->type))
                                     <h4>DB MPM (muet_resultn): <span class="badge bg-success" style="font-size:20px;">{{ number_format($results) }} Records Found </span></h4><br>
                                     <h4>DB eSIJIL ({{ strtolower($request->type) }}_calon): <span class="badge bg-danger" style="font-size:20px;">{{ number_format($results_local) }} Records Found</span></h4><br>
-
+                                    @endif
                                     @endif
                                    
                                     <div>
@@ -134,6 +135,12 @@ Import Candidates DB Muet & MOD
                                         @else 
                                         @if($results > 0)
                                         <button class="btn btn-soft-danger waves-effect" id="btn-import-data-db" >IMPORT DATA</button>
+                                        <form action="{{ route('admin.pullDB.import')}}" method="post" id="pulldb-post">
+                                            @csrf
+                                            <input type="hidden" name="year" value="{{ $request->year }}">
+                                            <input type="hidden" name="session" value="{{ $request->session }}">
+                                            <input type="hidden" name="type" value="{{ $request->type }}">
+                                        </form>
                                         @else
                                         <small>Please select the year, session and exam type to search the data.</small>
                                         @endif
@@ -341,42 +348,44 @@ Import Candidates DB Muet & MOD
                     confirmButtonText: 'Yes'
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        $.ajax({
-                            url: "{{ route('admin.pullDB.import') }}",
-                            type: "POST",
-                            data: {
-                                _token: $('meta[name="csrf-token"]').attr('content'),
-                                year: year,
-                                session: session,
-                                type: type
-                            },
-                            success: function(response) {
-                                // $('#dt-candidates').DataTable().ajax.reload();
-                                $("#btn-import-data-db").prop('disabled', true);
-                                $("#msg-pull").show();
-                                Swal.fire({
-                                    icon: 'success',
-                                    title: 'Success',
-                                    text: response.message,
-                                    confirmButtonText: 'OK',
-                                }).then((result) => {
-                                    if (result.isConfirmed) {
-                                        window.location.reload();
-                                    }
-                                });
+                        $("#btn-import-data-db").prop('disabled', true);
+                        $("#pulldb-post").submit();
+                        // $.ajax({
+                        //     url: "{{ route('admin.pullDB.import') }}",
+                        //     type: "POST",
+                        //     data: {
+                        //         _token: $('meta[name="csrf-token"]').attr('content'),
+                        //         year: year,
+                        //         session: session,
+                        //         type: type
+                        //     },
+                        //     success: function(response) {
+                        //         // $('#dt-candidates').DataTable().ajax.reload();
+                        //         $("#btn-import-data-db").prop('disabled', true);
+                        //         $("#msg-pull").show();
+                        //         Swal.fire({
+                        //             icon: 'success',
+                        //             title: 'Success',
+                        //             text: response.message,
+                        //             confirmButtonText: 'OK',
+                        //         }).then((result) => {
+                        //             if (result.isConfirmed) {
+                        //                 window.location.reload();
+                        //             }
+                        //         });
                             
-                            },
-                            error: function(response) {
-                                Swal.fire({
-                                    icon: 'error',
-                                    title: 'Error',
-                                    text: response.responseJSON.message,
-                                    confirmButtonText: 'OK'
-                                });
-                                $("#btn-import-data-db").prop('disabled', false);
-                                $("#msg-pull").hide();
-                            }
-                        });
+                        //     },
+                        //     error: function(response) {
+                        //         Swal.fire({
+                        //             icon: 'error',
+                        //             title: 'Error',
+                        //             text: response.responseJSON.message,
+                        //             confirmButtonText: 'OK'
+                        //         });
+                        //         $("#btn-import-data-db").prop('disabled', false);
+                        //         $("#msg-pull").hide();
+                        //     }
+                        // });
                     }
                 });
             });
