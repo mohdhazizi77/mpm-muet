@@ -7,8 +7,15 @@ Import Candidates DB Muet & MOD
 @section('css')
     {{-- <!-- DataTables --> --}}
 
-    <link href="{{ URL::asset('build/libs/jquery-datatables-checkboxes-1.2.12/css/dataTables.checkboxes.css') }}" rel="stylesheet" type="text/css"/>
-    <link href="{{ URL::asset('build/libs/datatables/datatables.min.css') }}" rel="stylesheet" type="text/css"/>
+    {{-- <link href="{{ URL::asset('build/libs/jquery-datatables-checkboxes-1.2.12/css/dataTables.checkboxes.css') }}" rel="stylesheet" type="text/css"/> --}}
+    {{-- <link href="{{ URL::asset('build/libs/datatables/datatables.min.css') }}" rel="stylesheet" type="text/css"/> --}}
+
+    <!--datatable css-->
+<link href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css" rel="stylesheet" type="text/css"/>
+<!--datatable responsive css-->
+<link href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.bootstrap.min.css" rel="stylesheet" type="text/css"/>
+<link href="https://cdn.datatables.net/buttons/2.2.2/css/buttons.dataTables.min.css" rel="stylesheet" type="text/css"/>
+
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 
     <link rel="stylesheet" href="{{ URL::asset('build/libs/@simonwep/pickr/themes/classic.min.css') }}"/> <!-- 'classic' theme -->
@@ -38,25 +45,26 @@ Import Candidates DB Muet & MOD
             <div class="card">
                 <div class="card-body">
                     <div class="live-preview">
-
+                        <form action="{{ route('admin.pullDB.post')}}" method="post">
+                            @csrf
                         <div class="row gy-1">
                             <div class="col-lg-3">
                                 <div class="mt-3">
                                     <label class="form-label mb-3">EXAM TYPE</label>
-                                    <select id="exam-type" class="form-select mb-3" aria-label="Default select example">
+                                    <select id="exam-type" class="form-select mb-3" aria-label="Default select example" name="type">
                                         <option selected disabled> -- PLEASE SELECT -- </option>
-                                        <option value="MUET">MUET</option>
-                                        <option value="MOD">MOD</option>
+                                        <option value="MUET" @if('MUET' == $request->type) selected @endif>MUET</option>
+                                        <option value="MOD" @if('MOD' == $request->type) selected @endif>MOD</option>
                                     </select>
                                 </div>
                             </div>
                             <div class="col-lg-3">
                                 <div class="mt-3">
                                     <label class="form-label mb-3">YEAR</label>
-                                    <select id="year-select" class="form-select mb-3" aria-label="Default select example">
+                                    <select id="year-select" class="form-select mb-3" aria-label="Default select example" name="year">
                                         <option selected disabled> -- PLEASE SELECT -- </option>
-                                        @for ($i = date("Y"); $i >= 2000; $i--)
-                                        <option value="{{ $i }}">{{ $i }}</option>
+                                        @for ($i = date("Y"); $i >= 2015; $i--)
+                                        <option value="{{ $i }}" @if($i == $request->year) selected @endif>{{ $i }}</option>
                                         @endfor
                                     </select>
                                 </div>
@@ -64,31 +72,33 @@ Import Candidates DB Muet & MOD
                             <div class="col-lg-3">
                                 <div class="mt-3">
                                     <label class="form-label mb-3">SESSION</label>
-                                    <select id="session-select" class="form-select mb-3" aria-label="Default select example">
+                                    <select id="session-select" class="form-select mb-3" aria-label="Default select example" name="session">
                                         <option selected disabled> -- PLEASE SELECT -- </option>
-                                        <option value="1">1</option>
-                                        <option value="2">2</option>
-                                        <option value="3">3</option>
-                                        <option value="4">4</option>
-                                        <option value="5">5</option>
-                                        <option value="6">6</option>
-                                        <option value="7">7</option>
-                                        <option value="8">8</option>
-                                        <option value="9">9</option>
-                                        <option value="10">10</option>
-                                        <option value="11">11</option>
-                                        <option value="12">12</option>
+                                        <option value="1" @if('1' == $request->session) selected @endif>January</option>
+                                        <option value="2" @if('2' == $request->session) selected @endif>Febraury</option>
+                                        <option value="3" @if('3' == $request->session) selected @endif>Mac</option>
+                                        <option value="4" @if('4' == $request->session) selected @endif>April</option>
+                                        <option value="5" @if('5' == $request->session) selected @endif>May</option>
+                                        <option value="6" @if('6' == $request->session) selected @endif>June</option>
+                                        <option value="7" @if('7' == $request->session) selected @endif>July</option>
+                                        <option value="8" @if('8' == $request->session) selected @endif>August</option>
+                                        <option value="9" @if('9' == $request->session) selected @endif>September</option>
+                                        <option value="10" @if('10' == $request->session) selected @endif>October</option>
+                                        <option value="11" @if('11' == $request->session) selected @endif>November</option>
+                                        <option value="12" @if('12' == $request->session) selected @endif>December</option>
                                     </select>
                                 </div>
                             </div>
                             
                             <div class="col-lg-3">
                                 <div class="mt-5">
-                                    <button type="button" id="searchBtn" class="btn btn-soft-primary waves-effect waves-light material-shadow-none">Search</button>
-                                    <button type="button" id="resetBtn" class="btn btn-soft-secondary waves-effect waves-light material-shadow-none">Reset</button>
+                                    <button type="submit" id="searchBtn1" class="btn btn-soft-primary waves-effect waves-light material-shadow-none">Search</button>
+                                    {{-- <button type="reset" id="resetBtn1" class="btn btn-soft-secondary waves-effect waves-light material-shadow-none">Reset</button> --}}
                                 </div>
                             </div>
+
                         </div>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -107,23 +117,31 @@ Import Candidates DB Muet & MOD
                                     @if($batch > 0)
 
                                     @else
-                                    <h4>Import Candidates Database</h4>
+                                    <h4>Total Records Found: <span class="badge bg-success" style="font-size:20px;">{{ $results }}</span></h4>
                                     @endif
+                                   
+                                    <div>
+                                        @if($batch > 0)
+                                        <button class="btn btn-soft-danger waves-effect" disabled>IMPORT DATA</button><br><br>
+                                        <span class="text-danger">* Please wait, import Pull DB in process.</span>
+                                        <script>
+                                            setTimeout(function(){
+                                                window.location.reload(1);
+                                            }, 5000);
+                                        </script>
+                                        @else 
+                                        @if($results > 0)
+                                        <button class="btn btn-soft-danger waves-effect" id="btn-import-data-db" >IMPORT DATA</button>
+                                        @else
+                                        <small>Please select the year, session and exam type to search the data.</small>
+                                        @endif
+                                        <span class="text-danger" style="display:none;" id="msg-pull"><br><br>* Please wait, import Pull DB in process.</span>
+                                        @endif
+                                    </div>
                                 </div>
-                                <div class="col" style="text-align: right">
-                                    @if($batch > 0)
-                                    <button class="btn btn-soft-danger waves-effect float-end" disabled>IMPORT DATA</button><br><br>
-                                    <span class="text-danger">* Please wait, import Pull DB in process.</span>
-                                    <script>
-                                        setTimeout(function(){
-                                            window.location.reload(1);
-                                        }, 5000);
-                                    </script>
-                                    @else
-                                    <button class="btn btn-soft-danger waves-effect float-end" id="btn-import-data-db" style="display:none;">IMPORT DATA</button>
-                                    <span class="text-danger" style="display:none;" id="msg-pull"><br><br>* Please wait, import Pull DB in process.</span>
-                                    @endif
-                                </div>
+                                {{-- <div class="col">
+                                    
+                                </div> --}}
                             </div>
 
                         </div>
@@ -133,7 +151,7 @@ Import Candidates DB Muet & MOD
                     <div class="row">
                         <div class="col-xxl-12 align-self-center">
                             <div class="py-2">
-
+                                
                                 <table id="dt-candidates" class="table w-100 table-striped text-center dt-responsive nowrap dataTable"
                                 style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                                     <thead>
@@ -156,8 +174,8 @@ Import Candidates DB Muet & MOD
                         </div>
                     </div>
                     <!-- end card body -->
-                </div> --}}
-                <!-- end card -->
+                </div>
+                <!-- end card --> --}}
 
             </div>
             <!--end col-->
@@ -331,7 +349,7 @@ Import Candidates DB Muet & MOD
                                 type: type
                             },
                             success: function(response) {
-                                $('#dt-candidates').DataTable().ajax.reload();
+                                // $('#dt-candidates').DataTable().ajax.reload();
                                 $("#btn-import-data-db").prop('disabled', true);
                                 $("#msg-pull").show();
                                 Swal.fire({
@@ -362,7 +380,7 @@ Import Candidates DB Muet & MOD
             });
 
             $('#searchBtn').on('click', function() {
-
+            
                 // Gather the values from the dropdowns
                 var year = $('#year-select').val();
                 var session = $('#session-select').val();
@@ -394,9 +412,11 @@ Import Candidates DB Muet & MOD
                 // table.draw(false, null, false, false, false, function() {
                 //     Swal.close(); // Close the SweetAlert loading popup
                 // });
-                $('#dt-candidates').DataTable().ajax.reload(function() {
-                    Swal.close(); // Close the SweetAlert loading popup
-                }, true);
+                // console.log(year, session, type);
+
+                // $('#dt-candidates').DataTable().ajax.reload();
+
+                // console.log('done');
 
             });
 
@@ -416,8 +436,10 @@ Import Candidates DB Muet & MOD
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 
-    <script src="{{ URL::asset('build/libs/datatables/datatables.min.js') }}"></script>
-    <script src="{{ URL::asset('build/libs/jquery-datatables-checkboxes-1.2.12/js/dataTables.checkboxes.js') }}"></script>
+    {{-- <script src="{{ URL::asset('build/libs/datatables/datatables.min.js') }}"></script>
+    <script src="{{ URL::asset('build/libs/jquery-datatables-checkboxes-1.2.12/js/dataTables.checkboxes.js') }}"></script> --}}
+    <script src="https://cdn.datatables.net/2.1.8/js/dataTables.js"></script>
+    <script src="https://cdn.datatables.net/responsive/3.0.3/js/dataTables.responsive.js"></script>
 
 @endsection
 

@@ -329,21 +329,39 @@ class AdminController extends Controller
         ]);
     }
 
-    public function viewPullDB()
+    public function viewPullDB(Request $request)
     {
+        $table = 'muet_resultn';
+        $results = 0;
+        // dd($table);
+        if (!empty($request->type)) {
+            $results = DB::connection('pull-' . strtolower($request->type))->table($table);
+
+            if (!empty($request->year)) {
+                $results = $results->where('tahun', $request->year);
+            }
+            if (!empty($request->session) && strtolower($request->type) == 'muet') {
+                $results = $results->where('sesi', $request->session);
+            } elseif (!empty($request->session) && strtolower($request->type) == 'mod') {
+                $monthName = date('F', mktime(0, 0, 0, $request->session, 1));
+                $results = $results->where('namasesi', 'like', '%' . $monthName . '%');
+            }
+
+            $results = $results->count();
+        }
         //get db batch
         $batch = DB::table('job_batches')->where('name', 'PullDBImport')->where('pending_jobs', 1)->whereNull('finished_at')->count();
-        return view('modules.admin.administration.pull-db.index', compact('batch'));
+        return view('modules.admin.administration.pull-db.index', compact('batch', 'results', 'request'));
     }
 
-    public function pullDatabase(Request $request)
+    public function pullDatabasePost(Request $request)
     {
 
+        // dd($request);
         //pagination datatable with start and length
-        $start = $request->input('start');
-        $length = $request->input('length');
-        $search = $request->input('search.value');
-
+        // $start = $request->input('start');
+        // $length = $request->input('length');
+        // $search = $request->input('search.value');
 
         $data = [];
         // $table = 'muet_resultn_devsijil';
@@ -361,71 +379,75 @@ class AdminController extends Controller
                 $monthName = date('F', mktime(0, 0, 0, $request->session, 1));
                 $results = $results->where('namasesi', 'like', '%' . $monthName . '%');
             }
-            //based on $start, $length and $search
-            $results = $results->skip($start)->take($length);
-            $results2 = $results->get();
 
-            //show results by pagination start and length
-            $results = $results2->slice($start, $length);
-            // dd($results);
+            $results = $results->count();
+
+            dd($results);
+            //based on $start, $length and $search
+            // $results = $results->skip($start)->take($length);
+            // $results2 = $results->get();
+
+            // //show results by pagination start and length
+            // $results = $results2->slice($start, $length);
+            // // dd($results);
 
 
             // $results = DB::connection('pull-muet')->table($table)->get();
-            foreach ($results as $row) {
-                if (strtolower($request->type) == 'muet') {
-                    $data[] = [
-                        "muet_id" => $row->muet_id,
-                        "tahun" => $row->tahun,
-                        "sesi" => $row->sesi,
-                        "namasesi" => $row->namasesi,
-                        "nama" => $row->nama,
-                        "kp" => $row->kp,
-                        "indexNo" => $row->indexNo,
-                        "tarikh_isu" => $row->tarikh_isu,
-                        "tarikh_exp" => $row->tarikh_exp,
-                        "listening" => $row->listening,
-                        "speaking" => $row->speaking,
-                        "reading" => $row->reading,
-                        "writing" => $row->writing,
-                        "agg_score" => $row->agg_score,
-                        "band" => $row->band,
-                        "sch_code" => null,
-                        "statusflag" => null,
-                        "status" => $row->status,
-                        "tarload" => $row->tarload ?? null,
-                        "uploaddt" => $row->tarload,
-                    ];
-                } elseif (strtolower($request->type) == 'mod') {
-                    $data[] = [
-                        "muet_id" => $row->muet_id,
-                        "tahun" => $row->tahun,
-                        "sesi" => $row->sesi,
-                        "namasesi" => $row->namasesi,
-                        "nama" => $row->nama,
-                        "kp" => $row->kp,
-                        "indexNo" => $row->indexNo,
-                        "tarikh_isu" => $row->tarikh_isu,
-                        "tarikh_exp" => $row->tarikh_exp,
-                        "listening" => $row->listening,
-                        "speaking" => $row->speaking,
-                        "reading" => $row->reading,
-                        "writing" => $row->writing,
-                        "agg_score" => $row->agg_score,
-                        "band" => $row->band,
-                        "sch_code" => '',
-                        "statusflag" => 0,
-                        "status" => $row->status,
-                        "uploaddt" => $row->uploaddt,
-                        "tarload" => $row->uploaddt ?? null,
-                    ];
-                }
-            }
-            return response()->json([
-                "draw" => $request->input('draw'),
-                "recordsTotal" => count($results2),
-                "recordsFiltered" => count($results2),
-                "data" => $data
-            ]);
+            // foreach ($results as $row) {
+            //     if (strtolower($request->type) == 'muet') {
+            //         $data[] = [
+            //             "muet_id" => $row->muet_id,
+            //             "tahun" => $row->tahun,
+            //             "sesi" => $row->sesi,
+            //             "namasesi" => $row->namasesi,
+            //             "nama" => $row->nama,
+            //             "kp" => $row->kp,
+            //             "indexNo" => $row->indexNo,
+            //             "tarikh_isu" => $row->tarikh_isu,
+            //             "tarikh_exp" => $row->tarikh_exp,
+            //             "listening" => $row->listening,
+            //             "speaking" => $row->speaking,
+            //             "reading" => $row->reading,
+            //             "writing" => $row->writing,
+            //             "agg_score" => $row->agg_score,
+            //             "band" => $row->band,
+            //             "sch_code" => null,
+            //             "statusflag" => null,
+            //             "status" => $row->status,
+            //             "tarload" => $row->tarload ?? null,
+            //             "uploaddt" => $row->tarload,
+            //         ];
+            //     } elseif (strtolower($request->type) == 'mod') {
+            //         $data[] = [
+            //             "muet_id" => $row->muet_id,
+            //             "tahun" => $row->tahun,
+            //             "sesi" => $row->sesi,
+            //             "namasesi" => $row->namasesi,
+            //             "nama" => $row->nama,
+            //             "kp" => $row->kp,
+            //             "indexNo" => $row->indexNo,
+            //             "tarikh_isu" => $row->tarikh_isu,
+            //             "tarikh_exp" => $row->tarikh_exp,
+            //             "listening" => $row->listening,
+            //             "speaking" => $row->speaking,
+            //             "reading" => $row->reading,
+            //             "writing" => $row->writing,
+            //             "agg_score" => $row->agg_score,
+            //             "band" => $row->band,
+            //             "sch_code" => '',
+            //             "statusflag" => 0,
+            //             "status" => $row->status,
+            //             "uploaddt" => $row->uploaddt,
+            //             "tarload" => $row->uploaddt ?? null,
+            //         ];
+            //     }
+            // }
+            // return response()->json([
+            //     "draw" => $request->input('draw'),
+            //     "recordsTotal" => count($results2),
+            //     "recordsFiltered" => count($results2),
+            //     "data" => $data
+            // ]);
         }
 
         return response()->json([

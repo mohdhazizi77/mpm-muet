@@ -116,6 +116,7 @@ Route::group(['middleware' => ['role:PENTADBIR|BPKOM|PSM|FINANCE']], function ()
 
         Route::get('/pull-db', [AdminController::class, 'viewPullDB'])->name('admin.pullDB');
         Route::post('/pull-db/ajax', [AdminController::class, 'pullDatabase'])->name('admin.pullDB.ajax');
+        Route::post('/pull-db', [AdminController::class, 'viewPullDB'])->name('admin.pullDB.post');
         Route::post('/pull-db/import', [AdminController::class, 'pullDatabaseImport'])->name('admin.pullDB.import');
 
         Route::get('/pos-management/tracking', [PosController::class, 'trackShipping'])->name('pos.tracking')->middleware('poslaju.token');
