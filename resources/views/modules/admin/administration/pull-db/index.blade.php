@@ -76,7 +76,7 @@ Import Candidates DB Muet & MOD
                                         <option selected disabled> -- PLEASE SELECT -- </option>
                                         <option value="1" @if('1' == $request->session) selected @endif>January</option>
                                         <option value="2" @if('2' == $request->session) selected @endif>Febraury</option>
-                                        <option value="3" @if('3' == $request->session) selected @endif>Mac</option>
+                                        <option value="3" @if('3' == $request->session) selected @endif>March</option>
                                         <option value="4" @if('4' == $request->session) selected @endif>April</option>
                                         <option value="5" @if('5' == $request->session) selected @endif>May</option>
                                         <option value="6" @if('6' == $request->session) selected @endif>June</option>
@@ -117,7 +117,9 @@ Import Candidates DB Muet & MOD
                                     @if($batch > 0)
 
                                     @else
-                                    <h4>Total Records Found: <span class="badge bg-success" style="font-size:20px;">{{ $results }}</span></h4>
+                                    <h4>DB MPM (muet_resultn): <span class="badge bg-success" style="font-size:20px;">{{ number_format($results) }} Records Found </span></h4><br>
+                                    <h4>DB eSIJIL ({{ strtolower($request->type) }}_calon): <span class="badge bg-danger" style="font-size:20px;">{{ number_format($results_local) }} Records Found</span></h4><br>
+
                                     @endif
                                    
                                     <div>
@@ -127,7 +129,7 @@ Import Candidates DB Muet & MOD
                                         <script>
                                             setTimeout(function(){
                                                 window.location.reload(1);
-                                            }, 5000);
+                                            }, 10000);
                                         </script>
                                         @else 
                                         @if($results > 0)

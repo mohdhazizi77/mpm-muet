@@ -18,6 +18,8 @@ use App\Models\MuetTarikh;
 
 use App\Imports\SenaraiCalonExcelImport;
 use App\Jobs\ImportCandidateDBJob;
+use App\Models\ModCalon;
+use App\Models\ModTarikh;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\DB;
@@ -333,6 +335,7 @@ class AdminController extends Controller
     {
         $table = 'muet_resultn';
         $results = 0;
+        $results_local = 0;
         // dd($table);
         if (!empty($request->type)) {
             $results = DB::connection('pull-' . strtolower($request->type))->table($table);
@@ -348,10 +351,32 @@ class AdminController extends Controller
             }
 
             $results = $results->count();
+
+            $sidang_ = [
+                1 => 'JANUARY',
+                2 => 'FEBRUARY',
+                3 => 'MARCH',
+                4 => 'APRIL',
+                5 => 'MAY',
+                6 => 'JUNE',
+                7 => 'JULY',
+                8 => 'AUGUST',
+                9 => 'SEPTEMBER',
+                10 => 'OCTOBER',
+                11 => 'NOVEMBER',
+                12 => 'DECEMBER',
+            ];
+            if (strtolower($request->type) == 'muet') {
+                $sidangs = MuetTarikh::where('tahun', $request->year)->where('sesi', 'like', '%' . $sidang_[$request->session] . '%')->pluck('sidang')->toArray();
+                $results_local = MuetCalon::where('tahun', $request->year)->whereIn('sidang', $sidangs)->count();
+            } elseif (strtolower($request->type) == 'mod') {
+                $sidangs = ModTarikh::where('tahun', $request->year)->where('sesi', 'like', '%' . $sidang_[$request->session] . '%')->pluck('sidang')->toArray();
+                $results_local = ModCalon::where('tahun', $request->year)->whereIn('sidang', $sidangs)->count();
+            }
         }
         //get db batch
         $batch = DB::table('job_batches')->where('name', 'PullDBImport')->where('pending_jobs', 1)->whereNull('finished_at')->count();
-        return view('modules.admin.administration.pull-db.index', compact('batch', 'results', 'request'));
+        return view('modules.admin.administration.pull-db.index', compact('batch', 'results', 'request', 'results_local'));
     }
 
     public function pullDatabasePost(Request $request)
