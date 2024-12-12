@@ -70,95 +70,99 @@ class CandidateController extends Controller
 
         $cert_datas = [];
         $cutoffTime = Carbon::now()->subDay(2); // Get the current time and subtract 24 hours to get the cutoff time
-        foreach ($muets as $key => $muet) {
+        if ($muets) {
+            foreach ($muets as $key => $muet) {
 
-            $is_more2year = self::checkYear($muet->getTarikh->tahun); //check cert if already 2 years
-            $is_selfPrintPaid = false;
-            $is_mpmPrintPaid = false;
-            if ($is_more2year) {
-                // $res = $muet->getOrder->where('payment_status','SUCCESS')->where('payment_for', 'SELF_PRINT')->toArray();
+                $is_more2year = self::checkYear($muet->getTarikh->tahun); //check cert if already 2 years
+                $is_selfPrintPaid = false;
+                $is_mpmPrintPaid = false;
+                if ($is_more2year) {
+                    // $res = $muet->getOrder->where('payment_status','SUCCESS')->where('payment_for', 'SELF_PRINT')->toArray();
 
-                $res = $muet->getOrder()
-                    ->where('payment_status', 'SUCCESS')
-                    // ->where(function ($query) {
-                    //     $query->where('payment_for', 'SELF_PRINT')
-                    //         ->orWhere('payment_for', 'MPM_PRINT');
-                    // })
-                    ->where('payment_for', 'SELF_PRINT')
-                    ->where('created_at', '>=', $cutoffTime)
-                    ->get()
-                    ->toArray();
+                    $res = $muet->getOrder()
+                        ->where('payment_status', 'SUCCESS')
+                        // ->where(function ($query) {
+                        //     $query->where('payment_for', 'SELF_PRINT')
+                        //         ->orWhere('payment_for', 'MPM_PRINT');
+                        // })
+                        ->where('payment_for', 'SELF_PRINT')
+                        ->where('created_at', '>=', $cutoffTime)
+                        ->get()
+                        ->toArray();
 
-                $is_selfPrintPaid = count($res) > 0 ? true : false;
+                    $is_selfPrintPaid = count($res) > 0 ? true : false;
 
-                $res = $muet->getOrder->where('payment_status', 'SUCCESS')
-                    ->where('payment_for', 'MPM_PRINT')
-                    ->where('created_at', '>=', $cutoffTime)
-                    ->toArray();
-                $is_mpmPrintPaid = count($res) > 0 ? true : false;
-            } else {
-                $res = $muet->getOrder->where('payment_status', 'SUCCESS')->where('payment_for', 'SELF_PRINT')->toArray();
-                $is_selfPrintPaid = count($res) > 0 ? true : false;
+                    $res = $muet->getOrder->where('payment_status', 'SUCCESS')
+                        ->where('payment_for', 'MPM_PRINT')
+                        ->where('created_at', '>=', $cutoffTime)
+                        ->toArray();
+                    $is_mpmPrintPaid = count($res) > 0 ? true : false;
+                } else {
+                    $res = $muet->getOrder->where('payment_status', 'SUCCESS')->where('payment_for', 'SELF_PRINT')->toArray();
+                    $is_selfPrintPaid = count($res) > 0 ? true : false;
 
-                $res = $muet->getOrder->where('payment_status', 'SUCCESS')->where('payment_for', 'MPM_PRINT')->toArray();
-                $is_mpmPrintPaid = count($res) > 0 ? true : false;
+                    $res = $muet->getOrder->where('payment_status', 'SUCCESS')->where('payment_for', 'MPM_PRINT')->toArray();
+                    $is_mpmPrintPaid = count($res) > 0 ? true : false;
+                }
+
+                $cert_datas[] = [
+                    "no"                => ++$key,
+                    "id"                => Crypt::encrypt($muet->id . "-MUET"), // xxx-MUET or xxx-MOD
+                    // "id"                => $muet->id . "-MUET", // xxx-MUET or xxx-MOD
+                    "type"              => 'MUET',
+                    "year"              => $muet->tahun,
+                    "session"           => str_replace('MUET ', '', $muet->getTarikh->sesi),
+                    "band"              => "Band " . self::formatNumber($muet->band, $muet->tahun),
+                    "is_more2year"      => $is_more2year,
+                    "is_selfPrintPaid"  => $is_selfPrintPaid,
+                    "is_mpmPrintPaid"   => $is_mpmPrintPaid,
+                ];
             }
-
-            $cert_datas[] = [
-                "no"                => ++$key,
-                "id"                => Crypt::encrypt($muet->id . "-MUET"), // xxx-MUET or xxx-MOD
-                // "id"                => $muet->id . "-MUET", // xxx-MUET or xxx-MOD
-                "type"              => 'MUET',
-                "year"              => $muet->tahun,
-                "session"           => str_replace('MUET ', '', $muet->getTarikh->sesi),
-                "band"              => "Band " . self::formatNumber($muet->band, $muet->tahun),
-                "is_more2year"      => $is_more2year,
-                "is_selfPrintPaid"  => $is_selfPrintPaid,
-                "is_mpmPrintPaid"   => $is_mpmPrintPaid,
-            ];
         }
 
-        foreach ($mods as $key => $mod) {
+        if ($mods) {
+            foreach ($mods as $key => $mod) {
 
-            $is_more2year = self::checkYear($mod->getTarikh->tahun); //check cert if already 2 years
-            $is_selfPrintPaid = false;
-            $is_mpmPrintPaid = false;
-            if ($is_more2year) {
-                // $res = $muet->getOrder->where('payment_status','SUCCESS')->where('payment_for', 'SELF_PRINT')->toArray();
+                $is_more2year = self::checkYear($mod->getTarikh->tahun); //check cert if already 2 years
+                $is_selfPrintPaid = false;
+                $is_mpmPrintPaid = false;
+                if ($is_more2year) {
+                    // $res = $muet->getOrder->where('payment_status','SUCCESS')->where('payment_for', 'SELF_PRINT')->toArray();
 
-                $res = $mod->getOrder()
-                    ->where('payment_status', 'SUCCESS')
-                    ->where('payment_for', 'SELF_PRINT')
-                    ->where('created_at', '>=', $cutoffTime)
-                    ->get()
-                    ->toArray();
-                $is_selfPrintPaid = count($res) > 0 ? true : false;
+                    $res = $mod->getOrder()
+                        ->where('payment_status', 'SUCCESS')
+                        ->where('payment_for', 'SELF_PRINT')
+                        ->where('created_at', '>=', $cutoffTime)
+                        ->get()
+                        ->toArray();
+                    $is_selfPrintPaid = count($res) > 0 ? true : false;
 
-                $res = $mod->getOrder->where('payment_status', 'SUCCESS')
-                    ->where('payment_for', 'MPM_PRINT')
-                    ->where('created_at', '>=', $cutoffTime)
-                    ->toArray();
-                $is_mpmPrintPaid = count($res) > 0 ? true : false;
-            } else {
-                $res = $mod->getOrder->where('payment_status', 'SUCCESS')->where('payment_for', 'SELF_PRINT')->toArray();
-                $is_selfPrintPaid = count($res) > 0 ? true : false;
+                    $res = $mod->getOrder->where('payment_status', 'SUCCESS')
+                        ->where('payment_for', 'MPM_PRINT')
+                        ->where('created_at', '>=', $cutoffTime)
+                        ->toArray();
+                    $is_mpmPrintPaid = count($res) > 0 ? true : false;
+                } else {
+                    $res = $mod->getOrder->where('payment_status', 'SUCCESS')->where('payment_for', 'SELF_PRINT')->toArray();
+                    $is_selfPrintPaid = count($res) > 0 ? true : false;
 
-                $res = $mod->getOrder->where('payment_status', 'SUCCESS')->where('payment_for', 'MPM_PRINT')->toArray();
-                $is_mpmPrintPaid = count($res) > 0 ? true : false;
+                    $res = $mod->getOrder->where('payment_status', 'SUCCESS')->where('payment_for', 'MPM_PRINT')->toArray();
+                    $is_mpmPrintPaid = count($res) > 0 ? true : false;
+                }
+
+                $cert_datas[] = [
+                    "no"                => ++$key,
+                    "id"                => Crypt::encrypt($mod->id . "-MOD"), // xxx-MUET or xxx-MOD
+                    // "id"                => $muet->id . "-MUET", // xxx-MUET or xxx-MOD
+                    "type"              => 'MOD',
+                    "year"              => $mod->tahun,
+                    "session"           => str_replace('MOD ', '', $mod->getTarikh->sesi),
+                    "band"              => "Band " . $mod->band,
+                    "is_more2year"      => $is_more2year,
+                    "is_selfPrintPaid"  => $is_selfPrintPaid,
+                    "is_mpmPrintPaid"   => $is_mpmPrintPaid,
+                ];
             }
-
-            $cert_datas[] = [
-                "no"                => ++$key,
-                "id"                => Crypt::encrypt($mod->id . "-MOD"), // xxx-MUET or xxx-MOD
-                // "id"                => $muet->id . "-MUET", // xxx-MUET or xxx-MOD
-                "type"              => 'MOD',
-                "year"              => $mod->tahun,
-                "session"           => str_replace('MOD ', '', $mod->getTarikh->sesi),
-                "band"              => "Band " . $mod->band,
-                "is_more2year"      => $is_more2year,
-                "is_selfPrintPaid"  => $is_selfPrintPaid,
-                "is_mpmPrintPaid"   => $is_mpmPrintPaid,
-            ];
         }
 
         return datatables($cert_datas)->toJson();
@@ -1082,7 +1086,7 @@ class CandidateController extends Controller
         if ($request->filled('search')) {
             $searchTerm = $request->input('search');
             $candidates->where('name', 'like', '%' . $searchTerm . '%')
-                    ->orWhere('identity_card_number', 'like', '%' . $searchTerm . '%');
+                ->orWhere('identity_card_number', 'like', '%' . $searchTerm . '%');
         }
 
         // Return the DataTable response
@@ -1436,11 +1440,11 @@ class CandidateController extends Controller
             $candidate->save();
 
             $kodktsMapping = [
-                            1 => $request->listening_score,
-                            2 => $request->speaking_score,
-                            3 => $request->reading_score,
-                            4 => $request->writing_score,
-                        ];
+                1 => $request->listening_score,
+                2 => $request->speaking_score,
+                3 => $request->reading_score,
+                4 => $request->writing_score,
+            ];
 
             foreach ($kodktsMapping as $kodkts => $score) {
                 $muetSkor = MuetSkor::where('tahun', $candidate->tahun)
@@ -1485,7 +1489,6 @@ class CandidateController extends Controller
                     $muetSkor->save();
                 }
             }
-
         }
 
 
@@ -1732,7 +1735,8 @@ class CandidateController extends Controller
     //     ]);
     // }
 
-    public function listCert(Request $request, $candidate_id){
+    public function listCert(Request $request, $candidate_id)
+    {
         $candidate = Candidate::find($candidate_id);
 
         if (!$candidate) {
@@ -1747,7 +1751,8 @@ class CandidateController extends Controller
         );
     }
 
-    public function ajaxGetCert(Request $request){
+    public function ajaxGetCert(Request $request)
+    {
         $candidate = Candidate::find($request->candidate_id);
         $cert_datas = [];
         if (!$candidate) {

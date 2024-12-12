@@ -104,7 +104,11 @@ Import Candidates DB Muet & MOD
                         <div class="card-label">
                             <div class="row">
                                 <div class="col" style="text-align: left; padding-top: 10px">
+                                    @if($batch > 0)
+
+                                    @else
                                     <h4>Import Candidates Database</h4>
+                                    @endif
                                 </div>
                                 <div class="col" style="text-align: right">
                                     @if($batch > 0)
@@ -125,7 +129,7 @@ Import Candidates DB Muet & MOD
                         </div>
                     </div>
                 </div>
-                <div class="px-4">
+                {{-- <div class="px-4">
                     <div class="row">
                         <div class="col-xxl-12 align-self-center">
                             <div class="py-2">
@@ -152,7 +156,7 @@ Import Candidates DB Muet & MOD
                         </div>
                     </div>
                     <!-- end card body -->
-                </div>
+                </div> --}}
                 <!-- end card -->
 
             </div>
