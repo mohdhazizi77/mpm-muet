@@ -492,7 +492,12 @@ class AdminController extends Controller
         ])->name('PullDBImport')->dispatch();
 
         //return json
-        return response()->json($batch);
+        // return response()->json($batch);
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Importing data from ' . $request->type . ' database. Please wait...',
+            'batch' => $batch->id
+        ]);
     }
 
     public function indexUpload()
