@@ -117,12 +117,12 @@ class ImportCandidateDBJob implements ShouldQueue
             ModCalon::updateOrCreate(
                 [
                     'angka_giliran' => $angka_giliran,
-                ],
-                [
                     'tahun' => $tahun,
                     'sidang' => $sidang,
-                    'nama' => $nama,
                     'kp' => $kp,
+                ],
+                [
+                    'nama' => $nama,
                     'kodnegeri' => $kodnegeri,
                     'kodpusat' => $kodpusat,
                     'reg_id' => $reg_id,
@@ -219,12 +219,12 @@ class ImportCandidateDBJob implements ShouldQueue
             MuetCalon::updateOrCreate(
                 [
                     'angka_giliran' => $angka_giliran,
-                ],
-                [
                     'tahun'           => $tahun,
                     'sidang'          => $sidang,
-                    'nama'            => $nama,
                     'kp'              => $kp,
+                ],
+                [
+                    'nama'            => $nama,
                     'kodnegeri'       => $kodnegeri,
                     'kodpusat'        => $kodpusat,
                     'jcalon'          => $jcalon,
