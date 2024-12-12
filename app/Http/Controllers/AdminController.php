@@ -487,12 +487,12 @@ class AdminController extends Controller
     }
     public function pullDatabaseImport(Request $request)
     {
-        // $batch = Bus::batch([
-        //     new ImportCandidateDBJob($request->year, $request->session, $request->type),
-        // ])->name('PullDBImport')->dispatch();
+        $batch = Bus::batch([
+            new ImportCandidateDBJob($request->year, $request->session, $request->type),
+        ])->name('PullDBImport')->dispatch();
 
         //dispatch job
-        ImportCandidateDBJob::dispatch($request->year, $request->session, $request->type);
+        // ImportCandidateDBJob::dispatch($request->year, $request->session, $request->type);
 
         //return json
         // return response()->json($batch);
