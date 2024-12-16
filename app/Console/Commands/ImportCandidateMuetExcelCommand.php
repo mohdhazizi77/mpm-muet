@@ -28,9 +28,11 @@ class ImportCandidateMuetExcelCommand extends Command
     public function handle()
     {
         $this->info('Script starting [' . date('Y-m-d H:i:s') . ']');
-        Excel::import(new ImportMuetCandidateCsv, resource_path('excel/importExcelFiles/MUET/MUET-S2-2024-markah-sijil-online-berubah-19-calon.csv'));
-        Excel::import(new ImportMuetCandidateCsv, resource_path('excel/importExcelFiles/MUET/MUET-S2-2024-tambahan-1-calon.csv'));
+        // Excel::import(new ImportMuetCandidateCsv, resource_path('excel/importExcelFiles/MUET/MUET-S2-2024-markah-sijil-online-berubah-19-calon.csv'));
+        // Excel::import(new ImportMuetCandidateCsv, resource_path('excel/importExcelFiles/MUET/MUET-S2-2024-tambahan-1-calon.csv'));
         // Excel::import(new ImportMuetCandidate, resource_path('excel/importExcelFiles/MUET.xlsx'));
+        Excel::import(new ImportMuetCandidate, resource_path('excel/importExcelFiles/MUET/MUET 2024 S1-13122024.csv'));
+        Excel::import(new ImportMuetCandidate, resource_path('excel/importExcelFiles/MUET/MUET 2024 S1-Tiada dalam esijil-13122024.csv'));
 
         $this->info('Script completed successfully. everything looks good. [' . date('Y-m-d H:i:s') . ']');
     }
