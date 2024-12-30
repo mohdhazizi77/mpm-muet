@@ -75,7 +75,7 @@ Import Candidates DB Muet & MOD
                                     <select id="session-select" class="form-select mb-3" aria-label="Default select example" name="session">
                                         <option selected disabled> -- PLEASE SELECT -- </option>
                                         <option value="1" @if('1' == $request->session) selected @endif>January</option>
-                                        <option value="2" @if('2' == $request->session) selected @endif>Febraury</option>
+                                        <option value="2" @if('2' == $request->session) selected @endif>February</option>
                                         <option value="3" @if('3' == $request->session) selected @endif>March</option>
                                         <option value="4" @if('4' == $request->session) selected @endif>April</option>
                                         <option value="5" @if('5' == $request->session) selected @endif>May</option>
